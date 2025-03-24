@@ -21,7 +21,7 @@ A Next.js-driven company website for **Fantastic AI Studio**, showcasing AI and 
 
 ## Project Structure
 
-fais-world/
+fais-web/
 ├── pages/                   # Next.js pages for routes
 │   ├── index.js             # Home page
 │   ├── about.js             # About page
@@ -52,8 +52,8 @@ Follow these steps to run the project locally (tested on WSL2 Ubuntu for Windows
 
 1. **Clone the repository**  
 
-   git clone https://github.com/faisworld/fais-world.git
-   cd fais-world
+   git clone https://github.com/faisworld/fais-web.git
+   cd fais-web
 
 2. **Install dependencies**  
 
