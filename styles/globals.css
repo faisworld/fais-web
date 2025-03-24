@@ -1,0 +1,38 @@
+/* Global styles for the Fantastic AI Studio Website */
+
+/* Importing Tailwind CSS base styles */
+@import 'tailwindcss/base';
+
+/* Importing Tailwind CSS components */
+@import 'tailwindcss/components';
+
+/* Importing Tailwind CSS utilities */
+@import 'tailwindcss/utilities';
+
+/* Custom global styles can be added below */
+
+/* Example: Setting a default font family */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* White background */
+    color: #333333; /* Dark text color for readability */
+}
+
+/* Example: Styling links */
+a {
+    color: #1d4ed8; /* Blue color for links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Example: Adding a container for layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem; /* Padding for responsiveness */
+}
