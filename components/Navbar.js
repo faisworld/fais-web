@@ -1,32 +1,108 @@
+import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-const Navbar = () => {
-    return (
-        <nav className="bg-white shadow">
-            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                <div className="relative flex items-center justify-between h-16">
-                    <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                        {/* Mobile menu button*/}
-                    </div>
-                    <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                        <div className="flex-shrink-0">
-                            <Link href="/">
-                                <h1 className="text-xl font-bold">Fantastic AI Studio</h1>
-                            </Link>
-                        </div>
-                        <div className="hidden sm:block sm:ml-6">
-                            <div className="flex space-x-4">
-                                <Link href="/" className="text-gray-900 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-                                <Link href="/about" className="text-gray-900 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">About</Link>
-                                <Link href="/services" className="text-gray-900 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">Services</Link>
-                                <Link href="/contact" className="text-gray-900 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">Contact</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About' },
+    { href: '/services', label: 'Services' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
+  return (
+    <nav className="bg-white shadow-md">
+      <div className="container-custom py-4">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-heading font-bold text-primary">
+            Fantastic AI Studio
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                href={link.href}
+                key={link.href}
+                className={`font-medium hover:text-accent transition-colors ${
+                  router.pathname === link.href ? 'text-accent' : 'text-secondary'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link href="/contact" className="btn btn-primary">
+              Get Started
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-secondary focus:outline-none"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {isMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 pb-4">
+            <div className="flex flex-col space-y-4">
+              {navLinks.map((link) => (
+                <Link
+                  href={link.href}
+                  key={`mobile-${link.href}`}
+                  className={`font-medium block px-2 py-1 rounded hover:bg-gray-100 ${
+                    router.pathname === link.href ? 'text-accent' : 'text-secondary'
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link 
+                href="/contact" 
+                className="btn btn-primary text-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Get Started
+              </Link>
             </div>
-        </nav>
-    );
-};
-
-export default Navbar;
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}

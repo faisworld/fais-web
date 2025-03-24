@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing code... -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcWfF4qAAAAABZqkijzL7kpBVbdj9Wq4GFZ_Y9Z"></script>
+    <!-- ...existing code... -->
+</head>
+<body>
+    <!-- ...existing code... -->
+    <script>
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LcWfF4qAAAAABZqkijzL7kpBVbdj9Wq4GFZ_Y9Z', {action: 'submit'}).then(function(token) {
+                // Add your logic to handle the token here
+                console.log(token);
+            });
+        });
+    </script>
+    <!-- ...existing code... -->
+</body>
+</html>

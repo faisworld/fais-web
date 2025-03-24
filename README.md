@@ -52,7 +52,7 @@ Follow these steps to run the project locally (tested on WSL2 Ubuntu for Windows
 
 1. **Clone the repository**  
 
-   git clone https://github.com/faisworld/fais-web.git
+   git clone <https://github.com/faisworld/fais-web.git>
    cd fais-web
 
 2. **Install dependencies**  
@@ -66,7 +66,7 @@ Follow these steps to run the project locally (tested on WSL2 Ubuntu for Windows
 
    Open the `.env` file in an editor and update the placeholders (especially for SMTP and VAPI credentials). For example:  
 
-   ```
+   ```env
    # Google SMTP credentials for contact form emails
    SMTP_USER=your_email@gmail.com
    SMTP_PASS=your_gmail_app_password

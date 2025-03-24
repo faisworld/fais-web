@@ -1,38 +1,57 @@
-/* Global styles for the Fantastic AI Studio Website */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap');
 
-/* Importing Tailwind CSS base styles */
-@import 'tailwindcss/base';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Importing Tailwind CSS components */
-@import 'tailwindcss/components';
+@layer base {
+  body {
+    @apply font-body text-text bg-gray-50;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-primary font-semibold;
+  }
 
-/* Importing Tailwind CSS utilities */
-@import 'tailwindcss/utilities';
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
 
-/* Custom global styles can be added below */
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
 
-/* Example: Setting a default font family */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff; /* White background */
-    color: #333333; /* Dark text color for readability */
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  p {
+    @apply my-4;
+  }
+
+  a {
+    @apply text-accent hover:text-accent/80 transition-colors;
+  }
 }
 
-/* Example: Styling links */
-a {
-    color: #1d4ed8; /* Blue color for links */
-    text-decoration: none;
-}
+@layer components {
+  .btn {
+    @apply inline-block px-6 py-3 rounded-md font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary/90;
+  }
+  
+  .btn-accent {
+    @apply bg-accent text-white hover:bg-accent/90;
+  }
 
-a:hover {
-    text-decoration: underline; /* Underline on hover */
-}
-
-/* Example: Adding a container for layout */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem; /* Padding for responsiveness */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
 }

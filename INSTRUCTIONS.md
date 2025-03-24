@@ -13,7 +13,7 @@ This document provides comprehensive technical instructions for setting up, cust
 5. [Running the Application Locally](#running-the-application-locally)  
 6. [Deploying to Vercel](#deploying-to-vercel)  
 7. [AI Assistant Integration (VAPI)](#ai-assistant-integration-vapi)  
-8. [Contact Form (SMTP Gmail)](#contact-form-smtp-gmail)  
+8. [Contact Form (SMTP Gmail)](contact-form-smtp-gmail)  
 9. [SEO & Accessibility](#seo--accessibility)  
 10. [Future Enhancements](#future-enhancements)
 
@@ -100,6 +100,7 @@ cp .env.example .env
 ```
 
 Required environment variables:
+
 - SMTP credentials for contact form
 - VAPI credentials for AI assistant integration
 - NextAuth.js secret for admin authentication
@@ -111,7 +112,33 @@ Required environment variables:
 npm run dev
 ```
 
-The site will be available at http://localhost:3000
+The site will be available at <http://localhost:3000>
+
+---
+
+## Environment Variables and Security
+
+### Handling .env Files
+
+The `.env` file contains sensitive information and is intentionally ignored by Git for security reasons. Follow these best practices:
+
+1. **Never commit .env files**: The `.gitignore` file is correctly set up to exclude `.env`
+2. **Use .env.example as a template**: The `.env.example` file serves as a template with placeholder values
+3. **Securely share credentials**: Use password managers or secure channels to share actual credentials among team members
+
+### Updating and Freezing Dependencies
+
+To update dependencies to their latest compatible versions:
+
+```bash
+npm run deps:update
+```
+
+To freeze dependencies at their current versions (creates npm-shrinkwrap.json):
+
+```bash
+npm run deps:freeze
+```
 
 ---
 
