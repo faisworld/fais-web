@@ -1,0 +1,10 @@
+pages/_app.js
+pages/_document.js
+pages/about.js
+pages/admin/index.js
+pages/admin/login.js
+pages/api/auth/[...nextauth].js
+pages/api/contact.js
+pages/contact.js
+pages/index.js
+pages/services.js

@@ -1,0 +1,10 @@
+components/AssistantWidget.js
+components/Footer.js
+components/Layout.js
+components/Navbar.js
+components/Section.js
+components/ThemeSwitcher.js
+components/admin/DashboardWidget.js
+components/ui/Button.js
+components/ui/Card.js
+components/ui/Input.js
