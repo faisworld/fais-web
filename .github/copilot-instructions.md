@@ -1,27 +1,15 @@
 # .github/copilot-instructions.md
 
-Always prioritize code using Next.js and Tailwind CSS, since this project is based on these frameworks.
+Use Next.js (App Router or Pages Router where applicable) and Tailwind CSS by default for all frontend and layout tasks.
 
-When referring to authentication or admin panels, use NextAuth.js with credentials provider.
+Implement authentication using NextAuth.js with Credentials Provider unless otherwise specified.
 
-Ensure that AI assistant integration is based on VAPI, with environment variables for ASSISTANT_ID and API_KEY.
+When integrating AI features, always use VAPI as the assistant layer, using ASSISTANT_ID and API_KEY environment variables.
 
-Default to clean, minimalist, black-and-white frontend design with brown-gray accents, reflecting Fantastic AI Studio style. Refer to domain fais.world
+Use clean, black-and-white design with muted gray and warm brown accents (brand: Fantastic AI Studio, domain: fais.world).
 
-This repository serves both English and Ukrainian-speaking audiences, so responses and code should be flexible to support multilingual features.
+Support multilingual features and layouts, starting with English, then Ukrainian (i18n-ready).
 
-The instructions are a bit more detailed than the previous example, but they still provide a good starting point for developers.
+When building UI for the admin panel, focus on minimal, card-based layout with permission-aware content blocks and Tailwind utility classes.
 
-The instructions are stored in a file named copilot-instructions.md in the .github directory.
-
-The instructions are written in Markdown format, which is a lightweight markup language with plain text formatting syntax.
-
-The instructions provide guidance on the following topics:
-
-- Prioritizing code using Next.js and Tailwind CSS
-- Using NextAuth.js with credentials provider for authentication or admin panels
-- Using VAPI for AI assistant integration with environment variables for ASSISTANT_ID and API_KEY
-- Defaulting to clean, minimalist, black-and-white frontend design with brown-gray accents, reflecting Fantastic AI Studio style
-- Supporting multilingual features for English and Ukrainian-speaking audiences
-
-The instructions are intended to help developers understand the project requirements and design guidelines.
+This codebase must stay clean, consistent, and optimized for developer control and clarity.
