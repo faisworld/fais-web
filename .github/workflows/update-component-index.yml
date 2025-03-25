@@ -1,0 +1,30 @@
+# .github/workflows/update-component-index.yml
+
+name: Update Component Index
+
+on:
+  push:
+    paths:
+      - 'components/**'
+      - 'pages/**'
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate component and page index
+        run: |
+          mkdir -p docs
+          find components -type f \( -name "*.js" -o -name "*.tsx" \) > docs/component-index.txt
+          find pages -type f \( -name "*.js" -o -name "*.tsx" \) > docs/page-index.txt
+
+      - name: Commit index files
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add docs/component-index.txt docs/page-index.txt
+          git commit -m "Auto-update component and page index" || echo "No changes to commit"
+          git push

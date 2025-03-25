@@ -6,22 +6,23 @@ This document provides comprehensive technical instructions for setting up, cust
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)  
-2. [System Requirements](#system-requirements)  
-3. [Project Structure](#project-structure)  
-4. [Environment Setup](#environment-setup)  
-5. [Running the Application Locally](#running-the-application-locally)  
-6. [Deploying to Vercel](#deploying-to-vercel)  
-7. [AI Assistant Integration (VAPI)](#ai-assistant-integration-vapi)  
-8. [Contact Form (SMTP Gmail)](contact-form-smtp-gmail)  
-9. [SEO & Accessibility](#seo--accessibility)  
-10. [Future Enhancements](#future-enhancements)
+1. [Project Overview](#project-overview)
+2. [System Requirements](#system-requirements)
+3. [Project Structure](#project-structure)
+4. [Environment Setup](#environment-setup)
+5. [Running the Application Locally](#running-the-application-locally)
+6. [Deploying to Vercel](#deploying-to-vercel)
+7. [AI Assistant Integration (VAPI)](#ai-assistant-integration-vapi)
+8. [Contact Form (SMTP Gmail)](#contact-form-smtp-gmail)
+9. [SEO & Accessibility](#seo--accessibility)
+10. [Admin Panel & Authentication](#admin-panel--authentication)
+11. [Future Enhancements](#future-enhancements)
 
 ---
 
 ## Project Overview
 
-This is a static and server-rendered website (Next.js hybrid) used as a digital identity and service showcase for **Fantastic AI Studio** (fais.world). The project emphasizes clean design, speed, and minimalism while integrating advanced features like an AI assistant and contact capabilities.
+This is a static and server-rendered website (Next.js hybrid) used as a digital identity and service showcase for **Fantastic AI Studio** (fais.world). The project emphasizes clean design, speed, and minimalism while integrating advanced features like an AI assistant, contact form, and protected admin area.
 
 ## System Requirements
 
@@ -34,40 +35,16 @@ This is a static and server-rendered website (Next.js hybrid) used as a digital 
 
 ## Project Structure
 
-```bash
+```
 fais-web/
-├── components/            # Reusable React components
-│   ├── Layout.js          # Layout component (header, footer wrapper)
-│   ├── Navbar.js          # Site navigation bar
-│   ├── Footer.js          # Site footer
-│   └── AssistantWidget.js # VAPI AI assistant widget integration
-├── pages/                 # Next.js pages for routes
-│   ├── index.js           # Home page
-│   ├── about.js           # About page
-│   ├── services.js        # Services page
-│   ├── contact.js         # Contact page
-│   ├── admin/             # Admin pages (protected)
-│   │   ├── index.js       # Admin dashboard
-│   │   └── login.js       # Admin login page
-│   └── api/               # API route handlers (serverless functions)
-│       ├── contact.js     # API endpoint for contact form submissions
-│       └── auth/          # Authentication endpoints
-├── lib/                   # Library code and utilities
-│   ├── emailTemplate.js   # Email template for contact form
-│   └── verifyRecaptcha.js # reCAPTCHA verification utility
-├── public/                # Static assets (served at site root)
-│   ├── favicon.ico        # Favicon and other icons
-│   ├── robots.txt         # SEO: search engine directives
-│   └── sitemap.xml        # SEO: site map for search engines
-├── styles/                # Global styles and Tailwind CSS config
-│   └── globals.css        # Global CSS (includes Tailwind directives)
-├── tailwind.config.js     # Tailwind configuration
-├── next.config.js         # Next.js configuration settings
-├── next-seo.config.js     # SEO default configurations for next-seo
+├── components/            # Header, Footer, Layout, Assistant Widget
+├── pages/                 # Home, About, Services, Contact, Admin, API routes
+├── public/                # Static assets, favicon, robots.txt, sitemap.xml
+├── styles/                # Tailwind and global styles
 ├── .env.example           # Sample environment variables
-├── .env                   # Actual environment variables (git-ignored)
-├── package.json           # Node.js dependencies and scripts
-└── README.md              # Project documentation
+├── next.config.js         # Next.js configuration
+├── next-seo.config.js     # SEO defaults
+└── package.json           # Dependencies and scripts
 ```
 
 ---
@@ -84,61 +61,36 @@ cd fais-web
 ### Step 2: Install Dependencies
 
 ```bash
-npm install next-auth
-npm install react react-dom next
-npm install tailwindcss postcss autoprefixer
-npm install nodemailer
-npx tailwindcss init -p
+npm install
 ```
 
-### Step 3: Environment Variables
-
-Copy `.env.example` to `.env` and fill in the required values:
+### Step 3: Create Environment File
 
 ```bash
 cp .env.example .env
 ```
 
-Required environment variables:
+Edit `.env` with the following fields:
 
-- SMTP credentials for contact form
-- VAPI credentials for AI assistant integration
-- NextAuth.js secret for admin authentication
-- reCAPTCHA v3 site and secret keys
+```env
+# SMTP for contact form
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_gmail_app_password
 
-### Step 4: Run Development Server
+# AI Assistant (VAPI)
+NEXT_PUBLIC_VAPI_ASSISTANT_ID=your_vapi_id
+NEXT_PUBLIC_VAPI_API_KEY=your_vapi_api_key
 
-```bash
-npm run dev
+# NextAuth (for admin auth)
+NEXTAUTH_SECRET=your_secure_secret_key
+NEXTAUTH_URL=http://localhost:3000
+
+# Metadata
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_NAME=Fantastic AI Studio
 ```
 
-The site will be available at <http://localhost:3000>
-
----
-
-## Environment Variables and Security
-
-### Handling .env Files
-
-The `.env` file contains sensitive information and is intentionally ignored by Git for security reasons. Follow these best practices:
-
-1. **Never commit .env files**: The `.gitignore` file is correctly set up to exclude `.env`
-2. **Use .env.example as a template**: The `.env.example` file serves as a template with placeholder values
-3. **Securely share credentials**: Use password managers or secure channels to share actual credentials among team members
-
-### Updating and Freezing Dependencies
-
-To update dependencies to their latest compatible versions:
-
-```bash
-npm run deps:update
-```
-
-To freeze dependencies at their current versions (creates npm-shrinkwrap.json):
-
-```bash
-npm run deps:freeze
-```
+> Use [Google App Passwords](https://support.google.com/accounts/answer/185833) for SMTP if 2FA is enabled.
 
 ---
 
@@ -154,9 +106,8 @@ Access the site at `http://localhost:3000`
 
 ### Step 2: Test Contact Form & Widget
 
-- Submit the contact form to ensure emails are sent properly
-- Check that the AI assistant loads in the bottom corner
-- Verify that reCAPTCHA is working on the contact form
+- Submit the contact form
+- Check the AI assistant loads in the bottom corner
 
 ---
 
@@ -165,7 +116,7 @@ Access the site at `http://localhost:3000`
 1. Go to [vercel.com](https://vercel.com/) and log in
 2. Create a new project, import from GitHub
 3. Add environment variables via the Vercel dashboard (same as `.env`)
-4. Set build command: `npm run build` and output directory: `out` *(only if exporting static)*
+4. Set build command: `npm run build` and output directory: `out` _(only if exporting static)_
 5. Deploy and assign a custom domain (e.g., fais.world)
 
 ---
@@ -185,36 +136,18 @@ The widget script is loaded via `useEffect`, so no SSR conflict.
 
 ---
 
-## Contact Form (SMTP Gmail) with reCAPTCHA
+## Contact Form (SMTP Gmail)
 
-The contact form submits via `/api/contact.js`, which uses **Nodemailer** to send emails through Gmail SMTP and verifies with reCAPTCHA v3.
+The contact form submits via `/api/contact.js`, which uses **Nodemailer** to send emails through Gmail SMTP.
 
 SMTP config:
 
 ```env
 SMTP_USER=your_email@gmail.com
 SMTP_PASS=your_gmail_app_password
-
-RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
 ```
 
 Make sure to enable "Allow less secure apps" in your Google account or generate an App Password if using 2FA.
-
----
-
-## Admin Authentication
-
-The admin panel is protected by NextAuth.js using credentials authentication:
-
-```env
-ADMIN_USER=admin
-ADMIN_PASS=secure_password_here
-NEXTAUTH_SECRET=random_secure_string
-NEXTAUTH_URL=http://localhost:3000
-```
-
-Access the admin panel at `/admin` and log in with the credentials specified in your environment variables.
 
 ---
 
@@ -224,6 +157,29 @@ Access the admin panel at `/admin` and log in with the credentials specified in 
 - **robots.txt** and **sitemap.xml** are located in `/public`
 - Semantic tags and contrast-friendly styles support screen readers
 - Use [Lighthouse](https://pagespeed.web.dev/) to audit performance, SEO, accessibility
+
+---
+
+## Admin Panel & Authentication
+
+The `/admin` route is protected with **NextAuth.js** to allow only authenticated users access to the dashboard.
+
+### Steps to Enable Admin Access:
+
+1. Create a login page at `pages/admin/login.js`
+2. Protect admin routes using `getServerSideProps` with session checks
+3. Use NextAuth.js providers (e.g., credentials or GitHub)
+4. Add a secure `NEXTAUTH_SECRET` to `.env`
+5. Wrap the app in `<SessionProvider>` (update `_app.js`)
+
+Environment variables:
+
+```env
+NEXTAUTH_SECRET=your_secure_secret_key
+NEXTAUTH_URL=http://localhost:3000
+```
+
+Once configured, visit `/admin` to log in and manage secure content.
 
 ---
 
