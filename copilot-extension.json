@@ -1,0 +1,39 @@
+{
+  "name": "fais-ai-studio-extension",
+  "version": "1.0.0",
+  "description": "Custom Copilot Extension for the fais.world project with admin panel, assistant integration, and editable content blocks.",
+  "context": {
+    "include": [
+      "pages/**/*.js",
+      "components/**/*.js",
+      "lib/**/*.js",
+      "docs/*.md",
+      "docs/*.txt",
+      ".github/copilot-instructions.md",
+      "README.md",
+      "INSTRUCTIONS.md"
+    ],
+    "exclude": [
+      "node_modules/",
+      ".next/",
+      "public/",
+      ".git/"
+    ]
+  },
+  "commands": [
+    {
+      "name": "describe-section",
+      "description": "Describe the layout and responsibilities of a section or component.",
+      "params": {
+        "path": "string"
+      }
+    },
+    {
+      "name": "refactor-admin-ui",
+      "description": "Refactor and optimize admin interface components for reuse.",
+      "params": {
+        "file": "string"
+      }
+    }
+  ]
+}
