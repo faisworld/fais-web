@@ -2,12 +2,13 @@
 
 This directory contains auto-generated and developer-maintained reference files used to support GitHub Copilot, documentation tools, and AI-driven extensions.
 
-### Files:
+## Files
 
 - `component-index.txt`: Automatically maintained list of all reusable UI components in `/components/`.
 - `page-index.txt`: List of all route pages and API endpoints under `/pages/`.
 
 These indexes are used for:
+
 - Copilot Extensions context
 - Local RAG (retrieval-augmented generation)
 - Automated documentation or debugging tools
