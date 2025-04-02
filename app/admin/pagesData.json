@@ -1,0 +1,33 @@
+[
+    {
+        "title": "Home Page",
+        "slug": "index",
+        "description": "The main landing page of the website.",
+        "metaTitle": "Welcome to Our Website",
+        "metaDescription": "Discover our services and offerings on the home page.",
+        "components": [
+            {
+                "name": "HeroSection",
+                "config": {
+                    "title": "Welcome",
+                    "subtitle": "To Our Website",
+                    "description": "Explore our services."
+                }
+            },
+            {
+                "name": "SolutionsSection",
+                "config": {
+                    "heading": "Our Solutions",
+                    "content": "We provide cutting-edge AI and blockchain solutions."
+                }
+            },
+            {
+                "name": "QuoteSection",
+                "config": {
+                    "quote": "Innovation distinguishes between a leader and a follower.",
+                    "author": "Steve Jobs"
+                }
+            }
+        ]
+    }
+]
