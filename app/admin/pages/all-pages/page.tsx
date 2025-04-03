@@ -1,85 +1,92 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 
-
-export default function AllPages() {
-    const [pages, setPages] = useState<PageData[]>([]);
-    useEffect(() => {
-        async function fetchPages() {
-            const response = await fetch("/admin/pagesData.json");
-            const data = await response.json();
-            setPages(data);
-        }
-        fetchPages();
-    }, []);
-
-
-
-interface PageData {
+interface Page {
+    id: string;
     title: string;
     slug: string;
-    description?: string;
+    metaTitle: string;
+    description: string;
+    isHomepage: boolean;
 }
 
+// Existing homepage data
+const homepage: Page = {
+    id: "1",
+    title: "Homepage",
+    slug: "/",
+    metaTitle: "Welcome to Our Website",
+    description: "This is the homepage of our website, showcasing the main content and features.",
+    isHomepage: true,
+};
 
-
-    useEffect(() => {
-        // Fetch pages data from the JSON file
-        async function fetchPages() {
-            try {
-                const response = await fetch("/admin/pagesData.json");
-                const data = await response.json();
-                setPages(data);
-            } catch (error) {
-                console.error("Error fetching pages data:", error);
-            }
-        }
-
-        fetchPages();
-    }, []);
+export default function AllPages() {
+    const handleClone = (page: Page) => {
+        // Logic to clone the page
+        console.log(`Cloning page: ${page.title}`);
+        alert(`Page "${page.title}" cloned successfully!`);
+    };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-                <h1 className="text-2xl font-bold mb-6 text-gray-800">All Pages</h1>
-                {pages.length === 0 ? (
-                    <p className="text-gray-700">No pages found. Create a new page to get started.</p>
-                ) : (
-                    <ul className="space-y-4">
-                        {pages.map((page) => (
-                            <li
-                                key={page.slug}
-                                className="bg-gray-100 p-4 rounded-lg shadow-sm flex justify-between items-center"
+        <div>
+            <h1 className="text-2xl font-bold mb-4">All Pages</h1>
+            <table className="w-full border-collapse border border-gray-200">
+                <thead>
+                    <tr>
+                        <th className="border border-gray-300 p-2">Title</th>
+                        <th className="border border-gray-300 p-2">Slug</th>
+                        <th className="border border-gray-300 p-2">Meta Title</th>
+                        <th className="border border-gray-300 p-2">Description</th>
+                        <th className="border border-gray-300 p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {/* Page Title */}
+                        <td className="border border-gray-300 p-2">{homepage.title}</td>
+
+                        {/* Page Slug */}
+                        <td className="border border-gray-300 p-2">{homepage.slug}</td>
+
+                        {/* Meta Title */}
+                        <td className="border border-gray-300 p-2">{homepage.metaTitle}</td>
+
+                        {/* Description */}
+                        <td className="border border-gray-300 p-2">
+                            {homepage.description.length > 50
+                                ? `${homepage.description.substring(0, 50)}...`
+                                : homepage.description}
+                        </td>
+
+                        {/* Actions */}
+                        <td className="border border-gray-300 p-2">
+                            {/* View Button */}
+                            <Link href={homepage.slug}>
+                                <button className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600">
+                                    View
+                                </button>
+                            </Link>
+
+                            {/* Edit Button */}
+                            <Link href={`/admin/pages/edit/${homepage.id}`}>
+                                <button className="bg-green-500 text-white px-3 py-1 rounded mr-2 hover:bg-green-600">
+                                    Edit
+                                </button>
+                            </Link>
+
+                            {/* Clone Button */}
+                            <button
+                                onClick={() => handleClone(homepage)}
+                                className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
                             >
-                                <div>
-                                    <h2 className="text-lg font-semibold text-gray-800">{page.title}</h2>
-                                    <p className="text-sm text-gray-600">{page.description || "No description available"}</p>
-                                </div>
-                                <div className="space-x-2">
-                                    <Link href={`/admin/pages/edit/${page.slug}`}>
-                                        <a className="text-blue-500 hover:underline">Edit</a>
-                                    </Link>
-                                    <button
-                                        className="text-red-500 hover:underline"
-                                        onClick={() => handleDelete(page.slug)}
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+                                Clone
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     );
-
-    function handleDelete(slug: string) {
-        if (confirm("Are you sure you want to delete this page?")) {
-            setPages((prevPages) => prevPages.filter((page) => page.slug !== slug));
-            // Add logic to update the JSON file or backend here
-        }
-    }
 }

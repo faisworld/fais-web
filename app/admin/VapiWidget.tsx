@@ -1,4 +1,4 @@
-export default function Dashboard() {
+export default function VapiWidget() {
     return (
         <div className="space-y-6">
             {/* Widget Block */}
