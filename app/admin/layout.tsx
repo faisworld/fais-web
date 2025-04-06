@@ -101,40 +101,43 @@ function MenuItem({
 
 export default function AdminLayout() {
     const router = useRouter(); // Use next/navigation's useRouter
+    const [mounted, setMounted] = useState(false);
     const [activeMenu, setActiveMenu] = useState<string>("dashboard");
     const [activeSubMenu, setActiveSubMenu] = useState<string>("");
 
     useEffect(() => {
+        setMounted(true); // mark as mounted to ensure client rendering
         // Check URL query parameters for activeMenu and activeSubMenu
-        const queryMenu = new URLSearchParams(window.location.search).get("activeMenu");
-        const querySubMenu = new URLSearchParams(window.location.search).get("activeSubMenu");
-
+        const query = new URLSearchParams(window.location.search);
+        const queryMenu = query.get("activeMenu");
+        const querySubMenu = query.get("activeSubMenu");
         if (queryMenu) {
             setActiveMenu(queryMenu);
         }
         if (querySubMenu) {
             setActiveSubMenu(querySubMenu);
+        } else if (queryMenu === "pages") {
+            setActiveSubMenu("all-pages");
         }
     }, []);
 
     useEffect(() => {
-        // Update the URL with the current activeMenu and activeSubMenu
-        const params = new URLSearchParams();
-        params.set("activeMenu", activeMenu);
-        if (activeSubMenu) {
-            params.set("activeSubMenu", activeSubMenu);
+        if (mounted) {
+            localStorage.setItem("activeMenu", activeMenu);
+            localStorage.setItem("activeSubMenu", activeSubMenu);
+            const params = new URLSearchParams();
+            params.set("activeMenu", activeMenu);
+            if (activeSubMenu) params.set("activeSubMenu", activeSubMenu);
+            router.push(`?${params.toString()}`);
         }
-        router.push(`?${params.toString()}`);
-    }, [activeMenu, activeSubMenu]);
+    }, [activeMenu, activeSubMenu, mounted]);
 
     const handleMenuClick = (key: string): void => {
         setActiveMenu(key);
-
-        // Set default submenu for "Pages"
         if (key === "pages") {
             setActiveSubMenu("all-pages");
         } else {
-            setActiveSubMenu(""); // Reset submenu for other menus
+            setActiveSubMenu("");
         }
     };
 
@@ -142,6 +145,8 @@ export default function AdminLayout() {
         setActiveSubMenu(key);
         setActiveMenu("pages");
     };
+
+    if (!mounted) return null; // delay rendering until after mount
 
     return (
         <div className="flex min-h-screen bg-gray-100">

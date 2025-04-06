@@ -6,10 +6,7 @@ import { useRouter } from "next/navigation";
 export default function EditPage({ params }: { params: { slug: string } }) {
     const [pageData, setPageData] = useState({
         title: "",
-        subtitle: "",
-        metaTitle: "",
         description: "",
-        previewImage: "",
     });
     const [loading, setLoading] = useState(true);
     const router = useRouter();
@@ -18,10 +15,13 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         async function fetchPageData() {
             try {
                 const response = await fetch(`/api/pages/${params.slug}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch page data");
+                }
                 const data = await response.json();
                 setPageData(data);
             } catch (error) {
-                console.error("Failed to fetch page data:", error);
+                console.error("Error fetching page data:", error);
             } finally {
                 setLoading(false);
             }
@@ -72,40 +72,10 @@ export default function EditPage({ params }: { params: { slug: string } }) {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Subtitle</label>
-                    <input
-                        type="text"
-                        name="subtitle"
-                        value={pageData.subtitle}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Meta Title</label>
-                    <input
-                        type="text"
-                        name="metaTitle"
-                        value={pageData.metaTitle}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                <div>
                     <label className="block text-sm font-medium text-gray-700">Description</label>
                     <textarea
                         name="description"
                         value={pageData.description}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Preview Image URL</label>
-                    <input
-                        type="text"
-                        name="previewImage"
-                        value={pageData.previewImage}
                         onChange={handleInputChange}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                     />
