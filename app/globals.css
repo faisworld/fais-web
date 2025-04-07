@@ -2,25 +2,291 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --foreground: #333333;
+  --link-color: #333333; /* Changed from blue to dark gray */
+  --link-hover-color: #000000; /* Changed from blue to black */
+  --button-bg-color: #666666; /* Changed from blue to medium gray */
+  --button-bg-hover-color: #333333; /* Changed from blue to dark gray */
+  --button-text-color: #ffffff;
+  --button-text-hover-color: #ffffff;
+  --font-sans: 'Inter', Arial, Helvetica, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --accent-color: #000000; /* Changed from blue to black */
+  --primary-text-color: #333333;
+  --secondary-text-color: #666666;
+  --heading-color: #111111;
+  --background-grey: #fafafa;
+  --invert-text-color: #ffffff;
+  --rankmath-wp-adminbar-height: 0;
+  --e-a-color-white: #fff;
+  --e-a-color-black: #000;
+  --e-a-color-logo: #fff;
+  --e-a-color-primary: #d9d9d9; /* Adjusted to a light gray */
+  --e-a-color-primary-bold: #bfbfbf; /* Adjusted to a darker gray */
+  --e-a-color-secondary: #515962;
+  --e-a-color-success: #0a875a;
+  --e-a-color-danger: #dc2626;
+  --e-a-color-info: #000000; /* Changed from blue to black */
+  --e-a-color-warning: #f59e0b;
+  --e-a-color-accent: #000000; /* Changed from blue to black */
+  --e-a-color-global: #1dddbf;
+  --e-a-color-accent-promotion: #000000; /* Changed from blue to black */
+  --e-a-bg-default: #fff;
+  --e-a-bg-invert: #0c0d0e;
+  --e-a-bg-hover: #f1f2f3;
+  --e-a-bg-active: #e6e8ea;
+  --e-a-bg-active-bold: #d5d8dc;
+  --e-a-bg-loading: #f9fafa;
+  --e-a-bg-logo: #000;
+  --e-a-bg-primary: #f2f2f2; /* Adjusted to a very light gray */
+  --e-a-bg-secondary: #515962;
+  --e-a-bg-success: #f2fdf5;
+  --e-a-bg-info: #f0f0f0; /* Adjusted to a very light gray */
+  --e-a-bg-danger: #fef1f4;
+  --e-a-bg-warning: #fffbeb;
+  --e-a-color-txt: #515962;
+  --e-a-color-txt-muted: #818a96;
+  --e-a-color-txt-disabled: #babfc5;
+  --e-a-color-txt-invert: #fff;
+  --e-a-color-txt-accent: #0c0d0e;
+  --e-a-color-txt-hover: #3f444b;
+  --e-a-color-txt-active: #0c0d0e;
+  --e-a-border-color: #e6e8ea;
+  --e-a-border-color-bold: #d5d8dc;
+  --e-a-border-color-focus: #babfc5;
+  --e-a-border-color-accent: #0c0d0e;
+  --e-a-border: 1px solid var(--e-a-border-color);
+  --e-a-border-bold: 1px solid var(--e-a-border-color-bold);
+  --e-a-border-radius: 3px;
+  --e-a-btn-color: #0c0d0e;
+  --e-a-btn-color-invert: var(--e-a-color-txt-invert);
+  --e-a-btn-color-disabled: var(--e-a-color-txt-disabled);
+  --e-a-btn-bg: #515962;
+  --e-a-btn-bg-hover: #3a4046;
+  --e-a-btn-bg-active: #23262a;
+  --e-a-btn-bg-disabled: #d5d8dc;
+  --e-a-btn-bg-primary: #d9d9d9; /* Adjusted to a light gray */
+  --e-a-btn-bg-primary-hover: #bfbfbf; /* Adjusted to a darker gray */
+  --e-a-btn-bg-primary-active: #a6a6a6; /* Adjusted to an even darker gray */
+  --e-a-btn-bg-accent: #000000; /* Changed from blue to black */
+  --e-a-btn-bg-accent-hover: #1a1a1a; /* Adjusted to a darker black */
+  --e-a-btn-bg-accent-active: #333333; /* Adjusted to a lighter black */
+  --e-a-btn-bg-info: #000000; /* Changed from blue to black */
+  --e-a-btn-bg-info-hover: #1a1a1a; /* Adjusted to a darker black */
+  --e-a-btn-bg-info-active: #333333; /* Adjusted to a lighter black */
+  --e-a-btn-bg-success: #0a875a;
+  --e-a-btn-bg-success-hover: #06583a;
+  --e-a-btn-bg-success-active: #03281b;
+  --e-a-btn-bg-warning: #f59e0b;
+  --e-a-btn-bg-warning-hover: #c57f08;
+  --e-a-btn-bg-warning-active: #945f06;
+  --e-a-btn-bg-danger: #dc2626;
+  --e-a-btn-bg-danger-hover: #b21d1d;
+  --e-a-btn-bg-danger-active: #861616;
+  --e-a-dark-bg: #0c0d0e;
+  --e-a-dark-color-txt: #9da5ae;
+  --e-a-dark-color-txt-hover: #d5d8dc;
+  --e-a-font-family: Roboto,Arial,Helvetica,sans-serif;
+  --e-a-transition-hover: all .3s;
+  --e-a-popover-shadow: 0 2px 15px rgba(0,0,0,.3);
+  --e-a-dropdown-shadow: 0 0 3px rgba(0,0,0,.2);
+  --e-focus-color: rgba(0,0,0,.4); /* Changed from blue to black */
+  --e-context-primary-color: #000000; /* Changed from blue to black */
+  --e-context-primary-color-dark: #1a1a1a; /* Adjusted to a darker black */
+  --e-context-primary-tint-4: rgba(0,0,0,.4); /* Changed from blue to black */
+  --e-context-primary-tint-1: rgba(0,0,0,.04); /* Changed from blue to black */
+  --e-context-success-color: #0a875a;
+  --e-context-success-color-dark: #06583a;
+  --e-context-success-tint-4: rgba(10,135,90,.4);
+  --e-context-success-tint-1: rgba(10,135,90,.04);
+  --e-context-info-color: #000000; /* Changed from blue to black */
+  --e-context-info-color-dark: #1a1a1a; /* Adjusted to a darker black */
+  --e-context-info-tint-4: rgba(0,0,0,.4); /* Changed from blue to black */
+  --e-context-info-tint-1: rgba(0,0,0,.04); /* Changed from blue to black */
+  --e-context-warning-color: #f59e0b;
+  --e-context-warning-color-dark: #c57f08;
+  --e-context-warning-tint-4: rgba(245,158,11,.4);
+  --e-context-warning-tint-1: rgba(245,158,11,.04);
+  --e-context-error-color: #dc2626;
+  --e-context-error-color-dark: #b21d1d;
+  --e-context-error-tint-4: rgba(220,38,38,.4);
+  --e-context-error-tint-1: rgba(220,38,38,.04);
+  --e-context-cta-color: #000000; /* Changed from blue to black */
+  --e-context-cta-color-dark: #1a1a1a; /* Adjusted to a darker black */
+  --e-context-cta-tint-4: rgba(0,0,0,.4); /* Changed from blue to black */
+  --e-context-cta-tint-1: rgba(0,0,0,.04); /* Changed from blue to black */
+  --e-button-padding-block: 0.4375rem;
+  --e-button-padding-inline: 0.75rem;
+  --e-button-font-size: 0.8125rem;
+  --e-button-font-weight: 500;
+  --e-button-line-height: 0.9375rem;
+  --e-button-border-radius: 3px;
+  --e-button-context-color: var(--e-context-primary-color);
+  --e-button-context-color-dark: var(--e-context-primary-color-dark);
+  --e-button-context-tint: var(--e-context-primary-tint-1);
+  --e-notice-bg: #fff;
+  --e-notice-border-color: #ccd0d4;
+  --e-notice-context-color: #000000; /* Changed from blue to black */
+  --e-notice-context-tint: var(--e-context-cta-tint-1);
+  --e-notice-box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  --e-notice-dismiss-color: #3f444b;
+ 
+  --site-icon-url: url('https://fais.world/wp-content/uploads/2024/08/cropped-favicon_f-1-2.png');
+  color: #3c434a;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  font-size: 13px;
+  line-height: 1.4em;
+  font-weight: 400;
+  text-decoration: none;
+  text-transform: none;
+  list-style: none;
+  border: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: none;
+  transform: none;
+  visibility: visible;
+  height: auto;
+  overflow: auto;
+  display: block;
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #121212;
+    --foreground: #eaeaea;
+    --background-grey: #1e1e1e;
+    --primary-text-color: #eaeaea;
+    --secondary-text-color: #bbbbbb;
+    --heading-color: #ffffff;
+    --link-color: #79b8ff;
+    --link-hover-color: #539bf5;
+    --button-bg-color: #79b8ff;
+    --button-bg-hover-color: #539bf5;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background-grey);
+  color: var(--primary-text-color);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  scroll-behavior: smooth;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1.2;
+}
+
+/* Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* Buttons */
+button, .btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--button-bg-hover-color);
+  color: var(--button-text-hover-color);
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Sections */
+section {
+  padding: 4rem 2rem;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+/* Added styles for header menu links */
+.header-menu-links {
+  color: white;
+  font-size: 1rem; /* Base size */
+  font-size: clamp(1rem, 1.2vw, 1.125rem); /* Responsive size */
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.header-menu-links:hover {
+  text-decoration: underline;
+}
+
+/* Updated colors for carousel titles, subtitles, and descriptions to black and white */
+.carousel-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.carousel-subtitle {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.carousel-description {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.carousel-title-text {
+  color: white;
+}
+
+.carousel-subtitle-text {
+  color: white;
+}
+
+.carousel-description-text {
+  color: white;
+}
+
+* {
+  text-transform: lowercase;
 }

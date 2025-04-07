@@ -17,24 +17,24 @@ export default function Header() {
                 />
                 {/* Navigation */}
                 <nav>
-                    <ul className="flex gap-8 text-white text-sm sm:text-base">
+                    <ul className="flex gap-8">
                         <li>
-                            <a href="/services" className="hover:underline">
+                            <a href="/services" className="header-menu-links">
                                 Services
                             </a>
                         </li>
                         <li>
-                            <a href="/projects" className="hover:underline">
+                            <a href="/projects" className="header-menu-links">
                                 Projects
                             </a>
                         </li>
                         <li>
-                            <a href="/about" className="hover:underline">
+                            <a href="/about" className="header-menu-links">
                                 About
                             </a>
                         </li>
                         <li>
-                            <a href="/contacts" className="hover:underline">
+                            <a href="/contacts" className="header-menu-links">
                                 Contacts
                             </a>
                         </li>

@@ -17,8 +17,8 @@ export default function CarouselImage({ src, alt }: CarouselImageProps) {
                 <Image
                     src={src}
                     alt={alt}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }}
                     onError={() => setIsError(true)}
                     priority
                 />
