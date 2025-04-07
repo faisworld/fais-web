@@ -4,6 +4,9 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/pages/HeroSection";
 import SolutionsSection from "@/components/pages/SolutionsSection";
 import QuoteSection from "@/components/pages/QuoteSection";
+import AboutSection from "@/components/pages/AboutSection";
+import ProjectsSection from "@/components/pages/ProjectsSection";
+import PreFooterSection from "@/components/pages/PreFooterSection"; // Import the new component
 
 // Define the main Home component
 export default function Home() {
@@ -62,13 +65,21 @@ export default function Home() {
         <Header />
 
         {/* Hero Section */}
-        <HeroSection carouselItems={carouselItems} />
+        <HeroSection 
+          carouselItems={carouselItems} 
+          config={{ autoplay: true, interval: 5000 }} 
+        />
 
         {/* Main Content */}
-        <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start z-10">
+        <main className="flex flex-col gap-[50px] row-start-2 items-center sm:items-start z-10">
           <SolutionsSection />
           <QuoteSection />
+          <AboutSection />
+          <ProjectsSection />
         </main>
+
+        {/* Pre-Footer Section */}
+        <PreFooterSection /> {/* Add the PreFooterSection here */}
       </div>
 
       {/* Footer */}

@@ -6,7 +6,7 @@ export default function Footer() {
     return (
         <footer className="bg-white text-black">
             {/* Upper Block */}
-            <div className="flex flex-wrap w-full py-8 px-[10%]">
+            <div className="flex flex-wrap w-full py-8 px-[10%] mt-12">
                 {/* Left Column */}
                 <div className="w-1/2">
                     <h3 className="text-lg font-bold mb-4">other resources:</h3>

@@ -1,130 +1,88 @@
-# Admin Panel
+# Fantastic AI Studio (FAIS) Website
 
-The `/admin` directory contains the code for the admin panel of the application. This panel provides tools for managing pages, components, galleries, and users. It also includes a dashboard with widgets and analytics.
-
----
-
-## Structure
-
-The admin panel is structured as follows:
-
-### **1. Layout**
-- **File:** `layout.tsx`
-- **Description:** 
-  - Defines the overall layout of the admin panel.
-  - Includes a sidebar navigation menu and a main content area.
-  - Manages the `activeMenu` and `activeSubMenu` states for navigation.
-
-### **2. Pages**
-#### **Dashboard**
-- **File:** `dashboard/page.tsx`
-- **Description:** 
-  - Displays an overview of the admin panel.
-  - Includes:
-    - Widgets for displaying statistics (e.g., total pages, users, media).
-    - Placeholder blocks for future widgets or analytics.
-
-#### **Pages**
-- **Directory:** `pages/`
-- **Subpages:**
-  - **All Pages**
-    - **File:** `all-pages/page.tsx`
-    - **Description:** Lists all pages with options to view, edit, duplicate, or delete pages. Allows managing page components dynamically.
-  - **Create Page**
-    - **File:** `create-page/page.tsx`
-    - **Description:** Provides a form to create new pages with fields for title, slug, description, meta title, and meta description. Includes a "Preview" button to preview the page before saving.
-  - **Page Components**
-    - **File:** `page-components/page.tsx`
-    - **Description:** Allows managing and editing reusable components for pages. Displays a list of components for each page and provides functionality to edit their configurations.
-
-#### **Gallery**
-- **File:** `gallery/gallery.tsx`
-- **Description:** Placeholder for managing and displaying images from the `public/images` directory.
-
-#### **Users**
-- **File:** `users/page.tsx`
-- **Description:** Placeholder for managing users. Will be connected to a PostgreSQL database via Neon and Vercel in the future.
+Welcome to the Fantastic AI Studio (FAIS) website project. This repository contains the codebase for the business website, including a landing page and a blog. The website is designed to create and manage pages seamlessly using an AI editor.
 
 ---
 
-## Sidebar Navigation
+## Features
 
-The sidebar navigation menu includes the following items:
+1. **Landing Page**
+   - A visually appealing homepage to represent your business.
+   - Includes sections for showcasing services, projects, testimonials, and contact information.
 
-1. **Dashboard**
-   - Displays the dashboard with widgets and analytics.
-2. **Pages**
-   - **All Pages:** View a list of all pages with options to edit, duplicate, or delete.
-   - **Create Page:** Create a new page using the page creation form.
-   - **Page Components:** Manage and edit reusable components for pages.
-3. **Gallery**
-   - Manage and display images from the `public/images` directory.
-4. **Users**
-   - Manage users (to be implemented later).
-5. **Settings**
-   - Placeholder for managing application settings.
+2. **Blog**
+   - A dynamic blog section for publishing articles and updates.
+   - Supports categories, tags, and search functionality.
 
----
+3. **AI Editor**
+   - Use the AI editor to create, edit, and manage pages effortlessly.
+   - No need for an admin panel—everything is handled directly through the AI editor.
 
-## Main Content Area
+4. **Responsive Design**
+   - Fully responsive and optimized for all devices.
 
-The main content area dynamically updates based on the selected menu item. Each menu item corresponds to a specific page or functionality.
-
----
-
-## Future Enhancements
-
-1. **Gallery Integration**
-   - Dynamically load and display images from the `public/images` directory.
-
-2. **User Management**
-   - Connect to a PostgreSQL database via Neon and Vercel for managing users.
-
-3. **Styling**
-   - Enhance the UI with additional styling and interactivity.
-
-4. **Analytics**
-   - Add widgets and analytics to the dashboard.
-
-5. **Duplicate and Delete Pages**
-   - Add functionality to duplicate and delete pages in the "All Pages" section.
-
-6. **Preview Pages**
-   - Allow previewing pages before saving them in the "Create Page" section.
+5. **SEO-Friendly**
+   - Built with SEO best practices to improve search engine visibility.
 
 ---
 
 ## How to Use
 
-1. Navigate to the `/admin` route in your application.
-2. Use the sidebar to switch between different sections of the admin panel.
-3. Use the "Create Page" section to add new pages to the website.
-4. Manage components, galleries, and users through their respective sections.
+1. Clone the repository to your local machine.
+2. Navigate to the project directory.
+3. Install the required dependencies using `npm install` or `yarn install`.
+4. Start the development server using `npm run dev` or `yarn dev`.
+5. Open your browser and navigate to `http://localhost:3000` to access the website.
 
 ---
 
 ## File Structure
 
 ```
-/admin
-├── dashboard/
-│   └── page.tsx            # Dashboard page
-├── gallery/
-│   └── gallery.tsx         # Gallery management page
-├── layout.tsx              # Admin panel layout with sidebar
-├── pages/
-│   ├── all-pages/
-│   │   └── page.tsx        # List all pages
-│   ├── create-page/
-│   │   └── page.tsx        # Page creation form
-│   ├── page-components/
-│   │   └── page.tsx        # Page components management page
-├── users/
-│   └── page.tsx            # User management page
-├── LICENSE                 # License file
-├── README.md               # Documentation for the admin panel
-└── pagesData.json          # JSON file storing page data
+app/
+├── components/
+│   ├── Header.tsx              # Header with navigation links (Services, Projects, Blog, Contacts)
+│   ├── Footer.tsx              # Footer with contact and legal links
+│   └── pages/
+│       ├── HeroSection.tsx     # Hero section with carousel
+│       ├── SolutionsSection.tsx # Section showcasing AI and blockchain solutions
+│       ├── QuoteSection.tsx    # Section with a quote and CEO details
+├── blog/
+│   ├── [slug]/
+│   │   └── page.tsx            # Dynamic blog post pages
+│   └── index.tsx               # Blog homepage
+├── landing/
+│   └── page.tsx                # Landing page
+├── layout.tsx                  # Website layout
+├── api/
+│   ├── blog/
+│   │   ├── create/
+│   │   │   └── route.ts        # API route for creating blog posts
+│   │   ├── edit/
+│   │   │   └── [slug]/route.ts # API route for editing blog posts
+│   │   └── delete/
+│   │       └── [slug]/route.ts # API route for deleting blog posts
+│   └── pages/
+│       └── route.ts            # API route for managing pages
+└── [page]/
+    └── page.tsx                # Dynamic page rendering
 ```
+
+---
+
+## Future Enhancements
+
+1. **AI-Driven Content Suggestions**
+   - Integrate AI to suggest content improvements and SEO optimizations.
+
+2. **Advanced Blog Features**
+   - Add support for comments, social sharing, and related posts.
+
+3. **Customizable Themes**
+   - Allow users to switch between different themes for the website.
+
+4. **Analytics Integration**
+   - Add analytics to track website performance and user behavior.
 
 ---
 
