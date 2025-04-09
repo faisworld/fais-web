@@ -26,7 +26,7 @@ export default function QuoteSection() {
                         height={200}
                         style={{ objectFit: "cover" }}
                         className="mx-auto rounded-full"
-                        onError={(e: any) => {
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = "/images/default-ceo.png"; // Provide a default
                         }}
@@ -42,10 +42,10 @@ export default function QuoteSection() {
                         transactions
                     </p>
                     <p className="text-lg mt-4">
-                        "choosing fantastic AI studio not only ensures access to
+                        &quot;choosing fantastic AI studio not only ensures access to
                         top-tier AI and blockchain development but also reduces
                         the need for extensive external resources, offering a
-                        streamlined path to digital transformation".
+                        streamlined path to digital transformation&quot;.
                     </p>
                 </div>
             </div>
@@ -64,7 +64,7 @@ export function SolutionsSection() {
                 technological frameworks to revolutionize your digital
                 experiences. we stand at the intersection of creativity and
                 technology, crafting ai and blockchain solutions that push the
-                boundaries of what's possible.
+                boundaries of what&apos;s possible.
             </p>
 
             <div className="flex flex-wrap justify-center">

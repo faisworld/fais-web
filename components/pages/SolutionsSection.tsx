@@ -13,7 +13,7 @@ export default function SolutionsSection() {
                 technological frameworks to revolutionize your digital
                 experiences. we stand at the intersection of creativity and
                 technology, crafting ai and blockchain solutions that push the
-                boundaries of what's possible.
+                boundaries of what&apos;s possible.
             </p>
 
             <div className="flex flex-wrap justify-center">
@@ -29,7 +29,7 @@ export default function SolutionsSection() {
                         height={400}
                         style={{ objectFit: "contain" }}
                         className="mx-auto"
-                        onError={(e: any) => {
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = "/images/default-ai.png"; // Provide a default
                         }}
@@ -53,7 +53,7 @@ export default function SolutionsSection() {
                         height={400}
                         style={{ objectFit: "contain" }}
                         className="mx-auto"
-                        onError={(e: any) => {
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = "/images/default-blockchain.png"; // Provide a default
                         }}

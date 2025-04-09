@@ -33,7 +33,10 @@ export default function HeroSection({ carouselItems }: HeroSectionProps) {
     return (
         <div className="relative w-full h-[100vh] overflow-hidden">
             {/* Carousel */}
-            <Carousel items={carouselItems} onSlideChange={handleSlideChange} />
+            <Carousel
+                items={carouselItems.map(({ src, alt }) => ({ src, alt }))}
+                onSlideChange={handleSlideChange}
+            />
 
             {/* Overlay for the Active Slide */}
             {carouselItems[activeIndex] && (
@@ -57,7 +60,9 @@ export default function HeroSection({ carouselItems }: HeroSectionProps) {
                 >
                     <h1 className="text-3xl font-bold">{carouselItems[activeIndex].title}</h1>
                     <h2 className="text-xl mt-2">{carouselItems[activeIndex].subtitle}</h2>
-                    <p className="text-base mt-4">{carouselItems[activeIndex].description}</p>
+                    <p className="text-base mt-4" style={{ color: "black" }}>
+                        {carouselItems[activeIndex].description}
+                    </p>
                 </div>
             )}
         </div>
