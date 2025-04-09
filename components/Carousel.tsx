@@ -1,18 +1,16 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CarouselImage from "./CarouselImage"; // Import CarouselImage
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 interface CarouselItem {
     src: string;
     alt: string;
-    title?: string;
-    subtitle?: string;
-    description?: string;
 }
 
 interface CarouselProps {
@@ -21,6 +19,8 @@ interface CarouselProps {
 }
 
 export default function Carousel({ items, onSlideChange }: CarouselProps) {
+    const [errorIndexes, setErrorIndexes] = useState<number[]>([]);
+
     const settings = {
         dots: true,
         infinite: true,
@@ -36,17 +36,29 @@ export default function Carousel({ items, onSlideChange }: CarouselProps) {
         },
     };
 
+    const handleImageError = (index: number) => {
+        setErrorIndexes((prev) => [...prev, index]);
+    };
+
     return (
         <div className="relative w-full h-[100vh] overflow-hidden">
             <Slider {...settings}>
-                {items.map((item) => (
+                {items.map((item, index) => (
                     <div key={item.alt} className="relative w-full h-[100vh]">
-                        <CarouselImage src={item.src} alt={item.alt} /> {/* Use CarouselImage */}
-                        <div className="absolute text-center">
-                            <h2 className="carousel-title carousel-title-text">{item.title}</h2>
-                            <p className="carousel-subtitle carousel-subtitle-text">{item.subtitle}</p>
-                            <p className="carousel-description carousel-description-text">{item.description}</p>
-                        </div>
+                        {!errorIndexes.includes(index) ? (
+                            <Image
+                                src={item.src}
+                                alt={item.alt}
+                                fill
+                                style={{ objectFit: "cover" }}
+                                onError={() => handleImageError(index)}
+                                priority
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                Placeholder
+                            </div>
+                        )}
                     </div>
                 ))}
             </Slider>

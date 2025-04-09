@@ -34,8 +34,8 @@ export default function Header() {
                             </a>
                         </li>
                         <li>
-                            <a href="/contacts" className="header-menu-links">
-                                Contacts
+                            <a href="/contact" className="header-menu-links">
+                                Contact
                             </a>
                         </li>
                     </ul>

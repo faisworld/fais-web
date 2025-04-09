@@ -6,7 +6,7 @@ export default function PreFooterSection() {
       <div className="max-w-7xl mx-auto text-center space-y-6">
         {/* Heading */}
         <h2 className="text-3xl font-bold">
-          The best way out for your business. Let's work together!
+          The best way out for your business. Let&apos;s work together!
         </h2>
 
         {/* Subheading */}
@@ -24,7 +24,7 @@ export default function PreFooterSection() {
             rel="noopener noreferrer"
             className="inline-block px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100"
           >
-            Contact Us Today... <span className="font-bold">for Tomorrow's Success!</span>
+            Contact Us Today... <span className="font-bold">for Tomorrow&apos;s Success!</span>
           </a>
         </div>
       </div>
