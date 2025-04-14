@@ -11,25 +11,25 @@ export default function Footer() {
                     <h3 className="text-lg font-bold mb-4">other resources:</h3>
                     <ul className="list-none">
                         <li className="mb-2">
-                            <Link href="/blog/" className="hover:underline">
+                            <Link href="/blog/" className="footer-link">
                                 AI and Blockchain Blog
                             </Link>
                         </li>
                         <li className="mb-2">
                             <Link
                                 href="https://chatgpt.com/g/g-6756a52a58b88191b89dbd4b700f249e-bitcoin-ai"
-                                className="hover:underline"
+                                className="footer-link"
                             >
                                 Bitcoin AI
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/ai-services/" className="hover:underline">
+                            <Link href="/ai-services/" className="footer-link">
                                 AI Services
                             </Link>
                         </li>
                         <li className="mb-2">
-                            <Link href="/blockchain-services/" className="hover:underline">
+                            <Link href="/blockchain-services/" className="footer-link">
                                 Blockchain Services
                             </Link>
                         </li>
@@ -45,7 +45,7 @@ export default function Footer() {
                     <p>fantasticai.studio</p>
                     <p>+380 95 615 1756</p>
                     <p>
-                        <a href="mailto:info@fais.world" className="hover:underline">
+                        <a href="mailto:info@fais.world" className="footer-link">
                             info@fais.world
                         </a>
                     </p>
@@ -56,11 +56,11 @@ export default function Footer() {
             <div className="flex items-center justify-center py-4 bg-black text-white w-full">
                 <p className="text-sm">
                     fAis ©. All rights reserved © 2024. |{" "}
-                    <Link href="/privacy-policy/" className="hover:underline">
+                    <Link href="/privacy-policy/" className="footer-link">
                         Privacy Policy
                     </Link>{" "}
                     |{" "}
-                    <Link href="/terms-of-use/" className="hover:underline">
+                    <Link href="/terms-of-use/" className="footer-link">
                         Terms of Use
                     </Link>
                 </p>

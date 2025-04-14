@@ -13,14 +13,14 @@ export default function ServicesPage() {
                 <meta name="description" content="Explore the wide range of services offered by Fantastic AI Studio, from AI solutions to blockchain development." />
             </Head>
             <Header />
-            <main className="relative w-full px-6 py-12 bg-gray-50 text-gray-800">
-                <div className="max-w-7xl mx-auto pt-16">
+            <main className="container-padding py-8 bg-gray-50 text-gray-800">
+                <div className="max-w-7xl mx-auto">
                     {/* Breadcrumbs */}
                     <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Services" }]} />
 
                     {/* Hero Section */}
                     <section className="text-center mb-16">
-                        <h1 className="text-4xl font-bold text-gray-800 mb-4">Our Services</h1>
+                        <h2>Our Services</h2>
                         <p className="text-lg text-gray-600">
                             Empowering businesses with cutting-edge AI and blockchain solutions tailored to your needs.
                         </p>

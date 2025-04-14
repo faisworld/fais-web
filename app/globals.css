@@ -1,10 +1,13 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   /* Colors & Typography */
   background: #ffffff;
   --foreground: #333333;
-  --link-color: #333333;
+  --link-color: #0078d4; /* Example */
   --link-hover-color: #000000;
   --button-bg-color: #666666;
   --button-bg-hover-color: #333333;
@@ -15,9 +18,9 @@
   --font-mono: 'Fira Code', monospace;
 
   --accent-color: #000000;
-  --primary-text-color: #333333;
+  --primary-text-color: #333; /* Example */
   --secondary-text-color: #666666;
-  --heading-color: #111111;
+  --heading-color: #111; /* Example */
   --background-grey: #fafafa;
   --invert-text-color: #ffffff;
 
@@ -55,6 +58,11 @@
   --transition-hover: all 0.3s;
   --popover-shadow: 0 2px 15px rgba(0,0,0,0.3);
   --dropdown-shadow: 0 0 3px rgba(0,0,0,0.2);
+
+  /* New Variables */
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -73,8 +81,13 @@
 }
 
 body {
-  background: var(--background-grey);
-  color: var(--primary-text-color);
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.75;
@@ -86,19 +99,23 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--heading-color);
   line-height: 1.2;
+  text-transform: lowercase; /* Keep consistent casing */
+  margin-bottom: 0.75em; /* Consistent spacing */
 }
 
-/* Links */
-a {
-  color: var(--link-color);
-  text-decoration: none;
-  transition: color 0.2s ease;
+h1 {
+  @apply text-4xl font-bold; /* Example size - adjust as needed */
 }
 
-a:hover {
-  color: var(--link-hover-color);
-  text-decoration: underline;
+h2 {
+  @apply text-3xl font-bold; /* Example size - adjust as needed */
 }
+
+h3 {
+  @apply text-2xl font-semibold; /* Example size - adjust as needed */
+}
+
+/* Add styles for h4, h5, h6 if used */
 
 /* Base Button Styles */
 button, .btn {
@@ -111,12 +128,24 @@ button, .btn {
   border: none;
   border-radius: 0.375rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; /* Added transform and box-shadow */
+  text-transform: lowercase; /* Ensure consistency */
 }
 
 button:hover, .btn:hover {
   background-color: var(--button-bg-hover-color);
   color: var(--button-text-hover-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow on hover */
+}
+
+button:active, .btn:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+    box-shadow: none; /* Remove shadow on click */
+}
+
+button:focus, .btn:focus {
+    outline: 2px solid var(--button-bg-hover-color); /* Add focus ring */
+    outline-offset: 2px;
 }
 
 /* Images */
@@ -147,7 +176,7 @@ section {
 /* Header Menu Links */
 .header-menu-links {
   color: white;
-  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  font-size: clamp(1.5rem, 1.2vw, 1.125rem);
   text-decoration: none;
   transition: text-decoration 0.2s ease;
 }
@@ -248,4 +277,33 @@ section {
 .transparent-bg > * {
   position: relative;
   z-index: 1;
+}
+
+/* Footer Menu Links */
+.footer-link {
+  color: inherit; /* Inherit color from parent to adapt to different backgrounds */
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+.footer-link:hover {
+  text-decoration: underline; /* Only underline on hover */
+}
+
+/* Links */
+a {
+  color: var(--link-color);
+  @apply hover:underline;
+}
+
+/* Ensure consistent container padding/margins */
+.container-padding {
+  @apply px-4 sm:px-6 lg:px-8; /* Example responsive padding */
+}
+
+/* Image Placeholder */
+.image-placeholder {
+  @apply bg-gray-300 flex items-center justify-center text-gray-500 aspect-video; /* Or specific aspect ratio */
+  /* Add minimum height/width if needed */
+  min-height: 150px;
 }

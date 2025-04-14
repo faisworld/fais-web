@@ -4,8 +4,36 @@ import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import MailerWidget from "@/components/MailerWidget";
+import { useCallback, useEffect } from "react";
 
 export default function ContactPage() {
+    const handleRecaptchaClick = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if (typeof grecaptcha === "undefined" || !grecaptcha.enterprise) {
+            alert("reCAPTCHA is not ready. Please try again later.");
+            return;
+        }
+
+        grecaptcha.enterprise.ready(async () => {
+            const token = await grecaptcha.enterprise.execute('6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z', { action: 'LOGIN' });
+            console.log('reCAPTCHA token:', token);
+        });
+    }, []);
+
+    // Load reCAPTCHA script when component mounts
+    useEffect(() => {
+        // Only load the script if it hasn't been loaded already
+        if (!document.querySelector('script[src="https://www.google.com/recaptcha/enterprise.js?render=6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z"]')) {
+            const script = document.createElement('script');
+            script.src = "https://www.google.com/recaptcha/enterprise.js?render=6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+    }, []);
+
     return (
         <>
             <Head>
@@ -22,16 +50,19 @@ export default function ContactPage() {
                     <section className="text-center mb-16">
                         <h1 className="text-6xl font-bold text-gray-900 mb-8 lowercase">contact us</h1>
                         <p className="text-xl text-gray-700 leading-relaxed">
-                            we’re here to help you transform your business with our <span className="font-bold">{`{ai}`}</span> and <span className="font-bold">{`[blockchain solutions]`}</span>. get in touch with us for inquiries, support, or to learn more about how we can assist you.
+                            we&apos;re here to help you transform your business with our <span className="font-bold">{`{ai}`}</span> and <span className="font-bold">{`[blockchain solutions]`}</span>. get in touch with us for inquiries, support, or to learn more about how we can assist you.
                         </p>
                     </section>
+
+                    {/* MailerWidget Form */}
+                    <MailerWidget />
 
                     {/* Columns Section */}
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                         {/* Column 1: Appointment Calendar */}
                         <div className="bg-gray-100 p-8 rounded-lg shadow-lg text-center">
                             <h2 className="text-2xl font-semibold mb-6">fais appointment calendar</h2>
-                            <button className="px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition">book now</button>
+                            <button className="px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition" onClick={handleRecaptchaClick}>book now</button>
                         </div>
 
                         {/* Column 2: Contact Information */}

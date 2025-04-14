@@ -21,7 +21,7 @@ export default function ProjectsPage() {
                     <p className="text-lg">Whether it is an AI-based or crypto project, we are here to assist!</p>
                     <div className="relative h-64 w-full mt-8">
                         <Image
-                            src="/wp-content/uploads/2024/10/ai-and-blockchain-projects-banner.webp"
+                            src="/images/ai-crypto-projects-banner.jpg"
                             alt="AI and Crypto Projects Banner"
                             layout="fill"
                             objectFit="contain"

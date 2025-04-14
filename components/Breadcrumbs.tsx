@@ -1,6 +1,6 @@
 export default function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) {
     return (
-        <nav className="breadcrumbs text-sm text-gray-600">
+        <nav className="breadcrumbs text-base text-gray-600 mb-8"> {/* Changed text-sm to text-base and added mb-8 */}
             <ol className="list-reset flex">
                 {items.map((item, index) => (
                     <li key={index}>
