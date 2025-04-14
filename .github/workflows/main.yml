@@ -41,5 +41,8 @@ jobs:
       - name: Install dependencies
         run: npm install --force
 
-      - name: Run application
-        run: npm run dev
+      - name: Build application
+        run: npm run build
+
+      - name: Start production server
+        run: npm run start
