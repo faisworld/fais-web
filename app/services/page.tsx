@@ -1,74 +1,72 @@
 "use client";
 
-import Head from "next/head";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import Link from "next/link";
 
 export default function ServicesPage() {
+    const breadcrumbItems = [
+        { label: "Home", href: "/" },
+        { label: "Services" },
+    ];
+
     return (
-        <>
-            <Head>
-                <title>Our Services - Fantastic AI Studio</title>
-                <meta name="description" content="Explore the wide range of services offered by Fantastic AI Studio, from AI solutions to blockchain development." />
-            </Head>
-            <Header />
-            <main className="container-padding py-8 bg-gray-50 text-gray-800">
-                <div className="max-w-7xl mx-auto">
+        <div className="pt-20"> {/* Adjust pt-20 to match header height */}
+            <main className="w-full bg-gray-50 text-gray-800">
+                <div className="max-w-7xl mx-auto container-padding py-12"> {/* Removed pt-28 */}
                     {/* Breadcrumbs */}
-                    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Services" }]} />
+                    <Breadcrumbs items={breadcrumbItems} />
 
                     {/* Hero Section */}
-                    <section className="text-center mb-16">
-                        <h2>Our Services</h2>
-                        <p className="text-lg text-gray-600">
+                    <section className="text-center my-16">
+                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Services</h1>
+                        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                             Empowering businesses with cutting-edge AI and blockchain solutions tailored to your needs.
                         </p>
                     </section>
 
                     {/* AI Services Section */}
-                    <section className="mb-16">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-6">AI Services</h2>
-                        <p className="text-gray-600 mb-4">
-                            Harness the power of AI to optimize your processes, make informed decisions, and innovate.
+                    <section className="mb-16 p-6 bg-white rounded-lg shadow-md border border-gray-200">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-6">AI Services</h2>
+                        <p className="text-gray-700 mb-6 leading-relaxed">
+                            Harness the power of Artificial Intelligence to optimize your processes, gain valuable insights from data, make informed decisions, and drive innovation within your organization.
                         </p>
-                        <ul className="list-disc list-inside text-gray-600">
-                            <li><strong>Predictive Analytics:</strong> Forecast trends and behaviors using advanced algorithms.</li>
-                            <li><strong>Natural Language Processing (NLP):</strong> Enable machines to understand and interact with human language.</li>
-                            <li><strong>Computer Vision:</strong> Analyze and interpret visual data for improved security and automation.</li>
-                            <li><strong>Machine Learning Models:</strong> Custom models for task automation and process optimization.</li>
-                            <li><strong>AI-Powered Chatbots:</strong> Enhance customer interaction with intelligent responses.</li>
-                            <li><strong>Robotic Process Automation (RPA):</strong> Automate repetitive tasks to boost efficiency.</li>
+                        <ul className="space-y-3 list-disc list-inside text-gray-700">
+                            <li><strong>Predictive Analytics:</strong> Forecast trends, customer behavior, and market changes using advanced statistical modeling and machine learning algorithms.</li>
+                            <li><strong>Natural Language Processing (NLP):</strong> Enable machines to understand, interpret, and respond to human language for applications like sentiment analysis, chatbots, and content summarization.</li>
+                            <li><strong>Computer Vision:</strong> Develop systems that can interpret and understand visual information from the world, enabling image recognition, object detection, and video analysis.</li>
+                            <li><strong>Machine Learning Models:</strong> Build and deploy custom machine learning models tailored to your specific business challenges, automating tasks and optimizing complex processes.</li>
+                            <li><strong>AI-Powered Chatbots:</strong> Enhance customer engagement and support efficiency with intelligent, conversational chatbots available 24/7.</li>
+                            <li><strong>Robotic Process Automation (RPA):</strong> Automate repetitive, rule-based tasks across various applications to boost operational efficiency and reduce human error.</li>
                         </ul>
                     </section>
 
                     {/* Blockchain Solutions Section */}
-                    <section className="mb-16">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-6">Blockchain Solutions</h2>
-                        <p className="text-gray-600 mb-4">
-                            Build secure and scalable blockchain solutions to transform your operations.
+                    <section className="mb-16 p-6 bg-white rounded-lg shadow-md border border-gray-200">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-6">Blockchain Solutions</h2>
+                        <p className="text-gray-700 mb-6 leading-relaxed">
+                            Leverage the security, transparency, and efficiency of blockchain technology to build secure, scalable, and decentralized solutions that transform your operations and create new business models.
                         </p>
-                        <ul className="list-disc list-inside text-gray-600">
-                            <li><strong>Smart Contracts:</strong> Automate and secure transactions with self-executing contracts.</li>
-                            <li><strong>Decentralized Applications (DApps):</strong> Create innovative applications on blockchain platforms.</li>
-                            <li><strong>Tokenization:</strong> Digitize assets for enhanced liquidity and accessibility.</li>
-                            <li><strong>Blockchain Integration:</strong> Seamlessly integrate blockchain into your existing systems.</li>
+                        <ul className="space-y-3 list-disc list-inside text-gray-700">
+                            <li><strong>Smart Contracts Development:</strong> Design, develop, and deploy self-executing contracts with predefined rules to automate agreements and transactions securely and transparently.</li>
+                            <li><strong>Decentralized Applications (DApps):</strong> Create innovative, censorship-resistant applications on various blockchain platforms, offering enhanced user control and data security.</li>
+                            <li><strong>Tokenization Services:</strong> Represent real-world assets digitally on a blockchain (tokenization) to improve liquidity, enable fractional ownership, and streamline asset management.</li>
+                            <li><strong>Blockchain Integration:</strong> Seamlessly integrate blockchain technology with your existing enterprise systems (ERP, CRM, SCM) to enhance data integrity and process efficiency.</li>
+                            <li><strong>Consulting & Strategy:</strong> Expert guidance on identifying blockchain use cases, choosing the right platform, and developing a roadmap for successful implementation.</li>
                         </ul>
                     </section>
 
-                    {/* Why Choose Us Section */}
-                    <section className="text-center mb-16">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-6">Why Choose Fantastic AI Studio?</h2>
-                        <p className="text-gray-600 mb-4">
-                            Fantastic AI Studio is dedicated to delivering top-tier AI and blockchain solutions, ensuring your projects are future-proof, scalable, and secure.
+                    {/* Why Choose Us / CTA Section */}
+                    <section className="text-center my-16 p-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg">
+                        <h2 className="text-3xl font-bold text-white mb-4">Ready to Innovate?</h2>
+                        <p className="text-lg text-indigo-100 mb-8 max-w-2xl mx-auto">
+                            Fantastic AI Studio is dedicated to delivering top-tier AI and blockchain solutions. Let us help you build future-proof, scalable, and secure applications.
                         </p>
-                        <a href="/contact" className="px-6 py-3 text-white rounded-lg shadow-md">
+                        <Link href="/contact" className="btn btn-light">
                             Book an Appointment
-                        </a>
+                        </Link>
                     </section>
                 </div>
             </main>
-            <Footer />
-        </>
+        </div>
     );
 }

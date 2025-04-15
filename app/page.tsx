@@ -1,12 +1,12 @@
 // Import necessary modules and components
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import React from "react";
+
 import HeroSection from "@/components/pages/HeroSection";
 import SolutionsSection from "@/components/pages/SolutionsSection";
-import QuoteSection from "@/components/pages/QuoteSection";
-import AboutSection from "@/components/pages/AboutSection";
 import ProjectsSection from "@/components/pages/ProjectsSection";
-import PreFooterSection from "@/components/pages/PreFooterSection"; // Import the new component
+import TestimonialsSection from "@/components/pages/TestimonialsSection";
+import ContactUs from "@/components/pages/ContactUs";
+import PreFooterSection from "@/components/pages/PreFooterSection";
 
 // Define the main Home component
 export default function Home() {
@@ -60,30 +60,20 @@ export default function Home() {
 
   return (
     <>
-      <div className="grid grid-rows-[auto_auto_auto] items-center justify-items-center min-h-screen p-0 font-[family-name:var(--font-geist-sans)]">
-        {/* Header */}
-        <Header />
+      {/* HeroSection will now be at the very top, under the fixed Header */}
+      <HeroSection
+        carouselItems={carouselItems}
+        config={{ autoplay: true, interval: 5000 }}
+      />
 
-        {/* Hero Section */}
-        <HeroSection 
-          carouselItems={carouselItems} 
-          config={{ autoplay: true, interval: 5000 }} 
-        />
-
-        {/* Main Content */}
-        <main className="flex flex-col gap-[50px] row-start-2 items-center sm:items-start z-10">
-          <SolutionsSection />
-          <QuoteSection />
-          <AboutSection />
-          <ProjectsSection />
-        </main>
-
-        {/* Pre-Footer Section */}
-        <PreFooterSection /> {/* Add the PreFooterSection here */}
+      {/* The rest of the page sections */}
+      <div className="bg-white"> {/* Example wrapper for subsequent sections if needed */}
+        <SolutionsSection />
+        <ProjectsSection />
+        <TestimonialsSection />
+        <ContactUs />
+        <PreFooterSection />
       </div>
-
-      {/* Footer */}
-      <Footer />
     </>
   );
 }

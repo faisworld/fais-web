@@ -88,7 +88,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  font-family: var(--font-sans);
+  font-family: var(--font-geist-sans), var(--font-sans);
   font-size: 16px;
   line-height: 1.75;
   scroll-behavior: smooth;
@@ -99,7 +99,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--heading-color);
   line-height: 1.2;
-  text-transform: lowercase; /* Keep consistent casing */
   margin-bottom: 0.75em; /* Consistent spacing */
 }
 
@@ -176,7 +175,7 @@ section {
 /* Header Menu Links */
 .header-menu-links {
   color: white;
-  font-size: clamp(1.5rem, 1.2vw, 1.125rem);
+  font-size: clamp(1.4rem, 1.3vw, 1.1rem);
   text-decoration: none;
   transition: text-decoration 0.2s ease;
 }
@@ -206,10 +205,6 @@ section {
 .carousel-subtitle-text,
 .carousel-description-text {
   color: white;
-}
-
-* {
-  text-transform: lowercase;
 }
 
 /* General Button Styles (Non-plugin) */
@@ -293,17 +288,37 @@ section {
 /* Links */
 a {
   color: var(--link-color);
-  @apply hover:underline;
+  text-decoration: underline;
 }
 
 /* Ensure consistent container padding/margins */
 .container-padding {
-  @apply px-4 sm:px-6 lg:px-8; /* Example responsive padding */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-padding {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 /* Image Placeholder */
 .image-placeholder {
-  @apply bg-gray-300 flex items-center justify-center text-gray-500 aspect-video; /* Or specific aspect ratio */
+  background-color: #e2e8f0; /* bg-gray-200 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280; /* text-gray-500 */
+  aspect-ratio: 16 / 9; /* Or specific aspect ratio */
   /* Add minimum height/width if needed */
   min-height: 150px;
 }

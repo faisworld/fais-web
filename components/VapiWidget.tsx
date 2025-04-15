@@ -36,9 +36,11 @@ const VapiWidget: FC = () => {
                     }
                     setCallActive(false);
                     setLoading(false);
-                });
 
-                // Removed the 'volume-level' event listener
+                    if (e?.error?.msg === "Exiting meeting because room was deleted") {
+                        alert("The meeting has ended.");
+                    }
+                });
 
             } catch (error) {
                 console.error("Error initializing Vapi SDK:", error);
@@ -46,6 +48,23 @@ const VapiWidget: FC = () => {
         } else {
             console.error("VAPI API key is missing. Check environment variables.");
         }
+
+        return () => {
+            vapiRef.current?.off("error", (e) => {
+                console.error("Vapi SDK Error:", e);
+                if (!e || Object.keys(e).length === 0) {
+                    console.error("The error object is empty. Please check the SDK configuration or network connectivity.");
+                } else {
+                    console.error("Detailed Error:", JSON.stringify(e));
+                }
+                setCallActive(false);
+                setLoading(false);
+
+                if (e?.error?.msg === "Exiting meeting because room was deleted") {
+                    alert("The meeting has ended.");
+                }
+            });
+        };
     }, []);
 
     const handleButtonClick = () => {

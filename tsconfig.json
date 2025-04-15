@@ -42,7 +42,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "app/contact/page.client.tsx"  ],
   "exclude": [
     "node_modules"
   ]
