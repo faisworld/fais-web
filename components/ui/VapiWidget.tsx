@@ -6,7 +6,7 @@ const VapiWidget: FC = () => {
     const vapiRef = useRef<Vapi | null>(null);
     const [callActive, setCallActive] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [isSpeaking, setIsSpeaking] = useState(false); // Placeholder for speaking state
+    const [isSpeaking] = useState(false);
 
     useEffect(() => {
         const apiKey = process.env.NEXT_PUBLIC_VAPI_API_KEY;

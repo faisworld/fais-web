@@ -16,6 +16,7 @@ export default function ManagedImage({
   quality = 90,
   sizes = "100vw",
   placeholder = "empty",
+  alt = "Description",
   ...props
 }: ManagedImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
@@ -30,14 +31,10 @@ export default function ManagedImage({
   // If fill is set, don't pass width/height
   const { fill, width, height, ...rest } = props;
   const imageProps = fill
-    ? { fill: true, quality, sizes, placeholder, ...rest }
-    : { width, height, quality, sizes, placeholder, ...rest };
+    ? { fill: true, quality, sizes, placeholder, alt, ...rest }
+    : { width, height, quality, sizes, placeholder, alt, ...rest };
 
   return (
-    <Image
-      src={imgSrc}
-      onError={handleError}
-      {...imageProps}
-    />
+    <Image src={imgSrc} alt={alt} />
   );
 }

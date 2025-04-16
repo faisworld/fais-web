@@ -1,39 +1,19 @@
 "use client";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import MailerWidget from "@/components/ui/MailerWidget";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 // Define grecaptcha type locally if not globally available
 declare global {
     interface Window {
-        grecaptcha: any;
+        grecaptcha: {
+            ready: (cb: () => void) => void;
+            execute: (siteKey: string, options?: object) => Promise<string>;
+        };
     }
 }
 
-export default function ContactPageClient() {
-    const handleRecaptchaClick = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
-        if (typeof window.grecaptcha === "undefined" || !window.grecaptcha.enterprise) {
-            console.error("reCAPTCHA script not loaded or ready.");
-            alert("reCAPTCHA is not ready. Please try again later.");
-            return;
-        }
-
-        try {
-            await window.grecaptcha.enterprise.ready();
-            const token = await window.grecaptcha.enterprise.execute(
-                '6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z',
-                { action: 'CONTACT_FORM' }
-            );
-            console.log('reCAPTCHA token:', token);
-            alert("reCAPTCHA verified. Implement form submission logic.");
-        } catch (error) {
-            console.error("reCAPTCHA execution error:", error);
-            alert("Failed to verify reCAPTCHA. Please try again.");
-        }
-    }, []);
-
+const ContactPage = () => {
     useEffect(() => {
         const scriptId = "recaptcha-enterprise-script";
         if (document.getElementById(scriptId)) return;
@@ -102,4 +82,6 @@ export default function ContactPageClient() {
             </div>
         </main>
     );
-}
+};
+
+export default ContactPage;

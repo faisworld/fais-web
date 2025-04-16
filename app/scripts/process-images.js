@@ -1,6 +1,6 @@
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
 
 const inputDir = path.join(__dirname, '..', 'public', 'images', 'originals');
 const outputDir = path.join(__dirname, '..', 'public', 'images', 'processed');

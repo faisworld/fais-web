@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function WhyChooseUs() {
     return (
         <div className="mt-16">
@@ -22,9 +24,9 @@ export default function WhyChooseUs() {
                     </p>
                 </div>
                 <div>
-                    <img
-                        src="/images/why-choose-us.webp"
-                        alt="Why Choose Us"
+                    <Image
+                        src="/path/to/image.jpg"
+                        alt="Description"
                         width={500}
                         height={300}
                         className="rounded-lg shadow-lg"

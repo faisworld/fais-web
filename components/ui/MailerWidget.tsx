@@ -105,7 +105,7 @@ const MailerWidget: FC = () => {
             <form onSubmit={handleSubmit} className="mailer-widget max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
                 {status === "success" && (
                     <div className="mb-4 p-3 bg-green-100 text-green-800 rounded-md">
-                        Your message has been sent successfully! We'll get back to you soon.
+                        Your message has been sent successfully! We&apos;ll get back to you soon.
                     </div>
                 )}
                 
@@ -172,6 +172,7 @@ const MailerWidget: FC = () => {
                     This form is protected by reCAPTCHA Enterprise to ensure you're not a bot.
                 </div>
             </form>
+            <p>It&apos;s your message here</p>
         </div>
     );
 };
