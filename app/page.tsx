@@ -12,49 +12,25 @@ import PreFooterSection from "@/components/pages/PreFooterSection";
 export default function Home() {
   const carouselItems = [
     {
-      src: "/images/pioneering-digital-transformation.webp",
+      src: "/images/pioneering-digital-transformation.png",
       alt: "Pioneering Digital Transformation",
       title: "Pioneering Digital Transformation",
-      subtitle: "Driving Innovation, Empowering Change", // Recommended subtitle
+      subtitle: "Driving Innovation, Empowering Change",
       description: "Being at the forefront of digital revolutions delivering powerful, integrated solutions for your growth and success",
-      x: "50%",
-      y: "50%",
-      backgroundColor: "rgba(255, 252, 252, 0.5)",
-      backgroundOpacity: 0.7,
-      border: "0px solid white",
-      backgroundWidth: "500px",
-      backgroundHeight: "200px",
-      borderRadius: "10px",
     },
     {
       src: "/images/Innovating-the-Future-nw.webp",
       alt: "Innovating the Future",
       title: "Innovating the Future",
-      subtitle: "Crafting Tomorrow's Solutions", // Recommended subtitle
+      subtitle: "Crafting Tomorrow's Solutions",
       description: "Dive into the world of advanced AI and blockchain solutions, and explore tailor-made technologies shaping a sustainable digital future.",
-      x: "50%",
-      y: "50%",
-      backgroundColor: "rgba(255, 252, 252, 0.5)",
-      backgroundOpacity: 0.7,
-      border: "0px solid white",
-      backgroundWidth: "500px",
-      backgroundHeight: "200px",
-      borderRadius: "10px",
     },
     {
       src: "/images/Shaping-Sota-Technologies.webp",
       alt: "Shaping Sota Technologies",
       title: "Shaping Sota Technologies",
-      subtitle: "Innovating Beyond Boundaries", // Recommended subtitle
+      subtitle: "Innovating Beyond Boundaries",
       description: "Leveraging cutting-edge AI and Blockchain technologies for smarter solutions across industries.",
-      x: "50%",
-      y: "50%",
-      backgroundColor: "rgba(255, 252, 252, 0.5)",
-      backgroundOpacity: 0.7,
-      border: "0px solid white",
-      backgroundWidth: "500px",
-      backgroundHeight: "200px",
-      borderRadius: "10px",
     },
   ];
 

@@ -1,18 +1,12 @@
 import Image from 'next/image';
-import type { Metadata, Viewport } from 'next';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import type { Metadata } from 'next';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import ProjectsClientContent from './components/ProjectsClientContent';
 
 export const metadata: Metadata = {
     title: 'Our Projects - Fantastic AI Studio',
     description: 'Explore our innovative AI and blockchain projects.',
 };
-
-export function generateViewport(): Viewport {
-    return {
-        themeColor: '#ffffff',
-    };
-}
 
 export default function ProjectsPage() {
     const breadcrumbItems = [
@@ -22,7 +16,7 @@ export default function ProjectsPage() {
 
     return (
         <div className="pt-20">
-            <main className="w-full bg-gray-50 text-gray-800">
+            <main>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <Breadcrumbs items={breadcrumbItems} />
                     <div className="relative w-full h-64 md:h-96 my-8">

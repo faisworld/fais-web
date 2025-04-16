@@ -8,7 +8,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://fais.world'), // Replace with your actual domain
+  metadataBase: new URL('https://fais.world'), // Set to your production domain
   title: {
     default: 'Fantastic AI Studio',
     template: '%s | Fantastic AI Studio',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'Driving innovation with AI and Blockchain solutions.',
 };
 
-const VapiWidget = dynamic(() => import("@/components/VapiWidget"), { ssr: false });
+const VapiWidget = dynamic(() => import("@/components/ui/VapiWidget"), { ssr: false });
 
 export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,17 +40,17 @@ export default function Header() {
     ];
 
     return (
-        <header className="fixed top-0 left-0 w-full bg-[#000000]/[0.8] backdrop-blur-sm z-50 transition-all duration-300">
-            <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-20">
+        <header className="site-header fixed top-0 left-0 w-full z-50 transition-all duration-300">
+            <div className="max-w-7x1 mx-auto flex items-center justify-between px-4 sm:px-4 lg:px-6 h-25">
                 {/* Logo */}
                 <Link href="/" className="flex-shrink-0" onClick={handleLinkClick}>
                     <Image
                         src="/images/logo.png"
                         alt="Fantastic AI Studio Logo"
                         width={100}
-                        height={37}
+                        height={40}
                         priority
-                        style={{ width: "auto", height: "37px" }}
+                        style={{ width: "auto", height: "40px" }}
                     />
                 </Link>
 
@@ -59,7 +59,7 @@ export default function Header() {
                     <ul className="flex items-center space-x-6 lg:space-x-8">
                         {menuItems.map((item) => (
                             <li key={item.href}>
-                                <Link href={item.href} className="text-white text-sm font-medium hover:underline transition-colors">
+                                <Link href={item.href} className="header-menu-links">
                                     {item.label}
                                 </Link>
                             </li>
@@ -78,7 +78,7 @@ export default function Header() {
                     <button
                         onClick={toggleMobileMenu}
                         aria-label="Toggle menu"
-                        className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        className="inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     >
                         {isMobileMenuOpen ? (
                             <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -91,17 +91,17 @@ export default function Header() {
 
             {/* Mobile Menu Dropdown */}
             <div
-                className={`md:hidden absolute top-full right-0 w-full sm:w-72 bg-[#000000]/[0.95] backdrop-blur-md overflow-hidden transition-max-height duration-500 ease-in-out ${
-                    isMobileMenuOpen ? 'max-h-screen shadow-lg border-t border-gray-700' : 'max-h-0'
+                className={`md:hidden fixed top-20 right-0 w-72 max-w-full bg-black/95 shadow-xl rounded-l-xl border-t border-gray-200 transition-all duration-500 ease-in-out z-50 ${
+                    isMobileMenuOpen ? 'max-h-screen' : 'max-h-0 pointer-events-none opacity-0'
                 }`}
             >
-                <nav className="px-4 pt-2 pb-4 space-y-1 sm:px-6 lg:px-8">
+                <nav className="px-4 pt-2 pb-4 space-y-1">
                     <ul className="flex flex-col space-y-2">
                         {menuItems.map((item) => (
                             <li key={item.href}>
                                 <Link
                                     href={item.href}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
+                                    className="header-menu-links"
                                     onClick={handleLinkClick}
                                 >
                                     {item.label}

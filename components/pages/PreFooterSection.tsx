@@ -2,7 +2,7 @@
 
 export default function PreFooterSection() {
   return (
-    <section className="px-4 py-16 bg-gray-800 text-white">
+    <section className="px-4 py-16 bg-gray-800/60 backdrop-blur-sm shadow-md text-gray-900">
       <div className="max-w-7xl mx-auto text-center space-y-6">
         {/* Heading */}
         <h2 className="text-3xl font-bold">
@@ -22,9 +22,11 @@ export default function PreFooterSection() {
             href="https://fais.world/contact/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100"
+            className="cta-animated-btn inline-block px-8 py-4 font-bold rounded-md shadow-lg text-lg transition-all duration-300 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 text-white hover:from-yellow-400 hover:via-pink-500 hover:to-blue-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            onMouseEnter={e => e.currentTarget.textContent = 'for Tomorrow\'s Success!'}
+            onMouseLeave={e => e.currentTarget.textContent = 'Contact Us Today...'}
           >
-            Contact Us Today... <span className="font-bold">for Tomorrow&apos;s Success!</span>
+            Contact Us Today... for Tomorrow's Success!
           </a>
         </div>
       </div>

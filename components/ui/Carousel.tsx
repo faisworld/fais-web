@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
+import ManagedImage from "@/components/ui/ManagedImage";
 import { useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -41,18 +41,20 @@ export default function Carousel({ items, onSlideChange }: CarouselProps) {
     };
 
     return (
-        <div className="relative w-full h-[100vh] overflow-hidden">
+        <div className="relative w-full h-[110vh] overflow-hidden bg-white">
             <Slider {...settings}>
                 {items.map((item, index) => (
-                    <div key={item.alt} className="relative w-full h-[100vh]">
+                    <div key={item.alt} className="relative w-full h-[150vh] flex items-center justify-center bg-white">
                         {!errorIndexes.includes(index) ? (
-                            <Image
+                            <ManagedImage
                                 src={item.src}
                                 alt={item.alt}
                                 fill
+                                sizes="100vw"
+                                quality={90}
                                 style={{ objectFit: "cover" }}
-                                onError={() => handleImageError(index)}
-                                priority
+                                fallbackSrc="/images/placeholder.png"
+                                priority={index === 0}
                             />
                         ) : (
                             <div className="w-full h-full bg-gray-200 flex items-center justify-center">

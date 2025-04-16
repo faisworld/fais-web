@@ -1,16 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link"; // Use Next.js Link for internal links if applicable
+import ManagedImage from "@/components/ui/ManagedImage";
+import Link from "next/link";
 
 export default function ProjectsSection() {
   const projects = [
     {
-      id: "mev-staking", // Example unique ID
+      id: "mev-staking",
       title: "MEV Staking Dapp",
       description: "Optimized transactions & yield generation via MEV strategies.",
       image: "/images/MEV-Staking-Dapp.webp",
-      link: "https://fais.world/projects#mev-staking-dapp-development", // External link example
+      link: "https://fais.world/projects#mev-staking-dapp-development",
       isExternal: true,
     },
     {
@@ -34,7 +34,7 @@ export default function ProjectsSection() {
       title: "AI Services Integration",
       description: "Seamless integration of AI capabilities into existing business processes.",
       image: "/images/6-AI-Services-bw4.webp",
-      link: "https://fais.world/ai-services/", // Could be internal or external
+      link: "https://fais.world/ai-services/",
       isExternal: true,
     },
     {
@@ -45,61 +45,64 @@ export default function ProjectsSection() {
       link: "https://fais.world/projects#non-custodial-payment-system-integration",
       isExternal: true,
     },
-    // Add more projects as needed
   ];
 
   return (
-    // Added padding, max-width container
-    <section className="w-full bg-gray-50 py-16">
+    <section className="w-full py-16 bg-gray-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Our Amazing Work</h2> {/* Use h2 */}
-                <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-bold">Our Amazing Work</h2>
+                <p className="mt-4 text-lg max-w-2xl mx-auto">
                     Explore versatile solutions utilized by individuals and companies seeking innovative AI and blockchain services.
                 </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project) => (
-                    // Use unique ID for key if available, otherwise title is fallback
                     <div key={project.id || project.title} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                        {/* Use Next Link for internal links, anchor for external */}
                         {project.isExternal ? (
                             <a href={project.link} target="_blank" rel="noopener noreferrer" className="block group">
-                                <div className="relative w-full h-56 sm:h-64 overflow-hidden"> {/* Fixed height container */}
-                                    <Image
+                                <div className="relative w-full h-56 sm:h-64 overflow-hidden bg-gray-100">
+                                    <ManagedImage
                                         src={project.image}
-                                        alt={`Screenshot of ${project.title}`} // More descriptive alt text
-                                        layout="fill" // Use layout fill for responsive container
-                                        objectFit="cover" // Cover the container
-                                        className="group-hover:scale-105 transition-transform duration-300" // Subtle hover effect
+                                        alt={`Screenshot of ${project.title}`}
+                                        fill
+                                        className="group-hover:scale-105 transition-transform duration-300"
+                                        quality={90}
+                                        sizes="(max-width: 768px) 100vw, 400px"
+                                        fallbackSrc="/images/placeholder.png"
+                                        style={{ objectFit: "cover" }}
+                                        priority={false}
                                     />
                                 </div>
                             </a>
                         ) : (
                             <Link href={project.link} className="block group">
-                                <div className="relative w-full h-56 sm:h-64 overflow-hidden">
-                                     <Image
+                                <div className="relative w-full h-56 sm:h-64 overflow-hidden bg-gray-100">
+                                    <ManagedImage
                                         src={project.image}
                                         alt={`Screenshot of ${project.title}`}
-                                        layout="fill"
-                                        objectFit="cover"
+                                        fill
                                         className="group-hover:scale-105 transition-transform duration-300"
+                                        quality={90}
+                                        sizes="(max-width: 768px) 100vw, 400px"
+                                        fallbackSrc="/images/placeholder.png"
+                                        style={{ objectFit: "cover" }}
+                                        priority={false}
                                     />
                                 </div>
                             </Link>
                         )}
 
-                        <div className="p-6 flex flex-col flex-grow"> {/* Added flex-grow */}
-                            <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3> {/* Use h3 */}
-                            <p className="text-gray-600 mb-4 flex-grow">{project.description}</p> {/* Added flex-grow */}
-                            {/* Button at the bottom */}
+                        <div className="p-6 flex flex-col flex-grow bg-gray-50 text-gray-900">
+                            <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                            <p className="mb-4 flex-grow">{project.description}</p>
                             {project.isExternal ? (
                                 <a
                                     href={project.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn btn-secondary mt-auto" // Use standard button class, mt-auto pushes to bottom
+                                    className="btn btn-secondary mt-auto"
                                 >
                                     Learn More →
                                 </a>

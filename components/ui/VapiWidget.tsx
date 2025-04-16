@@ -1,10 +1,12 @@
 import { FC, useEffect, useRef, useState } from "react";
 import Vapi from "@vapi-ai/web";
+import CallButton from "@/components/ui/CallButton";
 
 const VapiWidget: FC = () => {
     const vapiRef = useRef<Vapi | null>(null);
     const [callActive, setCallActive] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false); // Placeholder for speaking state
 
     useEffect(() => {
         const apiKey = process.env.NEXT_PUBLIC_VAPI_API_KEY;
@@ -102,25 +104,20 @@ const VapiWidget: FC = () => {
     };
 
     return (
-        <button
-            style={{
-                backgroundColor: callActive ? "#dc2626" : loading ? "#f59e0b" : "#0078d4",
-                color: "white",
-                padding: "10px 20px",
-                borderRadius: "50px",
-                cursor: "pointer",
-                marginRight: "10px",
-                transition: "all 0.3s ease",
-                transform: loading ? "scale(1.1)" : "scale(1)"
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)"}
-            onMouseLeave={(e) => e.currentTarget.style.boxShadow = "none"}
-            onMouseDown={(e) => e.currentTarget.style.transform = "scale(0.95)"}
-            onMouseUp={(e) => e.currentTarget.style.transform = "scale(1)"}
-            onClick={handleButtonClick}
-        >
-            {callActive ? "End Call" : loading ? "Connecting..." : "Call AI Assistant"}
-        </button>
+        <div className="flex flex-col items-center">
+            <CallButton
+                isCalling={callActive}
+                isSpeaking={isSpeaking}
+                onClick={handleButtonClick}
+                disabled={loading}
+            >
+                {loading
+                    ? "Connecting..."
+                    : callActive
+                        ? "Stop Call"
+                        : undefined}
+            </CallButton>
+        </div>
     );
 };
 

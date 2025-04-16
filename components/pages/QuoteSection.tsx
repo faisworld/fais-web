@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function QuoteSection() {
     return (
-        <section className="relative w-full p-8 text-white bg-[url('/images/background-image.jpg')] bg-fixed bg-cover bg-center">
+        <section className="relative w-full p-8">
             <div className="absolute inset-0 bg-black/80" />
             <div className="relative flex">
                 {/* Left Side */}

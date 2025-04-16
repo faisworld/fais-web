@@ -1,7 +1,6 @@
 "use client"; // Testimonials might involve sliders or other client-side interactions
 
 import React from 'react';
-import Image from 'next/image'; // Optional: If you want to include images/avatars
 
 // Sample testimonial data structure
 const testimonials = [
@@ -30,11 +29,11 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="w-full bg-gray-100 py-16"> {/* Section background and padding */}
+    <section className="w-full py-16"> {/* Section padding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">What Our Clients Say</h2>
-          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold">What Our Clients Say</h2>
+          <p className="mt-4 text-lg max-w-2xl mx-auto">
             Hear directly from businesses that have partnered with us.
           </p>
         </div>
@@ -55,12 +54,12 @@ export default function TestimonialsSection() {
                   />
                 </div>
               )} */}
-              <blockquote className="text-gray-600 italic mb-4 flex-grow">
+              <blockquote className="italic mb-4 flex-grow">
                 "{testimonial.quote}"
               </blockquote>
               <footer className="text-right">
-                <p className="font-semibold text-gray-800">{testimonial.name}</p>
-                <p className="text-sm text-gray-500">{testimonial.title}</p>
+                <p className="font-semibold">{testimonial.name}</p>
+                <p className="text-sm">{testimonial.title}</p>
               </footer>
             </div>
           ))}

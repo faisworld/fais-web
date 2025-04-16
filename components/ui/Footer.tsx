@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="bg-white text-black">
+        <footer className="site-footer">
             {/* Upper Block */}
             <div className="flex flex-wrap w-full py-8 px-[10%] mt-12">
                 {/* Left Column */}
@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
 
             {/* Lower Block */}
-            <div className="flex items-center justify-center py-4 bg-black text-white w-full">
+            <div className="flex items-center justify-center py-4 w-full">
                 <p className="text-sm">
                     fAis ©. All rights reserved © 2024. |{" "}
                     <Link href="/privacy-policy/" className="footer-link">

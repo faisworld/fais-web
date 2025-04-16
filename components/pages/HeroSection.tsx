@@ -1,66 +1,58 @@
 // filepath: c:\Users\solar\Projects\fais-web\components\pages\HeroSection.tsx
 "use client";
 import { useState } from "react";
-import Carousel from "@/components/Carousel";
-import { CSSProperties } from "react";
+import Carousel from "@/components/ui/Carousel";
 
 interface HeroSectionProps {
-    config: Record<string, unknown>; // Use a more specific type if the structure of 'config' is known
+    config: Record<string, unknown>;
     carouselItems: Array<{
         src: string;
         alt: string;
         title: string;
         subtitle: string;
         description: string;
-        x?: CSSProperties["top"]; // Horizontal position for the text overlay
-        y?: CSSProperties["left"]; // Vertical position for the text overlay
-        backgroundColor?: CSSProperties["backgroundColor"]; // Background color for the text box
-        backgroundOpacity?: number; // Opacity for the background
-        border?: CSSProperties["border"]; // Border for the text box
-        backgroundWidth?: CSSProperties["width"]; // Width of the text box
-        backgroundHeight?: CSSProperties["height"]; // Height of the text box
-        borderRadius?: CSSProperties["borderRadius"]; // Border radius for the text box
     }>;
 }
 
 export default function HeroSection({ carouselItems }: HeroSectionProps) {
-    const [activeIndex, setActiveIndex] = useState(0); // Track the active slide index
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const handleSlideChange = (index: number) => {
-        setActiveIndex(index); // Update the active slide index
+        setActiveIndex(index);
     };
 
     return (
-        <div className="relative w-full h-[100vh] overflow-hidden">
-            {/* Carousel */}
+        <div className="relative w-full h-[120vh] overflow-hidden">
             <Carousel
                 items={carouselItems.map(({ src, alt }) => ({ src, alt }))}
                 onSlideChange={handleSlideChange}
             />
-
-            {/* Overlay for the Active Slide */}
             {carouselItems[activeIndex] && (
                 <div
-                    className="absolute"
+                    className="absolute flex flex-col items-center justify-center shadow-xl border border-gray-200 rounded-xl"
                     style={{
-                        top: carouselItems[activeIndex].y || "50%",
-                        left: carouselItems[activeIndex].x || "50%",
+                        top: "50%",
+                        left: "50%",
                         transform: "translate(-50%, -50%)",
-                        backgroundColor: carouselItems[activeIndex].backgroundColor || "rgba(0, 0, 0, 0.5)",
-                        opacity: carouselItems[activeIndex].backgroundOpacity || 0.8,
-                        width: carouselItems[activeIndex].backgroundWidth || "400px",
-                        height: carouselItems[activeIndex].backgroundHeight || "200px",
-                        border: carouselItems[activeIndex].border || "1px solid white",
-                        borderRadius: carouselItems[activeIndex].borderRadius || "10px",
-                        padding: "20px",
+                        backgroundColor: "rgba(253, 252, 236, 0.59)",
+                        width: "500px", // Increased width by 20px
+                        height: "280px", // Reduced height for a tighter fit
+                        minWidth: "320px",
+                        maxWidth: "95vw",
+                        color: "#222",
+                        zIndex: 10,
                         textAlign: "center",
-                        color: "white",
-                        zIndex: 10, // Ensure it appears above the carousel
+                        padding: "32px 32px", // Reduced padding for less space above/below
+                        margin: "var(--hero-overlay-margin, 0)",
                     }}
                 >
-                    <h1 className="text-3xl font-bold">{carouselItems[activeIndex].title}</h1>
-                    <h2 className="text-xl mt-2">{carouselItems[activeIndex].subtitle}</h2>
-                    <p className="text-base mt-4" style={{ color: "black" }}>
+                    <h1 className="text-3xl font-bold mb-2 drop-shadow-lg bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
+                        {carouselItems[activeIndex].title}
+                    </h1>
+                    <h2 className="text-xl mt-2 mb-2 bg-gradient-to-r from-yellow-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                        {carouselItems[activeIndex].subtitle}
+                    </h2>
+                    <p className="text-base mt-2 text-gray-800">
                         {carouselItems[activeIndex].description}
                     </p>
                 </div>

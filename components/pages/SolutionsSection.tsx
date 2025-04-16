@@ -1,6 +1,7 @@
 // filepath: c:\Users\solar\Projects\fais-web\components\pages\SolutionsSection.tsx
 "use client";
-import Image from "next/image";
+
+import ManagedImage from "@/components/ui/ManagedImage";
 
 export default function SolutionsSection() {
     return (
@@ -22,17 +23,17 @@ export default function SolutionsSection() {
                     <h3 className="text-2xl font-bold mb-4 text-center">
                         AI-Powered Solutions
                     </h3>
-                    <Image
+                    <ManagedImage
                         src="/images/ai-placeholder.png"
                         alt="AI Placeholder"
                         width={600}
                         height={400}
-                        style={{ objectFit: "contain" }}
                         className="mx-auto"
-                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/default-ai.png"; // Provide a default
-                        }}
+                        quality={90}
+                        sizes="(max-width: 768px) 100vw, 600px"
+                        fallbackSrc="/images/default-ai.png"
+                        style={{ objectFit: "contain" }}
+                        priority
                     />
                     <p className="mt-4 text-center">
                         Harness the power of artificial intelligence to optimize your
@@ -46,17 +47,17 @@ export default function SolutionsSection() {
                     <h3 className="text-2xl font-bold mb-4 text-center">
                         Blockchain Innovations
                     </h3>
-                    <Image
+                    <ManagedImage
                         src="/images/blockchain-placeholder.png"
                         alt="Blockchain Placeholder"
                         width={600}
                         height={400}
-                        style={{ objectFit: "contain" }}
                         className="mx-auto"
-                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/default-blockchain.png"; // Provide a default
-                        }}
+                        quality={90}
+                        sizes="(max-width: 768px) 100vw, 600px"
+                        fallbackSrc="/images/default-blockchain.png"
+                        style={{ objectFit: "contain" }}
+                        priority
                     />
                     <p className="mt-4 text-center">
                         Secure and transparent blockchain applications custom-designed

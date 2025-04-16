@@ -6,13 +6,6 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-};
-
-module.exports = {
   content: [
     "./app/**/*.{html,css,js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",

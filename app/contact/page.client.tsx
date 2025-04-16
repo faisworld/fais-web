@@ -1,6 +1,6 @@
 "use client";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import MailerWidget from "@/components/MailerWidget";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import MailerWidget from "@/components/ui/MailerWidget";
 import { useCallback, useEffect } from "react";
 
 // Define grecaptcha type locally if not globally available

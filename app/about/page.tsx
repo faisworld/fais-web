@@ -2,7 +2,7 @@
 
 import MeetOurTeam from "@/components/pages/MeetOurTeam";
 import ContactUs from "@/components/pages/ContactUs";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import CountUp from "react-countup";
 import Image from "next/image";
 
@@ -14,9 +14,9 @@ export default function AboutPage() {
 
     return (
         // Apply padding here to offset the fixed header
-        <div className="pt-20"> {/* Adjust pt-20 to match header height */}
-            <main className="w-full bg-gray-50 text-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"> {/* Removed pt-28 */}
+        <div className="pt-20">
+            <main>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     {/* Breadcrumbs */}
                     <Breadcrumbs items={breadcrumbItems} />
 
@@ -27,7 +27,7 @@ export default function AboutPage() {
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="order-2 md:order-1">
                             <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
-                            <p className="text-gray-600 leading-relaxed">
+                            <p>
                                 To drive innovation by delivering cutting-edge AI and blockchain solutions that empower businesses to thrive in the digital age.
                             </p>
                         </div>
@@ -55,7 +55,7 @@ export default function AboutPage() {
                         </div>
                         <div className="order-2">
                             <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
-                            <p className="text-gray-600 leading-relaxed">
+                            <p>
                                 To shape a future where technology seamlessly integrates into everyday life, fostering innovation, sustainability, and growth.
                             </p>
                         </div>
@@ -67,19 +67,19 @@ export default function AboutPage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div className="text-center p-4">
                                 <h3 className="text-2xl font-semibold mb-2">Innovation</h3>
-                                <p className="text-gray-600">
+                                <p>
                                     We embrace creativity and push the boundaries of technology to deliver groundbreaking solutions.
                                 </p>
                             </div>
                             <div className="text-center p-4">
                                 <h3 className="text-2xl font-semibold mb-2">Integrity</h3>
-                                <p className="text-gray-600">
+                                <p>
                                     We uphold the highest standards of ethics and transparency in all our endeavors.
                                 </p>
                             </div>
                             <div className="text-center p-4">
                                 <h3 className="text-2xl font-semibold mb-2">Collaboration</h3>
-                                <p className="text-gray-600">
+                                <p>
                                     We believe in the power of teamwork and partnerships to achieve shared success.
                                 </p>
                             </div>
@@ -91,18 +91,18 @@ export default function AboutPage() {
                         <h2 className="text-3xl font-bold text-center mb-8">Why Choose Us</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-center">
                             <div>
-                                <h3 className="text-5xl font-bold text-gray-800">
+                                <h3 className="text-5xl font-bold">
                                     <CountUp end={82} duration={2.5} />%
                                 </h3>
-                                <p className="text-gray-600 mt-2">
+                                <p className="mt-2">
                                     Customer retention rate over the past 6 years.
                                 </p>
                             </div>
                             <div>
-                                <h3 className="text-5xl font-bold text-gray-800">
+                                <h3 className="text-5xl font-bold">
                                     <CountUp end={100} duration={2.5} suffix="+" />
                                 </h3>
-                                <p className="text-gray-600 mt-2">
+                                <p className="mt-2">
                                     Clients who recommend us to their colleagues.
                                 </p>
                             </div>

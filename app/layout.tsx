@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/ui/Header";
+import Footer from "@/components/ui/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +11,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fais.world'), // Use your real production URL here
   title: "Fantastic AI Studio",
   icons: { icon: "/favicon.ico" },
   openGraph: {
@@ -30,8 +31,6 @@ export const metadata: Metadata = {
     follow: true,
   },
   appleWebApp: { capable: true, title: "Fantastic AI Studio" },
-  themeColor: "#ffffff",
-  viewport: "width=device-width, initial-scale=1",
   description: " Innovative AI and Blockchain Solutions",
   keywords: "AI, Blockchain, Technology, Innovation",
   authors: [{ name: "Fantastic AI Studio" }],
@@ -39,6 +38,17 @@ export const metadata: Metadata = {
   publisher: "fantasticai.studio",
   applicationName: "Fantastic AI Studio",
 };
+
+export function generateViewport() {
+  return {
+    width: "device-width",
+    initialScale: 1,
+  };
+}
+
+export function generateThemeColor() {
+  return "#ffffff"; // Set to light mode to match your intended background
+}
 
 export default function RootLayout({
   children,

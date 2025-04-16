@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function WhyChooseUs() {
     return (
         <div className="mt-16">
@@ -7,24 +5,24 @@ export default function WhyChooseUs() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
                     <h3 className="text-xl font-bold mb-2">Creative Approach</h3>
-                    <p className="text-gray-600">
+                    <p>
                         Innovative solutions tailored to your needs.
                     </p>
                     <h3 className="text-xl font-bold mb-2">Client-Oriented</h3>
-                    <p className="text-gray-600">
+                    <p>
                         Dedicated to providing the highest level of service.
                     </p>
                     <h3 className="text-xl font-bold mb-2">Planning</h3>
-                    <p className="text-gray-600">
+                    <p>
                         Strategic planning for achieving your goals.
                     </p>
                     <h3 className="text-xl font-bold mb-2">24/7 Support</h3>
-                    <p className="text-gray-600">
+                    <p>
                         Continuous support to ensure your success.
                     </p>
                 </div>
                 <div>
-                    <Image
+                    <img
                         src="/images/why-choose-us.webp"
                         alt="Why Choose Us"
                         width={500}

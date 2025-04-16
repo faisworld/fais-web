@@ -1,18 +1,16 @@
-// filepath: c:\Users\solar\Projects\fais-web\scripts\process-images.js
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const inputDir = path.join(__dirname, '..', 'public', 'images', 'originals'); // Adjust path
-const outputDir = path.join(__dirname, '..', 'public', 'images', 'processed'); // Adjust path
+const inputDir = path.join(__dirname, '..', 'public', 'images', 'originals');
+const outputDir = path.join(__dirname, '..', 'public', 'images', 'processed');
+const sizes = [400, 800, 1200]; // Responsive sizes
 
 async function resizeImage(inputPath, outputPath, width, quality = 80) {
   try {
-    // Ensure output directory exists
     if (!fs.existsSync(path.dirname(outputPath))) {
-        fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+      fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     }
-
     await sharp(inputPath)
       .resize({ width: width })
       .webp({ quality: quality })
@@ -24,29 +22,28 @@ async function resizeImage(inputPath, outputPath, width, quality = 80) {
 }
 
 async function processDirectory() {
-    if (!fs.existsSync(inputDir)) {
-        console.error(`Input directory not found: ${inputDir}`);
-        return;
-    }
-     if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-    }
+  if (!fs.existsSync(inputDir)) {
+    console.error(`Input directory not found: ${inputDir}`);
+    return;
+  }
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
-    const files = fs.readdirSync(inputDir);
+  const files = fs.readdirSync(inputDir);
 
-    for (const file of files) {
-        const ext = path.extname(file).toLowerCase();
-        if (['.jpg', '.jpeg', '.png', '.gif'].includes(ext)) { // Add other supported input types if needed
-            const inputPath = path.join(inputDir, file);
-            const outputFileName = `${path.basename(file, ext)}.webp`; // Output as webp
-            const outputPath = path.join(outputDir, outputFileName);
-
-            // Example: Create an 800px wide version
-            await resizeImage(inputPath, outputPath, 800, 75);
-            // You could call resizeImage multiple times for different sizes
-        }
+  for (const file of files) {
+    const ext = path.extname(file).toLowerCase();
+    if ([".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(ext)) {
+      const inputPath = path.join(inputDir, file);
+      for (const size of sizes) {
+        const outputFileName = `${path.basename(file, ext)}-${size}.webp`;
+        const outputPath = path.join(outputDir, outputFileName);
+        await resizeImage(inputPath, outputPath, size, 75);
+      }
     }
-    console.log('Image processing complete.');
+  }
+  console.log('Image processing complete.');
 }
 
 processDirectory();
