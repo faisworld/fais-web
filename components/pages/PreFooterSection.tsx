@@ -23,10 +23,10 @@ export default function PreFooterSection() {
             target="_blank"
             rel="noopener noreferrer"
             className="cta-animated-btn inline-block px-8 py-4 font-bold rounded-md shadow-lg text-lg transition-all duration-300 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 text-white hover:from-yellow-400 hover:via-pink-500 hover:to-blue-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            onMouseEnter={e => e.currentTarget.textContent = 'for Tomorrow\'s Success!'}
-            onMouseLeave={e => e.currentTarget.textContent = 'Contact Us Today...'}
+            onMouseEnter={e => e.currentTarget.textContent = 'Contact Us Today...'}
+            onMouseLeave={e => e.currentTarget.textContent = 'for Tomorrow\'s Success!'}
           >
-            Contact Us Today... for Tomorrow's Success!
+            Contact Us Today...
           </a>
         </div>
       </div>
