@@ -1,0 +1,44 @@
+{
+  "name": "LinkedIn Automation Workflow",
+  "modules": [
+    {
+      "name": "Webhook Trigger",
+      "type": "webhook",
+      "config": {
+        "url": "https://hook.eu2.make.com/rrwyl6u4kxhlplrdgtsrv6otjst6u90f",
+        "method": "POST",
+        "parameters": []
+      }
+    },
+    {
+      "name": "Create LinkedIn Post",
+      "type": "linkedin",
+      "config": {
+        "action": "createPost",
+        "parameters": {
+          "content": "{{content}}",
+          "visibility": "PUBLIC"
+        }
+      }
+    },
+    {
+      "name": "Send Notification",
+      "type": "email",
+      "config": {
+        "to": "your-email@example.com",
+        "subject": "LinkedIn Post Published",
+        "body": "Your LinkedIn post has been successfully published."
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from": "Webhook Trigger",
+      "to": "Create LinkedIn Post"
+    },
+    {
+      "from": "Create LinkedIn Post",
+      "to": "Send Notification"
+    }
+  ]
+}

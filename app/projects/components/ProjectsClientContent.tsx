@@ -4,8 +4,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+type Project = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  link: string;
+  isExternal: boolean;
+  altTag?: string;
+};
+
 export default function ProjectsClientContent() {
-    const projects = [
+    const projects: Project[] = [
         {
           id: "mev-staking",
           title: "MEV Staking Dapp",
@@ -67,7 +77,7 @@ export default function ProjectsClientContent() {
                                     <div className="relative w-full h-56 overflow-hidden">
                                         <Image
                                             src={project.image}
-                                            alt={`Screenshot of ${project.title}`}
+                                            alt={project.altTag || `Screenshot of ${project.title}`}
                                             layout="fill"
                                             objectFit="cover"
                                             className="group-hover:scale-105 transition-transform duration-300"
@@ -79,7 +89,7 @@ export default function ProjectsClientContent() {
                                     <div className="relative w-full h-56 overflow-hidden">
                                         <Image
                                             src={project.image}
-                                            alt={`Screenshot of ${project.title}`}
+                                            alt={project.altTag || `Screenshot of ${project.title}`}
                                             layout="fill"
                                             objectFit="cover"
                                             className="group-hover:scale-105 transition-transform duration-300"

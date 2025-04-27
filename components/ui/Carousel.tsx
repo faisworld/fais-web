@@ -8,7 +8,9 @@ const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 interface CarouselItem {
     src: string;
-    alt: string;
+    alt?: string;
+    altTag?: string;
+    title?: string;
 }
 
 interface CarouselProps {
@@ -16,7 +18,7 @@ interface CarouselProps {
     onSlideChange?: (index: number) => void;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ items, onSlideChange }) => { // Added onSlideChange prop
+const Carousel: React.FC<CarouselProps> = ({ items, onSlideChange }) => {
     const [errorIndexes, setErrorIndexes] = useState<number[]>([]);
     const carouselRef = useRef<any>(null);
 
@@ -39,11 +41,12 @@ const Carousel: React.FC<CarouselProps> = ({ items, onSlideChange }) => { // Add
         <div className="relative w-full overflow-hidden" ref={carouselRef}>
             <Slider {...settings}>
                 {items.map((item, index) => (
-                    <div key={item.alt} className="relative w-full" style={{ height: '700px' }}>
+                    <div key={item.alt || item.title || index} className="relative w-full" style={{ height: '700px' }}>
                         {!errorIndexes.includes(index) ? (
                             <Image
                                 src={item.src}
-                                alt={item.alt}
+                                alt={item.altTag || item.alt || item.title || ''}
+                                title={item.title}
                                 width={1530}
                                 height={700}
                                 sizes="(max-width: 1530px) 100vw, 1530px"

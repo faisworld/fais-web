@@ -1,12 +1,17 @@
-// Import necessary modules and components
-import React from "react";
-
+"use client";
+// Import necessary libraries and components
+import "client-only"; // Importing client-only to ensure the component runs on the client side
+import { useEffect } from "react"; // Importing useEffect for side effects
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google'; // Importing Inter font from Google Fonts
 import HeroSection from "@/components/pages/HeroSection";
 import SolutionsSection from "@/components/pages/SolutionsSection";
 import ProjectsSection from "@/components/pages/ProjectsSection";
 import TestimonialsSection from "@/components/pages/TestimonialsSection";
 import ContactUs from "@/components/pages/ContactUs";
 import PreFooterSection from "@/components/pages/PreFooterSection";
+
 
 // Define the main Home component
 export default function Home() {
@@ -33,9 +38,9 @@ export default function Home() {
       description: "Leveraging cutting-edge AI and Blockchain technologies for smarter solutions across industries.",
     },
   ];
-
   return (
     <>
+      {/* Header will be fixed at the top */}
       {/* HeroSection will now be at the very top, under the fixed Header */}
       <HeroSection
         carouselItems={carouselItems}
@@ -47,9 +52,9 @@ export default function Home() {
         <SolutionsSection />
         <ProjectsSection />
         <TestimonialsSection />
-        <ContactUs />
-        <PreFooterSection />
-      </div>
+            <ContactUs />
+            <PreFooterSection />
+          </div>
     </>
   );
 }

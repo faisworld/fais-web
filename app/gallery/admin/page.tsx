@@ -4,29 +4,29 @@ import { useRef, useState } from 'react';
 export default function GalleryAdminPage() {
   const fileInput = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
     const file = fileInput.current?.files?.[0];
     if (!file) return setMessage('No file selected.');
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('title', file.name);
-
     setMessage('Uploading...');
-    const res = await fetch('/api/upload-image', {
+    const res = await fetch(`/api/upload-image?filename=${encodeURIComponent(file.name)}`, {
       method: 'POST',
-      body: formData,
+      body: file,
     });
 
     if (res.ok) {
+      const data = await res.json();
       setMessage('Upload successful!');
+      setBlobUrl(data.url);
       if (fileInput.current) {
         fileInput.current.value = '';
       }
     } else {
       setMessage('Upload failed.');
+      setBlobUrl(null);
     }
   }
 
@@ -38,6 +38,11 @@ export default function GalleryAdminPage() {
         <button type="submit" className="btn btn-primary">Upload</button>
       </form>
       {message && <div className="mt-4">{message}</div>}
+      {blobUrl && (
+        <div className="mt-2">
+          Blob url: <a href={blobUrl} target="_blank" rel="noopener noreferrer">{blobUrl}</a>
+        </div>
+      )}
     </div>
   );
 }

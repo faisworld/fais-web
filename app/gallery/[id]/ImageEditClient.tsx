@@ -5,7 +5,7 @@ import { useState } from 'react';
 export default function ImageEditClient({ img, alt }: { img: any; alt: string }) {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(img.title);
-  const [altText, setAltText] = useState(alt);
+  const [altText, setAltText] = useState(img['alt-tag'] || alt);
   const [message, setMessage] = useState<string | null>(null);
 
   async function handleSave() {
@@ -35,7 +35,8 @@ export default function ImageEditClient({ img, alt }: { img: any; alt: string })
       <div className="flex-1 flex flex-col items-center">
         <img
           src={img.url}
-          alt={alt}
+          alt={altText}
+          title={img.title}
           className="w-full max-w-md h-auto max-h-[400px] object-contain rounded bg-gray-100"
         />
         <button

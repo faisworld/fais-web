@@ -2,6 +2,9 @@
 
 import Image from 'next/image';
 
+// The Image component from Next.js is used to optimize images.
+// See: https://nextjs.org/docs/pages/api-reference/components/image
+
 export default function SolutionsSection() {
     return (
         <section className="mt-[20px] mx-[10%]">
@@ -18,7 +21,7 @@ export default function SolutionsSection() {
 
             <div className="flex flex-wrap justify-center">
                 {/* AI-Powered Solutions Column */}
-                <div className="w-1/2 p-4">
+                <div className="w-full md:w-1/2 p-4">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                         AI-Powered Solutions
                     </h3>
@@ -40,7 +43,7 @@ export default function SolutionsSection() {
                 </div>
 
                 {/* Blockchain Innovations Column */}
-                <div className="w-1/2 p-4">
+                <div className="w-full md:w-1/2 p-4">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                         Blockchain Innovations
                     </h3>

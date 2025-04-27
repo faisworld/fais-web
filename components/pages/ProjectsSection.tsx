@@ -4,7 +4,17 @@ import Image from 'next/image';
 import Link from "next/link";
 
 export default function ProjectsSection() {
-  const projects = [
+  type Project = {
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    link: string;
+    isExternal: boolean;
+    altTag?: string;
+  };
+
+  const projects: Project[] = [
     {
       id: "mev-staking",
       title: "MEV Staking Dapp",
@@ -65,7 +75,7 @@ export default function ProjectsSection() {
                                 <div className="relative w-full h-56 sm:h-64 overflow-hidden bg-gray-100">
                                     <Image
                                         src={project.image}
-                                        alt={`Screenshot of ${project.title}`}
+                                        alt={project.altTag || `Screenshot of ${project.title}`}
                                         width={400}
                                         height={256}
                                         className="group-hover:scale-105 transition-transform duration-300"
@@ -80,7 +90,7 @@ export default function ProjectsSection() {
                                 <div className="relative w-full h-56 sm:h-64 overflow-hidden bg-gray-100">
                                     <Image
                                         src={project.image}
-                                        alt={`Screenshot of ${project.title}`}
+                                        alt={project.altTag || `Screenshot of ${project.title}`}
                                         width={400}
                                         height={256}
                                         className="group-hover:scale-105 transition-transform duration-300"

@@ -6,7 +6,8 @@ import ContactPageClient from "./page.client";
 export const metadata = {
     title: "Contact",
     description: "Get in touch with us",
-    metadataBase: new URL("http://localhost:3000"), // Replace with your production URL
+    // metadataBase should be the root domain of your website.
+    metadataBase: new URL("https://fais.world"), // Replace with your production base URL
 };
 
 // Render the client component directly
