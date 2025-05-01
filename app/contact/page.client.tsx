@@ -20,6 +20,12 @@ export default function ContactClientPage() {
         script.async = true;
         script.defer = true;
         document.head.appendChild(script);
+        return () => {
+            // cleanup on unmount: remove script and grecaptcha from window
+            const existing = document.getElementById(scriptId);
+            if (existing) existing.remove();
+            if (window.grecaptcha) delete window.grecaptcha;
+        };
     }, []);
 
     return (

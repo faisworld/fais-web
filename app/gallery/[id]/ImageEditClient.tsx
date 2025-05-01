@@ -28,6 +28,7 @@ type ImageData = {
   folder?: string
   uploaded_at?: string
   description?: string
+  format?: string
 }
 
 export default function ImageEditClient({ img, alt }: { img: ImageData; alt: string }) {
@@ -47,29 +48,39 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
 
   console.log("ImageEditClient received image data:", img)
 
+  // Check if the description field exists in the database
+  const hasDescriptionField = "description" in img
+
   async function handleSave() {
     setMessage(null)
     setIsLoading(true)
 
     try {
-      console.log("Sending update with:", {
+      // Only include fields that exist in the database
+      const updateData: any = {
         id: img.id,
         title,
-        alt: altText,
-        folder,
-        description,
-      })
+      }
+
+      // Only include these fields if they exist in the image object
+      if ("altTag" in img || "alt-tag" in img) {
+        updateData.alt = altText
+      }
+
+      if ("folder" in img) {
+        updateData.folder = folder
+      }
+
+      if (hasDescriptionField) {
+        updateData.description = description
+      }
+
+      console.log("Sending update with:", updateData)
 
       const res = await fetch("/api/gallery/images", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: img.id,
-          title,
-          alt: altText,
-          folder,
-          description,
-        }),
+        body: JSON.stringify(updateData),
       })
 
       const data = await res.json()
@@ -82,7 +93,9 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
           setTitle(data.image.title || "")
           setAltText(data.image.altTag || data.image["alt-tag"] || "")
           setFolder(data.image.folder || "")
-          setDescription(data.image.description || "")
+          if (data.image.description !== undefined) {
+            setDescription(data.image.description || "")
+          }
         }
       } else {
         setMessage({ text: data.error || "Failed to save.", type: "error" })
@@ -335,20 +348,23 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
             />
           </div>
 
-          <div>
-            <label htmlFor="image-description" className="font-medium text-gray-700 block mb-1">
-              Description:
-            </label>
-            <textarea
-              id="image-description"
-              className={`w-full border rounded-md px-3 py-2 min-h-[100px] ${
-                editing ? "border-gray-400 bg-white" : "bg-gray-50 border-gray-200"
-              }`}
-              value={description}
-              disabled={!editing}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          {/* Only show description field if it exists in the database */}
+          {hasDescriptionField && (
+            <div>
+              <label htmlFor="image-description" className="font-medium text-gray-700 block mb-1">
+                Description:
+              </label>
+              <textarea
+                id="image-description"
+                className={`w-full border rounded-md px-3 py-2 min-h-[100px] ${
+                  editing ? "border-gray-400 bg-white" : "bg-gray-50 border-gray-200"
+                }`}
+                value={description}
+                disabled={!editing}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+          )}
 
           <div>
             <label className="font-medium text-gray-700 block mb-1">Dimensions:</label>

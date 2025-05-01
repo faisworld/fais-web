@@ -16,16 +16,50 @@ export async function GET(request: Request) {
     await client.connect()
 
     try {
-      // Use parameterized query to prevent SQL injection and include ALL fields
-      const result = await client.query(
-        `SELECT 
-          id, url, title, description, uploaded_at, size, 
-          width, height, format, folder, 
-          "alt-tag" as "altTag", "alt-tag" 
-         FROM images 
-         WHERE id = $1`,
-        [id],
-      )
+      // Check which columns exist in the table
+      const columnsResult = await client.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'images'
+      `)
+
+      const existingColumns = columnsResult.rows.map((row) => row.column_name)
+      console.log("Existing columns:", existingColumns)
+
+      // Build a query that only includes columns that exist
+      const baseColumns = ["id", "url", "title", "uploaded_at"]
+
+      // Check specifically for alt-tag with quotes since it has a hyphen
+      const hasAltTag = existingColumns.includes("alt-tag")
+
+      // Other optional columns
+      const optionalColumns = ["size", "width", "height", "folder", "format", "description"]
+      const existingOptionalColumns = optionalColumns.filter((col) => existingColumns.includes(col))
+
+      // Construct the SELECT part of the query
+      let selectParts = [...baseColumns]
+
+      // Add optional columns
+      if (existingOptionalColumns.length > 0) {
+        selectParts = [...selectParts, ...existingOptionalColumns]
+      }
+
+      // Handle alt-tag specially due to the hyphen
+      if (hasAltTag) {
+        selectParts.push(`"alt-tag"`)
+        selectParts.push(`"alt-tag" as "altTag"`)
+      }
+
+      const selectClause = selectParts.join(", ")
+
+      const query = `
+        SELECT ${selectClause}
+        FROM images 
+        WHERE id = $1
+      `
+
+      console.log("Executing query:", query)
+      const result = await client.query(query, [id])
 
       console.log(`API: Query result rows: ${result.rows.length}`)
 
@@ -64,14 +98,75 @@ export async function PATCH(request: Request) {
     await client.connect()
 
     try {
-      // Update query with folder field and update the alt-tag field directly
-      const result = await client.query(
-        `UPDATE images 
-         SET title = $1, "alt-tag" = $2, folder = $3, description = $4 
-         WHERE id = $5 
-         RETURNING id, url, title, "alt-tag" as "altTag", folder, description`,
-        [title, alt, folder, description || null, id],
-      )
+      // Check which columns exist in the table
+      const columnsResult = await client.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'images'
+      `)
+
+      const existingColumns = columnsResult.rows.map((row) => row.column_name)
+      console.log("Existing columns for update:", existingColumns)
+
+      // Build the SET part of the update query based on existing columns
+      const updateParts = []
+      const values = []
+      let paramIndex = 1
+
+      // Always update title
+      updateParts.push(`title = $${paramIndex++}`)
+      values.push(title)
+
+      // Only include other fields if their columns exist
+      // Check specifically for alt-tag with quotes since it has a hyphen
+      const hasAltTag = existingColumns.includes("alt-tag")
+      if (hasAltTag) {
+        updateParts.push(`"alt-tag" = $${paramIndex++}`)
+        values.push(alt)
+      }
+
+      if (existingColumns.includes("folder")) {
+        updateParts.push(`folder = $${paramIndex++}`)
+        values.push(folder)
+      }
+
+      if (existingColumns.includes("description")) {
+        updateParts.push(`description = $${paramIndex++}`)
+        values.push(description || null)
+      }
+
+      // Add the ID parameter
+      values.push(id)
+
+      // Build the RETURNING part based on existing columns
+      const returningParts = ["id", "url", "title"]
+
+      if (hasAltTag) {
+        returningParts.push(`"alt-tag"`)
+        returningParts.push(`"alt-tag" as "altTag"`)
+      }
+
+      if (existingColumns.includes("folder")) {
+        returningParts.push("folder")
+      }
+
+      if (existingColumns.includes("description")) {
+        returningParts.push("description")
+      }
+
+      const returningClause = returningParts.join(", ")
+
+      const query = `
+        UPDATE images 
+        SET ${updateParts.join(", ")} 
+        WHERE id = $${paramIndex} 
+        RETURNING ${returningClause}
+      `
+
+      console.log("Executing update query:", query)
+      console.log("With values:", values)
+
+      const result = await client.query(query, values)
 
       if (result.rowCount === 0) {
         return NextResponse.json({ error: "Image not found" }, { status: 404 })

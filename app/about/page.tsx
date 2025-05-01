@@ -5,11 +5,6 @@ import ContactUs from "@/components/pages/ContactUs";
 import CountUp from "react-countup";
 import Image from "next/image";
 
-export const metadata = {
-  title: "About",
-  description: "Learn more about Fantastic AI Studio and our mission.",
-};
-
 export default function AboutPage() {
     const breadcrumbItems = [
         { label: "Home", href: "/" },
