@@ -155,18 +155,12 @@ section {
   background: none;
 }
 .header-menu-links:hover {
-  background: linear-gradient(90deg, #6b705c 0%, #a5a58d 100%); /* AI assistant gradient */
+  background: linear-gradient(90deg, #6b705c 0%, #a5a58d 100%);
   color: #fff;
+  border-radius: 6px;
 }
 
-.carousel-title,
-.carousel-title-text,
-.carousel-subtitle-text,
-.carousel-description-text {
-  color: #fff;
-}
-
-.button, .custom-button, .contact-section .button {
+.button, .btn, .custom-button, .contact-section .button {
   color: #fff;
   background-color: #222;
   border-radius: 8px;
@@ -178,6 +172,13 @@ section {
 }
 .button:hover, .custom-button:hover, .contact-section .button:hover {
   background-color: #444;
+}
+
+.carousel-title,
+.carousel-title-text,
+.carousel-subtitle-text,
+.carousel-description-text {
+  color: #fff;
 }
 
 .transparent-bg {
@@ -241,4 +242,18 @@ a:hover {
   color: #bbb;
   aspect-ratio: 16 / 9;
   min-height: 150px;
+}
+
+.fais-agent-btn {
+  opacity: 0.7;
+  filter: brightness(0.85) blur(0.5px);
+  transition: opacity 0.2s, filter 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 24px 4px rgba(34,197,94,0.10);
+}
+
+.fais-agent-btn:hover,
+.fais-agent-btn:focus {
+  opacity: 1;
+  filter: brightness(1) blur(0);
+  box-shadow: 0 0 32px 8px rgba(34,197,94,0.18);
 }

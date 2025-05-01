@@ -1,5 +1,3 @@
-// Rename this file from page.server.tsx to page.tsx
-
 import ContactPageClient from "./page.client";
 
 // Metadata export with updated properties

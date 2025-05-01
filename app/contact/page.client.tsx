@@ -1,5 +1,4 @@
 "use client";
-import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import MailerWidget from "@/components/ui/MailerWidget";
 import { useEffect } from "react";
 
@@ -10,7 +9,7 @@ declare global {
     }
 }
 
-const ContactClientPage: React.FC = () => {
+export default function ContactClientPage() {
     useEffect(() => {
         const scriptId = "recaptcha-enterprise-script";
         if (document.getElementById(scriptId)) return;
@@ -26,9 +25,6 @@ const ContactClientPage: React.FC = () => {
     return (
         <main className="w-full bg-gray-50 text-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-28">
-                {/* Breadcrumbs */}
-                <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
-
                 {/* Hero Section */}
                 <section className="text-center my-16">
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 lowercase">contact us</h1>
@@ -79,6 +75,4 @@ const ContactClientPage: React.FC = () => {
             </div>
         </main>
     );
-};
-
-export default ContactClientPage;
+}

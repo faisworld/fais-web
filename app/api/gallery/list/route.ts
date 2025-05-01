@@ -1,81 +1,47 @@
-import { list } from '@vercel/blob';
-import { NextResponse } from 'next/server';
-
-
-// Use require for probe-image-size as it might be a CJS module
-const probe = require('probe-image-size');
-
-// Define the structure for image objects
-interface ImageInfo {
-    key: string;
-    id: string;
-    url: string;
-    title: string;
-    folder: string;
-    alt: string;
-    width: number | null;
-    height: number | null;
-    size: number;
-    uploaded_at: Date;
-}
+import { NextResponse } from "next/server"
+import { Client } from "@neondatabase/serverless"
 
 export async function GET() {
-  // List all blobs in the store
-  const { blobs } = await list();
+  try {
+    const client = new Client(process.env.DATABASE_URL)
+    await client.connect()
 
-  const foldersSet = new Set<string>();
-  foldersSet.add(''); // Always include root
+    // Log that we're fetching images
+    console.log("Fetching images from database...")
 
-  // Filter out .keep files and prepare promises for dimension probing
-  const imagePromises = blobs
-    .filter(blob => !blob.pathname.endsWith('/.keep')) // Filter out .keep files
-    .map(async (blob, idx) => {
-      let folder = '';
-      let title = blob.pathname.split('/').pop() || `Image ${idx + 1}`;
-      let pathParts = blob.pathname.split('/').filter(Boolean);
+    const result = await client.query(
+      `SELECT 
+        id, url, title, uploaded_at, size, width, height, 
+        "alt-tag", "alt-tag" as "altTag", folder, format, description 
+       FROM images 
+       ORDER BY uploaded_at DESC`,
+    )
 
-      if (pathParts.length > 1) {
-        folder = pathParts.slice(0, -1).join('/');
-        foldersSet.add(folder);
-      } else if (pathParts.length === 1) {
-        folder = ''; // Assign to root
-      } else {
-        return null; // Skip empty pathnames
-      }
+    await client.end()
 
-      // Probe image dimensions
-      let dimensions: { width: number | null; height: number | null } = { width: null, height: null };
-      try {
-        // Ensure probe is treated as a function
-        const probeFn = typeof probe === 'function' ? probe : probe.default;
-        if (typeof probeFn !== 'function') {
-          throw new Error('probe-image-size could not be loaded as a function.');
-        }
-        const result = await probeFn(blob.url);
-        dimensions = { width: result.width, height: result.height };
-      } catch (error) {
-        console.error(`Failed to probe image dimensions for ${blob.url}:`, error);
-        // Keep width/height as null if probing fails
-      }
+    // Log the result for debugging
+    console.log(`Found ${result.rows.length} images`)
 
-      return {
-        key: blob.pathname,
-        id: blob.pathname,
-        url: blob.url,
-        title: title,
-        folder: folder,
-        alt: title,
-        width: dimensions.width, // Use probed width
-        height: dimensions.height, // Use probed height
-        size: blob.size,
-        uploaded_at: blob.uploadedAt,
-      };
-    });
+    // If there are no images, add a placeholder for testing
+    if (result.rows.length === 0) {
+      console.log("No images found, adding placeholder for testing")
+      return NextResponse.json({
+        images: [
+          {
+            id: 1,
+            url: "/abstract-geometric-shapes.png",
+            title: "No images found",
+            altTag: "Placeholder image",
+            width: 800,
+            height: 600,
+          },
+        ],
+      })
+    }
 
-  // Wait for all promises to resolve and filter out nulls
-  const images = (await Promise.all(imagePromises)).filter(img => img !== null) as ImageInfo[];
-
-  const folders = Array.from(foldersSet).sort();
-
-  return NextResponse.json({ images, folders });
+    return NextResponse.json({ images: result.rows })
+  } catch (error) {
+    console.error("Error fetching images:", error)
+    return NextResponse.json({ error: "Failed to fetch images", details: error }, { status: 500 })
+  }
 }

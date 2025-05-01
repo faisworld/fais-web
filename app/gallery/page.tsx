@@ -1,40 +1,16 @@
-'use client';
+import GalleryClient from "./GalleryClient"
 
-import { useEffect, useState } from 'react';
-import GalleryClient from './GalleryClient';
+export const metadata = {
+  title: "Image Gallery | Fantastic AI Studio",
+  description: "Browse and manage your image gallery",
+}
 
-export default function GalleryPage() {
-  const [images, setImages] = useState<any[]>([]);
-  const [folders, setFolders] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchData() {
-      // Replace with your actual API endpoint or logic
-      const res = await fetch('/api/gallery/list');
-      const data = await res.json();
-      setImages(data.images || []);
-      setFolders(data.folders || []);
-      setLoading(false);
-    }
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8 text-center">Gallery</h1>
-        <div>Loading...</div>
-      </section>
-    );
-  }
-
+export default async function GalleryPage() {
+  // You could fetch initial photos here if needed
   return (
-    <section className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8 text-center">Gallery</h1>
-      <div className="rounded-xl bg-white shadow-lg p-4 md:p-8">
-        <GalleryClient photos={images} folders={folders} />
-      </div>
-    </section>
-  );
+    <div className="container mx-auto py-10 px-4 mt-20">
+      <h1 className="text-3xl font-bold mb-8">Image Gallery</h1>
+      <GalleryClient />
+    </div>
+  )
 }

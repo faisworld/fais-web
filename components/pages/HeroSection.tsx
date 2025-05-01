@@ -1,62 +1,106 @@
-// filepath: c:\Users\solar\Projects\fais-web\components\pages\HeroSection.tsx
-"use client";
-import { useState } from "react";
-import Carousel from "@/components/ui/Carousel";
+"use client"
 
-interface HeroSectionProps {
-    config: Record<string, unknown>;
-    carouselItems: Array<{
-        src: string;
-        alt: string;
-        title: string;
-        subtitle: string;
-        description: string;
-    }>;
+import { useState, useEffect, useCallback } from "react"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import { handleImageError } from "@/utils/image-utils"
+
+type CarouselItem = {
+  src: string
+  alt: string
+  title: string
+  subtitle: string
+  description: string
 }
 
-export default function HeroSection({ carouselItems }: HeroSectionProps) {
-    const [activeIndex, setActiveIndex] = useState(0);
+type HeroSectionProps = {
+  carouselItems: CarouselItem[]
+  config?: {
+    autoplay?: boolean
+    interval?: number
+  }
+}
 
-    const handleSlideChange = (index: number) => {
-        setActiveIndex(index);
-    };
+export default function HeroSection({ carouselItems, config = { autoplay: true, interval: 5000 } }: HeroSectionProps) {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [loadedImages, setLoadedImages] = useState<boolean[]>(Array(carouselItems.length).fill(false))
 
-    return (
-        <div className="relative w-full h-[120vh] overflow-hidden">
-            <Carousel
-                items={carouselItems.map(({ src, alt }) => ({ src, alt }))}
-                onSlideChange={handleSlideChange}
+  const nextSlide = useCallback(() => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % carouselItems.length)
+  }, [carouselItems.length])
+
+  const prevSlide = useCallback(() => {
+    setActiveIndex((prevIndex) => (prevIndex - 1 + carouselItems.length) % carouselItems.length)
+  }, [carouselItems.length])
+
+  // Set up autoplay
+  useEffect(() => {
+    if (config.autoplay) {
+      const interval = setInterval(nextSlide, config.interval || 5000)
+      return () => clearInterval(interval)
+    }
+  }, [config.autoplay, config.interval, nextSlide])
+
+  return (
+    <section className="relative w-full h-[600px] overflow-hidden">
+      {/* Carousel items */}
+      {carouselItems.map((item, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === activeIndex ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          {/* Use img tag with proper error handling for better control */}
+          <div className="relative w-full h-full">
+            <img
+              src={item.src || "/placeholder.svg"}
+              alt={item.alt}
+              onError={handleImageError}
+              className="absolute inset-0 w-full h-full object-cover"
             />
-            {carouselItems[activeIndex] && (
-                <div
-                    className="absolute flex flex-col items-center justify-center shadow-xl border border-gray-200 rounded-xl"
-                    style={{
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        backgroundColor: "rgba(253, 252, 236, 0.59)",
-                        width: "500px", // Increased width by 20px
-                        height: "280px", // Reduced height for a tighter fit
-                        minWidth: "320px",
-                        maxWidth: "95vw",
-                        color: "#222",
-                        zIndex: 10,
-                        textAlign: "center",
-                        padding: "32px 32px", // Reduced padding for less space above/below
-                        margin: "var(--hero-overlay-margin, 0)",
-                    }}
-                >
-                    <h1 className="text-3xl font-bold mb-2 drop-shadow-lg bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
-                        {carouselItems[activeIndex].title}
-                    </h1>
-                    <h2 className="text-xl mt-2 mb-2 bg-gradient-to-r from-yellow-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-                        {carouselItems[activeIndex].subtitle}
-                    </h2>
-                    <p className="text-base mt-2 text-gray-800">
-                        {carouselItems[activeIndex].description}
-                    </p>
+
+            {/* Content overlay */}
+            <div className="absolute inset-0 bg-black/40 flex items-center">
+              <div className="container mx-auto px-4">
+                <div className="max-w-2xl text-white">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4">{item.title}</h1>
+                  <h2 className="text-xl md:text-2xl font-medium mb-4">{item.subtitle}</h2>
+                  <p className="text-lg opacity-90 mb-8">{item.description}</p>
+                  <button className="btn">Learn More</button>
                 </div>
-            )}
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      ))}
+
+      {/* Navigation arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 rounded-full p-2 text-white z-10"
+        aria-label="Previous slide"
+      >
+        <FiChevronLeft size={24} />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 rounded-full p-2 text-white z-10"
+        aria-label="Next slide"
+      >
+        <FiChevronRight size={24} />
+      </button>
+
+      {/* Indicators */}
+      <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-10">
+        {carouselItems.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveIndex(index)}
+            className={`w-3 h-3 rounded-full ${index === activeIndex ? "bg-white" : "bg-white/50"}`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  )
 }

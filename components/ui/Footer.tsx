@@ -1,5 +1,9 @@
-import React from "react";
-import Link from 'next/link';
+"use client"
+
+import Link from "next/link"
+import { getBlobImage } from "@/utils/image-utils"
+import ClientImage from "@/components/ui/ClientImage"
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -7,6 +11,14 @@ export default function Footer() {
       <div className="flex flex-wrap w-full py-8 px-[10%] mt-12">
         {/* Left Column */}
         <div className="w-1/2">
+          <div className="mb-4">
+            <ClientImage
+              src={getBlobImage("logo") || "/images/logo.png"}
+              alt="Fantastic AI Studio Logo"
+              width={120}
+              height={48}
+            />
+          </div>
           <h3 className="text-lg font-bold mb-4">other resources:</h3>
           <ul className="list-none">
             <li className="mb-2">
@@ -15,10 +27,7 @@ export default function Footer() {
               </Link>
             </li>
             <li className="mb-2">
-              <Link
-                href="https://chatgpt.com/g/g-6756a52a58b88191b89dbd4b700f249e-bitcoin-ai"
-                className="footer-link"
-              >
+              <Link href="https://chatgpt.com/g/g-6756a52a58b88191b89dbd4b700f249e-bitcoin-ai" className="footer-link">
                 Bitcoin AI
               </Link>
             </li>
@@ -30,6 +39,11 @@ export default function Footer() {
             <li className="mb-2">
               <Link href="/blockchain-services/" className="footer-link">
                 Blockchain Services
+              </Link>
+            </li>
+            <li className="mb-2">
+              <Link href="/instant-id" className="footer-link">
+                InstantID Image Creator
               </Link>
             </li>
           </ul>
@@ -65,5 +79,5 @@ export default function Footer() {
         </p>
       </div>
     </footer>
-  );
+  )
 }

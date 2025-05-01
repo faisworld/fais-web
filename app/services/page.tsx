@@ -1,21 +1,15 @@
-"use client";
-
-import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Services",
+  description: "Empowering businesses with cutting-edge AI and blockchain solutions tailored to your needs.",
+};
+
 export default function ServicesPage() {
-    const breadcrumbItems = [
-        { label: "Home", href: "/" },
-        { label: "Services" },
-    ];
-
     return (
-        <div className="pt-20"> {/* Adjust pt-20 to match header height */}
+        <div>
             <main>
-                <div className="max-w-7xl mx-auto container-padding py-12"> {/* Removed pt-28 */}
-                    {/* Breadcrumbs */}
-                    <Breadcrumbs items={breadcrumbItems} />
-
+                <div className="max-w-7xl mx-auto container-padding py-12">
                     {/* Hero Section */}
                     <section className="text-center my-16">
                         <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>

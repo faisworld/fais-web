@@ -1,10 +1,14 @@
-"use client";
+'use client';
 
 import MeetOurTeam from "@/components/pages/MeetOurTeam";
 import ContactUs from "@/components/pages/ContactUs";
-import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import CountUp from "react-countup";
 import Image from "next/image";
+
+export const metadata = {
+  title: "About",
+  description: "Learn more about Fantastic AI Studio and our mission.",
+};
 
 export default function AboutPage() {
     const breadcrumbItems = [
@@ -13,14 +17,10 @@ export default function AboutPage() {
     ];
 
     return (
-        // Apply padding here to offset the fixed header
-        <div className="pt-20">
+        <div>
             <main>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    {/* Breadcrumbs */}
-                    <Breadcrumbs items={breadcrumbItems} />
-
-                    {/* Page Title (Implicit H1) */}
+                    {/* Page Title */}
                     <h1 className="text-4xl font-bold my-8 text-center md:text-left">About Fantastic AI Studio</h1>
 
                     {/* Mission Section */}
@@ -113,7 +113,7 @@ export default function AboutPage() {
                     <MeetOurTeam />
 
                     {/* Contact Us Section */}
-                    <section className="relative bg-transparent bg-[url('/images/contact-bg.webp')] bg-cover bg-center py-12 mt-16 rounded-lg">
+                    <section className="relative bg-transparent bg-cover bg-center py-12 mt-16 rounded-lg">
                         <ContactUs />
                     </section>
                 </div>
