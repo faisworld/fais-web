@@ -3,15 +3,26 @@
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import type { ImageProps } from "next/image"
-import { getPlaceholderImage } from "@/utils/image-utils"
 
 type ClientImageProps = Omit<ImageProps, "onError"> & {
   fallbackSrc?: string
+  itemProp?: string
+  itemScope?: boolean
+  itemType?: string
 }
 
-export default function ClientImage({ src, alt, fallbackSrc, ...rest }: ClientImageProps) {
+export default function ClientImage({
+  src,
+  alt,
+  fallbackSrc,
+  itemProp,
+  itemScope,
+  itemType,
+  ...rest
+}: ClientImageProps) {
   const [imgSrc, setImgSrc] = useState<string | null>(null)
   const [hasError, setHasError] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Set the image source when the component mounts or src changes
   useEffect(() => {
@@ -25,16 +36,21 @@ export default function ClientImage({ src, alt, fallbackSrc, ...rest }: ClientIm
       setImgSrc(src as string)
     }
     setHasError(false)
+    setIsLoaded(false)
   }, [src])
 
   const handleError = () => {
     console.warn(`Failed to load image: ${src}`)
     if (!hasError) {
-      // Use our custom placeholder API
-      const placeholder = getPlaceholderImage((alt as string) || "Image")
-      setImgSrc(fallbackSrc || placeholder)
+      // Use fallback if provided, otherwise use a simple placeholder
+      const defaultFallback = `/placeholder.svg?width=${rest.width || 400}&height=${rest.height || 300}&query=${encodeURIComponent((alt as string) || "Image")}`
+      setImgSrc(fallbackSrc || defaultFallback)
       setHasError(true)
     }
+  }
+
+  const handleLoad = () => {
+    setIsLoaded(true)
   }
 
   // If imgSrc is null (initial state), show nothing until useEffect runs
@@ -42,5 +58,26 @@ export default function ClientImage({ src, alt, fallbackSrc, ...rest }: ClientIm
     return null
   }
 
-  return <Image src={imgSrc || getPlaceholderImage("Image")} alt={alt} onError={handleError} {...rest} />
+  // Create structured data attributes if provided
+  const structuredDataProps = itemProp
+    ? {
+        itemProp,
+        ...(itemScope ? { itemScope: true } : {}),
+        ...(itemType ? { itemType } : {}),
+      }
+    : {}
+
+  return (
+    <>
+      {!isLoaded && rest.priority !== true && <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>}
+      <Image
+        src={imgSrc || "/placeholder.svg"}
+        alt={alt}
+        onError={handleError}
+        onLoad={handleLoad}
+        {...structuredDataProps}
+        {...rest}
+      />
+    </>
+  )
 }

@@ -3,7 +3,7 @@
 import HomeCarousel from "@/components/pages/HomeCarousel"
 import SolutionsSection from "@/components/pages/SolutionsSection"
 import ProjectsSection from "@/components/pages/ProjectsSection"
-import TestimonialsSection from "@/components/pages/TestimonialsSection"
+// import TestimonialsSection from "@/components/pages/TestimonialsSection"
 import ContactUs from "@/components/pages/ContactUs"
 import PreFooterSection from "@/components/pages/PreFooterSection"
 
@@ -18,7 +18,8 @@ export default function Home() {
       <div className="bg-white">
         <SolutionsSection />
         <ProjectsSection />
-        <TestimonialsSection />
+        {/* Testimonials section commented out until we have real client feedback */}
+        {/* <TestimonialsSection /> */}
         <ContactUs />
         <PreFooterSection />
       </div>

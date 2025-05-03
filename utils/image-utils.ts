@@ -34,7 +34,7 @@ export function getBlobImageUrl(path: string): string {
  * @returns The placeholder URL
  */
 export function getPlaceholderImage(text: string, width = 400, height = 300): string {
-  return `/api/placeholder?width=${width}&height=${height}&text=${encodeURIComponent(text)}`
+  return `/placeholder.svg?width=${width}&height=${height}&query=${encodeURIComponent(text)}`
 }
 
 /**
@@ -49,24 +49,24 @@ export const blobImages: { [key: string]: string } = {
   "logo-black":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_black_fais-KqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
 
-  // Placeholder SVGs for other images
-  "pioneering-digital-transformation": `/api/placeholder?width=1200&height=700&text=Digital%20Transformation`,
-  "innovating-future": `/api/placeholder?width=1200&height=700&text=Innovating%20Future`,
-  "shaping-sota-technologies": `/api/placeholder?width=1200&height=700&text=SOTA%20Technologies`,
+  // Carousel images - replace these with actual Blob URLs if you have them
+  "pioneering-digital-transformation": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/pioneering-digital-transformation-colour-aELmRuCgO0oLC8AqNk9ItkkvQQxYnE.webp",
+  "innovating-future": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746263671694-Innovating-the-Future.webp",
+  "shaping-sota-technologies": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746263190461-Shaping-Sota-Technologies.png",
 
   // Solutions section images
-  "ai-solutions": `/api/placeholder?width=600&height=400&text=AI%20Solutions`,
-  "blockchain-solutions": `/api/placeholder?width=600&height=400&text=Blockchain%20Solutions`,
+  "ai-solutions": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/ai-placeholder-GkKOGVhxLv4Iw3bRlsrerHVp709TAM.png",
+  "blockchain-solutions": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blockchain-placeholder-UNQuhq91UBgv4xGijnG5aAVBK6nhdm.png",
 
   // Project images
-  "mev-staking": `/api/placeholder?width=600&height=400&text=MEV%20Staking`,
-  "web3-gaming": `/api/placeholder?width=600&height=400&text=Web3%20Gaming`,
-  "nft-marketplace": `/api/placeholder?width=600&height=400&text=NFT%20Marketplace`,
-  "ai-services": `/api/placeholder?width=600&height=400&text=AI%20Services`,
-  "payment-systems": `/api/placeholder?width=600&height=400&text=Payment%20Systems`,
+  "mev-staking": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/MEV-Staking-Dapp-qu9tSLxD01qmZELWSWL4giLhFv3lan.webp",
+  "web3-gaming": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Web3-Game-jH8VUEwQa09rWqV0kUKvN7I7EhHz7W.webp",
+  "nft-marketplace": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/NFT-Marketplace-300x300-bUFrkFMbDGUlx3ei4rXiDV6h2MBMid.webp",
+  "ai-services": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/6-AI-Services-bw4-K0JK6LHIxJik1YvNVq8Avzche5h9Eg.webp",
+  "payment-systems": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Dapp-Development-300x300-0NIiVSQb62YUQ79OegmUC9nvn4U09B.webp",
 
   // Open Graph and social images
-  "og-image": `/api/placeholder?width=1200&height=630&text=Fantastic%20AI%20Studio`,
+  "og-image": "/placeholder.svg?width=1200&height=630&query=Fantastic%20AI%20Studio",
 
   // Add more as needed
 }
@@ -93,6 +93,12 @@ export function getBlobImage(key: string, fallback?: string): string {
  */
 export function handleImageError(e: React.SyntheticEvent<HTMLImageElement, Event>): void {
   console.warn(`Failed to load image: ${e.currentTarget.src}`)
-  e.currentTarget.src = getPlaceholderImage("Error")
+
+  // Extract dimensions from the current image if possible
+  const width = e.currentTarget.width || 400
+  const height = e.currentTarget.height || 300
+  const alt = e.currentTarget.alt || "Image"
+
+  e.currentTarget.src = `/placeholder.svg?width=${width}&height=${height}&query=${encodeURIComponent(alt)}`
   e.currentTarget.onerror = null // Prevent infinite error loop
 }

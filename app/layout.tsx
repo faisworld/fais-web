@@ -5,6 +5,7 @@ import { Inter } from "next/font/google"
 import Header from "@/components/ui/Header"
 import Footer from "@/components/ui/Footer"
 import DynamicBreadcrumbs from "@/components/ui/DynamicBreadcrumbs"
+import MissingImageFixer from "@/components/ui/MissingImageFixer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DynamicBreadcrumbs darkBg={false} />
         <main>{children}</main>
         <Footer />
+        <MissingImageFixer />
       </body>
     </html>
   )

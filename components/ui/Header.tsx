@@ -27,7 +27,6 @@ export default function Header() {
     { href: "/projects", label: "Projects" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
-    { href: "/gallery", label: "Gallery" }, // Added Gallery link
   ]
 
   return (
