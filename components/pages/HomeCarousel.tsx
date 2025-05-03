@@ -129,7 +129,7 @@ export default function HomeCarousel() {
       aria-label="Featured projects and services"
     >
       {/* Carousel display */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9", maxHeight: "90vh" }}>
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/7", maxHeight: "100vh" }}>
         {carouselItems.map((item, index) => (
           <div
             key={index}
@@ -146,7 +146,8 @@ export default function HomeCarousel() {
                 src={getBlobImage(item.key)}
                 alt={item.alt}
                 fill
-                className="object-cover object-center"
+                className="object-cover"
+                objectPosition="top" // Use the new prop instead of className
                 priority={index === 0}
                 sizes="100vw"
                 // Add structured data for SEO
@@ -163,8 +164,11 @@ export default function HomeCarousel() {
 
       {/* Loading state */}
       {!imagesLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
-          <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-800 rounded-full animate-spin"></div>
+        <div
+          className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20"
+          style={{ aspectRatio: "16/7", minHeight: "600px" }}
+        >
+          <div className="w-16 h-16 border-4 border-gray-300 border-t-gray-800 rounded-full animate-spin"></div>
         </div>
       )}
 

@@ -9,6 +9,7 @@ type ClientImageProps = Omit<ImageProps, "onError"> & {
   itemProp?: string
   itemScope?: boolean
   itemType?: string
+  objectPosition?: string
 }
 
 export default function ClientImage({
@@ -18,6 +19,7 @@ export default function ClientImage({
   itemProp,
   itemScope,
   itemType,
+  objectPosition = "center",
   ...rest
 }: ClientImageProps) {
   const [imgSrc, setImgSrc] = useState<string | null>(null)
@@ -75,6 +77,7 @@ export default function ClientImage({
         alt={alt}
         onError={handleError}
         onLoad={handleLoad}
+        style={{ ...rest.style, objectPosition }}
         {...structuredDataProps}
         {...rest}
       />
