@@ -44,13 +44,12 @@ export function getPlaceholderImage(text: string, width = 400, height = 300): st
 
 // Map of friendly names to actual blob URLs or placeholder SVGs
 export const blobImages: { [key: string]: string } = {
-  // Use placeholder SVGs until you upload actual images to Blob storage
-  // Replace these with actual Blob URLs when you have them
+  // Use actual Blob URLs for logos
+  logo: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png",
+  "logo-black":
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_black_fais-KqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
 
-  // Logo
-  logo: `/api/placeholder?width=100&height=40&text=Logo`,
-
-  // Carousel images
+  // Placeholder SVGs for other images
   "pioneering-digital-transformation": `/api/placeholder?width=1200&height=700&text=Digital%20Transformation`,
   "innovating-future": `/api/placeholder?width=1200&height=700&text=Innovating%20Future`,
   "shaping-sota-technologies": `/api/placeholder?width=1200&height=700&text=SOTA%20Technologies`,

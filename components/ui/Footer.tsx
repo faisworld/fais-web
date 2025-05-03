@@ -1,23 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { getBlobImage } from "@/utils/image-utils"
-import ClientImage from "@/components/ui/ClientImage"
+import Logo from "@/components/ui/Logo"
 
 export default function Footer() {
   return (
     <footer className="site-footer">
       {/* Upper Block */}
-      <div className="flex flex-wrap w-full py-8 px-[10%] mt-12">
+      <div className="flex flex-wrap w-full py-8 px-4 sm:px-6 lg:px-[10%] mt-12">
         {/* Left Column */}
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2 mb-6 md:mb-0">
           <div className="mb-4">
-            <ClientImage
-              src={getBlobImage("logo") || "/images/logo.png"}
-              alt="Fantastic AI Studio Logo"
-              width={120}
-              height={48}
-            />
+            <Logo variant="black" />
           </div>
           <h3 className="text-lg font-bold mb-4">other resources:</h3>
           <ul className="list-none">
@@ -50,7 +44,7 @@ export default function Footer() {
         </div>
 
         {/* Right Column */}
-        <div className="w-1/2 text-center">
+        <div className="w-full md:w-1/2 text-center">
           <h3 className="text-lg font-bold mb-4">Contacts:</h3>
           <p>03150, Kyiv City, Ukraine</p>
           <p>132 Vel. Vasylkivska Str.</p>

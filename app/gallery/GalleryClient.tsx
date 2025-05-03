@@ -20,7 +20,6 @@ type ImageItem = {
   height?: number
   size?: number
   uploaded_at?: string
-  format?: string
 }
 
 export default function GalleryClient({ photos = [] }: { photos?: ImageItem[] }) {
@@ -130,6 +129,22 @@ export default function GalleryClient({ photos = [] }: { photos?: ImageItem[] })
         formData.append("folder", activeFolder)
       }
 
+      // Try to get image dimensions client-side
+      let width, height
+      if (file.type.startsWith("image/")) {
+        try {
+          const dimensions = await getImageDimensions(file)
+          if (dimensions) {
+            width = dimensions.width
+            height = dimensions.height
+            formData.append("width", width.toString())
+            formData.append("height", height.toString())
+          }
+        } catch (err) {
+          console.warn("Could not determine image dimensions client-side:", err)
+        }
+      }
+
       // Simulate progress for better UX
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
@@ -162,6 +177,22 @@ export default function GalleryClient({ photos = [] }: { photos?: ImageItem[] })
       // Reset progress after a delay
       setTimeout(() => setUploadProgress(0), 1000)
     }
+  }
+
+  // Helper function to get image dimensions client-side
+  const getImageDimensions = (file: File): Promise<{ width: number; height: number } | null> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => {
+        resolve({ width: img.width, height: img.height })
+        URL.revokeObjectURL(img.src)
+      }
+      img.onerror = () => {
+        reject(new Error("Failed to load image"))
+        URL.revokeObjectURL(img.src)
+      }
+      img.src = URL.createObjectURL(file)
+    })
   }
 
   // Format file size

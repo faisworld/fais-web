@@ -29,9 +29,16 @@ const VapiWidget: React.FC = () => {
           setLoading(false)
         }
         const handleError = (e: any) => {
-          setCallActive(false)
-          setLoading(false)
-          console.error("Vapi error:", e)
+          if (e instanceof Response) {
+            console.error(
+              "Vapi SDK error:",
+              `status=${e.status}`,
+              `statusText=${e.statusText}`,
+              `url=${e.url}`
+            );
+          } else {
+            console.error("Vapi error:", e);
+          }
         }
         const handleSpeechStart = () => setIsSpeaking(true) // Use setIsSpeaking
         const handleSpeechEnd = () => setIsSpeaking(false) // Use setIsSpeaking

@@ -15,7 +15,15 @@ export default function ClientImage({ src, alt, fallbackSrc, ...rest }: ClientIm
 
   // Set the image source when the component mounts or src changes
   useEffect(() => {
-    setImgSrc(src as string)
+    // If src is a direct URL to a Blob Store image, use it directly
+    if (
+      typeof src === "string" &&
+      (src.includes("vercel-storage.com") || src.startsWith("https://") || src.startsWith("http://"))
+    ) {
+      setImgSrc(src)
+    } else {
+      setImgSrc(src as string)
+    }
     setHasError(false)
   }, [src])
 

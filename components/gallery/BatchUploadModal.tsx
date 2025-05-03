@@ -19,6 +19,7 @@ type UploadStatus = {
   progress: number
   message?: string
   url?: string
+  dimensions?: { width: number; height: number }
 }
 
 export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchUploadModalProps) {
@@ -35,14 +36,35 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
       setFiles((prev) => [...prev, ...newFiles])
 
       // Initialize upload statuses for new files
-      setUploadStatuses((prev) => [
-        ...prev,
+      setUploadStatuses((prevUploadStatuses) => [
+        ...prevUploadStatuses,
         ...newFiles.map((file) => ({
           file,
           status: "pending",
           progress: 0,
         })),
       ])
+
+      // Try to get dimensions for image files
+      newFiles.forEach((file, idx) => {
+        if (file.type.startsWith("image/")) {
+          const img = new Image()
+          const objectUrl = URL.createObjectURL(file)
+
+          img.onload = () => {
+            setUploadStatuses((prevUploadStatuses) =>
+              prevUploadStatuses.map((status, i) =>
+                i === uploadStatuses.length + idx
+                  ? { ...status, dimensions: { width: img.width, height: img.height } }
+                  : status,
+              ),
+            )
+            URL.revokeObjectURL(objectUrl)
+          }
+
+          img.src = objectUrl
+        }
+      })
     }
   }
 
@@ -68,6 +90,13 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
       // Default title to filename without extension
       const title = file.name.split(".").slice(0, -1).join(".")
       formData.append("title", title)
+
+      // Add dimensions if available
+      const status = uploadStatuses[index]
+      if (status.dimensions) {
+        formData.append("width", status.dimensions.width.toString())
+        formData.append("height", status.dimensions.height.toString())
+      }
 
       const res = await fetch("/api/upload-image", {
         method: "POST",
@@ -241,7 +270,14 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{status.file.name}</p>
-                      <p className="text-xs text-gray-500">{formatFileSize(status.file.size)}</p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <span>{formatFileSize(status.file.size)}</span>
+                        {status.dimensions && (
+                          <span className="ml-2">
+                            {status.dimensions.width} × {status.dimensions.height} px
+                          </span>
+                        )}
+                      </div>
                       {status.status === "uploading" && (
                         <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
                           <div

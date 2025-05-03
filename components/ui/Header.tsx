@@ -4,8 +4,7 @@ import Link from "next/link"
 import dynamic from "next/dynamic"
 import { useState } from "react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
-import { getBlobImage } from "@/utils/image-utils"
-import ClientImage from "@/components/ui/ClientImage"
+import Logo from "@/components/ui/Logo"
 
 const VapiWidget = dynamic(() => import("@/components/ui/VapiWidget"), { ssr: false })
 
@@ -35,16 +34,7 @@ export default function Header() {
     <header className="site-header fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black bg-opacity-80 backdrop-blur-md text-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-4 lg:px-6 h-20">
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0" onClick={handleLinkClick}>
-          <ClientImage
-            src={getBlobImage("logo") || "/images/logo.png"}
-            alt="Fantastic AI Studio Logo"
-            width={100}
-            height={40}
-            priority
-            style={{ width: "auto", height: "40px" }}
-          />
-        </Link>
+        <Logo variant="white" href="/" onClick={handleLinkClick} />
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
