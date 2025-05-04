@@ -2,14 +2,35 @@
 
 import Link from "next/link"
 import dynamic from "next/dynamic"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import Logo from "@/components/ui/Logo"
 
-const VapiWidget = dynamic(() => import("@/components/ui/VapiWidget"), { ssr: false })
+// Dynamically import VapiWidget with error boundary
+const VapiWidget = dynamic(() => import("@/components/ui/VapiWidget"), {
+  ssr: false,
+  loading: () => (
+    <div className="px-8 rounded-full font-bold text-white text-lg opacity-70 header-menu-links">
+      <span className="flex items-center gap-2 text-lg">
+        <span className="font-bold">fAIs</span>
+      </span>
+    </div>
+  ),
+})
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [vapiAvailable, setVapiAvailable] = useState(true)
+
+  useEffect(() => {
+    // Check if Vapi API key is available
+    const apiKey = process.env.NEXT_PUBLIC_VAPI_API_KEY
+    const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID
+
+    if (!apiKey || !assistantId) {
+      setVapiAvailable(false)
+    }
+  }, [])
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -46,17 +67,13 @@ export default function Header() {
               </li>
             ))}
           </ul>
-          <div className="ml-4">
-            <VapiWidget />
-          </div>
+          <div className="ml-4">{vapiAvailable && <VapiWidget />}</div>
         </nav>
 
         {/* Mobile Section */}
         <div className="md:hidden flex items-center">
           {/* Vapi Widget on Mobile */}
-          <div className="mr-4">
-            <VapiWidget />
-          </div>
+          <div className="mr-4">{vapiAvailable && <VapiWidget />}</div>
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMobileMenu}

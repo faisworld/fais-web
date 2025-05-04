@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
+import { writeFile } from "fs/promises";
+import path from "path";
 
 export async function POST(req: NextRequest) {
   const { image, prompt } = await req.json();
@@ -9,7 +11,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const output = await replicate.run(
-      "zsxkib/instant-id:latest",
+      "zsxkib/instant-id:2e4785a4d80dadf580077b2244c8d7c05d8e3faac04a04c02d8e099dd2876789",
       {
         input: {
           image,
@@ -26,7 +28,20 @@ export async function POST(req: NextRequest) {
         }
       }
     );
-    return NextResponse.json({ output });
+
+    // output is usually an array of URLs
+    const imageUrl = Array.isArray(output) ? output[0] : output;
+    const res = await fetch(imageUrl);
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Save to /tmp or /public (for dev, /tmp is safer)
+    const filename = `instantid_${Date.now()}.webp`;
+    const filePath = path.join(process.cwd(), "public", filename);
+    await writeFile(filePath, buffer);
+
+    // Return the local path (for serving via /public)
+    return NextResponse.json({ output: `/` + filename, remote: imageUrl });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

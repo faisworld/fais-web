@@ -14,13 +14,13 @@ export default function InstantIDPage() {
     setLoading(true);
     setResult(null);
 
-    // You must set REPLICATE_API_TOKEN in your environment and use a Next.js API route for security!
-    const res = await fetch("/api/instant-id", {
+    const response = await fetch("/api/instant-id", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image: imageUrl, prompt }),
     });
-    const data = await res.json();
+
+    const data = await response.json();
     setResult(data.output || data.error || "No output");
     setLoading(false);
   }

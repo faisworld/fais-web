@@ -69,11 +69,18 @@ export default function MissingImageFixer() {
       description: "Payment Systems project image",
       currentUrl: getBlobImage("payment-systems"),
     },
+    {
+      key: "ceo-portrait",
+      description: "CEO portrait image for Quote Section",
+      currentUrl: getBlobImage("ceo-portrait"),
+    },
   ]
 
   // Check if an image is a placeholder
   const isPlaceholder = (url: string) => {
-    return url.includes("/placeholder.svg") || url.includes("?key=")
+    return (
+      url.includes("/placeholder.svg") || url.includes("?query=") || !url.includes("vercel-storage.com") || url === ""
+    )
   }
 
   // Handle image selection from the picker

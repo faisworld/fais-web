@@ -102,19 +102,19 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     if (existingColumns.includes("size")) {
       insertColumns.push("size")
-      insertValues.push(file.size)
+      insertValues.push(file.size.toString())
       placeholders.push(`$${paramIndex++}`)
     }
 
     if (existingColumns.includes("width") && width !== null) {
       insertColumns.push("width")
-      insertValues.push(width)
+      insertValues.push(width.toString())
       placeholders.push(`$${paramIndex++}`)
     }
 
     if (existingColumns.includes("height") && height !== null) {
       insertColumns.push("height")
-      insertValues.push(height)
+      insertValues.push(height.toString())
       placeholders.push(`$${paramIndex++}`)
     }
 
@@ -139,7 +139,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     // Add uploaded_at if it exists
     if (existingColumns.includes("uploaded_at")) {
       insertColumns.push("uploaded_at")
-      insertValues.push(new Date())
+      insertValues.push(new Date().toISOString())
       placeholders.push(`$${paramIndex++}`)
     }
 

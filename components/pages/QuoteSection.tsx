@@ -1,113 +1,68 @@
-// filepath: c:\Users\solar\Projects\fais-web\components\pages\QuoteSection.tsx
-"use client";
-import Image from "next/image";
+"use client"
+
+import { useState } from "react"
+import Image from "next/image"
 
 export default function QuoteSection() {
-    return (
-        <section className="relative w-full p-8">
-            <div className="absolute inset-0 bg-black/80" />
-            <div className="relative flex">
-                {/* Left Side */}
-                <div className="w-1/2">
-                    <h2 className="text-3xl font-bold mb-4">
-                        We drive innovation in AI and blockchain technology.
-                    </h2>
-                    <h3 className="text-xl">
-                        an effective way to empower your business
-                    </h3>
-                </div>
+  const [imageError, setImageError] = useState(false)
 
-                {/* Right Side */}
-                <div className="w-1/2 text-center">
-                    <Image
-                        src="/images/fais-ceo-Eugene-Lukyanov.jpg"
-                        alt="CEO and Founder of Fantastic AI Studio, Eugene Lukianov"
-                        width={200}
-                        height={200}
-                        style={{ objectFit: "cover" }}
-                        className="mx-auto rounded-full"
-                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/images/default-ceo.png"; // Provide a default
-                        }}
-                    />
-                    <p className="text-sm mt-2">Eugene Lukianov</p>
-                    <p className="text-xs italic text-gray-400">CEO and Founder of Fantastic AI Studio</p>
-                    <p className="text-base mt-4">
-                        fantastic AI studio is the premier choice for enterprises
-                        seeking to enhance their operations with the latest in AI
-                        and blockchain innovations. our expertise and advanced
-                        technological solutions translate into tangible benefits
-                        for your business, optimizing processes and securing
-                        transactions
-                    </p>
-                    <p className="text-lg mt-4">
-                        &quot;choosing fantastic AI studio not only ensures access to
-                        top-tier AI and blockchain development but also reduces
-                        the need for extensive external resources, offering a
-                        streamlined path to digital transformation&quot;.
-                    </p>
-                </div>
-            </div>
-        </section>
-    );
-}
+  return (
+    <section className="relative w-full py-16 px-4 sm:px-6 lg:px-8 bg-gray-100 overflow-hidden">
+      {/* Light patterned background */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23000000' fillOpacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+        }}
+      />
 
-export function SolutionsSection() {
-    return (
-        <section className="mt-[20px] mx-[10%]">
-            <h2 className="text-3xl font-bold text-center">
-                advanced {"{ai}"} - [blockchain] solutions
+      {/* Content container */}
+      <div className="relative max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-8 items-center">
+          {/* Left Side */}
+          <div className="w-full md:w-1/2 mb-8 md:mb-0">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+              We drive innovation in AI and blockchain technology.
             </h2>
-            <p className="text-center">
-                fantastic ai studio merges sleek, modern design with robust
-                technological frameworks to revolutionize your digital
-                experiences. we stand at the intersection of creativity and
-                technology, crafting ai and blockchain solutions that push the
-                boundaries of what&apos;s possible.
-            </p>
+            <h3 className="text-xl md:text-2xl text-gray-600">an effective way to empower your business</h3>
+          </div>
 
-            <div className="flex flex-wrap justify-center">
-                {/* AI-Powered Solutions Column */}
-                <div className="w-1/2 p-4">
-                    <h3 className="text-2xl font-bold mb-4 text-center">
-                        AI-Powered Solutions
-                    </h3>
-                    <Image
-                        src="/images/ai-placeholder.png"
-                        alt="AI Placeholder"
-                        width={600}
-                        height={400}
-                        style={{ objectFit: "contain" }}
-                        className="mx-auto"
-                    />
-                    <p className="mt-4 text-center">
-                        Harness the power of artificial intelligence to optimize your
-                        operations, enhance decision-making, and create intelligent
-                        systems that learn and adapt.
-                    </p>
-                </div>
-
-                {/* Blockchain Innovations Column */}
-                <div className="w-1/2 p-4">
-                    <h3 className="text-2xl font-bold mb-4 text-center">
-                        Blockchain Innovations
-                    </h3>
-                    <Image
-                        src="/images/blockchain-placeholder.png"
-                        alt="Blockchain Placeholder"
-                        width={600}
-                        height={400}
-                        style={{ objectFit: "contain" }}
-                        className="mx-auto"
-                    />
-                    <p className="mt-4 text-center">
-                        Secure and transparent blockchain applications custom-designed
-                        to streamline your business processes and ensure integrity in
-                        every transaction.
-                    </p>
-                </div>
+          {/* Right Side */}
+          <div className="w-full md:w-1/2 text-center">
+            <div className="relative w-48 h-48 mx-auto mb-4">
+              <div className="absolute inset-0 rounded-full border-4 border-blue-100 shadow-lg"></div>
+              <Image
+                src="https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/fais-ceo-Eugene-Lukyanov-qyYzZG41iWLwtsiAgqM8MKitVwupgn.jpg"
+                alt="CEO and Founder of Fantastic AI Studio, Eugene Lukyanov"
+                fill
+                style={{ objectFit: "cover" }}
+                className="rounded-full"
+                sizes="(min-width: 768px) 192px, 192px"
+                priority
+              />
             </div>
-        </section>
-    );
+            <p className="text-sm mt-2 font-semibold text-gray-800">Eugene Lukyanov</p>
+            <p className="text-xs italic text-gray-500">CEO and Founder of Fantastic AI Studio</p>
+
+            <div className="mt-6 max-w-lg mx-auto">
+              <p className="text-base text-gray-700">
+                fantastic AI studio is the premier choice for enterprises seeking to enhance their operations with the
+                latest in AI and blockchain innovations. our expertise and advanced technological solutions translate
+                into tangible benefits for your business, optimizing processes and securing transactions.
+              </p>
+
+              <blockquote className="mt-6 border-l-4 border-blue-300 pl-4 italic">
+                <p className="text-lg text-gray-700">
+                  "choosing fantastic AI studio not only ensures access to top-tier AI and blockchain development but
+                  also reduces the need for extensive external resources, offering a streamlined path to digital
+                  transformation."
+                </p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }
