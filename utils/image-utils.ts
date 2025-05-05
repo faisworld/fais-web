@@ -76,7 +76,8 @@ export const blobImages: { [key: string]: string } = {
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Dapp-Development-300x300-0NIiVSQb62YUQ79OegmUC9nvn4U09B.webp",
 
   // Open Graph and social images
-  "og-image": "/placeholder.svg?key=77iil",
+  "og-image":
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vibrant-ai-workspace-og-image-7yTGHJKLmnOP.png",
 
   // CEO portrait
   "ceo-portrait":

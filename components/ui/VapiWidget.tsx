@@ -39,13 +39,17 @@ const VapiWidget: React.FC = () => {
         setCallActive(false)
         setLoading(false)
 
-        // Handle specific error types
         if (e?.status === 401) {
           setError("Authentication failed")
           console.error("Vapi authentication error: Invalid API key or permissions")
         } else {
           setError("Connection error")
-          console.error("Vapi error:", e)
+          // Print the full error object for debugging
+          if (typeof e === "object") {
+            console.error("Vapi error:", JSON.stringify(e, null, 2))
+          } else {
+            console.error("Vapi error:", e)
+          }
         }
       }
       const handleSpeechStart = () => setIsSpeaking(true) // Use setIsSpeaking

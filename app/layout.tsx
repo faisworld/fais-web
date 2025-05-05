@@ -9,6 +9,14 @@ import MissingImageFixer from "@/components/ui/MissingImageFixer"
 
 const inter = Inter({ subsets: ["latin"] })
 
+// Define OG image URL using Blob storage
+const ogImageUrl =
+  "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vibrant-ai-workspace-og-image-7yTGHJKLmnOP.png"
+
+// Define Twitter/OG image URL using Blob storage
+const twitterImageUrl =
+  "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/twitter-card-image-fais-1200x630-NqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png"
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://fais.world"), // Use your real production URL here
   title: "Fantastic AI Studio",
@@ -19,7 +27,7 @@ export const metadata: Metadata = {
     url: "https://fais.world",
     images: [
       {
-        url: "/vibrant-ai-workspace.png",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: "Fantastic AI Studio Open Graph Image",
@@ -32,8 +40,10 @@ export const metadata: Metadata = {
     description: "Innovative AI and Blockchain Solutions",
     images: [
       {
-        url: "/vibrant-ai-workspace.png",
-        alt: "Fantastic AI Studio Twitter Image",
+        url: twitterImageUrl,
+        width: 1200,
+        height: 630,
+        alt: "Fantastic AI Studio - Innovative AI and Blockchain Solutions",
       },
     ],
   },

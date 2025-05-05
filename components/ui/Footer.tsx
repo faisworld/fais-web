@@ -11,7 +11,7 @@ export default function Footer() {
         {/* Left Column */}
         <div className="w-full md:w-1/2 mb-6 md:mb-0">
           <div className="mb-4">
-            <Logo variant="black" />
+            <Logo variant="black" href="/" className="mb-4" />
           </div>
           <h3 className="text-lg font-bold mb-4">other resources:</h3>
           <ul className="list-none">

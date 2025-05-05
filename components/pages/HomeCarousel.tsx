@@ -129,7 +129,7 @@ export default function HomeCarousel() {
       aria-label="Featured projects and services"
     >
       {/* Carousel display */}
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/7", maxHeight: "100vh" }}>
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/6", maxHeight: "100vh" }}>
         {carouselItems.map((item, index) => (
           <div
             key={index}
@@ -147,7 +147,7 @@ export default function HomeCarousel() {
                 alt={item.alt}
                 fill
                 className="object-cover"
-                objectPosition="top" // Use the new prop instead of className
+                objectPosition="top center"
                 priority={index === 0}
                 sizes="100vw"
                 // Add structured data for SEO
@@ -156,7 +156,7 @@ export default function HomeCarousel() {
                 itemType="https://schema.org/ImageObject"
               />
               {/* Add a subtle gradient overlay to ensure text readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/20"></div>
             </div>
           </div>
         ))}
@@ -214,7 +214,7 @@ export default function HomeCarousel() {
       {/* Overlay content for each slide */}
       <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
         <div className="container mx-auto px-4 flex justify-center">
-          <div className="max-w-2xl text-white bg-black/30 p-6 rounded-lg backdrop-blur-sm pointer-events-auto">
+          <div className="max-w-2xl text-white bg-black/10 p-6 rounded-lg backdrop-blur-[1px] pointer-events-auto">
             {activeIndex === 0 && (
               <>
                 <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">Pioneering Digital Transformation</h1>

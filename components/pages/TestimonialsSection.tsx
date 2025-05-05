@@ -1,6 +1,8 @@
+"use client"
+
 import type React from "react"
-import Image from "next/image"
-import { getBlobImage, handleImageError } from "@/utils/image-utils"
+import { getBlobImage } from "@/utils/image-utils"
+import ClientImage from "@/components/ui/ClientImage"
 
 // Sample testimonial data structure
 const testimonials = [
@@ -48,12 +50,11 @@ const TestimonialsSection: React.FC = () => {
                   <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200">
                     {/* Use your actual Blob storage URL for the avatar */}
                     {/* If the imageKey doesn't exist in blobImages, it will use a placeholder */}
-                    <Image
+                    <ClientImage
                       src={getBlobImage(testimonial.imageKey) || "/placeholder.svg"}
                       alt={`${testimonial.name}'s avatar`}
                       fill
                       className="object-cover"
-                      onError={(e) => handleImageError(e as any)}
                     />
                   </div>
                 </div>
