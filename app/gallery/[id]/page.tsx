@@ -18,6 +18,7 @@ export default async function GalleryImageEditPage({ params }: { params: { id: s
     const res = await fetch(apiUrl, {
       cache: "no-store", // Don't cache this request
       headers: { "Content-Type": "application/json" },
+      next: { revalidate: 0 }, // Ensure fresh data
     })
 
     if (!res.ok) {

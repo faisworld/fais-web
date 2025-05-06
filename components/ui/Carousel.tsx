@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
@@ -24,7 +24,21 @@ interface CarouselProps {
 
 const Carousel: React.FC<CarouselProps> = ({ items, onSlideChange, height = 700 }) => {
   const [errorIndexes, setErrorIndexes] = useState<number[]>([])
+  const [windowWidth, setWindowWidth] = useState(0)
   const carouselRef = useRef<any>(null)
+
+  // Update window width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+
+    // Set initial width
+    setWindowWidth(window.innerWidth)
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   const handleImageError = (index: number) => {
     setErrorIndexes((prev) => [...prev, index])
@@ -38,31 +52,43 @@ const Carousel: React.FC<CarouselProps> = ({ items, onSlideChange, height = 700 
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 5000,
     afterChange: (current: number) => {
       if (onSlideChange) {
         onSlideChange(current)
       }
     },
+    arrows: true,
+    adaptiveHeight: false,
   }
+
+  // Calculate optimal image dimensions
+  const imageHeight = height || 700
+  const imageWidth = Math.max(1920, windowWidth)
 
   return (
     <div className="relative w-full overflow-hidden" ref={carouselRef}>
       <Slider {...settings}>
         {items.map((item, index) => (
-          <div key={item.alt || item.title || index} className="relative w-full" style={{ height: `${height}px` }}>
+          <div key={item.alt || item.title || index} className="relative w-full" style={{ height: `${imageHeight}px` }}>
             {!errorIndexes.includes(index) ? (
-              <Image
-                src={item.src || "/placeholder.svg"}
-                alt={item.altTag || item.alt || item.title || ""}
-                title={item.title}
-                width={1530}
-                height={height}
-                sizes="(max-width: 1530px) 100vw, 1530px"
-                style={{ objectFit: "cover" }}
-                priority={index === 0}
-                onError={() => handleImageError(index)}
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={item.src || "/placeholder.svg"}
+                  alt={item.altTag || item.alt || item.title || ""}
+                  title={item.title}
+                  width={imageWidth}
+                  height={imageHeight}
+                  sizes="100vw"
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  priority={index === 0}
+                  onError={() => handleImageError(index)}
+                />
+              </div>
             ) : (
               <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                 <span className="text-gray-500">Image not available</span>

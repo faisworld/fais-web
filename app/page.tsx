@@ -15,7 +15,7 @@ export default function Home() {
       <HomeCarousel />
 
       {/* The rest of the page sections with consistent spacing */}
-      <div className="bg-white">
+      <div className="bg-white mt-8">
         <SolutionsSection />
         <ProjectsSection />
         {/* Testimonials section commented out until we have real client feedback */}

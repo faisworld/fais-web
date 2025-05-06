@@ -13,6 +13,7 @@
     "@google-cloud/recaptcha-enterprise": "^6.0.1",
     "@heroicons/react": "^2.2.0",
     "@neondatabase/serverless": "^1.0.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@vapi-ai/web": "^2.2.5",
     "@vercel/analytics": "^1.5.0",
     "@vercel/blob": "^1.0.0",
@@ -37,11 +38,12 @@
     "replicate": "^1.0.1",
     "sharp": "^0.34.1",
     "slick-carousel": "^1.8.1",
-    "tailwind-merge": "^3.2.0"
+    "tailwind-merge": "^3.2.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.1.4",
+    "@tailwindcss/postcss": "^4.1.5",
     "@types/formidable": "^3.4.5",
     "@types/node": "^22.15.3",
     "@types/nodemailer": "^6.4.17",
@@ -54,7 +56,7 @@
     "eslint": "^9.25.1",
     "postcss": "^8.5.3",
     "sass": "^1.86.3",
-    "tailwindcss": "^4.1.4",
+    "tailwindcss": "^4.1.5",
     "typescript": "^5.8.3"
   },
   "browserslist": [

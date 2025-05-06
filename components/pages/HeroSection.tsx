@@ -23,6 +23,20 @@ type HeroSectionProps = {
 export default function HeroSection({ carouselItems, config = { autoplay: true, interval: 5000 } }: HeroSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [loadedImages, setLoadedImages] = useState<boolean[]>(Array(carouselItems.length).fill(false))
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  // Update window width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+
+    // Set initial width
+    setWindowWidth(window.innerWidth)
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   const nextSlide = useCallback(() => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % carouselItems.length)
@@ -41,7 +55,7 @@ export default function HeroSection({ carouselItems, config = { autoplay: true, 
   }, [config.autoplay, config.interval, nextSlide])
 
   return (
-    <section className="relative w-full h-[600px] overflow-hidden">
+    <section className="relative w-full h-[700px] overflow-hidden p-0">
       {/* Carousel items */}
       {carouselItems.map((item, index) => (
         <div

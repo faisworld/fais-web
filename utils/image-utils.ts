@@ -46,8 +46,7 @@ export function getPlaceholderImage(text: string, width = 400, height = 300): st
 export const blobImages: { [key: string]: string } = {
   // Use actual Blob URLs for logos
   logo: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png",
-  "logo-black":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_black_fais-KqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
+  "logo-black": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png",
 
   // Carousel images - replace these with actual Blob URLs if you have them
   "pioneering-digital-transformation":

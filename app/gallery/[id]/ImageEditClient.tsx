@@ -15,6 +15,7 @@ import {
   FiInfo,
 } from "react-icons/fi"
 import { handleImageError, getPlaceholderImage } from "@/utils/image-utils"
+import ConversionPanel from "./ConversionPanel"
 
 type ImageData = {
   id: number
@@ -79,14 +80,23 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
 
       const res = await fetch("/api/gallery/images", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+        },
         body: JSON.stringify(updateData),
       })
+
+      if (!res.ok) {
+        const errorText = await res.text()
+        console.error(`Error updating image: ${res.status}. Response: ${errorText}`)
+        throw new Error(`Failed to update image: ${res.status}`)
+      }
 
       const data = await res.json()
 
       if (res.ok) {
-        setMessage({ text: data.message || "Blob metadata saved successfully!", type: "success" })
+        setMessage({ text: data.message || "Image metadata saved successfully!", type: "success" })
         setEditing(false)
         // If the server returns updated image data, use it to update our state
         if (data.image) {
@@ -101,7 +111,11 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
         setMessage({ text: data.error || "Failed to save.", type: "error" })
       }
     } catch (err) {
-      setMessage({ text: "An error occurred while saving.", type: "error" })
+      console.error("Error saving image metadata:", err)
+      setMessage({
+        text: err instanceof Error ? err.message : "An error occurred while saving.",
+        type: "error",
+      })
     } finally {
       setIsLoading(false)
       // Don't clear message automatically - let user dismiss it
@@ -143,7 +157,11 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
   // Format date
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Unknown date"
-    return new Date(dateString).toLocaleDateString() + " " + new Date(dateString).toLocaleTimeString()
+    try {
+      return new Date(dateString).toLocaleDateString() + " " + new Date(dateString).toLocaleTimeString()
+    } catch (e) {
+      return "Invalid date"
+    }
   }
 
   // Get blob filename from URL
@@ -171,7 +189,7 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
             }`}
           >
             <span>{message.text}</span>
-            <button onClick={() => setMessage(null)} className="text-current">
+            <button onClick={() => setMessage(null)} className="text-current" aria-label="Dismiss message">
               <FiX size={16} />
             </button>
           </div>
@@ -207,6 +225,15 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
             >
               <FiDownload size={16} /> Download
             </a>
+            <a
+              href={`/api/convert-image?id=${img.id}`}
+              download={`image-${img.id}.jpg`}
+              className="btn flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FiDownload size={16} /> As JPEG
+            </a>
           </div>
 
           {/* Blob Storage Info */}
@@ -241,6 +268,9 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
               </div>
             </div>
           </div>
+
+          {/* Conversion Panel */}
+          <ConversionPanel imageId={img.id} imageUrl={img.url} imageTitle={img.title || "image"} />
 
           {/* Resize options */}
           {showResizeOptions && (
