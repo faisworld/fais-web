@@ -50,11 +50,11 @@ export const blobImages: { [key: string]: string } = {
 
   // Carousel images - replace these with actual Blob URLs if you have them
   "pioneering-digital-transformation":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/pioneering-digital-transformation-colour-aELmRuCgO0oLC8AqNk9ItkkvQQxYnE.webp",
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746510866676-Innovating-the-Future-dark.png",
   "innovating-future":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746263671694-Innovating-the-Future.webp",
   "shaping-sota-technologies":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746263190461-Shaping-Sota-Technologies.png",
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746529491566-Shaping-State-of-The-Art-Technologies-.gif",
 
   // Solutions section images
   "ai-solutions":
@@ -80,7 +80,7 @@ export const blobImages: { [key: string]: string } = {
 
   // CEO portrait
   "ceo-portrait":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/fais-ceo-Eugene-Lukyanov-qyYzZG41iWLwtsiAgqM8MKitVwupgn.jpg",
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp",
 
   // Add more as needed
 }
@@ -113,6 +113,33 @@ export function handleImageError(e: React.SyntheticEvent<HTMLImageElement, Event
   const height = e.currentTarget.height || 300
   const alt = e.currentTarget.alt || "Image"
 
-  e.currentTarget.src = `/placeholder.svg?width=${width}&height=${height}&query=${encodeURIComponent(alt)}`
-  e.currentTarget.onerror = null // Prevent infinite error loop
+  // Only replace with placeholder if not already a placeholder
+  if (!e.currentTarget.src.includes("placeholder.svg")) {
+    e.currentTarget.src = `/placeholder.svg?width=${width}&height=${height}&query=${encodeURIComponent(alt)}`
+    e.currentTarget.onerror = null // Prevent infinite error loop
+  }
+}
+
+/**
+ * Determine if an image is a GIF
+ * @param url The image URL
+ * @returns Boolean indicating if the image is a GIF
+ */
+export function isGif(url: string): boolean {
+  return url?.toLowerCase().endsWith(".gif") || false
+}
+
+/**
+ * Get appropriate image component props based on image type
+ * @param url The image URL
+ * @returns Object with appropriate props for the image
+ */
+export function getImageProps(url: string) {
+  const isAnimated = isGif(url)
+
+  return {
+    unoptimized: isAnimated, // Don't optimize GIFs to preserve animation
+    loading: isAnimated ? "eager" : ("lazy" as "eager" | "lazy"),
+    // Other props as needed
+  }
 }
