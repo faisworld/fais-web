@@ -54,7 +54,7 @@ export const blobImages: { [key: string]: string } = {
   "innovating-future":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746263671694-Innovating-the-Future.webp",
   "shaping-sota-technologies":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746529491566-Shaping-State-of-The-Art-Technologies-.gif",
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746646077344-20250426-2326-Cyborg-Collaboration-Hub-remix-01jsswceste5nthezcfcemp8rs.png",
 
   // Solutions section images
   "ai-solutions":

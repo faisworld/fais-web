@@ -52,7 +52,7 @@ export default function HomeCarousel() {
 
       autoRotateTimerRef.current = setInterval(() => {
         goToNextSlide()
-      }, 5000) // Change slide every 5 seconds
+      }, 6000) // Change slide every 5 seconds
     }
 
     // Preload images
@@ -90,12 +90,12 @@ export default function HomeCarousel() {
   return (
     <>
       {/* Use a wrapper div to control the height and prevent overlap */}
-      <div className="relative" style={{ height: "90vh" }}>
+      <div className="relative" style={{ height: "120vh" }}>
         {/* Full-width carousel section */}
         <section
           className="absolute left-0 right-0 w-full"
           style={{
-            height: "90vh", // Explicitly set height to 90vh (much taller than before)
+            height: "120vh", // Explicitly set height to 120vh (much taller than before)
           }}
           aria-roledescription="carousel"
           aria-label="Featured projects and services"
@@ -105,7 +105,7 @@ export default function HomeCarousel() {
             {carouselItems.map((item, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+                className={`absolute inset-0 w-full h-full transition-opacity duration-3000 ${
                   index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
                 aria-hidden={index !== activeIndex}

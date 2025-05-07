@@ -1,3 +1,5 @@
+import type React from 'react';
+
 declare const grecaptcha: {
   enterprise: {
     ready: (callback: () => void) => void;
