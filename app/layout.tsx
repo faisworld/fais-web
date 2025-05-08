@@ -70,10 +70,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <MissingImageFixer />
 
-        <div style={{ position: 'fixed', top: '100%', right: '0', transform: 'translateY(-50%)', zIndex: 1000 }}>
-          <elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>
-          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
-        </div>
+      <div>
+        <elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>
+        <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+    
+    </div>
         <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async></script>
       </body>
     </html>
