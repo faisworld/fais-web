@@ -1,0 +1,79 @@
+/* app/kvitka-poloniny/styles.css */
+.page-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main-content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.image-container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+.kvitka-image {
+  border-radius: 12px;
+  width: 100%;
+  height: auto;
+}
+
+.text-content {
+  width: 100%;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.page-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.page-text:last-child {
+  margin-bottom: 0;
+}
+
+.chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* Адаптивні стилі для планшетів та десктопів */
+@media (min-width: 768px) {
+  .main-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .image-container {
+    flex: 0 0 320px;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .chat-widget {
+    position: sticky;
+    top: 60%;
+    right: 30%;
+    transform: translateY(-50%);
+  }
+}

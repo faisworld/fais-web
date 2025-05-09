@@ -1,5 +1,6 @@
 // app/kvitka-poloniny/page.tsx
 import Image from "next/image";
+import styles from "./styles.module.css";
 
 export const metadata = {
   title: "Квітка полонини — сучасний санаторій у Закарпатті",
@@ -8,24 +9,30 @@ export const metadata = {
 
 export default function KvitkaPoloninyPage() {
   return (
-    <>
-      <div style={{ minHeight: "80vh", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-        <main style={{ maxWidth: 900, margin: "2rem auto", display: "flex", gap: "2rem", alignItems: "flex-start" }}>
-          <div style={{ flex: "0 0 320px", display: "flex", justifyContent: "center" }}>
-            <Image src="/kvitka-polonyny.png" alt="Квітка полонини – санаторій у Закарпатті" width={320} height={180} style={{ borderRadius: 12 }} />
-          </div>
-          <div style={{ flex: 1 }}>
-            <h1>Квітка полонини</h1>
-            <p>
+    <>      <div className={styles.pageContainer}>
+        <main className={styles.mainContent}>
+          <div className={styles.imageContainer}>
+            <Image 
+              src="/kvitka-polonyny.png" 
+              alt="Квітка полонини – санаторій у Закарпатті" 
+              width={320} 
+              height={180} 
+              className={styles.kvitkaImage}
+            />          </div>
+          <div className={styles.textContent}>
+            <h1 className={styles.pageTitle}>Квітка полонини</h1>
+            <p className={styles.pageText}>
               Санаторій «Квітка полонини» — сучасний оздоровчий комплекс у Закарпатті. Пропонує унікальні мінеральні води, сучасну медичну базу, кваліфікованих лікарів, різноманітні лікувальні програми та комфортний відпочинок серед мальовничої природи.
             </p>
-            <p>
+            <p className={styles.pageText}>
               Санаторій розташований у селі Поляна, відомому своїми термальними водами та лікувальними грязями. Тут ви зможете насолодитися не лише лікуванням, а й активним відпочинком: піші прогулянки, велосипедні маршрути, катання на лижах взимку.
             </p>
-          </div>
-        </main>
-        <div style={{ position: 'relative', top: '60%', right: '30%', transform: 'translateY(-50%)', zIndex: 1000 }}>
-          <elevenlabs-convai agent-id="iNXsli5ADa6T5QV7XQIM"></elevenlabs-convai> <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script> </div> <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async></script>
+          </div>        </main>
+        <div className={styles.chatWidget}>
+          {/* @ts-ignore */}
+          <elevenlabs-convai agent-id="iNXsli5ADa6T5QV7XQIM"></elevenlabs-convai> 
+          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script></div> 
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async></script>
       </div>
     </>
   );

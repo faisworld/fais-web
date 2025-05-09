@@ -6,3 +6,9 @@ declare const grecaptcha: {
     execute: (siteKey: string, options: { action: string }) => Promise<string>;
   };
 };
+
+declare namespace JSX {
+  interface IntrinsicElements {
+    'elevenlabs-convai': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { 'agent-id': string }, HTMLElement>;
+  }
+}

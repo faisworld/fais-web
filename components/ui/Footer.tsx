@@ -9,8 +9,8 @@ export default function Footer() {
       {/* Upper Block */}
       <div className="flex flex-wrap w-full py-8 px-4 sm:px-6 lg:px-[10%] mt-12">
         {/* Left Column */}
-        <div className="w-full md:w-1/2 mb-6 md:mb-0">
-          <div className="mb-4">
+        <div className="w-full md:w-1/2 mb-6 md:mb-0 text-center md:text-left">
+          <div className="mb-4 flex justify-center md:justify-start">
             <Logo variant="black" className="h-[45px]" />
           </div>
           <h3 className="text-lg font-bold mb-4">other resources:</h3>
@@ -60,7 +60,7 @@ export default function Footer() {
       </div>
 
       {/* Lower Block */}
-      <div className="flex items-center justify-center py-4 w-full">
+      <div className="flex flex-col sm:flex-row items-center justify-center py-4 w-full px-4 text-center">
         <p className="text-sm">
           fAis ©. All rights reserved © 2024. |{" "}
           <Link href="/privacy-policy/" className="footer-link">

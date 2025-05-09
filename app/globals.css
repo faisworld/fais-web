@@ -144,6 +144,26 @@ section {
   z-index: 40;
 }
 
+.site-footer p {
+  margin-bottom: 0.5rem;
+}
+
+.site-footer h3 {
+  margin-top: 0.5rem;
+}
+
+.site-footer ul {
+  display: inline-block;
+  text-align: left;
+}
+
+@media (max-width: 767px) {
+  .site-footer .w-full {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
 .header-menu-links {
   color: #fff;
   font-size: clamp(1.1rem, 1.3vw, 1.4rem);
