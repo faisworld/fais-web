@@ -299,3 +299,38 @@ a:hover {
   visibility: hidden !important;
 }
 
+/* Color inversion utilities */
+.invert-colors {
+  filter: invert(1);
+}
+
+/* Dark background text color rules */
+.bg-dark {
+  color: white;
+}
+.bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6 {
+  color: white;
+}
+
+/* Auto text color adjustment based on background */
+.bg-black, .bg-neutral-900, .bg-neutral-800, [class*="bg-black"],
+[class*="bg-neutral-900"], [class*="bg-neutral-800"] {
+  color: white;
+}
+.bg-black h1, .bg-black h2, .bg-black h3, .bg-black h4, .bg-black h5, .bg-black h6,
+.bg-neutral-900 h1, .bg-neutral-900 h2, .bg-neutral-900 h3, .bg-neutral-900 h4, .bg-neutral-900 h5, .bg-neutral-900 h6,
+.bg-neutral-800 h1, .bg-neutral-800 h2, .bg-neutral-800 h3, .bg-neutral-800 h4, .bg-neutral-800 h5, .bg-neutral-800 h6 {
+  color: white;
+}
+
+/* White background text color rules */
+.bg-white, .bg-neutral-100, .bg-neutral-200, .bg-neutral-50 {
+  color: black;
+}
+.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4, .bg-white h5, .bg-white h6,
+.bg-neutral-100 h1, .bg-neutral-100 h2, .bg-neutral-100 h3, .bg-neutral-100 h4, .bg-neutral-100 h5, .bg-neutral-100 h6,
+.bg-neutral-200 h1, .bg-neutral-200 h2, .bg-neutral-200 h3, .bg-neutral-200 h4, .bg-neutral-200 h5, .bg-neutral-200 h6,
+.bg-neutral-50 h1, .bg-neutral-50 h2, .bg-neutral-50 h3, .bg-neutral-50 h4, .bg-neutral-50 h5, .bg-neutral-50 h6 {
+  color: black;
+}
+

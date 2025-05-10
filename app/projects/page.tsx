@@ -1,9 +1,12 @@
-import Image from 'next/image';
+'use client';
 
-export const metadata = {
-  title: "Projects",
-  description: "Explore our portfolio of AI and blockchain projects.",
-};
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the AnimatedCounter to ensure it only runs on the client
+const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounter'), {
+  ssr: false
+});
 
 export default function ProjectsPage() {
   return (
@@ -215,25 +218,36 @@ export default function ProjectsPage() {
             <a href="http://blast.io/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
           </div>
         </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-6 py-12 text-center">
-        <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
-          <p className="text-3xl font-bold text-indigo-600">40+</p>
-          <p className="text-gray-600 mt-1 lowercase">ai & blockchain projects delivered</p>
-        </div>
-        <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
-          <p className="text-3xl font-bold text-indigo-600">8+</p>
-          <p className="text-gray-600 mt-1 lowercase">years of programming</p>
-        </div>
-        <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
-          <p className="text-3xl font-bold text-indigo-600">&gt; 60%</p>
-          <p className="text-gray-600 mt-1 lowercase">profitability growth</p>
-        </div>
-        <div className="bg-gray-100 p-4 rounded-lg border border-gray-200">
-          <p className="text-3xl font-bold text-indigo-600">99%</p>
-          <p className="text-gray-600 mt-1 lowercase">satisfied clients</p>
+      </section>      {/* Stats Section */}
+      <section className="py-12 bg-neutral-800 my-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-10 lowercase text-white">our achievements</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-4xl font-bold text-black mb-2">
+                <AnimatedCounter end={40} suffix="+" duration={1800} />
+              </div>
+              <p className="text-gray-700 lowercase font-medium">ai & blockchain projects delivered</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-4xl font-bold text-black mb-2">
+                <AnimatedCounter end={8} suffix="+" duration={1200} delay={200} />
+              </div>
+              <p className="text-gray-700 lowercase font-medium">years of programming</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-4xl font-bold text-black mb-2">
+                <AnimatedCounter end={60} prefix=">" suffix="%" duration={1500} delay={400} />
+              </div>
+              <p className="text-gray-700 lowercase font-medium">profitability growth</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <div className="text-4xl font-bold text-black mb-2">
+                <AnimatedCounter end={99} suffix="%" duration={2000} delay={600} />
+              </div>
+              <p className="text-gray-700 lowercase font-medium">satisfied clients</p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
