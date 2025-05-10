@@ -26,9 +26,14 @@ module.exports = {
         changefreq: 'monthly',
         priority: 0.9,
         lastmod: today,
+      },      {
+        loc: '/blockchain-services',
+        changefreq: 'monthly',
+        priority: 0.9,
+        lastmod: today,
       },
       {
-        loc: '/blockchain-services',
+        loc: '/ai-services',
         changefreq: 'monthly',
         priority: 0.9,
         lastmod: today,
@@ -39,12 +44,18 @@ module.exports = {
         changefreq: 'monthly',
         priority: 0.8,
         lastmod: today,
-      },
-      // Projects page
+      },      // Projects page
       {
         loc: '/projects',
         changefreq: 'weekly',
         priority: 0.8,
+        lastmod: today,
+      },
+      // Blog pages
+      {
+        loc: '/blog',
+        changefreq: 'daily',
+        priority: 0.9,
         lastmod: today,
       },
       // Contact page

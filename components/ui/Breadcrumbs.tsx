@@ -17,12 +17,12 @@ export default function Breadcrumbs({
             {idx < items.length - 1 ? (
               <Link
                 href={item.href}
-                className={darkBg ? "hover:underline text-white" : "hover:underline text-blue-600"}
+                className={darkBg ? "hover:underline text-white lowercase" : "hover:underline text-blue-600 lowercase"}
               >
                 {item.label}
               </Link>
             ) : (
-              <span className={darkBg ? "font-semibold text-white" : "font-semibold text-gray-700"}>{item.label}</span>
+              <span className={darkBg ? "font-semibold text-white lowercase" : "font-semibold text-gray-700 lowercase"}>{item.label}</span>
             )}
           </li>
         ))}

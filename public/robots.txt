@@ -2,8 +2,13 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Sitemap locations
 Sitemap: https://fais.world/sitemap.xml
+Sitemap: https://fais.world/blog-sitemap.xml
+
+# Specifically allow blog content to be crawled and indexed
+Allow: /blog/
+Allow: /blog$
 
 # Disallow admin and API routes
 Disallow: /admin/
