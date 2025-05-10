@@ -46,11 +46,11 @@ export default function Home() {
           email: "contact@fais.world",
           availableLanguage: ["English"]
         }}
-      />
+      />      {/* Hero Carousel at the top - Desktop only */}
+      <HomeCarousel />
 
-      {/* Hero Carousel at the top - Desktop only */}
-      <HomeCarousel />{/* Content structured for both mobile and desktop */}
-      <div className="bg-white md:mt-8">
+      {/* Content structured for both mobile and desktop */}
+      <div className="bg-white md:mt-[100vh]">
         {/* SolutionsSection starts the page on mobile */}
         <div className="md:hidden">
           <div className="bg-gradient-to-r from-blue-900 to-black w-full py-8 px-4">

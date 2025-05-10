@@ -92,27 +92,24 @@ export default function HomeCarousel() {
     // Clean up the timer when the component unmounts
     return () => {
       if (autoRotateTimerRef.current) {
-        clearInterval(autoRotateTimerRef.current)
-      }
+        clearInterval(autoRotateTimerRef.current)      }
     }
   }, [goToNextSlide])
   return (
     <>
-      {/* Desktop Carousel - Hidden on mobile */}
-      <div className="relative hidden md:block" style={{ height: "120vh" }}>
+      {/* Desktop Carousel - Hidden on mobile, fixed to cover the entire viewport */}
+      <div className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen hidden md:block overflow-hidden -z-10">
         {/* Full-width carousel section */}
         <section
-          className="absolute left-0 right-0 w-full"
-          style={{ height: "120vh" }}
+          className="w-full h-full"
           aria-roledescription="carousel"
           aria-label="Featured projects and services"
         >
           {/* Carousel display - Full width with increased height */}
           <div className="relative w-full h-full overflow-hidden">
-            {carouselItems.map((item, index) => (
-              <div
+            {carouselItems.map((item, index) => (              <div
                 key={index}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-3000 ${
+                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
                   index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
                 aria-hidden={index !== activeIndex}
@@ -120,21 +117,20 @@ export default function HomeCarousel() {
                 aria-roledescription="slide"
                 aria-label={`Slide ${index + 1} of ${carouselItems.length}: ${item.title}`}
               >
-                <div className="relative w-full h-full">
-                  <ClientImage
+                <div className="relative w-full h-full">                  <ClientImage
                     src={getBlobImage(item.key)}
                     alt={item.alt}
                     fill
-                    className="object-cover blur-[1px] brightness-90"
-                    objectPosition="top center"
+                    className="object-cover brightness-75 w-screen h-screen"
+                    objectPosition="center center"
                     priority={index === 0}
                     sizes="100vw"
                     itemProp="image"
                     itemScope
                     itemType="https://schema.org/ImageObject"
                   />
-                  {/* Add a stronger gradient overlay to ensure text readability */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/40"></div>
+                  {/* Gray background layer to soften appearance and improve readability */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-700/40 to-gray-800/50"></div>
                 </div>
               </div>
             ))}
@@ -145,12 +141,10 @@ export default function HomeCarousel() {
             <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
               <div className="w-16 h-16 border-4 border-gray-300 border-t-gray-800 rounded-full animate-spin"></div>
             </div>
-          )}
-
-          {/* Overlay content for each slide */}
-          <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+          )}          {/* Overlay content for each slide */}
+          <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none pt-20">
             <div className="container mx-auto px-4 flex justify-center">
-              <div className="max-w-2xl text-white bg-black/20 p-6 rounded-lg backdrop-blur-sm pointer-events-auto">
+              <div className="max-w-3xl text-white bg-black/30 p-8 rounded-lg backdrop-blur-sm shadow-xl pointer-events-auto">
                 {activeIndex === 0 && (
                   <>
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center lowercase">
