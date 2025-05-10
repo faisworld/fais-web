@@ -26,6 +26,8 @@ export default function Logo({ variant = "white", href = "/", className = "", on
         width: "auto",
         height: "40px",
         maxWidth: "100%",
+        padding: 0,
+        margin: 0
       }}
       className={`transition-all duration-300 sm:h-[40px] h-[32px] ${className}`}
     />
@@ -33,7 +35,7 @@ export default function Logo({ variant = "white", href = "/", className = "", on
 
   if (href) {
     return (
-      <Link href={href} className="flex-shrink-0" onClick={onClick}>
+      <Link href={href} className="flex-shrink-0 p-0 m-0" style={{ padding: 0, margin: 0 }} onClick={onClick}>
         {logoImage}
       </Link>
     )
