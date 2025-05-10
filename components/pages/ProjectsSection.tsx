@@ -62,7 +62,7 @@ export default function ProjectsSection() {
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold">Our Amazing Work</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">our amazing work</h2>
           <p className="mt-4 text-lg max-w-2xl mx-auto">
             Explore versatile solutions utilized by individuals and companies seeking innovative AI and blockchain
             services.
@@ -115,11 +115,11 @@ export default function ProjectsSection() {
                     rel="noopener noreferrer"
                     className="btn btn-secondary mt-auto"
                   >
-                    Learn More →
+                    learn more →
                   </a>
                 ) : (
                   <Link href={project.link} className="btn btn-secondary mt-auto">
-                    Learn More →
+                    learn more →
                   </Link>
                 )}
               </div>

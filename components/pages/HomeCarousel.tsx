@@ -145,41 +145,37 @@ export default function HomeCarousel() {
             <div className="container mx-auto px-4 flex justify-center">
               <div className="max-w-2xl text-white bg-black/10 p-6 rounded-lg backdrop-blur-[1px] pointer-events-auto">
                 {activeIndex === 0 && (
-                  <>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-                      Pioneering Digital Transformation
-                    </h1>
-                    <p className="text-lg mb-6 text-center">
+                  <>                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
+                      pioneering digital transformation
+                    </h1><p className="text-lg mb-6 text-center">
                       Being at the forefront of digital revolutions delivering powerful, integrated solutions for your
                       growth and success
                     </p>
                     <div className="flex justify-center">
-                      <button className="btn">Learn More</button>
+                      <button className="btn">learn more</button>
                     </div>
                   </>
                 )}
 
                 {activeIndex === 1 && (
                   <>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">Innovating the Future</h1>
-                    <p className="text-lg mb-6 text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">innovating the future</h1>                    <p className="text-lg mb-6 text-center">
                       Dive into the world of advanced AI and blockchain solutions, and explore tailor-made technologies
                       shaping a sustainable digital future.
                     </p>
                     <div className="flex justify-center">
-                      <button className="btn">Explore Solutions</button>
+                      <button className="btn">explore solutions</button>
                     </div>
                   </>
                 )}
 
                 {activeIndex === 2 && (
                   <>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">Shaping Sota Technologies</h1>
-                    <p className="text-lg mb-6 text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">shaping sota technologies</h1>                    <p className="text-lg mb-6 text-center">
                       Leveraging cutting-edge AI and Blockchain technologies for smarter solutions across industries.
                     </p>
                     <div className="flex justify-center">
-                      <button className="btn">Our Services</button>
+                      <button className="btn">our services</button>
                     </div>
                   </>
                 )}

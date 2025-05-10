@@ -157,6 +157,18 @@ section {
   text-align: left;
 }
 
+.site-footer .text-center .mb-8 {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .site-footer .md\:w-1\/2 h3 {
+    position: relative;
+    top: 0;
+  }
+}
+
 @media (max-width: 767px) {
   .site-footer .w-full {
     padding-left: 0.5rem;

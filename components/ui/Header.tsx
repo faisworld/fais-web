@@ -43,11 +43,11 @@ export default function Header() {
   }
 
   const menuItems = [
-    { href: "/", label: "Home" },
-    { href: "/services", label: "Services" },
-    { href: "/projects", label: "Projects" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: "home" },
+    { href: "/services", label: "services" },
+    { href: "/projects", label: "projects" },
+    { href: "/about", label: "about" },
+    { href: "/contact", label: "contact" },
   ]
 
   return (

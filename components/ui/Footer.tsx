@@ -10,8 +10,8 @@ export default function Footer() {
       <div className="flex flex-wrap w-full py-8 px-4 sm:px-6 lg:px-[10%] mt-12">
         {/* Left Column */}
         <div className="w-full md:w-1/2 mb-6 md:mb-0 text-center md:text-left">
-          <div className="mb-4 flex justify-center md:justify-start">
-            <Logo variant="black" className="h-[45px]" />
+          <div className="mb-8 flex justify-center">
+            <Logo variant="black" className="h-[50px]" />
           </div>
           <h3 className="text-lg font-bold mb-4">other resources:</h3>
           <ul className="list-none">
@@ -45,7 +45,8 @@ export default function Footer() {
 
         {/* Right Column */}
         <div className="w-full md:w-1/2 text-center">
-          <h3 className="text-lg font-bold mb-4">Contacts:</h3>
+          <div className="h-[58px] md:h-[60px] flex-none"></div>
+          <h3 className="text-lg font-bold mb-4">contacts:</h3>
           <p>03150, Kyiv City, Ukraine</p>
           <p>132 Vel. Vasylkivska Str.</p>
           <br />

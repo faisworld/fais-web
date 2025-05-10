@@ -23,7 +23,7 @@ export default function QuoteSection() {
           {/* Left Side */}
           <div className="w-full md:w-1/2 mb-8 md:mb-0">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
-              We drive innovation in AI and blockchain technology.
+              we drive innovation in ai and blockchain technology.
             </h2>
             <h3 className="text-xl md:text-2xl text-gray-600">an effective way to empower your business</h3>
           </div>
@@ -42,8 +42,8 @@ export default function QuoteSection() {
                 priority
               />
             </div>
-            <p className="text-sm mt-2 font-semibold text-gray-800">Eugene Lukyanov</p>
-            <p className="text-xs italic text-gray-500">CEO and Founder of Fantastic AI Studio</p>
+            <p className="text-sm mt-2 font-semibold text-gray-800">eugene lukyanov</p>
+            <p className="text-xs italic text-gray-500">ceo and founder of fantastic ai studio</p>
 
             <div className="mt-6 max-w-lg mx-auto">
               <p className="text-base text-gray-700">

@@ -21,7 +21,7 @@ export default function SolutionsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* AI-Powered Solutions Column */}
           <div className="flex flex-col items-center">
-            <h3 className="text-2xl font-bold mb-6 text-center">AI-Powered Solutions</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center">ai-powered solutions</h3>
             <div className="relative w-full aspect-[3/2] mb-6">
               <ClientImage
                 src={getBlobImage("ai-solutions")}
@@ -41,7 +41,7 @@ export default function SolutionsSection() {
 
           {/* Blockchain Innovations Column */}
           <div className="flex flex-col items-center">
-            <h3 className="text-2xl font-bold mb-6 text-center">Blockchain Innovations</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center">blockchain innovations</h3>
             <div className="relative w-full aspect-[3/2] mb-6">
               <ClientImage
                 src={getBlobImage("blockchain-solutions")}
