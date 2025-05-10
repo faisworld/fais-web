@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import ClientImage from "@/components/ui/ClientImage"
 import { getBlobImage } from "@/utils/image-utils"
+import Link from "next/link"
 
 export default function HomeCarousel() {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -16,16 +17,25 @@ export default function HomeCarousel() {
       key: "pioneering-digital-transformation",
       alt: "Pioneering Digital Transformation - AI and blockchain solutions for digital transformation",
       title: "Pioneering Digital Transformation",
+      subtitle: "Being at the forefront of digital revolutions delivering powerful, integrated solutions for your growth and success",
+      buttonText: "learn more",
+      buttonLink: "/services"
     },
     {
       key: "innovating-future",
       alt: "Innovating the Future - Advanced technology solutions for business innovation",
       title: "Innovating the Future",
+      subtitle: "Dive into the world of advanced AI and blockchain solutions, and explore tailor-made technologies shaping a sustainable digital future.",
+      buttonText: "explore solutions",
+      buttonLink: "/services"
     },
     {
       key: "shaping-sota-technologies",
       alt: "Shaping State-of-the-Art Technologies - Cutting-edge AI and blockchain implementation",
       title: "Shaping Sota Technologies",
+      subtitle: "Leveraging cutting-edge AI and Blockchain technologies for smarter solutions across industries.",
+      buttonText: "our services",
+      buttonLink: "/services"
     },
   ]
 
@@ -52,7 +62,7 @@ export default function HomeCarousel() {
 
       autoRotateTimerRef.current = setInterval(() => {
         goToNextSlide()
-      }, 6000) // Change slide every 5 seconds
+      }, 6000) // Change slide every 6 seconds
     }
 
     // Preload images
@@ -86,17 +96,14 @@ export default function HomeCarousel() {
       }
     }
   }, [goToNextSlide])
-
   return (
     <>
-      {/* Use a wrapper div to control the height and prevent overlap */}
-      <div className="relative" style={{ height: "120vh" }}>
+      {/* Desktop Carousel - Hidden on mobile */}
+      <div className="relative hidden md:block" style={{ height: "120vh" }}>
         {/* Full-width carousel section */}
         <section
           className="absolute left-0 right-0 w-full"
-          style={{
-            height: "120vh", // Explicitly set height to 120vh (much taller than before)
-          }}
+          style={{ height: "120vh" }}
           aria-roledescription="carousel"
           aria-label="Featured projects and services"
         >
@@ -118,7 +125,7 @@ export default function HomeCarousel() {
                     src={getBlobImage(item.key)}
                     alt={item.alt}
                     fill
-                    className="object-cover"
+                    className="object-cover blur-[1px] brightness-90"
                     objectPosition="top center"
                     priority={index === 0}
                     sizes="100vw"
@@ -126,8 +133,8 @@ export default function HomeCarousel() {
                     itemScope
                     itemType="https://schema.org/ImageObject"
                   />
-                  {/* Add a subtle gradient overlay to ensure text readability */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/20"></div>
+                  {/* Add a stronger gradient overlay to ensure text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/40"></div>
                 </div>
               </div>
             ))}
@@ -143,39 +150,60 @@ export default function HomeCarousel() {
           {/* Overlay content for each slide */}
           <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
             <div className="container mx-auto px-4 flex justify-center">
-              <div className="max-w-2xl text-white bg-black/10 p-6 rounded-lg backdrop-blur-[1px] pointer-events-auto">
+              <div className="max-w-2xl text-white bg-black/20 p-6 rounded-lg backdrop-blur-sm pointer-events-auto">
                 {activeIndex === 0 && (
-                  <>                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-                      pioneering digital transformation
-                    </h1><p className="text-lg mb-6 text-center">
-                      Being at the forefront of digital revolutions delivering powerful, integrated solutions for your
-                      growth and success
+                  <>
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center lowercase">
+                      {carouselItems[0].title.toLowerCase()}
+                    </h1>
+                    <p className="text-lg mb-6 text-center">
+                      {carouselItems[0].subtitle}
                     </p>
                     <div className="flex justify-center">
-                      <button className="btn">learn more</button>
+                      <Link 
+                        href={carouselItems[0].buttonLink} 
+                        className="btn inline-block px-8 py-3 bg-black text-white hover:bg-neutral-700 transition-colors duration-300 rounded-md lowercase"
+                      >
+                        {carouselItems[0].buttonText}
+                      </Link>
                     </div>
                   </>
                 )}
 
                 {activeIndex === 1 && (
                   <>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">innovating the future</h1>                    <p className="text-lg mb-6 text-center">
-                      Dive into the world of advanced AI and blockchain solutions, and explore tailor-made technologies
-                      shaping a sustainable digital future.
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center lowercase">
+                      {carouselItems[1].title.toLowerCase()}
+                    </h1>
+                    <p className="text-lg mb-6 text-center">
+                      {carouselItems[1].subtitle}
                     </p>
                     <div className="flex justify-center">
-                      <button className="btn">explore solutions</button>
+                      <Link 
+                        href={carouselItems[1].buttonLink} 
+                        className="btn inline-block px-8 py-3 bg-black text-white hover:bg-neutral-700 transition-colors duration-300 rounded-md lowercase"
+                      >
+                        {carouselItems[1].buttonText}
+                      </Link>
                     </div>
                   </>
                 )}
 
                 {activeIndex === 2 && (
                   <>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">shaping sota technologies</h1>                    <p className="text-lg mb-6 text-center">
-                      Leveraging cutting-edge AI and Blockchain technologies for smarter solutions across industries.
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center lowercase">
+                      {carouselItems[2].title.toLowerCase()}
+                    </h1>
+                    <p className="text-lg mb-6 text-center">
+                      {carouselItems[2].subtitle}
                     </p>
                     <div className="flex justify-center">
-                      <button className="btn">our services</button>
+                      <Link 
+                        href={carouselItems[2].buttonLink} 
+                        className="btn inline-block px-8 py-3 bg-black text-white hover:bg-neutral-700 transition-colors duration-300 rounded-md lowercase"
+                      >
+                        {carouselItems[2].buttonText}
+                      </Link>
                     </div>
                   </>
                 )}
@@ -203,8 +231,8 @@ export default function HomeCarousel() {
         </section>
       </div>
 
-      {/* Add a spacer div to ensure content below doesn't overlap */}
-      <div style={{ height: "20px" }}></div>
+      {/* Mobile version is now removed - it will directly start with SolutionsSection */}
+      {/* No spacer needed for desktop view since it's part of the carousel */}
     </>
   )
 }

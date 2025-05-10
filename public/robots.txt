@@ -1,0 +1,11 @@
+# Allow all robots to index all content
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://fais.world/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /image-fixer/

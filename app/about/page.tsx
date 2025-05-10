@@ -2,8 +2,13 @@
 
 import MeetOurTeam from "@/components/pages/MeetOurTeam";
 import ContactUs from "@/components/pages/ContactUs";
-import CountUp from "react-countup";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+// Dynamically import the AnimatedCounter to ensure it only runs on the client
+const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounter'), {
+  ssr: false
+});
 
 export default function AboutPage() {
     const breadcrumbItems = [
@@ -78,22 +83,22 @@ export default function AboutPage() {
                             </div>
                         </div>
                     </section>                    {/* Dynamic Counter Section */}
-                    <section className="mb-16">
-                        <h2 className="text-3xl font-bold text-center mb-8 lowercase">why choose us</h2>
+                    <section className="mb-16 py-12 bg-neutral-800 rounded-lg">
+                        <h2 className="text-3xl font-bold text-center mb-8 lowercase text-white">why choose us</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-center">
-                            <div>
-                                <h3 className="text-5xl font-bold">
-                                    <CountUp end={82} duration={2.5} />%
+                            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                <h3 className="text-5xl font-bold mb-2 text-black">
+                                    <AnimatedCounter end={82} suffix="%" duration={2000} />
                                 </h3>
-                                <p className="mt-2 lowercase">
+                                <p className="mt-2 lowercase text-gray-700 font-medium">
                                     customer retention rate over the past 6 years.
                                 </p>
                             </div>
-                            <div>
-                                <h3 className="text-5xl font-bold">
-                                    <CountUp end={100} duration={2.5} suffix="+" />
+                            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                <h3 className="text-5xl font-bold mb-2 text-black">
+                                    <AnimatedCounter end={100} suffix="+" duration={1800} delay={300} />
                                 </h3>
-                                <p className="mt-2 lowercase">
+                                <p className="mt-2 lowercase text-gray-700 font-medium">
                                     clients who recommend us to their colleagues.
                                 </p>
                             </div>

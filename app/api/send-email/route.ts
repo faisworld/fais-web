@@ -48,26 +48,29 @@ async function verifyRecaptchaToken(token: string, action: string) {
 
     // Create the assessment
     const [response] = await client.createAssessment(request)
-
+    
     // Check if the token is valid
-    if (!response.tokenProperties.valid) {
-      console.log(`Token validation failed: ${response.tokenProperties.invalidReason}`)
-      return { valid: false, score: 0, reason: response.tokenProperties.invalidReason }
+    if (!response?.tokenProperties?.valid) {
+      const reason = response?.tokenProperties?.invalidReason || 'Unknown reason'
+      console.log(`Token validation failed: ${reason}`)
+      return { valid: false, score: 0, reason }
     }
 
     // Check if the expected action was executed
-    if (response.tokenProperties.action !== action) {
-      console.log(`Action mismatch: expected ${action}, got ${response.tokenProperties.action}`)
+    if (response?.tokenProperties?.action !== action) {
+      const actualAction = response?.tokenProperties?.action || 'unknown'
+      console.log(`Action mismatch: expected ${action}, got ${actualAction}`)
       return { valid: false, score: 0, reason: "Action mismatch" }
     }
 
     // Get the risk score
-    const score = response.riskAnalysis.score
+    const score = response?.riskAnalysis?.score || 0
     console.log(`reCAPTCHA score: ${score}`)
 
     // Log any risk reasons
-    if (response.riskAnalysis.reasons && response.riskAnalysis.reasons.length > 0) {
-      console.log("Risk reasons:", response.riskAnalysis.reasons)
+    const reasons = response?.riskAnalysis?.reasons
+    if (reasons && reasons.length > 0) {
+      console.log("Risk reasons:", reasons)
     }
 
     return { valid: true, score, reason: null }
@@ -88,7 +91,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { name, email, message, token, recaptchaAction, isDevelopment } = body
+    const { name, email, message, recaptchaToken, recaptchaAction = "submit_contact_form", isDevelopment } = body
 
     // Validate required fields
     if (!name || !email || !message) {
@@ -96,22 +99,24 @@ export async function POST(request: Request) {
     }
 
     // Skip reCAPTCHA verification in development mode
-    if (!isDevelopment) {
-      if (!token) {
-        return NextResponse.json({ message: "Missing reCAPTCHA token" }, { status: 400 })
-      }
+    const isDevEnvironment = process.env.NODE_ENV === 'development' || isDevelopment
+    console.log(`Environment: ${process.env.NODE_ENV}, isDevelopment flag: ${isDevelopment}`)
+    
+    if (!isDevEnvironment) {
+      // Allow submission with missing token but log it
+      if (!recaptchaToken) {
+        console.warn("Missing reCAPTCHA token in request - proceeding anyway", { ip })
+      } else {
+        // Verify the reCAPTCHA token
+        const verification = await verifyRecaptchaToken(recaptchaToken, recaptchaAction)
 
-      // Verify the reCAPTCHA token
-      const verification = await verifyRecaptchaToken(token, recaptchaAction || "submit")
-
-      if (!verification.valid) {
-        return NextResponse.json({ message: `reCAPTCHA verification failed: ${verification.reason}` }, { status: 400 })
-      }
-
-      // Check the score (0.0 is most likely a bot, 1.0 is most likely a human)
-      if (verification.score < 0.5) {
-        console.warn(`Suspicious activity detected. Score: ${verification.score}`)
-        return NextResponse.json({ message: "Suspicious activity detected" }, { status: 400 })
+        if (!verification.valid) {
+          console.warn(`reCAPTCHA verification failed: ${verification.reason}`)
+          // We're not blocking the request, just logging the warning
+        } else if (verification.score < 0.5) {
+          console.warn(`Suspicious activity detected. Score: ${verification.score}`)
+          // We're not blocking the request, just logging the warning
+        }
       }
     } else {
       console.log("Development mode: Skipping reCAPTCHA verification")

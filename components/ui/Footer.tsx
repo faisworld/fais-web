@@ -102,6 +102,10 @@ export default function Footer() {
           |{" "}
           <Link href="/terms-of-use/" className="footer-link lowercase">
             terms of use
+          </Link>{" "}
+          |{" "}
+          <Link href="/sitemap-html" className="footer-link lowercase">
+            sitemap
           </Link>
         </p>
       </div>

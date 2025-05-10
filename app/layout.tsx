@@ -6,6 +6,7 @@ import Header from "@/components/ui/Header"
 import Footer from "@/components/ui/Footer"
 import DynamicBreadcrumbs from "@/components/ui/DynamicBreadcrumbs"
 import MissingImageFixer from "@/components/ui/MissingImageFixer"
+import ElevenLabsWidgetWrapper from "@/components/ui/ElevenLabsWidgetWrapper"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,12 +20,15 @@ const twitterImageUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://fais.world"), // Use your real production URL here
-  title: "Fantastic AI Studio",
+  title: "Fantastic AI Studio | Leading AI & Blockchain Solutions",
   icons: { icon: "/favicon.ico" },
   openGraph: {
-    title: "Fantastic AI Studio",
-    description: "Innovative AI and Blockchain Solutions",
+    title: "Fantastic AI Studio | Advanced AI & Blockchain Development",
+    description: "Transform your business with cutting-edge AI and blockchain solutions. Custom development, enterprise implementation, and innovative digital transformation services.",
     url: "https://fais.world",
+    siteName: "Fantastic AI Studio",
+    locale: "en_US",
+    type: "website",
     images: [
       {
         url: ogImageUrl,
@@ -33,11 +37,12 @@ export const metadata: Metadata = {
         alt: "Fantastic AI Studio Open Graph Image",
       },
     ],
-  },
-  twitter: {
+  },  twitter: {
     card: "summary_large_image",
-    title: "Fantastic AI Studio",
-    description: "Innovative AI and Blockchain Solutions",
+    title: "Fantastic AI Studio | Advanced AI & Blockchain Development",
+    description: "Transform your business with cutting-edge AI and blockchain solutions. Custom development, enterprise implementation, and digital transformation.",
+    creator: "@fantasticaistudio",
+    site: "@fantasticaistudio",
     images: [
       {
         url: twitterImageUrl,
@@ -46,18 +51,22 @@ export const metadata: Metadata = {
         alt: "Fantastic AI Studio - Innovative AI and Blockchain Solutions",
       },
     ],
-  },
-  robots: {
+  },  robots: {
     index: true,
     follow: true,
   },
   appleWebApp: { capable: true, title: "Fantastic AI Studio" },
-  description: "Innovative AI and Blockchain Solutions",
-  keywords: "AI, Blockchain, Technology, Innovation",
+  description: "Industry-leading AI & Blockchain solutions for digital transformation. Custom AI development, blockchain implementation, and innovative technology solutions.",
+  keywords: "AI solutions, Blockchain technology, AI development, Enterprise blockchain, Digital transformation, Smart contracts, Machine learning, Data analytics, AI consulting, Blockchain consulting, Tech innovation, AI blockchain integration",
   authors: [{ name: "Fantastic AI Studio" }],
   creator: "Eugene Lukyanov",
   publisher: "fantasticai.studio",
   applicationName: "Fantastic AI Studio",
+  category: "Technology",
+  other: {
+    "google-site-verification": "verification-code-here", // Replace with actual code when available
+    "msvalidate.01": "microsoft-verification-code-here", // Replace with actual code when available
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -65,15 +74,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.className}>
       <body>
         <Header />
-        <DynamicBreadcrumbs darkBg={false} />
-        <main>{children}</main>
+        <DynamicBreadcrumbs darkBg={false} />        <main>{children}</main>
         <Footer />
         <MissingImageFixer />
 
-        <div style={{ position: 'fixed', top: '100%', right: '0', transform: 'translateY(-50%)', zIndex: 1000 }}>
-          <elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>
-          <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
-        </div>
+        {/* ElevenLabs Convai Widget - Client-only component */}
+        <ElevenLabsWidgetWrapper agentId="GkOKedIUAelQwYORYU3j" />
+        
+        {/* WidgetBot Crate Script */}
         <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async></script>
       </body>
     </html>

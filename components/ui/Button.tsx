@@ -18,10 +18,8 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={cn(
-        // Базові стилі для всіх кнопок
-        'inline-block font-semibold rounded cursor-pointer transition-all',
-        'text-transform: lowercase',
+      className={cn(        // Базові стилі для всіх кнопок
+        'inline-block font-semibold rounded cursor-pointer transition-all lowercase',
         
         // Розміри
         {
