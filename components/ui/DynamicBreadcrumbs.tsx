@@ -18,19 +18,29 @@ const pageLabels: Record<string, string> = {
   "instant-id": "InstantID Creator",
   "gallery": "Image Gallery",
   "admin": "Admin Panel",
+  "kvitka-poloniny": "Квітка полонини",
 }
 
 export default function DynamicBreadcrumbs({ darkBg = false }: { darkBg?: boolean }) {
   const pathname = usePathname()
   const [dynamicLabel, setDynamicLabel] = useState<string | null>(null)
+  const [segments, setSegments] = useState<string[]>([])
 
-  // Don't show breadcrumbs on home page
-  if (!pathname || pathname === "/") return null
+  useEffect(() => {
+    // Set segments when pathname changes
+    if (!pathname || pathname === "/") {
+      setSegments([])
+      return
+    }
+    
+    setSegments(pathname.split("/").filter(Boolean))
+  }, [pathname])
 
-  const segments = pathname.split("/").filter(Boolean)
-  
   // Try to fetch dynamic content titles for specific routes
   useEffect(() => {
+    // Don't process if no segments
+    if (segments.length === 0) return
+
     const fetchDynamicContent = async () => {
       // Blog post page handling
       if (segments.length >= 2 && segments[0] === 'blog' && segments[1] !== 'page') {
@@ -65,7 +75,10 @@ export default function DynamicBreadcrumbs({ darkBg = false }: { darkBg?: boolea
     }
     
     fetchDynamicContent()
-  }, [pathname, segments])
+  }, [segments])
+  
+  // Don't show breadcrumbs on home page
+  if (!pathname || pathname === "/") return null
   
   // Handle dynamic routes with special characters like [slug]
   const items = [
@@ -85,7 +98,7 @@ export default function DynamicBreadcrumbs({ darkBg = false }: { darkBg?: boolea
       const isDynamicParam = seg.startsWith('[') && seg.endsWith(']')
       
       // Get custom label or generate one
-      let label = pageLabels[seg] || 
+      const label = pageLabels[seg] || 
                   (isDynamicParam ? "Details" : seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, " "))
       
       return {

@@ -29,6 +29,38 @@
   height: auto;
 }
 
+/* Apply specific styles to override ElevenLabs widget positioning */
+#kvitka-widget-container {
+  position: static !important;
+  bottom: auto !important;
+  right: auto !important;
+  z-index: 1 !important;
+  margin-top: 2rem !important;
+  width: 100% !important;
+}
+
+/* Custom styling for the widget itself */
+#kvitka-widget-container elevenlabs-convai {
+  position: static !important;
+  bottom: auto !important;
+  right: auto !important;
+}
+
+/* Ensure no floating elements inside widget */
+#elevenlabs-chat-container {
+  position: static !important;
+  bottom: auto !important;
+  right: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Additional fixes for any chat elements */
+#elevenlabs-chat-container > * {
+  position: static !important;
+}
+
 .text-content {
   width: 100%;
 }

@@ -66,11 +66,7 @@ export default function Footer() {
                 blockchain services
               </Link>
             </li>
-            <li className="mb-2">
-              <Link href="/instant-id" className="footer-link lowercase">
-                instantid image creator
-              </Link>
-            </li>
+         
           </ul>
         </div>
 

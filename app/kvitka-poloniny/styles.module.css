@@ -3,7 +3,8 @@
   min-height: 80vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 3rem;
 }
 
 .mainContent {
@@ -31,6 +32,8 @@
 
 .textContent {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .pageTitle {
@@ -49,10 +52,14 @@
 }
 
 .chatWidget {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 /* Адаптивні стилі для планшетів та десктопів */
@@ -64,16 +71,15 @@
 
   .imageContainer {
     flex: 0 0 320px;
-  }
-
-  .pageTitle {
+  }  .pageTitle {
     font-size: 2rem;
   }
+}
 
+@media (min-width: 992px) {
   .chatWidget {
-    position: sticky;
-    top: 60%;
-    right: 30%;
-    transform: translateY(-50%);
+    max-width: 600px;
+    position: relative;
+    bottom: 0;
   }
 }

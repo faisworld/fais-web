@@ -6,7 +6,7 @@ import Header from "@/components/ui/Header"
 import Footer from "@/components/ui/Footer"
 import DynamicBreadcrumbs from "@/components/ui/DynamicBreadcrumbs"
 import MissingImageFixer from "@/components/ui/MissingImageFixer"
-import ElevenLabsWidgetWrapper from "@/components/ui/ElevenLabsWidgetWrapper"
+import ConditionalWidgetWrapper from "@/components/ui/ConditionalWidgetWrapper"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -71,19 +71,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.className}>      <body>
+    <html lang="en" className={inter.className}><body>
         <Header />
         <DynamicBreadcrumbs darkBg={false} />
         <main>{children}</main>
         <Footer />
         <MissingImageFixer />
 
-        {/* ElevenLabs Convai Widget - Client-only component */}
-        <ElevenLabsWidgetWrapper agentId="GkOKedIUAelQwYORYU3j" />
+        {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
+        <ConditionalWidgetWrapper agentId="GkOKedIUAelQwYORYU3j" />
         
         {/* WidgetBot Crate Script */}
         <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async></script>
-      </body>
-    </html>
+      </body></html>
   )
 }

@@ -28,6 +28,19 @@ export default function BlogPage() {
   // Enhanced blog posts data with more AI and blockchain content
   const blogPosts: BlogPost[] = [
     {
+      id: "31",
+      slug: "how-optimism-layer-2-can-transform-your-business",
+      title: "How Optimism Layer 2 Can Transform Your Business",
+      excerpt: "Discover how Optimism's Layer 2 solution can help your business reduce costs, improve scalability, and increase transaction speeds on Ethereum.",
+      date: "May 11, 2025",
+      readTime: "7 min read",
+      category: "blockchain",
+      coverImage: "blog-optimism-layer2",
+      featured: true,
+      author: "Eugene Lukyanov",
+      authorImage: "author-eugene"
+    },
+    {
       id: "1",
       slug: "large-language-models-2025",
       title: "The State of Large Language Models in 2025",
