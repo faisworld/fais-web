@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getBlobImage } from "../../utils/image-utils"; // Added import
 
 export const metadata = {
   title: "AI & Blockchain Services | Fantastic AI Studio",
@@ -22,7 +23,7 @@ export const metadata = {
     url: "https://fais.world/services",
     images: [
       {
-        url: "/services-hero-placeholder.png",
+        url: getBlobImage("services-og-image", "/services-hero-placeholder.png"), // Updated to use getBlobImage
         width: 1200,
         height: 630,
         alt: "Fantastic AI Studio Services"

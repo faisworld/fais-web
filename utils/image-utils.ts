@@ -75,18 +75,43 @@ export const blobImages: { [key: string]: string } = {
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Dapp-Development-300x300-0NIiVSQb62YUQ79OegmUC9nvn4U09B.webp",
     
   // Projects page specific images
-  "projects-dopple-ai": "/images/Screenshot-2025-01-05-160711.png",
-  "projects-degen-kombat": "/images/Screenshot-2025-01-05-160251.png",
-  "projects-heroes-of-mavia": "/images/Screenshot-2025-01-05-160852.png",
-  "projects-multichain-dex": "/images/Screenshot-2025-01-05-165735.png",
-  "projects-payment-system": "/images/Screenshot-2025-01-05-174629.png",
-  "projects-base-org": "/images/Screenshot-2025-01-05-172939.png",
-  "projects-optimism-io": "/images/Screenshot-2025-01-05-175331.png",
-  "projects-blast-io": "/images/Screenshot-2025-01-05-172306.png",
+
+// Update these lines in utils/image-utils.ts
+// in the blobImages object:
+
+// Note: For better image organization:
+// - Use page-specific prefixes (home-, projects-, services-, etc.)
+// - For subpages, consider prefixes like projects-web3- or blog-article-
+// - Keep global images like logo, logo-black, og-image without prefixes
+
+  // Screenshot 2025 01 05 160711 X4TsCx0Tznl0kEKC9xteDtdk9eifzt (png) for projects page
+  "projects-dopple-ai": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-160711-X4TsCx0Tznl0kEKC9xteDtdk9eifzt.png",
+
+  // Screenshot 2025 01 05 160251 a1hFy83k9Rfzoenroo51nuUuLpXwXr (png) for projects page
+  "projects-degen-kombat": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-160251-a1hFy83k9Rfzoenroo51nuUuLpXwXr.png",
+
+  // Screenshot 2025 01 05 160852 CbIqDoFaMOWTENTm4tNfniGclPjKo3 (png) for projects page
+  "projects-heroes-of-mavia": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-160852-CbIqDoFaMOWTENTm4tNfniGclPjKo3.png",
+
+  // Screenshot 2025 01 05 165735 YrpRehlPFZCuhQHFooDAEqol59jfjx (png) for projects page
+  "projects-multichain-dex": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-165735-YrpRehlPFZCuhQHFooDAEqol59jfjx.png",
+
+  // Screenshot 2025 01 05 174629 wxPq1MW2OplBB8V70zjeSN9RqpQ7W0 (png) for projects page
+  "projects-payment-system": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-174629-wxPq1MW2OplBB8V70zjeSN9RqpQ7W0.png",
+
+  // Screenshot 2025 01 05 175331 WPpSHQyWIcLYFLTcfZHXYLrpY93PIx (png) for projects page
+  "projects-optimism-io": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-175331-WPpSHQyWIcLYFLTcfZHXYLrpY93PIx.png",
+
+  // Screenshot 2025 01 05 172306 qOsrwGzaEfz7gHuseaH756pBDbR88Y (png) for projects page
+  "projects-blast-io": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-172306-qOsrwGzaEfz7gHuseaH756pBDbR88Y.png",
+
+  // Screenshot 2025 01 05 172939 8HJfc36gfs5XyiuijmGkMiJgjnvIGI (png) for projects page
+  "projects-base-org": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-172939-8HJfc36gfs5XyiuijmGkMiJgjnvIGI.png",
 
   // Open Graph and social images
-  "og-image":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vibrant-ai-workspace-og-image-7yTGHJKLmnOP.png",
+  // "og-image":
+  //   "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vibrant-ai-workspace-og-image-7yTGHJKLmnOP.png", // Commented out broken link
+  "services-og-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-26_09-29-59-xFa1R1VeZ09PEbV9K84thf62hgSFz8.jpg",
 
   // CEO portrait
   "ceo-portrait":

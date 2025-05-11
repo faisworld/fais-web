@@ -310,6 +310,18 @@ export default function MissingImageFixer() {
 
   // Extract metadata from an image URL
   const extractImageInfo = (url: string) => {
+    // Add a guard for empty or obviously invalid URLs
+    if (!url || typeof url !== 'string' || url.trim() === '') {
+      console.warn("extractImageInfo called with invalid or empty URL:", url);
+      return {
+        filename: 'unknown',
+        baseName: 'Unknown Image',
+        format: 'unknown',
+        folder: 'images',
+        isPlaceholder: true
+      };
+    }
+
     try {
       const urlObj = new URL(url);
       const pathname = urlObj.pathname;

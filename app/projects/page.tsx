@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { getBlobImage } from '../../utils/image-utils'; // Added import
 
 // Dynamically import the AnimatedCounter to ensure it only runs on the client
 const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounter'), {
@@ -64,14 +65,14 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <Image
-              src="/images/Screenshot-2025-01-05-174629.png"
+              src={getBlobImage("projects-payment-system")}
               alt="Non-Custodial Payment Systems Implementation in AI and Blockchain Projects"
               width={700}
               height={300}
-              className="rounded-lg shadow"
+              className="rounded-lg shadow-lg"
             />
           </div>
-          <div>
+          <div className="bg-slate-50 p-8 rounded-lg shadow-md">
             <h4 className="text-lg font-semibold mb-2 lowercase">feemaker.io</h4>
             <p className="mb-2 text-gray-700 lowercase">
               explore how we&apos;ve successfully implemented non-custodial payment systems with <a href="https://feemaker.io/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">feemaker.io</a>, optimizing transaction processes for enhanced security and efficiency.
@@ -88,41 +89,42 @@ export default function ProjectsPage() {
         <h3 className="text-xl font-bold mb-4 lowercase" id="web3-game-development">
           web3 game development
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">          
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center border-t-4 border-indigo-600 transform hover:-translate-y-1">
             <Image
-              src="/images/Screenshot-2025-01-05-160711.png"
+              src={getBlobImage("projects-dopple-ai")}
               alt="Dopple AI"
               width={400}
               height={200}
-              className="rounded mb-2"
+              className="rounded mb-4"
             />
-            <h4 className="text-lg font-semibold mb-1 lowercase">dopple ai</h4>
-            <p className="text-gray-700 mb-2 lowercase">an ai-driven gaming platform that personalizes the gaming experience.</p>
-            <a href="https://beta.dopple.ai/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
+            <h4 className="text-lg font-semibold mb-2 lowercase">dopple ai</h4>
+            <p className="text-gray-700 mb-3 lowercase">an ai-driven gaming platform that personalizes the gaming experience.</p>
+            <a href="https://beta.dopple.ai/" className="btn btn-secondary mt-auto" target="_blank" rel="noopener noreferrer">website</a>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center border-t-4 border-indigo-600 transform hover:-translate-y-1">
             <Image
-              src="/images/Screenshot-2025-01-05-160251.png"
+              src={getBlobImage("projects-degen-kombat")}
               alt="Degen Kombat"
               width={400}
               height={200}
-              className="rounded mb-2"
+              className="rounded mb-4"
             />
-            <h4 className="text-lg font-semibold mb-1 lowercase">degen kombat</h4>
-            <p className="text-gray-700 mb-2 lowercase">an action-packed blockchain game that combines gaming with decentralized finance.</p>
-            <a href="https://degenkombat.com/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
+            <h4 className="text-lg font-semibold mb-2 lowercase">degen kombat</h4>
+            <p className="text-gray-700 mb-3 lowercase">an action-packed blockchain game that combines gaming with decentralized finance.</p>
+            <a href="https://degenkombat.com/" className="btn btn-secondary mt-auto" target="_blank" rel="noopener noreferrer">website</a>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center border-t-4 border-indigo-600 transform hover:-translate-y-1">
             <Image
-              src="/images/Screenshot-2025-01-05-160852.png"
+              src={getBlobImage("projects-heroes-of-mavia")}
               alt="Heroes of Mavia"
               width={400}
               height={200}
-              className="rounded mb-2"
+              className="rounded mb-4"
             />
-            <h4 className="text-lg font-semibold mb-1 lowercase">heroes of mavia</h4>
-            <p className="text-gray-700 mb-2 lowercase">a strategic base-building game powered by blockchain technology.</p>
-            <a href="https://www.mavia.com/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
+            <h4 className="text-lg font-semibold mb-2 lowercase">heroes of mavia</h4>
+            <p className="text-gray-700 mb-3 lowercase">a strategic base-building game powered by blockchain technology.</p>
+            <a href="https://www.mavia.com/" className="btn btn-secondary mt-auto" target="_blank" rel="noopener noreferrer">website</a>
           </div>
         </div>
       </section>
@@ -135,14 +137,14 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <Image
-              src="/images/Screenshot-2025-01-05-165735.png"
+              src={getBlobImage("projects-multichain-dex")}
               alt="Multichain DEX"
               width={700}
               height={300}
-              className="rounded-lg shadow"
+              className="rounded-lg shadow-lg"
             />
           </div>
-          <div>
+          <div className="bg-slate-50 p-8 rounded-lg shadow-md">
             <h4 className="text-lg font-semibold mb-2 lowercase">multichain dex</h4>
             <p className="mb-2 text-gray-700 lowercase">
               check out <a href="https://wagyuswap.app/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">wagyuswap.app</a> for an example of our dex development work.
@@ -156,7 +158,7 @@ export default function ProjectsPage() {
         <h3 className="text-xl font-bold mb-4 lowercase" id="l2-launch-op-stack">
           layer 2 launch services (l2 op stack)
         </h3>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-sky-50 rounded-lg shadow-md p-6 border-l-4 border-sky-500">
           <p className="text-gray-700 mb-2 lowercase">
             we provide comprehensive layer 2 (l2) launch services, including the deployment of optimism bridges and other advanced solutions.
           </p>
@@ -175,50 +177,52 @@ export default function ProjectsPage() {
           while the following are not our projects, we possess the capability to replicate their quality:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center border-t-4 border-teal-500 transform hover:-translate-y-1">
             <Image
-              src="/images/Screenshot-2025-01-05-172939.png"
+              src={getBlobImage("projects-base-org")}
               alt="Base.org"
               width={400}
               height={200}
-              className="rounded mb-2"
+              className="rounded mb-4"
             />
-            <h4 className="text-lg font-semibold mb-1 lowercase">base.org</h4>
-            <p className="text-gray-700 mb-2 lowercase">
+            <h4 className="text-lg font-semibold mb-2 lowercase">base.org</h4>
+            <p className="text-gray-700 mb-3 lowercase">
               base is built as an ethereum l2, decentralized with the optimism superchain, and incubated by coinbase.
             </p>
-            <a href="https://www.base.org/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
+            <a href="https://www.base.org/" className="btn btn-secondary mt-auto" target="_blank" rel="noopener noreferrer">website</a>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center border-t-4 border-teal-500 transform hover:-translate-y-1">
             <Image
-              src="/images/Screenshot-2025-01-05-175331.png"
+              src={getBlobImage("projects-optimism-io")}
               alt="Optimism.io"
               width={400}
               height={200}
-              className="rounded mb-2"
+              className="rounded mb-4"
             />
-            <h4 className="text-lg font-semibold mb-1 lowercase">optimism.io</h4>
-            <p className="text-gray-700 mb-2 lowercase">
+            <h4 className="text-lg font-semibold mb-2 lowercase">optimism.io</h4>
+            <p className="text-gray-700 mb-3 lowercase">
               the superchain is a vision of a composable, unified network of blockchains that can support internet-level activity, powered by the mit-licensed open source op stack.
             </p>
-            <a href="https://www.optimism.io/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
+            <a href="https://www.optimism.io/" className="btn btn-secondary mt-auto" target="_blank" rel="noopener noreferrer">website</a>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center border-t-4 border-teal-500 transform hover:-translate-y-1">
             <Image
-              src="/images/Screenshot-2025-01-05-172306.png"
+              src={getBlobImage("projects-blast-io")}
               alt="Blast.io"
               width={400}
               height={200}
-              className="rounded mb-2"
+              className="rounded mb-4"
             />
-            <h4 className="text-lg font-semibold mb-1 lowercase">blast.io</h4>
-            <p className="text-gray-700 mb-2 lowercase">
+            <h4 className="text-lg font-semibold mb-2 lowercase">blast.io</h4>
+            <p className="text-gray-700 mb-3 lowercase">
               the only evm chain with native yield for eth and stablecoins.
             </p>
-            <a href="http://blast.io/" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">website</a>
+            <a href="http://blast.io/" className="btn btn-secondary mt-auto" target="_blank" rel="noopener noreferrer">website</a>
           </div>
         </div>
-      </section>      {/* Stats Section */}
+      </section>      
+      
+      {/* Stats Section */}
       <section className="py-12 bg-neutral-800 my-12">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-center mb-10 lowercase text-white">our achievements</h2>

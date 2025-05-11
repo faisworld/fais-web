@@ -7,12 +7,12 @@ import Footer from "@/components/ui/Footer"
 import DynamicBreadcrumbs from "@/components/ui/DynamicBreadcrumbs"
 import MissingImageFixer from "@/components/ui/MissingImageFixer"
 import ConditionalWidgetWrapper from "@/components/ui/ConditionalWidgetWrapper"
+import { getBlobImage } from "@/utils/image-utils"; // Import getBlobImage
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
+
 
 const inter = Inter({ subsets: ["latin"] })
-
-// Define OG image URL using Blob storage
-const ogImageUrl =
-  "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vibrant-ai-workspace-og-image-7yTGHJKLmnOP.png"
 
 // Define Twitter/OG image URL using Blob storage
 const twitterImageUrl =
@@ -31,10 +31,16 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: ogImageUrl,
+        url: getBlobImage("logo"), // Use white logo
         width: 1200,
         height: 630,
-        alt: "Fantastic AI Studio Open Graph Image",
+        alt: "Fantastic AI Studio Logo",
+      },
+      {
+        url: getBlobImage("logo-black"), // Use black logo
+        width: 1200,
+        height: 630,
+        alt: "Fantastic AI Studio Logo (Black)",
       },
     ],
   },  twitter: {
@@ -69,6 +75,8 @@ export const metadata: Metadata = {
   },
 }
 
+
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.className}><body>
@@ -83,6 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         {/* WidgetBot Crate Script */}
         <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async></script>
+        <SpeedInsights />
       </body></html>
   )
 }
