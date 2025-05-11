@@ -1,191 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react" // Removed useEffect since it's not used
 import Link from "next/link"
 import Image from "next/image"
 import { getBlobImage } from "@/utils/image-utils"
-import Head from "next/head"
-
-// Types for our blog posts
-interface BlogPost {
-  id: string
-  slug: string
-  title: string
-  excerpt: string
-  date: string
-  readTime: string
-  category: "ai" | "blockchain" | "technology" | "business"
-  coverImage: string
-  featured?: boolean
-  author?: string
-  authorImage?: string
-}
+// Removed Head import since it's not used
+import { blogPosts } from "./blog-data" // Removed BlogPost import since it's not used
 
 export default function BlogPage() {
   const [filter, setFilter] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
-  
-  // Enhanced blog posts data with more AI and blockchain content
-  const blogPosts: BlogPost[] = [
-    {
-      id: "31",
-      slug: "how-optimism-layer-2-can-transform-your-business",
-      title: "How Optimism Layer 2 Can Transform Your Business",
-      excerpt: "Discover how Optimism's Layer 2 solution can help your business reduce costs, improve scalability, and increase transaction speeds on Ethereum.",
-      date: "May 11, 2025",
-      readTime: "7 min read",
-      category: "blockchain",
-      coverImage: "blog-optimism-layer2",
-      featured: true,
-      author: "Eugene Lukyanov",
-      authorImage: "author-eugene"
-    },
-    {
-      id: "1",
-      slug: "large-language-models-2025",
-      title: "The State of Large Language Models in 2025",
-      excerpt: "Exploring how LLMs have evolved and their impact across industries including healthcare, finance, and education.",
-      date: "May 8, 2025",
-      readTime: "8 min read",
-      category: "ai",
-      coverImage: "blog-ai-llm",
-      featured: true,
-      author: "Sarah Johnson",
-      authorImage: "author-sarah"
-    },
-    {
-      id: "2",
-      slug: "blockchain-for-supply-chain",
-      title: "Implementing Blockchain Solutions for Modern Supply Chains",
-      excerpt: "How distributed ledger technology is revolutionizing transparency and efficiency in global supply networks.",
-      date: "May 5, 2025",
-      readTime: "6 min read",
-      category: "blockchain",
-      coverImage: "blog-blockchain-supply",
-      author: "Michael Chen",
-      authorImage: "author-michael"
-    },
-    {
-      id: "3",
-      slug: "multimodal-ai-applications",
-      title: "Multimodal AI Applications in Creative Industries",
-      excerpt: "From text-to-image to text-to-video, how multimodal AI is transforming content creation and design workflows.",
-      date: "May 3, 2025",
-      readTime: "10 min read",
-      category: "ai",
-      coverImage: "blog-ai-multimodal",
-      author: "Emma Watson",
-      authorImage: "author-emma"
-    },
-    {
-      id: "4",
-      slug: "defi-trends-2025",
-      title: "DeFi Trends Reshaping Financial Services in 2025",
-      excerpt: "An examination of how decentralized finance continues to disrupt traditional banking and investment models.",
-      date: "April 29, 2025",
-      readTime: "7 min read",
-      category: "blockchain",
-      featured: true,
-      coverImage: "blog-blockchain-defi",
-      author: "Robert Kim",
-      authorImage: "author-robert"
-    },
-    {
-      id: "5",
-      slug: "ai-governance-frameworks",
-      title: "Emerging AI Governance Frameworks for Enterprise",
-      excerpt: "Best practices for implementing responsible AI systems within corporate environments in compliance with regulations.",
-      date: "April 26, 2025",
-      readTime: "9 min read",
-      category: "ai",
-      coverImage: "blog-ai-governance",
-      author: "Priya Sharma",
-      authorImage: "author-priya"
-    },
-    {
-      id: "6",
-      slug: "nft-business-applications",
-      title: "Beyond Digital Art: Business Applications for NFTs in 2025",
-      excerpt: "How companies are leveraging non-fungible tokens for loyalty programs, digital identity, and product authentication.",
-      date: "April 24, 2025",
-      readTime: "6 min read",
-      category: "blockchain",
-      coverImage: "blog-blockchain-nft",
-      author: "Alex Thompson",
-      authorImage: "author-alex"
-    },
-    {
-      id: "7",
-      slug: "ai-assisted-development",
-      title: "AI-Assisted Development: The New Normal for Software Engineers",
-      excerpt: "How AI coding assistants have transformed software development workflows and productivity benchmarks.",
-      date: "April 21, 2025",
-      readTime: "8 min read",
-      category: "ai",
-      coverImage: "blog-ai-development",
-      author: "David Miller",
-      authorImage: "author-david"
-    },    {
-      id: "8",
-      slug: "tokenization-real-world-assets",
-      title: "Tokenization of Real-World Assets: Market Growth and Challenges",
-      excerpt: "Analyzing the expanding market for tokenized real estate, commodities, and securities on blockchain networks.",
-      date: "April 18, 2025",
-      readTime: "7 min read",
-      category: "blockchain",
-      coverImage: "blog-blockchain-tokenization",
-      author: "Sophia Rodriguez",
-      authorImage: "author-sophia"
-    },
-    {
-      id: "9",
-      slug: "ai-healthcare-advancements",
-      title: "AI in Healthcare: Breakthroughs and Ethical Considerations",
-      excerpt: "How artificial intelligence is transforming disease diagnosis, drug discovery, and patient care while navigating complex ethical issues.",
-      date: "April 15, 2025",
-      readTime: "9 min read",
-      category: "ai",
-      coverImage: "blog-ai-healthcare",
-      author: "Dr. James Wilson",
-      authorImage: "author-james"
-    },
-    {
-      id: "10",
-      slug: "blockchain-sustainability",
-      title: "Blockchain for Environmental Sustainability: Beyond Energy Concerns",
-      excerpt: "Innovative applications of blockchain technology in carbon tracking, sustainable supply chains, and climate action initiatives.",
-      date: "April 12, 2025",
-      readTime: "7 min read",
-      category: "blockchain",
-      coverImage: "blog-blockchain-sustainability",
-      author: "Elena Torres",
-      authorImage: "author-elena"
-    },
-    {
-      id: "11",
-      slug: "ai-ml-comparison",
-      title: "AI vs. ML: Clarifying the Distinctions in 2025",
-      excerpt: "A comprehensive breakdown of the differences between artificial intelligence and machine learning with real-world examples.",
-      date: "April 9, 2025",
-      readTime: "6 min read",
-      category: "ai",
-      coverImage: "blog-ai-ml",
-      author: "Thomas Wright",
-      authorImage: "author-thomas"
-    },
-    {
-      id: "12",
-      slug: "dao-governance-models",
-      title: "Evolving DAO Governance Models: Lessons from Successful Implementations",
-      excerpt: "An analysis of decentralized autonomous organization governance structures and best practices for effective decision-making.",
-      date: "April 6, 2025",
-      readTime: "8 min read",
-      category: "blockchain",
-      coverImage: "blog-blockchain-dao",
-      author: "Liam Johnson",
-      authorImage: "author-liam"
-    }
-  ]
 
   // Filter posts based on category and search query
   const filteredPosts = blogPosts.filter(post => {
@@ -251,11 +75,12 @@ export default function BlogPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogStructuredData) }}
       />
 
-      <main className="w-full bg-white text-gray-800 pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="w-full bg-white text-gray-800"> {/* Removed pt-20 */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20"> {/* Changed pt-20 pb-12 to py-20 */}
           {/* Hero Section */}
           <section className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 lowercase bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
+            {/* Updated H1 classes */}
+            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900">
               AI & Blockchain Blog
             </h1>
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">

@@ -10,10 +10,11 @@ const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounte
 
 export default function ProjectsPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    // Changed pt-20 pb-12 to py-20
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       
-        <h1 className="text-4xl font-bold my-8 text-center md:text-left lowercase">AI and Blockchain Projects</h1> {/* Page Title */}
-
+        {/* Page Title Updated */}
+        <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900 text-center md:text-left lowercase">AI and Blockchain Projects</h1>
 
       {/* Section: Why Choose Us */}
       <section className="mb-12">
@@ -51,7 +52,7 @@ export default function ProjectsPage() {
           Our Projects and Capabilities in AI and Blockchain
         </h2>
         <p className="text-center text-gray-700 mb-8 lowercase">
-          whether you're looking to develop a custom ai-driven app or dapp, launch a web3 game, or secure your smart contracts with a comprehensive audit, we have the skills and experience to turn your vision into reality.
+          whether you&apos;re looking to develop a custom ai-driven app or dapp, launch a web3 game, or secure your smart contracts with a comprehensive audit, we have the skills and experience to turn your vision into reality.
         </p>
       </section>
 
@@ -73,7 +74,7 @@ export default function ProjectsPage() {
           <div>
             <h4 className="text-lg font-semibold mb-2 lowercase">feemaker.io</h4>
             <p className="mb-2 text-gray-700 lowercase">
-              explore how we've successfully implemented non-custodial payment systems with <a href="https://feemaker.io/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">feemaker.io</a>, optimizing transaction processes for enhanced security and efficiency.
+              explore how we&apos;ve successfully implemented non-custodial payment systems with <a href="https://feemaker.io/" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">feemaker.io</a>, optimizing transaction processes for enhanced security and efficiency.
             </p>
             <p className="mb-2 text-gray-700 lowercase">
               <strong>wallet link (metamask + telegram integration):</strong> enhance your payment options by integrating seamless wallet connections. we’ve developed robust solutions that link metamask and telegram wallets for streamlined operations.
@@ -87,8 +88,7 @@ export default function ProjectsPage() {
         <h3 className="text-xl font-bold mb-4 lowercase" id="web3-game-development">
           web3 game development
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">          <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <Image
               src="/images/Screenshot-2025-01-05-160711.png"
               alt="Dopple AI"

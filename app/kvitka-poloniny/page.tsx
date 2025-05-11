@@ -1,93 +1,71 @@
 "use client";
-import Image from "next/image";
-import styles from "./styles.module.css";
-import { useEffect, useRef } from "react";
+
+import { useEffect, useRef } from 'react';
+import styles from './styles.module.css';
 
 export default function KvitkaPoloninyPage() {
   const chatWidgetRef = useRef<HTMLDivElement>(null);
   
-  // Use effect to ensure our custom styles are applied after the chat widget loads
   useEffect(() => {
-    // Load the ElevenLabs script if it's not already loaded
     const scriptId = "elevenlabs-script";
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement("script");
       script.id = scriptId;
       script.src = "https://elevenlabs.io/convai-widget/index.js";
       script.async = true;
-      script.defer = true;
       document.head.appendChild(script);
     }
 
-    // Create and append the widget after the script is loaded
     const createChatWidget = () => {
-      if (!chatWidgetRef.current || chatWidgetRef.current.childElementCount > 0) return;
-      
-      try {
-        const widget = document.createElement("elevenlabs-convai");
-        widget.setAttribute("agent-id", "iNXsli5ADa6T5QV7XQIM");
-        widget.setAttribute("style", "position: static; bottom: auto; right: auto;");
-        chatWidgetRef.current.appendChild(widget);
-      } catch (error) {
-        console.error("Error creating ElevenLabs widget:", error);
+      if (customElements.get('elevenlabs-convai') && chatWidgetRef.current && chatWidgetRef.current.childElementCount === 0) {
+        const widget = document.createElement('elevenlabs-convai');
+        widget.setAttribute('agent-id', 'GkOKedIUAelQwYORYU3j');
+        if (chatWidgetRef.current) {
+          chatWidgetRef.current.appendChild(widget);
+          setTimeout(() => {
+            const internalWidgetContainer = widget.shadowRoot?.querySelector('div[style*="position: fixed"]');
+            if (internalWidgetContainer instanceof HTMLElement) {
+              internalWidgetContainer.style.position = 'relative';
+              internalWidgetContainer.style.bottom = 'auto';
+              internalWidgetContainer.style.right = 'auto';
+            }
+          }, 1000);
+        }
+      } else if (!customElements.get('elevenlabs-convai')) {
+        setTimeout(createChatWidget, 300);
       }
     };
 
-    // Check if the custom element is defined every 300ms until it's ready
-    const interval = setInterval(() => {
-      if (customElements.get("elevenlabs-convai")) {
-        createChatWidget();
-        clearInterval(interval);
-      }
-    }, 300);
-
-    // Force widget positioning to be static
-    const styleFixInterval = setInterval(() => {
-      const chatContainer = document.getElementById("elevenlabs-chat-container");
-      if (chatContainer) {
-        chatContainer.style.position = "static";
-        chatContainer.style.bottom = "auto";
-        chatContainer.style.right = "auto";
-        
-        // Also fix any child elements
-        Array.from(chatContainer.getElementsByTagName("*")).forEach(el => {
-          if ((el as HTMLElement).style.position === "fixed") {
-            (el as HTMLElement).style.position = "static";
-          }
-        });
-        
-        clearInterval(styleFixInterval);
-      }
-    }, 500);
+    if (script.onload) {
+      createChatWidget();
+    } else {
+      script.onload = createChatWidget;
+    }
     
     return () => {
-      clearInterval(interval);
-      clearInterval(styleFixInterval);
+      // Cleanup logic if needed
     };
   }, []);
   
   return (
-    <div className={styles.pageContainer}>
+    <div className={`${styles.pageContainer} pt-20`}>
       <main className={styles.mainContent}>
         <div className={styles.imageContainer}>
-          <Image 
-            src="/kvitka-polonyny.png" 
-            alt="Квітка полонини – санаторій у Закарпатті" 
-            width={320} 
-            height={180} 
-            className={styles.kvitkaImage}
-          />
+          <img src="/kvitka-polonyny.png" alt="Квітка Полонини" className={styles.kvitkaImage} />
         </div>
         <div className={styles.textContent}>
-          <h1 className={styles.pageTitle}>Квітка полонини</h1>
+          <h1 className={styles.pageTitle}>Ласкаво просимо до AI Асистента Санаторію "Квітка Полонини"</h1>
           <p className={styles.pageText}>
-            Санаторій «Квітка полонини» — сучасний оздоровчий комплекс у Закарпатті. Пропонує унікальні мінеральні води, сучасну медичну базу, кваліфікованих лікарів, різноманітні лікувальні програми та комфортний відпочинок серед мальовничої природи.
+            Задайте своє питання нашому віртуальному помічнику. Він готовий надати інформацію про послуги санаторію, 
+            процедури, проживання та багато іншого. Ми прагнемо зробити ваш досвід максимально комфортним та інформативним.
           </p>
           <p className={styles.pageText}>
-            Санаторій розташований у селі Поляна, відомому своїми термальними водами та лікувальними грязями. Тут ви зможете насолодитися не лише лікуванням, а й активним відпочинком: піші прогулянки, велосипедні маршрути, катання на лижах взимку.
-          </p>            <div className={styles.chatWidget} id="kvitka-widget-container" ref={chatWidgetRef}>
-            {/* Widget will be created dynamically via useEffect */}
-          </div>
+            AI Асистент працює 24/7, щоб ви могли отримати відповіді у будь-який зручний для вас час.
+          </p>
+        </div>
+        <div ref={chatWidgetRef} className={styles.chatWidget} id="kvitka-widget-container">
+          {/* ElevenLabs widget will be appended here by the script */}
         </div>
       </main>
     </div>

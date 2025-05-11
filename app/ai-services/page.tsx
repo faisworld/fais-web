@@ -36,7 +36,7 @@ export const metadata = {
 
 export default function AIServicesPage() {
   return (
-    <div className="relative overflow-x-clip">
+    <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
       {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />

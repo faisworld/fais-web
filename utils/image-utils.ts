@@ -73,6 +73,16 @@ export const blobImages: { [key: string]: string } = {
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/6-AI-Services-bw4-K0JK6LHIxJik1YvNVq8Avzche5h9Eg.webp",
   "payment-systems":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Dapp-Development-300x300-0NIiVSQb62YUQ79OegmUC9nvn4U09B.webp",
+    
+  // Projects page specific images
+  "projects-dopple-ai": "/images/Screenshot-2025-01-05-160711.png",
+  "projects-degen-kombat": "/images/Screenshot-2025-01-05-160251.png",
+  "projects-heroes-of-mavia": "/images/Screenshot-2025-01-05-160852.png",
+  "projects-multichain-dex": "/images/Screenshot-2025-01-05-165735.png",
+  "projects-payment-system": "/images/Screenshot-2025-01-05-174629.png",
+  "projects-base-org": "/images/Screenshot-2025-01-05-172939.png",
+  "projects-optimism-io": "/images/Screenshot-2025-01-05-175331.png",
+  "projects-blast-io": "/images/Screenshot-2025-01-05-172306.png",
 
   // Open Graph and social images
   "og-image":
@@ -82,6 +92,15 @@ export const blobImages: { [key: string]: string } = {
   "ceo-portrait":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp",
 
+  // Services page images:
+  "service-image-1":
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-1.webp",
+  "service-image-2":
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-2.webp",
+  "service-image-3":
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-3.webp",
+  "service-image-4":
+    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-4.webp",
   // Add more as needed
 }
 

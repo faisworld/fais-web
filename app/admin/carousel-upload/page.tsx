@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function CarouselUploadPage() {
   return (
-    <div className="container mx-auto py-10 px-4 mt-20">
+    <div className="container mx-auto px-4 pt-20 pb-10"> {/* Adjusted padding for consistent H1 spacing */}
       <h1 className="text-3xl font-bold mb-8">Carousel Image Upload</h1>
       <CarouselImageUploader />
     </div>

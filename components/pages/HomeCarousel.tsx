@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import ClientImage from "@/components/ui/ClientImage"
 import { getBlobImage } from "@/utils/image-utils"
 import Link from "next/link"
@@ -12,7 +12,7 @@ export default function HomeCarousel() {
   const transitioningRef = useRef(false)
 
   // Define carousel items with keys that match the blobImages object
-  const carouselItems = [
+  const carouselItems = useMemo(() => [
     {
       key: "pioneering-digital-transformation",
       alt: "Pioneering Digital Transformation - AI and blockchain solutions for digital transformation",
@@ -37,7 +37,7 @@ export default function HomeCarousel() {
       buttonText: "our services",
       buttonLink: "/services"
     },
-  ]
+  ], [])
 
   // Function to go to the next slide
   const goToNextSlide = useCallback(() => {
@@ -94,7 +94,7 @@ export default function HomeCarousel() {
       if (autoRotateTimerRef.current) {
         clearInterval(autoRotateTimerRef.current)      }
     }
-  }, [goToNextSlide])
+  }, [carouselItems, goToNextSlide])
   return (
     <>
       {/* Desktop Carousel - Hidden on mobile, fixed to cover the entire viewport */}

@@ -368,3 +368,40 @@ a:hover {
   color: black;
 }
 
+/* Enhanced typography for blog content */
+.enhanced-blog-content h2 {
+  @apply text-2xl font-bold my-6 pb-2 border-b border-gray-200;
+}
+
+.enhanced-blog-content h3 {
+  @apply text-xl font-semibold mt-8 mb-3 text-blue-700;
+}
+
+.enhanced-blog-content p {
+  @apply leading-relaxed mb-6 text-gray-700;
+}
+
+.enhanced-blog-content strong {
+  @apply text-gray-900 font-semibold;
+}
+
+.enhanced-blog-content ul {
+  @apply bg-gray-50 p-5 rounded-lg;
+}
+
+.enhanced-blog-content li {
+  @apply mb-3 last:mb-0;
+}
+
+.enhanced-blog-content a {
+  @apply text-blue-600 font-medium hover:text-blue-800 underline decoration-blue-300 underline-offset-2 transition-colors;
+}
+
+/* Add styles for callout boxes (use in your content components) */
+.callout {
+  @apply bg-blue-50 border-l-4 border-blue-500 p-4 my-6 rounded-r-lg;
+}
+
+.callout-warning {
+  @apply bg-amber-50 border-l-4 border-amber-500 p-4 my-6 rounded-r-lg;
+}

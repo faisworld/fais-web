@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import {
   FiArrowLeft,
   FiSave,
@@ -32,6 +33,15 @@ type ImageData = {
   format?: string
 }
 
+// Define a type for the updateData object
+type UpdateData = {
+  id: number
+  title: string
+  alt?: string
+  folder?: string
+  description?: string
+}
+
 export default function ImageEditClient({ img, alt }: { img: ImageData; alt: string }) {
   const [editing, setEditing] = useState(false)
   const [title, setTitle] = useState(img.title || "")
@@ -58,7 +68,7 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
 
     try {
       // Only include fields that exist in the database
-      const updateData: any = {
+      const updateData: UpdateData = {
         id: img.id,
         title,
       }
@@ -159,7 +169,7 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
     if (!dateString) return "Unknown date"
     try {
       return new Date(dateString).toLocaleDateString() + " " + new Date(dateString).toLocaleTimeString()
-    } catch (e) {
+    } catch {
       return "Invalid date"
     }
   }
@@ -170,7 +180,7 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
       const urlObj = new URL(url)
       const pathParts = urlObj.pathname.split("/")
       return pathParts[pathParts.length - 1]
-    } catch (e) {
+    } catch {
       return url
     }
   }
@@ -199,13 +209,16 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
       <div className="p-6 flex flex-col md:flex-row gap-8">
         {/* Image column */}
         <div className="flex-1 flex flex-col items-center">
-          <div className="bg-gray-100 rounded-lg p-2 w-full max-w-md flex items-center justify-center">
-            <img
+          <div className="bg-gray-100 rounded-lg p-2 w-full max-w-md h-[400px] flex items-center justify-center relative">
+            <Image
               src={img.url || getPlaceholderImage(img.title || "Image")}
               alt={altText}
               title={title}
-              className="max-w-full max-h-[400px] object-contain"
+              layout="fill"
+              objectFit="contain"
+              className="max-w-full max-h-full"
               onError={handleImageError}
+              priority
             />
           </div>
 
@@ -270,7 +283,7 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
           </div>
 
           {/* Conversion Panel */}
-          <ConversionPanel imageId={img.id} imageUrl={img.url} imageTitle={img.title || "image"} />
+          <ConversionPanel imageUrl={img.url} imageAlt={altText} />
 
           {/* Resize options */}
           {showResizeOptions && (

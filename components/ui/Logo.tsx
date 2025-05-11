@@ -9,11 +9,21 @@ type LogoProps = {
   href?: string
   className?: string
   onClick?: () => void
+  isFooter?: boolean // Add new prop to identify footer usage
 }
 
-export default function Logo({ variant = "white", href = "/", className = "", onClick }: LogoProps) {
+export default function Logo({ 
+  variant = "white", 
+  href = "/", 
+  className = "", 
+  onClick,
+  isFooter = false // Default to false
+}: LogoProps) {
   const logoKey = variant === "white" ? "logo" : "logo-black"
   const logoAlt = "Fantastic AI Studio Logo"
+
+  // Apply negative margin only if it's used in the footer
+  const footerAdjustment = isFooter ? "md:-ml-3" : ""
 
   const logoImage = (
     <ClientImage
@@ -29,13 +39,13 @@ export default function Logo({ variant = "white", href = "/", className = "", on
         padding: 0,
         margin: 0
       }}
-      className={`transition-all duration-300 sm:h-[40px] h-[32px] ${className}`}
+      className={`transition-all duration-300 sm:h-[40px] h-[32px] ${footerAdjustment} ${className}`}
     />
   )
 
   if (href) {
     return (
-      <Link href={href} className="flex-shrink-0 p-0 m-0" style={{ padding: 0, margin: 0 }} onClick={onClick}>
+      <Link href={href} className={`flex-shrink-0 p-0 m-0 ${footerAdjustment}`} style={{ padding: 0, margin: 0 }} onClick={onClick}>
         {logoImage}
       </Link>
     )

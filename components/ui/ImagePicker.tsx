@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { FiX, FiSearch, FiRefreshCw, FiCheck } from "react-icons/fi"
+import Image from "next/image"
 
 interface ImagePickerProps {
   isOpen: boolean
@@ -10,8 +11,22 @@ interface ImagePickerProps {
   title?: string
 }
 
+// Match the ImageItem type used in GalleryClient
+interface ImageItem {
+  id: number
+  url: string
+  title: string
+  altTag?: string
+  "alt-tag"?: string
+  folder?: string
+  width?: number
+  height?: number
+  size?: number
+  uploaded_at?: string
+}
+
 export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select an image" }: ImagePickerProps) {
-  const [images, setImages] = useState<any[]>([])
+  const [images, setImages] = useState<ImageItem[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -26,12 +41,63 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
   const fetchImages = async () => {
     setLoading(true)
     try {
-      const response = await fetch("/api/gallery/images")
-      if (!response.ok) throw new Error("Failed to fetch images")
+      // Try the direct-list endpoint first, fall back to the list endpoint if that fails
+      console.log("Attempting to fetch images from direct-list endpoint...")
+      let response = await fetch("/api/gallery/direct-list")
+      
+      if (!response.ok) {
+        console.log("Falling back to original gallery list endpoint...")
+        response = await fetch("/api/gallery/list")
+        if (!response.ok) {
+          console.error("Both image endpoints failed")
+          throw new Error("Failed to fetch images from both endpoints")
+        }
+      }
+      
       const data = await response.json()
-      setImages(data.images || [])
+      console.log(`Successfully loaded ${data.images?.length || 0} images`)
+      
+      // Ensure we have valid image data
+      if (!data.images || !Array.isArray(data.images)) {
+        throw new Error("Invalid image data format")
+      }
+      
+      // Process the images to ensure they all have required fields
+      const processedImages = data.images.map((img: Partial<ImageItem>, index: number) => ({
+        id: img.id || index + 1,
+        url: img.url || '/placeholder.svg',
+        title: img.title || `Image ${index + 1}`,
+        altTag: img.altTag || img["alt-tag"] || img.title || `Image ${index + 1}`,
+        "alt-tag": img["alt-tag"] || img.altTag || img.title || `Image ${index + 1}`,
+        folder: img.folder || 'Unknown',
+        size: img.size || 0,
+        width: img.width || 0,
+        height: img.height || 0,
+        uploaded_at: img.uploaded_at || new Date().toISOString()
+      }))
+      
+      setImages(processedImages)
     } catch (error) {
       console.error("Error fetching images:", error)
+      // Set some sample fallback images for development
+      setImages([
+        {
+          id: 1,
+          url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png",
+          title: "Logo White Fais",
+          altTag: "FAIS Logo White",
+          "alt-tag": "FAIS Logo White",
+          folder: "logos"
+        },
+        {
+          id: 2,
+          url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png",
+          title: "Logo Fais Black",
+          altTag: "FAIS Logo Black",
+          "alt-tag": "FAIS Logo Black",
+          folder: "logos"
+        }
+      ])
     } finally {
       setLoading(false)
     }
@@ -56,10 +122,10 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
   const filteredImages = images.filter((image) => {
     const searchLower = searchTerm.toLowerCase()
     return (
-      image.filename?.toLowerCase().includes(searchLower) ||
-      image.alt_tag?.toLowerCase().includes(searchLower) ||
-      image.description?.toLowerCase().includes(searchLower) ||
-      image.folder_name?.toLowerCase().includes(searchLower)
+      image.title?.toLowerCase().includes(searchLower) ||
+      image.altTag?.toLowerCase().includes(searchLower) ||
+      image["alt-tag"]?.toLowerCase().includes(searchLower) ||
+      image.folder?.toLowerCase().includes(searchLower)
     )
   })
 
@@ -115,23 +181,27 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
                   onClick={() => handleSelect(image.url)}
                 >
                   <div className="aspect-square bg-gray-100 relative">
-                    <img
+                    <Image
                       src={image.url || "/placeholder.svg"}
-                      alt={image.alt_tag || image.filename}
+                      alt={image.altTag || image.title}
                       className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       onError={(e) => {
-                        e.currentTarget.src = "/placeholder.svg"
+                        // TypeScript requires type assertion for onError event
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder.svg";
                       }}
                     />
                     {selectedImage === image.url && (
-                      <div className="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-1">
+                      <div className="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-1 z-10">
                         <FiCheck size={16} />
                       </div>
                     )}
                   </div>
                   <div className="p-2">
-                    <div className="text-sm font-medium truncate">{image.filename}</div>
-                    <div className="text-xs text-gray-500 truncate">{image.folder_name || "Root"}</div>
+                    <div className="text-sm font-medium truncate">{image.title}</div>
+                    <div className="text-xs text-gray-500 truncate">{image.folder || "Root"}</div>
                     <div className="mt-1 flex justify-between items-center">
                       <button
                         onClick={(e) => {
@@ -142,7 +212,7 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
                       >
                         {copiedUrl === image.url ? "Copied!" : "Copy URL"}
                       </button>
-                      <span className="text-xs text-gray-400">{image.format}</span>
+                      <span className="text-xs text-gray-400">{image.size ? `${image.size} KB` : "Unknown size"}</span>
                     </div>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import ContactPageClient from "./page.client";
+import ContactClientPage from "./page.client";
 import type { Metadata } from "next";
 
 // Enhanced metadata export with detailed SEO properties
@@ -25,5 +25,9 @@ export const metadata: Metadata = {
 
 // Render the client component directly
 export default function ContactPage() {
-    return <ContactPageClient />;
+    return (
+        <div>
+            <ContactClientPage />
+        </div>
+    );
 }

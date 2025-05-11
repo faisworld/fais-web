@@ -46,28 +46,19 @@ export default function Home() {
           email: "contact@fais.world",
           availableLanguage: ["English"]
         }}
-      />      {/* Hero Carousel at the top - Desktop only */}
-      <HomeCarousel />
+      />
 
-      {/* Content structured for both mobile and desktop */}
-      <div className="bg-white md:mt-[100vh]">
-        {/* SolutionsSection starts the page on mobile */}
-        <div className="md:hidden">
-          <div className="bg-gradient-to-r from-blue-900 to-black w-full py-8 px-4">
-            <h1 className="text-3xl font-bold text-center text-white lowercase" itemProp="name">
-              fantastic ai studio
-            </h1>
-            <p className="text-white text-center mt-2 bg-black inline-block px-4 py-1 rounded-md mx-auto block" itemProp="description">
-              innovative <span className="text-blue-300">ai</span> & <span className="text-yellow-400">blockchain</span> solutions
-            </p>
-          </div>
-          <SolutionsSection />
-        </div>
-        
-        {/* Desktop SolutionsSection */}
-        <div className="hidden md:block">
-          <SolutionsSection />
-        </div>
+      {/* Desktop: HomeCarousel */}
+      <div className="hidden md:block">
+        <HomeCarousel />
+      </div>
+
+      {/* Content Area */}
+      {/* Desktop: md:mt-[100vh] pushes content below viewport-height carousel */}
+      {/* Mobile: No specific top margin here, content flows after Mobile Hero */}
+      <div className="bg-white pt-20 md:pt-0 md:mt-[100vh]"> {/* Added pt-20 for mobile, md:pt-0 to reset for desktop */}
+        {/* Add id="solutions" to SolutionsSection component for the mobile hero link to work */}
+        <SolutionsSection /> 
         
         <ProjectsSection />
         {/* Testimonials section commented out until we have real client feedback */}

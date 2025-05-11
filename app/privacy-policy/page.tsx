@@ -21,16 +21,17 @@ export const metadata = {
 
 export default function PrivacyPolicyPage() {
     return (
-        <div className="relative overflow-x-clip">
+        <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
             {/* Subtle background */}
             <div className="pointer-events-none absolute inset-0 z-0">
                 <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />
                 <div className="absolute bottom-[-100px] right-[-100px] w-[260px] h-[260px] rounded-full bg-neutral-200 opacity-30 blur-3xl" />
             </div>
 
-            <main className="relative z-10 py-16 px-4">
+            <main className="relative z-10 py-20 px-4"> {/* Changed py-16 to py-20 */}
                 <div className="max-w-3xl mx-auto bg-white/90 rounded-2xl shadow-xl p-8 border border-neutral-100 backdrop-blur mb-12">
-                    <h1 className="text-4xl md:text-5xl font-extrabold mb-8 text-neutral-900 text-center">
+                    {/* Updated H1 classes */}
+                    <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900 text-center">
                         privacy policy for fantastic ai studio
                     </h1>
                     <div className="mb-8 text-center">

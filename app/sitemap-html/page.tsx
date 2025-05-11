@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Head from "next/head"
 
 export default function SitemapPage() {
   const pathname = usePathname()
@@ -41,7 +42,12 @@ export default function SitemapPage() {
   ]
   
   return (
-    <div className="container mx-auto py-12 px-4">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+      <Head>
+        <title>Sitemap | Fantastic AI Studio</title>
+        <meta name="description" content="HTML sitemap for Fantastic AI Studio." />
+        <link rel="canonical" href={`https://fais.world${pathname}`} />
+      </Head>
       <h1 className="text-3xl font-bold mb-8 text-center lowercase">site map</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

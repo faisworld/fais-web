@@ -65,10 +65,10 @@ export default function ContactClientPage() {    useEffect(() => {
                 }}
             />
 
-            <main className="w-full bg-white text-gray-800" itemScope itemType="https://schema.org/ContactPage">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-20">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-white text-gray-800" itemScope itemType="https://schema.org/ContactPage">
+                <div> {/* Simplified div, as main now handles max-width and padding */}
                     {/* Hero Section */}                    <section className="text-center mb-16">
-                        <h1 className="text-4xl md:text-5xl font-bold mb-6 lowercase bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600" itemProp="name">
+                        <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900 text-center md:text-left lowercase" itemProp="name">
                             contact us
                         </h1>
                         <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto" itemProp="description">
@@ -237,7 +237,7 @@ export default function ContactClientPage() {    useEffect(() => {
                                 </h3>
                                 <div className="pl-7" itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
                                     <p className="text-gray-600" itemProp="text">
-                                        starting a project is easy - just reach out through our contact form or direct email, and we'll schedule an initial consultation to discuss your requirements and develop a tailored proposal.
+                                        starting a project is easy - just reach out through our contact form or direct email, and we&apos;ll schedule an initial consultation to discuss your requirements and develop a tailored proposal.
                                     </p>
                                 </div>
                             </div>
@@ -246,7 +246,7 @@ export default function ContactClientPage() {    useEffect(() => {
                         <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-10 rounded-lg shadow-sm border border-gray-200">
                             <h2 className="text-3xl font-bold mb-4 lowercase text-gray-800">ready to transform your business?</h2>
                             <p className="text-lg mb-8 max-w-2xl mx-auto text-gray-600">
-                                let's discuss how our ai and blockchain solutions can address your specific challenges and drive innovation.
+                                let&apos;s discuss how our ai and blockchain solutions can address your specific challenges and drive innovation.
                             </p>                            <Link href="/services" style={{ textDecoration: 'none' }}>
                                 <Button size="lg">
                                     explore our services

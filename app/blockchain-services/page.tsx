@@ -33,7 +33,7 @@ export const metadata = {
 
 export default function BlockchainServicesPage() {
   return (
-    <div className="relative overflow-x-clip">
+    <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
       {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />
@@ -78,7 +78,7 @@ export default function BlockchainServicesPage() {
                 <strong>smart contract development:</strong> create secure, auditable, and automated business logic with expert-crafted smart contracts on Ethereum, Solana, Polygon, and other leading platforms.
               </li>
               <li>
-                <strong>decentralized applications (dApps):</strong> build robust web3 applications with intuitive user experiences that leverage blockchain's security and transparency.
+                <strong>decentralized applications (dApps):</strong> build robust web3 applications with intuitive user experiences that leverage blockchain&apos;s security and transparency.
               </li>
               <li>
                 <strong>blockchain consulting:</strong> receive strategic guidance on blockchain adoption, platform selection, and implementation roadmaps aligned with your business objectives.

@@ -11,17 +11,11 @@ const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounte
 });
 
 export default function AboutPage() {
-    const breadcrumbItems = [
-        { label: "Home", href: "/" },
-        { label: "About Us" },
-    ];
-
     return (
         <div>
             <main>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    {/* Page Title */}
-                    <h1 className="text-4xl font-bold my-8 text-center md:text-left lowercase">about fantastic ai studio</h1>
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                    <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900 text-center md:text-left lowercase">about fantastic ai studio</h1>
 
                     {/* Mission Section */}
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
@@ -40,7 +34,9 @@ export default function AboutPage() {
                                 className="rounded-lg shadow-lg object-cover"
                             />
                         </div>
-                    </section>                    {/* Vision Section */}
+                    </section>
+
+                    {/* Vision Section */}
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="order-1 flex justify-center md:justify-start">
                             <Image
@@ -82,7 +78,9 @@ export default function AboutPage() {
                                 </p>
                             </div>
                         </div>
-                    </section>                    {/* Dynamic Counter Section */}
+                    </section>
+
+                    {/* Dynamic Counter Section */}
                     <section className="mb-16 py-12 bg-neutral-800 rounded-lg">
                         <h2 className="text-3xl font-bold text-center mb-8 lowercase text-white">why choose us</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-center">
@@ -112,7 +110,7 @@ export default function AboutPage() {
                     <section className="relative bg-transparent bg-cover bg-center py-12 mt-16 rounded-lg">
                         <ContactUs />
                     </section>
-                </div>
+                </section>
             </main>
         </div>
     );

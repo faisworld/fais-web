@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
-import ImageEditClient from "./ImageEditClient"
+import ImageEditClient from "./ImageEditClient"; // Corrected import path
+import Link from 'next/link';
 
 // This is a Server Component that fetches data server-side
 export default async function GalleryImageEditPage({ params }: { params: { id: string } }) {
@@ -16,48 +17,39 @@ export default async function GalleryImageEditPage({ params }: { params: { id: s
     console.log(`Fetching image with ID ${id} from: ${apiUrl}`)
 
     const res = await fetch(apiUrl, {
-      cache: "no-store", // Don't cache this request
+      cache: "no-store",
       headers: { "Content-Type": "application/json" },
-      next: { revalidate: 0 }, // Ensure fresh data
+      next: { revalidate: 0 },
     })
 
     if (!res.ok) {
-      const errorText = await res.text()
-      console.error(`Error fetching image: ${res.status}. Response: ${errorText}`)
-      throw new Error(`Failed to fetch image: ${res.status}`)
+      throw new Error(`Failed to fetch image: ${res.status} ${res.statusText}`)
     }
 
     const data = await res.json()
     const img = data.image
 
     if (!img) {
-      console.error("No image found in response")
-      notFound()
+      throw new Error("Image data not found in response")
     }
 
     console.log("Image data received:", img)
 
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-8">Edit Image</h1>
-        <ImageEditClient img={img} alt={img.altTag || img["alt-tag"] || img.title || ""} />
+      <div className="container mx-auto px-4 pt-20 pb-10"> {/* Ensured pt-20 */}
+        <h1 className="text-3xl font-bold mb-8">Edit Image: {img.title || `Image ID: ${id}`}</h1>
+        <ImageEditClient img={img} alt={img.title || "Edit Image"} /> {/* Corrected component usage and added alt prop */}
       </div>
     )
   } catch (error) {
     console.error("Error fetching image:", error)
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-8">Edit Image</h1>
-        <div className="bg-white rounded-xl shadow p-6">
-          <h2 className="text-xl font-medium text-red-600 mb-4">Error loading image</h2>
-          <p className="text-gray-700 mb-4">
-            We couldn't find the image you're looking for. It may have been deleted or the ID might be incorrect.
-          </p>
-          <p className="text-gray-700 mb-4">Error details: {error instanceof Error ? error.message : String(error)}</p>
-          <a href="/gallery" className="btn">
-            Return to Gallery
-          </a>
-        </div>
+      <div className="container mx-auto px-4 pt-20 pb-10 text-center"> {/* Ensured pt-20 */}
+        <h1 className="text-2xl font-bold mb-4 text-red-600">Error Loading Image</h1>
+        <p className="mb-4">We couldn&apos;t find the image you&apos;re looking for. It may have been deleted or the ID might be incorrect.</p>
+        <Link href="/gallery" className="btn bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded">
+          Back to Gallery
+        </Link>
       </div>
     )
   }

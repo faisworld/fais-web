@@ -23,6 +23,7 @@
     "@vercel/blob": "^1.0.0",
     "antd": "^5.24.8",
     "class-variance-authority": "^0.7.1",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "elevenlabs": "^1.58.0",
     "formidable": "^3.5.4",
@@ -44,6 +45,7 @@
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
+    "xml2js": "^0.6.2",
     "zod": "^3.24.4"
   },
   "devDependencies": {

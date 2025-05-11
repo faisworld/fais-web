@@ -33,7 +33,7 @@ export default function Header() {
         <Logo variant="white" href="/" onClick={handleLinkClick} />
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+        <nav className="hidden md:flex items-start space-x-6 lg:space-x-8">
           <ul className="flex items-center space-x-6 lg:space-x-8">
             {menuItems.map((item) => (
               <li key={item.href}>
