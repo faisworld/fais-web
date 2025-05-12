@@ -70,20 +70,51 @@ export default function MissingImageFixer() {
     "/services": {
       title: "Services Page Images",
       prefixes: ["services-"],
-      includeSubpaths: true
+      includeSubpaths: true,
+      forceIncludeKeys: [
+        "services-hero-banner",
+        "services-ai-overview",
+        "services-blockchain-overview",
+        "services-web-development-overview",
+        "services-consulting-visual",
+        "services-cta-banner"
+      ]
     },
     "/about": {
       title: "About Page Images",
-      prefixes: ["about-"]
+      prefixes: ["about-"],
+      forceIncludeKeys: [
+        "about-mission-image",
+        "about-vision-image",
+        "about-value-innovation-image",
+        "about-value-integrity-image",
+        "about-value-collaboration-image",
+        "about-team-member-eugene-lukyanov-image",
+        "about-team-member-andrii-stehno-image",
+        "about-team-member-julia-mazura-image",
+        "about-team-member-vitalii-melnyk-image"
+      ]
     },
     "/contact": {
       title: "Contact Page Images",
-      prefixes: ["contact-"]
+      prefixes: ["contact-"],
+      forceIncludeKeys: [
+        "contact-hero-banner",
+        "contact-form-visual",
+        "contact-map-placeholder"
+      ]
     },
     "/blog": {
       title: "Blog Page Images",
       prefixes: ["blog-"],
-      includeSubpaths: true
+      includeSubpaths: true,
+      forceIncludeKeys: [
+        "blog-hero-banner",
+        "blog-featured-article-main",
+        "blog-category-ai-promo",
+        "blog-category-blockchain-promo",
+        "blog-default-thumbnail"
+      ]
     }
   }
   
@@ -310,18 +341,6 @@ export default function MissingImageFixer() {
 
   // Extract metadata from an image URL
   const extractImageInfo = (url: string) => {
-    // Add a guard for empty or obviously invalid URLs
-    if (!url || typeof url !== 'string' || url.trim() === '') {
-      console.warn("extractImageInfo called with invalid or empty URL:", url);
-      return {
-        filename: 'unknown',
-        baseName: 'Unknown Image',
-        format: 'unknown',
-        folder: 'images',
-        isPlaceholder: true
-      };
-    }
-
     try {
       const urlObj = new URL(url);
       const pathname = urlObj.pathname;

@@ -1,3 +1,4 @@
+import Image from "next/image"; // Added import
 import Link from "next/link";
 import { getBlobImage } from "../../utils/image-utils"; // Added import
 
@@ -23,7 +24,7 @@ export const metadata = {
     url: "https://fais.world/services",
     images: [
       {
-        url: getBlobImage("services-og-image", "/services-hero-placeholder.png"), // Updated to use getBlobImage
+        url: getBlobImage("services-og-image"), // Updated to use getBlobImage
         width: 1200,
         height: 630,
         alt: "Fantastic AI Studio Services"
@@ -49,10 +50,17 @@ export default function ServicesPage() {
             <p className="text-xl md:text-2xl mb-10 text-neutral-700 max-w-3xl mx-auto">
               unlock the full potential of your business with innovative, secure, and scalable solutions powered by artificial intelligence and blockchain technology.
             </p>
-            {/* Image Placeholder */}
+            {/* Image Display Area */}
             <div className="flex justify-center mb-10">
-              <div className="w-full max-w-2xl h-64 bg-neutral-100 rounded-2xl flex items-center justify-center border-2 border-dashed border-neutral-300 shadow-lg">
-                <span className="text-neutral-400 text-lg">[image placeholder]</span>
+                <div className="relative w-full max-w-4x1 h-64 md:h-80 lg:h-96 rounded-2xl shadow-lg overflow-hidden border border-neutral-200">
+                <Image
+                  src={getBlobImage("services-og-image", "/placeholder.svg")} 
+                  alt="AI and Blockchain Services by Fantastic AI Studio"
+                  fill
+                  style={{ objectFit: "contain" }}
+                  className="rounded-2xl"
+                  priority // Consider adding priority if it's a key LCP element
+                />
               </div>
             </div>
             <Link

@@ -49,8 +49,25 @@ export const blobImages: { [key: string]: string } = {
   "logo-black": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png",
 
   // Carousel images - replace these with actual Blob URLs if you have them
-  "pioneering-digital-transformation":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746510866676-Innovating-the-Future-dark.png",
+  // Update these lines in utils/image-utils.ts
+// in the blobImages object:
+
+// Note: For better image organization:
+// - Use page-specific prefixes (home-, projects-, services-, etc.)
+// - For subpages, consider prefixes like projects-web3- or blog-article-
+// - Keep global images like logo, logo-black, og-image without prefixes
+
+  // 20250511 2234 Futuristic Lab Collaboration simple compose 01jv0deq63ftxae9efk3hvka21 (gif) - suggested better key name (was: pioneering-digital-transformation)
+ // Update these lines in utils/image-utils.ts
+// in the blobImages object:
+
+// Note: For better image organization:
+// - Use page-specific prefixes (home-, projects-, services-, etc.)
+// - For subpages, consider prefixes like projects-web3- or blog-article-
+// - Keep global images like logo, logo-black, og-image without prefixes
+
+  // 20250511 2234 Futuristic Lab Collaboration simple compose 01jv0deq63ftxae9efk3hvka21 (gif) - suggested better key name (was: pioneering-digital-transformation)
+  "pioneering-digital-transformation": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055414197-20250511-2234-Futuristic-Lab-Collaboration-simple-compose-01jv0deq63ftxae9efk3hvka21.gif",
   "innovating-future":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746263671694-Innovating-the-Future.webp",
   "shaping-sota-technologies":
@@ -108,11 +125,17 @@ export const blobImages: { [key: string]: string } = {
   // Screenshot 2025 01 05 172939 8HJfc36gfs5XyiuijmGkMiJgjnvIGI (png) for projects page
   "projects-base-org": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-172939-8HJfc36gfs5XyiuijmGkMiJgjnvIGI.png",
 
-  // Open Graph and social images
-  // "og-image":
-  //   "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vibrant-ai-workspace-og-image-7yTGHJKLmnOP.png", // Commented out broken link
-  "services-og-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-26_09-29-59-xFa1R1VeZ09PEbV9K84thf62hgSFz8.jpg",
+ // Update these lines in utils/image-utils.ts
+// in the blobImages object:
 
+// Note: For better image organization:
+// - Use page-specific prefixes (home-, projects-, services-, etc.)
+// - For subpages, consider prefixes like projects-web3- or blog-article-
+// - Keep global images like logo, logo-black, og-image without prefixes
+
+  // Shaping State of The Art (gif) for services page
+  "services-og-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746529491566-Shaping-State-of-The-Art-Technologies-.gif",
+  
   // CEO portrait
   "ceo-portrait":
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp",

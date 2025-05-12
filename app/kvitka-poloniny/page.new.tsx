@@ -85,57 +85,46 @@ export default function KvitkaPoloninyPage() {
       })
       .catch((error) => {
         console.error('Failed to load widget script', error);
-      });      // Store the current ref value for cleanup
-      const refForCleanup = chatWidgetRef.current;
-      
-      // Cleanup on unmount
+      });
+    
+    // Cleanup on unmount
     return () => {
-      if (refForCleanup) {
+      if (chatWidgetRef.current) {
         console.log('Cleaning up Kvitka widget');
-        while (refForCleanup.firstChild) {
-          refForCleanup.removeChild(refForCleanup.firstChild);
+        while (chatWidgetRef.current.firstChild) {
+          chatWidgetRef.current.removeChild(chatWidgetRef.current.firstChild);
         }
       }
     };
   }, []);
-    return (
+  
+  return (
     <div className={`${styles.pageContainer} pt-20`}>
-      <div className="container mx-auto px-4 max-w-screen-xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left column with image and text - takes 5 columns on large screens */}
-          <div className="lg:col-span-5">
-            <div className="mb-8 flex justify-center lg:justify-start">
-              <div className={styles.imageContainer}>
-                <Image 
-                  src="/kvitka-polonyny.png" 
-                  alt="Квітка Полонини" 
-                  className={styles.kvitkaImage}
-                  width={500}
-                  height={300}
-                  priority
-                />
-              </div>
-            </div>
-            <div className={styles.textContent}>
-              <h1 className="text-3xl font-bold mb-4">Ласкаво просимо до AI Асистента Санаторію &quot;Квітка Полонини&quot;</h1>
-              <p className={styles.pageText}>
-                Задайте своє питання нашому віртуальному помічнику. Він готовий надати інформацію про послуги санаторію, 
-                процедури, проживання та багато іншого. Ми прагнемо зробити ваш досвід максимально комфортним та інформативним.
-              </p>
-              <p className={styles.pageText}>
-                AI Асистент працює 24/7, щоб ви могли отримати відповіді у будь-який зручний для вас час.
-              </p>
-            </div>
-          </div>
-          
-          {/* Right column with chat widget - takes 7 columns on large screens */}
-          <div className="lg:col-span-7 flex items-center justify-center">
-            <div ref={chatWidgetRef} className="w-full max-w-lg" id="kvitka-widget-container">
-              {/* ElevenLabs widget will be inserted here by the script */}
-            </div>
-          </div>
+      <main>
+        <div className={styles.imageContainer}>
+          <Image 
+            src="/kvitka-polonyny.png" 
+            alt="Квітка Полонини" 
+            className={styles.kvitkaImage}
+            width={500}
+            height={300}
+            priority
+          />
         </div>
-      </div>
+        <div className={styles.textContent}>
+          <h1 className={styles.pageTitle}>Ласкаво просимо до AI Асистента Санаторію &quot;Квітка Полонини&quot;</h1>
+          <p className={styles.pageText}>
+            Задайте своє питання нашому віртуальному помічнику. Він готовий надати інформацію про послуги санаторію, 
+            процедури, проживання та багато іншого. Ми прагнемо зробити ваш досвід максимально комфортним та інформативним.
+          </p>
+          <p className={styles.pageText}>
+            AI Асистент працює 24/7, щоб ви могли отримати відповіді у будь-який зручний для вас час.
+          </p>
+        </div>
+        <div ref={chatWidgetRef} className={styles.chatWidget} id="kvitka-widget-container">
+          {/* ElevenLabs widget will be inserted here by the script */}
+        </div>
+      </main>
     </div>
   );
 }
