@@ -82,7 +82,7 @@ export default function HomeCarousel() {
             {carouselItems.map((item, index) => (
               <div
                 key={item.key}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+                className={`absolute inset-0 w-screen h-screen transition-opacity duration-1000 ${
                   index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
                 aria-hidden={index !== activeIndex}
@@ -90,12 +90,15 @@ export default function HomeCarousel() {
                 aria-roledescription="slide"
                 aria-label={`Slide ${index + 1} of ${carouselItems.length}: ${item.title}`}
               >
-                <div className="relative w-full h-full">
+                <div
+                  className="relative w-screen h-screen"
+                  style={{ top: 0, height: "100vh" }}
+                >
                   <ClientImage
                     src={getBlobImage(item.key)}
                     alt={item.alt}
                     fill
-                    className="object-cover brightness-75 w-screen h-screen"
+                    className="object-cover brightness-75"
                     objectPosition="center center"
                     priority={index === 0}
                     sizes="100vw"
@@ -103,7 +106,6 @@ export default function HomeCarousel() {
                     itemScope
                     itemType="https://schema.org/ImageObject"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-700/40 to-gray-800/50"></div>
                 </div>
               </div>
             ))}

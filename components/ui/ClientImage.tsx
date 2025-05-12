@@ -96,16 +96,14 @@ export default function ClientImage({
   }
   
   return (
-    <>
-      <Image
-        src={finalSrc}
-        alt={alt}
-        onError={handleError}
-        placeholder={effectivePlaceholder}
-        style={{ ...rest.style, objectPosition }}
-        {...structuredDataProps}
-        {...rest}
-      />
-    </>
+    <Image
+      src={finalSrc}
+      alt={alt}
+      onError={handleError}
+      placeholder={effectivePlaceholder}
+      style={{ ...rest.style, objectPosition }}
+      {...structuredDataProps}
+      {...rest}
+    />
   );
 }

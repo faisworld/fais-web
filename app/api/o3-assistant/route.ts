@@ -1,5 +1,5 @@
-import { O3Model, streamText, tool } from 'ai';
-import { OpenAI } from 'openai';
+import { streamText, tool } from 'ai';
+import { createOpenAI } from '@ai-sdk/openai'; // Correct import for Vercel AI SDK v3
 import { z, ZodType } from 'zod'; // For schema validation
 
 // Import refactored tools
@@ -8,7 +8,9 @@ import { readInternalBlogPostTool } from '../../../utils/o3-assistant-tools/read
 import { generateArticleImageTool } from '../../../utils/o3-assistant-tools/generateArticleImageTool';
 import { saveBlogPostTool } from '../../../utils/o3-assistant-tools/saveBlogPostTool';
 
-const openai = new OpenAI(); // Uses OPENAI_API_KEY from environment variables
+// Initialize the Vercel AI SDK OpenAI provider.
+// It will use the OPENAI_API_KEY from environment variables by default.
+const vercelOpenai = createOpenAI();
 
 export const dynamic = 'force-dynamic'; // Ensure the route is always dynamic
 
@@ -46,12 +48,12 @@ async function createLinkedInArticle(title: string, articleContent: string, visi
 
 export async function POST(req: Request) {
   try {
-    const { messages, tool_choice } = await req.json();
+    const { messages, toolChoice } = await req.json();
 
     const result = await streamText({
-      model: new O3Model({ openai }), 
+      model: vercelOpenai('gpt-4o'),
       messages,
-      tool_choice, 
+      toolChoice,
       tools: {
         crawlWebsite: crawlWebsiteTool,
         readInternalBlogPost: readInternalBlogPostTool,
@@ -75,7 +77,7 @@ export async function POST(req: Request) {
         }),
       },
     });
-    return result.toAIStreamResponse();
+    return result.toDataStreamResponse();
   } catch (error: unknown) {
     console.error("[O3 Assistant API Error]", error);
     let errorMessage = "An unexpected error occurred.";

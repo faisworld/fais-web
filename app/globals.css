@@ -114,9 +114,26 @@ img {
   display: block;
 }
 
+img.logo {
+  width: auto;
+  height: 40px;
+  max-width: 100%;
+  display: block;
+}
+
 section {
   padding: 4rem 2rem;
 }
+
+section[aria-roledescription="carousel"] {
+  padding: 0 !important;
+}
+
+/* section, div, body, html {
+  outline: 1px solid red !important;
+  margin: 0 !important;
+  padding: 0 !important;
+} */
 
 .text-center {
   text-align: center;

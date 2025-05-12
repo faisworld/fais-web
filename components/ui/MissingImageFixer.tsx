@@ -35,7 +35,7 @@ export default function MissingImageFixer() {
   const pageConfig: PageImageConfig = {
     "/": {
       title: "Homepage Images",
-      prefixes: ["home-"],
+      prefixes: [""],
       forceIncludeKeys: [
         "pioneering-digital-transformation",
         "innovating-future",
@@ -43,41 +43,11 @@ export default function MissingImageFixer() {
         "ai-solutions",
         "blockchain-solutions",
         "ceo-portrait",
-      ]
-    },
-    "/projects": {
-      title: "Projects Page Images",
-      prefixes: ["projects-"],
-      includeSubpaths: true,
-      forceIncludeKeys: [
-        // Project-specific images from the projects page
-        "projects-dopple-ai",
-        "projects-degen-kombat",
-        "projects-heroes-of-mavia",
-        "projects-multichain-dex",
-        "projects-payment-system",
-        "projects-base-org",
-        "projects-optimism-io",
-        "projects-blast-io",
-        // General project categories (keeping these for breadth)
         "mev-staking",
         "web3-gaming",
         "nft-marketplace",
         "ai-services",
         "payment-systems"
-      ]
-    },
-    "/services": {
-      title: "Services Page Images",
-      prefixes: ["services-"],
-      includeSubpaths: true,
-      forceIncludeKeys: [
-        "services-hero-banner",
-        "services-ai-overview",
-        "services-blockchain-overview",
-        "services-web-development-overview",
-        "services-consulting-visual",
-        "services-cta-banner"
       ]
     },
     "/about": {
@@ -93,6 +63,35 @@ export default function MissingImageFixer() {
         "about-team-member-andrii-stehno-image",
         "about-team-member-julia-mazura-image",
         "about-team-member-vitalii-melnyk-image"
+      ]
+    },
+    "/projects": {
+      title: "Projects Page Images",
+      prefixes: ["projects-"],
+      includeSubpaths: true,
+      forceIncludeKeys: [
+        "projects-dopple-ai",
+        "projects-degen-kombat",
+        "projects-heroes-of-mavia",
+        "projects-multichain-dex",
+        "projects-payment-system",
+        "projects-base-org",
+        "projects-optimism-io",
+        "projects-blast-io"
+
+      ]
+    },
+    "/services": {
+      title: "Services Page Images",
+      prefixes: ["services-"],
+      includeSubpaths: true,
+      forceIncludeKeys: [
+        "services-hero-banner",
+        "services-ai-overview",
+        "services-blockchain-overview",
+        "services-web-development-overview",
+        "services-consulting-visual",
+        "services-cta-banner"
       ]
     },
     "/contact": {
@@ -215,12 +214,10 @@ export default function MissingImageFixer() {
       // Add images that match the main page prefixes
       const mainPrefix = pathSegments.length > 0 ? pathSegments[0] : 'home';
       const mainPrefixWithDash = `${mainPrefix}-`;
-      
+
       Object.keys(blobImages).forEach(key => {
-        // Skip global keys we've already added
         if (globalKeys.includes(key)) return;
-        
-        // Add keys that match the main prefix
+
         if (key.startsWith(mainPrefixWithDash) && !matchingImages.some(img => img.key === key)) {
           matchingImages.push({
             key,

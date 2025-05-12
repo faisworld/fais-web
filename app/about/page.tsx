@@ -4,6 +4,7 @@ import MeetOurTeam from "@/components/pages/MeetOurTeam";
 import ContactUs from "@/components/pages/ContactUs";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { getBlobImage } from "@/utils/image-utils";
 
 // Dynamically import the AnimatedCounter to ensure it only runs on the client
 const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounter'), {
@@ -27,7 +28,7 @@ export default function AboutPage() {
                         </div>
                         <div className="order-1 md:order-2 flex justify-center md:justify-end">
                             <Image
-                                src="/images/mission.webp"
+                                src={getBlobImage("about-mission-image")}
                                 alt="Our Mission"
                                 width={500}
                                 height={300}
@@ -40,43 +41,61 @@ export default function AboutPage() {
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
                         <div className="order-1 flex justify-center md:justify-start">
                             <Image
-                                src="/images/vision.webp"
+                                src={getBlobImage("about-vision-image")}
                                 alt="Our Vision"
                                 width={500}
                                 height={300}
                                 className="rounded-lg shadow-lg object-cover"
                             />
                         </div>
-                        <div className="order-2">
+                        <div className="order-2 flex flex-col gap-6">
                             <h2 className="text-3xl font-bold mb-4 lowercase">our vision</h2>
                             <p className="lowercase">
-                                to shape a future where technology seamlessly integrates into everyday life, fostering innovation, sustainability, and growth.
+                                to be a global leader in ai and blockchain innovation, fostering sustainable growth and transformative technologies.
                             </p>
                         </div>
                     </section>
 
-                    {/* Core Values Section */}
-                    <section className="mb-16">
-                        <h2 className="text-3xl font-bold text-center mb-8 lowercase">our core values</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="text-center p-4">
-                                <h3 className="text-2xl font-semibold mb-2 lowercase">innovation</h3>
-                                <p className="lowercase">
-                                    we embrace creativity and push the boundaries of technology to deliver groundbreaking solutions.
-                                </p>
-                            </div>
-                            <div className="text-center p-4">
-                                <h3 className="text-2xl font-semibold mb-2 lowercase">integrity</h3>
-                                <p className="lowercase">
-                                    we uphold the highest standards of ethics and transparency in all our endeavors.
-                                </p>
-                            </div>
-                            <div className="text-center p-4">
-                                <h3 className="text-2xl font-semibold mb-2 lowercase">collaboration</h3>
-                                <p className="lowercase">
-                                    we believe in the power of teamwork and partnerships to achieve shared success.
-                                </p>
-                            </div>
+                    {/* Values Section */}
+                    <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start mb-16">
+                        <div className="text-center">
+                            <Image
+                                src={getBlobImage("about-value-innovation-image")}
+                                alt="Innovation"
+                                width={300}
+                                height={200}
+                                className="rounded-lg shadow-lg object-cover mx-auto"
+                            />
+                            <h3 className="text-2xl font-semibold mt-4 lowercase">innovation</h3>
+                            <p className="lowercase">
+                                driving progress through creativity and cutting-edge technology.
+                            </p>
+                        </div>
+                        <div className="text-center">
+                            <Image
+                                src={getBlobImage("about-value-integrity-image")}
+                                alt="Integrity"
+                                width={300}
+                                height={200}
+                                className="rounded-lg shadow-lg object-cover mx-auto"
+                            />
+                            <h3 className="text-2xl font-semibold mt-4 lowercase">integrity</h3>
+                            <p className="lowercase">
+                                upholding the highest standards of honesty and ethics.
+                            </p>
+                        </div>
+                        <div className="text-center">
+                            <Image
+                                src={getBlobImage("about-value-collaboration-image")}
+                                alt="Collaboration"
+                                width={300}
+                                height={200}
+                                className="rounded-lg shadow-lg object-cover mx-auto"
+                            />
+                            <h3 className="text-2xl font-semibold mt-4 lowercase">collaboration</h3>
+                            <p className="lowercase">
+                                fostering teamwork and partnerships for greater impact.
+                            </p>
                         </div>
                     </section>
 
