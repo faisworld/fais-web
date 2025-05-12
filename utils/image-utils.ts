@@ -48,24 +48,7 @@ export const blobImages: { [key: string]: string } = {
   logo: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png",
   "logo-black": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png",
 
-  // Carousel images - replace these with actual Blob URLs if you have them
-  // Update these lines in utils/image-utils.ts
-// in the blobImages object:
-
-// Note: For better image organization:
-// - Use page-specific prefixes (home-, projects-, services-, etc.)
-// - For subpages, consider prefixes like projects-web3- or blog-article-
-// - Keep global images like logo, logo-black, og-image without prefixes
-
-  // 20250511 2234 Futuristic Lab Collaboration simple compose 01jv0deq63ftxae9efk3hvka21 (gif) - suggested better key name (was: pioneering-digital-transformation)
- // Update these lines in utils/image-utils.ts
-// in the blobImages object:
-
-// Note: For better image organization:
-// - Use page-specific prefixes (home-, projects-, services-, etc.)
-// - For subpages, consider prefixes like projects-web3- or blog-article-
-// - Keep global images like logo, logo-black, og-image without prefixes
-
+ 
   // 20250511 2234 Futuristic Lab Collaboration simple compose 01jv0deq63ftxae9efk3hvka21 (gif) - suggested better key name (was: pioneering-digital-transformation)
   "pioneering-digital-transformation": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055414197-20250511-2234-Futuristic-Lab-Collaboration-simple-compose-01jv0deq63ftxae9efk3hvka21.gif",
   "innovating-future":
@@ -74,49 +57,21 @@ export const blobImages: { [key: string]: string } = {
     "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746646077344-20250426-2326-Cyborg-Collaboration-Hub-remix-01jsswceste5nthezcfcemp8rs.png",
 
   // Solutions section images
-  "ai-solutions":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/ai-placeholder-GkKOGVhxLv4Iw3bRlsrerHVp709TAM.png",
-  "blockchain-solutions":
-    "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blockchain-placeholder-UNQuhq91UBgv4xGijnG5aAVBK6nhdm.png",
+ 
+  // 20250512 2151 Futuristic Office Collaboration simple compose 01jv2xcqegeqzsm27xw0wayv3d (gif) - suggested better key name (was: ai-solutions)
+  "ai-solutions": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076648350-20250512-2151-Futuristic-Office-Collaboration-simple-compose-01jv2xcqegeqzsm27xw0wayv3d.gif",
 
+  // 20250512 2155 Futuristic Blockchain Technology simple compose 01jv2xkk35fg99g5m1yecjjxa3 (gif) - suggested better key name (was: blockchain-solutions)
+  "blockchain-solutions": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076641901-20250512-2155-Futuristic-Blockchain-Technology-simple-compose-01jv2xkk35fg99g5m1yecjjxa3.gif",
   // Project images
- // Update these lines in utils/image-utils.ts
-// in the blobImages object:
 
-// Note: For better image organization:
-// - Use page-specific prefixes (home-, projects-, services-, etc.)
-// - For subpages, consider prefixes like projects-web3- or blog-article-
-// - Keep global images like logo, logo-black, og-image without prefixes
-
-  // 20250512 1951 Web3 Gaming Revolution simple compose 01jv2phxzzeprrz0e36tjat8hy (gif) - suggested better key name (was: web3-gaming)
   "web3-gaming": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069232372-20250512-1951-Web3-Gaming-Revolution-simple-compose-01jv2phxzzeprrz0e36tjat8hy.gif",   
-  // Update these lines in utils/image-utils.ts
-// in the blobImages object:
-
-// Note: For better image organization:
-// - Use page-specific prefixes (home-, projects-, services-, etc.)
-// - For subpages, consider prefixes like projects-web3- or blog-article-
-// - Keep global images like logo, logo-black, og-image without prefixes
-
-  // 20250512 2057 Futuristic Blockchain Payments remix 01jv2tacjdf7prr72x36a3r710 (gif) - suggested better key name (was: payment-systems)
   "payment-systems": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747075171305-20250512-2057-Futuristic-Blockchain-Payments-remix-01jv2tacjdf7prr72x36a3r710.gif",
-  // 20250511 2158 Futuristic Data Connectivity simple compose 01jv0bd9emep8ssw4bwmkwkptb (gif) - suggested better key name (was: mev-staking)
   "mev-staking": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055425140-20250511-2158-Futuristic-Data-Connectivity-simple-compose-01jv0bd9emep8ssw4bwmkwkptb.gif",
-
-  // 20250511 2149 AI Glow Effect storyboard 01jv0aw3mvf7et4sgshfjs7z7v (gif) - suggested better key name (was: nft-marketplace)
   "nft-marketplace": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055463123-20250511-2149-AI-Glow-Effect-storyboard-01jv0aw3mvf7et4sgshfjs7z7v.gif",
-
-  // 20250511 2154 Digital Harmony simple compose 01jv0b560pexvvbv6we6kkm31v (gif) - suggested better key name (was: ai-services)
   "ai-services": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055432399-20250511-2154-Digital-Harmony-simple-compose-01jv0b560pexvvbv6we6kkm31v.gif",
   // Projects page specific images
 
-// Update these lines in utils/image-utils.ts
-// in the blobImages object:
-
-// Note: For better image organization:
-// - Use page-specific prefixes (home-, projects-, services-, etc.)
-// - For subpages, consider prefixes like projects-web3- or blog-article-
-// - Keep global images like logo, logo-black, og-image without prefixes
 
   // Screenshot 2025 01 05 160711 X4TsCx0Tznl0kEKC9xteDtdk9eifzt (png) for projects page
   "projects-dopple-ai": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-160711-X4TsCx0Tznl0kEKC9xteDtdk9eifzt.png",
@@ -166,14 +121,15 @@ export const blobImages: { [key: string]: string } = {
 
   // 20250512 1428 Futuristic Innovation Hub simple compose 01jv242h1dexrbkgvw5vn5wx5v (gif) for about page
   "about-mission-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069236709-20250512-1428-Futuristic-Innovation-Hub-simple-compose-01jv242h1dexrbkgvw5vn5wx5v.gif",
-  "about-vision-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/your-vision-image-url.gif",
-  "about-value-innovation-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/your-innovation-image-url.gif",
-  "about-value-integrity-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/your-integrity-image-url.gif",
-  "about-value-collaboration-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/your-collaboration-image-url.gif",
-  "about-team-member-eugene-lukyanov-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/eugene-lukyanov-image-url.png",
-  "about-team-member-andrii-stehno-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/andrii-stehno-image-url.png",
-  "about-team-member-julia-mazura-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/julia-mazura-image-url.png",
-  "about-team-member-vitalii-melnyk-image": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/vitalii-melnyk-image-url.png",
+  // Placeholder URLs with proper format for about page
+  "about-vision-image": "/placeholder.svg?width=500&height=300&query=Vision%20Image",
+  "about-value-innovation-image": "/placeholder.svg?width=300&height=200&query=Innovation%20Value",
+  "about-value-integrity-image": "/placeholder.svg?width=300&height=200&query=Integrity%20Value",
+  "about-value-collaboration-image": "/placeholder.svg?width=300&height=200&query=Collaboration%20Value",
+  "about-team-member-eugene-lukyanov-image": "/placeholder.svg?width=200&height=200&query=Eugene%20Lukyanov",
+  "about-team-member-andrii-stehno-image": "/placeholder.svg?width=200&height=200&query=Andrii%20Stehno",
+  "about-team-member-julia-mazura-image": "/placeholder.svg?width=200&height=200&query=Julia%20Mazura",
+  "about-team-member-vitalii-melnyk-image": "/placeholder.svg?width=200&height=200&query=Vitalii%20Melnyk",
    
 // Add more as needed
 }

@@ -338,7 +338,41 @@ export default function MissingImageFixer() {
 
   // Extract metadata from an image URL
   const extractImageInfo = (url: string) => {
+    // Check if it's a placeholder SVG URL
+    if (url.includes('placeholder.svg')) {
+      let queryText = 'Image';
+      try {
+        // Try to extract the query parameter for better naming
+        const queryMatch = url.match(/query=([^&]+)/);
+        if (queryMatch && queryMatch[1]) {
+          queryText = decodeURIComponent(queryMatch[1]);
+        }
+      } catch (error) {
+        console.warn("Error decoding query param:", error);
+      }
+      
+      return {
+        filename: 'placeholder.svg',
+        baseName: queryText || 'Placeholder Image',
+        format: 'svg',
+        folder: 'placeholders',
+        isPlaceholder: true
+      };
+    }
+    
+    // Handle valid URLs
     try {
+      // Only attempt URL parsing if the string starts with http/https
+      if (!url.startsWith('http')) {
+        return {
+          filename: 'invalid-url',
+          baseName: 'Invalid URL',
+          format: 'unknown',
+          folder: 'images',
+          isPlaceholder: true
+        };
+      }
+      
       const urlObj = new URL(url);
       const pathname = urlObj.pathname;
       const filename = pathname.split('/').pop() || '';
