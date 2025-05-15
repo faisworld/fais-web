@@ -47,9 +47,9 @@ export default function ContactClientPage() {    useEffect(() => {
                 logo={getBlobImage("logo")}
                 description="Leading provider of AI and blockchain solutions for businesses seeking digital transformation and technological innovation."
                 sameAs={[
-                    "https://twitter.com/fantasticaistudio",
-                    "https://linkedin.com/company/fantasticaistudio",
-                    "https://github.com/fantastic-ai-studio"
+                    "https://twitter.com/faisworld",
+                    "https://www.linkedin.com/company/faistudio/",
+                    "https://github.com/faisworld"
                 ]}
                 address={{
                     streetAddress: "132 Velyka Vasylkivska St.",
