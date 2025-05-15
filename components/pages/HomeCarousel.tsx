@@ -69,6 +69,37 @@ export default function HomeCarousel() {
 
   const currentItem = carouselItems[activeIndex];
 
+  const renderSlideMedia = (slide: typeof carouselItems[number], index: number) => {
+    // Check if media is a video
+    if (slide.key.match(/\.(mp4|webm|mov)$/i)) {
+      return (
+        <video
+          src={getBlobImage(slide.key)}
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      );
+    }
+    
+    // Otherwise render as image - use fill without width/height
+    return (
+      <ClientImage
+        src={getBlobImage(slide.key)}
+        alt={slide.alt}
+        fill={true}
+        className="object-cover brightness-75"
+        priority={index === 0} // Load first slide with priority
+        sizes="100vw"
+        itemProp="image"
+        itemScope
+        itemType="https://schema.org/ImageObject"
+      />
+    );
+  };
+
   return (
     <>
       {/* Desktop Carousel - Hidden on mobile, fixed to cover the entire viewport */}
@@ -94,18 +125,7 @@ export default function HomeCarousel() {
                   className="relative w-screen h-screen"
                   style={{ top: 0, height: "100vh" }}
                 >
-                  <ClientImage
-                    src={getBlobImage(item.key)}
-                    alt={item.alt}
-                    fill
-                    className="object-cover brightness-75"
-                    objectPosition="center center"
-                    priority={index === 0}
-                    sizes="100vw"
-                    itemProp="image"
-                    itemScope
-                    itemType="https://schema.org/ImageObject"
-                  />
+                  {renderSlideMedia(item, index)}
                 </div>
               </div>
             ))}

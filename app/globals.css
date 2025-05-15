@@ -2,8 +2,6 @@
 
 /* Your custom styles below */
 
-/* Custom styles below */
-
 :root {
   /* Only black, white, and gray shades */
   background: #ffffff;
@@ -422,4 +420,102 @@ a:hover {
 
 .callout-warning {
   @apply bg-amber-50 border-l-4 border-amber-500 p-4 my-6 rounded-r-lg;
+}
+
+/* Media gallery and carousel video styles */
+.video-thumbnail {
+  position: relative;
+  overflow: hidden;
+}
+
+.video-thumbnail::after {
+  content: "▶";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.media-carousel video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-video-control {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Custom file upload button */
+.media-upload-label {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--button-text-color);
+  background-color: var(--button-bg-color);
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: lowercase;
+}
+
+.media-upload-label:hover {
+  background-color: var(--button-bg-hover-color);
+}
+
+/* Hide default file input */
+.media-upload-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+/* Media gallery grid for both images and videos */
+.media-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.media-preview {
+  position: relative;
+  aspect-ratio: 16/9;
+  background-color: #f5f5f5;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.media-preview img, 
+.media-preview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

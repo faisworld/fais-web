@@ -1,34 +1,45 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  reactStrictMode: true,
+  // For production builds, we want errors to be caught
+  // but for development, we can be less strict
   typescript: {
-    ignoreBuildErrors: true,
+    // Don't fail the build in development due to TypeScript errors
+    ignoreBuildErrors: process.env.NODE_ENV !== 'production',
   },
+  eslint: {
+    // Don't fail the build in development due to ESLint errors
+    ignoreDuringBuilds: process.env.NODE_ENV !== 'production',
+  },
+  // Necessary for Vercel deployment
+  output: "standalone",
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "mzcje1drftvqhdku.public.blob.vercel-storage.com",
-        port: "",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
       },
-      // Add this as a fallback for any other Vercel Blob storage URLs
       {
-        protocol: "https",
-        hostname: "*.public.blob.vercel-storage.com",
-        port: "",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
+        port: '',
+        pathname: '/images/**',
       },
     ],
+    domains: [
+      // Vercel Blob domains
+      'mzcje1drftvqhdku.public.blob.vercel-storage.com',
+      'vercel-storage.com',
+    ],
+    unoptimized: true, // For Vercel Blob Storage images
   },
-  // Add this to help with source map issues
-  webpack: (config) => {
-    config.devtool = "source-map"
-    return config
+  // Increase the timeout for builds
+  experimental: {
+    serverComponentsExternalPackages: ['sharp', '@neondatabase/serverless'],
+    cpus: 4,
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

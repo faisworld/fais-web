@@ -1,303 +1,307 @@
 "use client";
 
-import { useState, useRef, FormEvent, ChangeEvent } from "react";
-import { useRouter } from "next/navigation";
-import { Loader2, X, Check, Upload, Image } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Loader2, Upload, X, Check, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
-export default function UploadImagePage() {
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [title, setTitle] = useState("");
-  const [alt, setAlt] = useState("");
-  const [folder, setFolder] = useState("");
-  const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+export default function UploadPage() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [folderOptions, setFolderOptions] = useState<string[]>([]);
+  const [selectedFolder, setSelectedFolder] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      
-      // Validate file type
-      if (!selectedFile.type.startsWith("image/")) {
-        setError("Please select a valid image file.");
-        return;
-      }
-      
-      // Validate file size (5MB max)
-      if (selectedFile.size > 5 * 1024 * 1024) {
-        setError("File size must be less than 5MB.");
-        return;
-      }
-      
-      setFile(selectedFile);
-      setTitle(selectedFile.name.split(".")[0].replace(/-|_/g, " "));
-      setAlt(selectedFile.name.split(".")[0].replace(/-|_/g, " "));
-      setError(null);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  // Handle file selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length) return;
     
-    if (!file) {
-      setError("Please select a file to upload.");
-      return;
-    }
+    const newFiles = Array.from(e.target.files);
+    setFiles(prevFiles => [...prevFiles, ...newFiles]);
     
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("title", title);
-      formData.append("alt", alt);
-      
-      if (folder) {
-        formData.append("folder", folder);
-      }
-      
-      if (description) {
-        formData.append("description", description);
-      }
-      
-      const response = await fetch("/api/admin/upload-image", {
-        method: "POST",
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to upload image.");
-      }
-      
-      setSuccess(true);
-      
-      // Reset form after successful upload
-      setTimeout(() => {
-        router.push("/admin/gallery");
-      }, 2000);
-      
-    } catch (err) {
-      console.error("Upload failed:", err);
-      setError(err instanceof Error ? err.message : "An unknown error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleReset = () => {
-    setFile(null);
-    setPreview(null);
-    setTitle("");
-    setAlt("");
-    setFolder("");
-    setDescription("");
-    setError(null);
-    setSuccess(false);
-    
+    // Reset input so the same file can be selected again if needed
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Remove file from selection
+  const removeFile = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index));
     
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const droppedFile = e.dataTransfer.files[0];
-      
-      if (!droppedFile.type.startsWith("image/")) {
-        setError("Please drop a valid image file.");
-        return;
-      }
-      
-      // Update file input
-      if (fileInputRef.current) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(droppedFile);
-        fileInputRef.current.files = dataTransfer.files;
-      }
-      
-      // Trigger the same handling as if the file was selected
-      setFile(droppedFile);
-      setTitle(droppedFile.name.split(".")[0].replace(/-|_/g, " "));
-      setAlt(droppedFile.name.split(".")[0].replace(/-|_/g, " "));
-      setError(null);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(droppedFile);
+    // Also remove any errors for this file
+    const fileKey = `file-${index}`;
+    if (errors[fileKey]) {
+      const newErrors = {...errors};
+      delete newErrors[fileKey];
+      setErrors(newErrors);
     }
+  };
+
+  // Fetch available folders
+  useEffect(() => {
+    const fetchFolders = async () => {
+      try {
+        const response = await fetch('/api/admin/gallery/list');
+        if (response.ok) {
+          const data = await response.json();
+          setFolderOptions(data.folders || []);
+        }
+      } catch (error) {
+        console.error('Error fetching folders:', error);
+      }
+    };
+    
+    fetchFolders();
+  }, []);
+
+  // Handle upload to Blobstore
+  const handleUpload = async () => {
+    if (!files.length) return;
+    
+    setUploading(true);
+    setUploadedFiles([]);
+    setErrors({});
+    
+    const results: string[] = [];
+    
+    // Upload each file individually
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileKey = `file-${i}`;
+      
+      try {
+        // Create FormData for this file
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('title', file.name.split('.')[0]); // Use filename as title
+        
+        // Add folder information if selected
+        if (selectedFolder) {
+          formData.append('folder', selectedFolder);
+        }
+        
+        // Track upload progress for this specific file
+        setUploadProgress(prev => ({...prev, [fileKey]: 0}));
+        
+        // Upload to your API endpoint that handles Blobstore storage
+        const response = await fetch('/api/admin/gallery/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        // Show 100% progress when done
+        setUploadProgress(prev => ({...prev, [fileKey]: 100}));
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to upload');
+        }
+        
+        const data = await response.json();
+        results.push(data.url);
+      } catch (err) {
+        console.error(`Error uploading ${file.name}:`, err);
+        setErrors(prev => ({
+          ...prev, 
+          [fileKey]: err instanceof Error ? err.message : 'Upload failed'
+        }));
+      }
+    }
+    
+    // Update uploaded files list
+    setUploadedFiles(results);
+    
+    // Only reset files list if all uploads were successful
+    if (results.length === files.length) {
+      setFiles([]);
+    }
+    
+    setUploading(false);
+  };
+
+  // Format file size for display
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return bytes + ' bytes';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Upload New Image</h1>
-      
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
-          <div className="flex items-center">
-            <X className="flex-shrink-0 mr-2" size={18} />
-            <p>{error}</p>
-          </div>
-        </div>
-      )}
-      
-      {success && (
-        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-          <div className="flex items-center">
-            <Check className="flex-shrink-0 mr-2" size={18} />
-            <p>Image uploaded successfully! Redirecting...</p>
-          </div>
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div 
-          className="border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="flex items-center mb-6">
+        <Link 
+          href="/admin/gallery" 
+          className="flex items-center text-blue-600 hover:text-blue-800 mr-4"
         >
-          {preview ? (
-            <div className="mb-4 relative w-full max-w-md h-64">
-              <img 
-                src={preview} 
-                alt="Image preview" 
-                className="mx-auto max-h-64 max-w-full object-contain"
-              />
-            </div>
-          ) : (
-            <Image className="h-16 w-16 text-gray-400 mb-4" />
-          )}
-          
-          <p className="text-sm text-gray-600 mb-2">Drag and drop your image here, or click to browse</p>
-          <p className="text-xs text-gray-500">Maximum file size: 5MB</p>
-          
+          <ArrowLeft size={16} className="mr-1" /> Back to Gallery
+        </Link>
+        <h1 className="text-2xl font-bold">Upload Media</h1>
+      </div>
+      
+      <div className="bg-white rounded-lg p-6 shadow-md">
+        {/* Folder selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Select Target Folder (optional)
+          </label>
+          <select
+            value={selectedFolder}
+            onChange={(e) => setSelectedFolder(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
+            disabled={uploading}
+          >
+            <option value="">Root (No folder)</option>
+            {folderOptions.map(folder => (
+              <option key={folder} value={folder}>{folder}</option>
+            ))}
+          </select>
+          <p className="mt-1 text-sm text-gray-500">
+            Media will be uploaded to the selected folder
+          </p>
+        </div>
+        
+        {/* File drop area */}
+        <div 
+          className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6"
+          onDragOver={e => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onDrop={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newFiles = Array.from(e.dataTransfer.files);
+            setFiles(prevFiles => [...prevFiles, ...newFiles]);
+          }}
+        >
+          <Upload size={40} className="mx-auto text-gray-400 mb-4" />
+          <p className="text-gray-600 mb-4">Drag and drop media files here, or click to select</p>
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            multiple
+            accept="image/*,video/*"
             onChange={handleFileChange}
             className="hidden"
+            id="file-upload"
+            disabled={uploading}
           />
+          <label 
+            htmlFor="file-upload"
+            className={`inline-block px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer
+              hover:bg-blue-700 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            Select Files
+          </label>
+          <p className="mt-2 text-sm text-gray-500">
+            Supports: JPG, PNG, GIF, WEBP, MP4, WEBM, MOV (Max 100MB)
+          </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
+        {/* Selected files list */}
+        {files.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-lg font-medium mb-3">Selected Files ({files.length})</h3>
+            <div className="space-y-3 max-h-[300px] overflow-y-auto p-2">
+              {files.map((file, index) => {
+                const fileKey = `file-${index}`;
+                const progress = uploadProgress[fileKey] || 0;
+                const error = errors[fileKey];
+                
+                return (
+                  <div 
+                    key={index} 
+                    className={`flex items-center p-3 border rounded-md
+                      ${error ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}
+                  >
+                    <div className="flex-grow">
+                      <div className="flex justify-between">
+                        <p className="font-medium truncate" style={{maxWidth: '400px'}}>{file.name}</p>
+                        <span className="text-gray-500 text-sm">{formatFileSize(file.size)}</span>
+                      </div>
+                      
+                      {uploading && (
+                        <div className="w-full bg-gray-200 h-1.5 mt-2 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-blue-600 transition-all duration-300"
+                            style={{ width: `${progress}%` }}
+                          ></div>
+                        </div>
+                      )}
+                      
+                      {error && (
+                        <p className="text-sm text-red-600 mt-1">{error}</p>
+                      )}
+                    </div>
+                    
+                    <button 
+                      onClick={() => removeFile(index)}
+                      className="ml-3 text-gray-400 hover:text-red-500 transition-colors"
+                      disabled={uploading}
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          
-          <div>
-            <label htmlFor="alt" className="block text-sm font-medium text-gray-700 mb-1">
-              Alt Text
-            </label>
-            <input
-              type="text"
-              id="alt"
-              value={alt}
-              onChange={(e) => setAlt(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="folder" className="block text-sm font-medium text-gray-700 mb-1">
-              Folder (optional)
-            </label>
-            <input
-              type="text"
-              id="folder"
-              value={folder}
-              onChange={(e) => setFolder(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="e.g., blog, products, etc."
-            />
-          </div>
-          
-          <div className="md:col-span-2">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-              Description (optional)
-            </label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              rows={3}
-            />
-          </div>
-        </div>
+        )}
         
-        <div className="flex justify-end space-x-4">
+        {/* Upload controls */}
+        <div className="flex justify-end space-x-3">
           <button
-            type="button"
-            onClick={handleReset}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-            disabled={loading}
+            onClick={() => setFiles([])}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50"
+            disabled={!files.length || uploading}
           >
-            Clear
+            Clear All
           </button>
-          
           <button
-            type="button"
-            onClick={() => router.push("/admin/gallery")}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-            disabled={loading}
+            onClick={handleUpload}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50"
+            disabled={!files.length || uploading}
           >
-            Cancel
-          </button>
-          
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2"
-            disabled={loading || !file}
-          >
-            {loading ? (
+            {uploading ? (
               <>
-                <Loader2 className="animate-spin" size={16} />
-                <span>Uploading...</span>
+                <Loader2 size={18} className="mr-2 animate-spin" />
+                Uploading...
               </>
             ) : (
               <>
-                <Upload size={16} />
-                <span>Upload Image</span>
+                <Upload size={18} className="mr-2" />
+                Upload {files.length} {files.length === 1 ? 'File' : 'Files'}
               </>
             )}
           </button>
         </div>
-      </form>
+        
+        {/* Upload results */}
+        {uploadedFiles.length > 0 && (
+          <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-md">
+            <div className="flex items-center mb-3">
+              <Check size={20} className="text-green-500 mr-2" />
+              <h3 className="text-lg font-medium text-green-800">
+                Successfully uploaded {uploadedFiles.length} {uploadedFiles.length === 1 ? 'file' : 'files'}
+              </h3>
+            </div>
+            <p className="text-green-700 mb-2">
+              Your media has been uploaded to the gallery and is ready to use.
+            </p>
+            <div className="flex justify-end">
+              <Link
+                href="/admin/gallery"
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Go to Gallery
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

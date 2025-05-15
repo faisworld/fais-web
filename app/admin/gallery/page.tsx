@@ -3,13 +3,30 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon } from "lucide-react";
+import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon, Film, Download, Check, Layers, RefreshCw, Upload, ArrowLeft, ArrowRight, Folder } from "lucide-react";
+
+// Extended interface to support both images and videos
+interface GalleryMedia {
+  id: number;
+  url: string;
+  title: string;
+  "alt-tag"?: string;
+  altTag?: string;
+  folder?: string;
+  description?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+  format?: string;
+  uploaded_at?: string;
+  mediaType?: 'image' | 'video'; // New field to indicate media type
+}
 
 export default function AdminGalleryPage() {
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<GalleryMedia[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<any | null>(null);
+  const [selectedImage, setSelectedImage] = useState<GalleryMedia | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editData, setEditData] = useState({
     title: "",
@@ -21,14 +38,34 @@ export default function AdminGalleryPage() {
   const [showImageModal, setShowImageModal] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [copyingImageId, setCopyingImageId] = useState<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [folders, setFolders] = useState<string[]>([]);
+  const [currentFolder, setCurrentFolder] = useState<string>('');
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+  const [movingMedia, setMovingMedia] = useState<GalleryMedia | null>(null);
+  const [targetFolder, setTargetFolder] = useState('');
+  const [showMoveModal, setShowMoveModal] = useState(false);
   const router = useRouter();
 
-  // Fetch images from admin API
+  // Check if we're on the client side to prevent SSR errors
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Fetch images from admin API with folder filtering
   useEffect(() => {
     const fetchImages = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/admin/gallery/list");
+        const url = currentFolder 
+          ? `/api/admin/gallery/list?folder=${encodeURIComponent(currentFolder)}` 
+          : '/api/admin/gallery/list';
+        
+        const response = await fetch(url);
         
         if (!response.ok) {
           throw new Error(`Error fetching images: ${response.statusText}`);
@@ -36,6 +73,7 @@ export default function AdminGalleryPage() {
         
         const data = await response.json();
         setImages(data.images || []);
+        setFolders(data.folders || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
         console.error("Failed to fetch images:", err);
@@ -45,9 +83,30 @@ export default function AdminGalleryPage() {
     };
 
     fetchImages();
-  }, []);
+  }, [currentFolder]);
 
-  const handleEditClick = (image: any) => {
+  // Add a refresh function to fetch latest images from Blobstore
+  const refreshGallery = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/admin/gallery/list?t=" + Date.now()); // Cache-busting
+      
+      if (!response.ok) {
+        throw new Error(`Error fetching images: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      setImages(data.images || []);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+      console.error("Failed to fetch images:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditClick = (image: GalleryMedia) => {
     setSelectedImage(image);
     setEditData({
       title: image.title || "",
@@ -130,7 +189,7 @@ export default function AdminGalleryPage() {
     router.push("/admin/gallery/upload");
   };
 
-  const handleImageClick = (image: any) => {
+  const handleImageClick = (image: GalleryMedia) => {
     setSelectedImage(image);
     setShowImageModal(true);
   };
@@ -141,21 +200,48 @@ export default function AdminGalleryPage() {
   };
 
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 2000);
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      console.warn('Clipboard API not available');
+      return;
+    }
+    
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy text:', err);
+      });
   };
 
   const copyImageUrl = (e: React.MouseEvent, imageUrl: string, imageId: number) => {
     e.stopPropagation(); // Prevent triggering the image click handler
-    navigator.clipboard.writeText(imageUrl);
-    setCopyingImageId(imageId);
-    setTimeout(() => setCopyingImageId(null), 2000);
+    
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      console.warn('Clipboard API not available');
+      return;
+    }
+    
+    navigator.clipboard.writeText(imageUrl)
+      .then(() => {
+        setCopyingImageId(imageId);
+        setTimeout(() => setCopyingImageId(null), 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy image URL:', err);
+      });
   };
 
   const openImageUrl = (e: React.MouseEvent, imageUrl: string) => {
     e.stopPropagation(); // Prevent triggering the image click handler
-    window.open(imageUrl, '_blank');
+    
+    if (typeof window === 'undefined') {
+      console.warn('Window API not available');
+      return;
+    }
+    
+    window.open(imageUrl, '_blank', 'noopener,noreferrer');
   };
 
   const formatFileSize = (bytes: number) => {
@@ -168,18 +254,316 @@ export default function AdminGalleryPage() {
     }
   };
 
+  const isVideo = (url: string): boolean => {
+    const videoExtensions = ['.mp4', '.webm', '.mov', '.avi'];
+    return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
+
+  const toggleItemSelection = (e: React.MouseEvent, itemId: number) => {
+    e.stopPropagation(); // Prevent opening the item details modal
+    
+    const newSelectedItems = new Set(selectedItems);
+    if (newSelectedItems.has(itemId)) {
+      newSelectedItems.delete(itemId);
+    } else {
+      newSelectedItems.add(itemId);
+    }
+    
+    setSelectedItems(newSelectedItems);
+    
+    // Exit selection mode if no items are selected
+    if (newSelectedItems.size === 0) {
+      setSelectionMode(false);
+    }
+  };
+
+  const toggleSelectionMode = () => {
+    if (selectionMode) {
+      // Clear all selections when exiting selection mode
+      setSelectedItems(new Set());
+    }
+    setSelectionMode(!selectionMode);
+  };
+
+  const selectAllItems = () => {
+    if (selectedItems.size === images.length) {
+      // Deselect all if all are already selected
+      setSelectedItems(new Set());
+    } else {
+      // Select all items
+      const allItemIds = images.map(item => item.id);
+      setSelectedItems(new Set(allItemIds));
+    }
+  };
+
+  const downloadSelectedMedia = async () => {
+    if (selectedItems.size === 0) return;
+    
+    setIsDownloading(true);
+    
+    try {
+      const selectedMedia = images.filter(item => selectedItems.has(item.id));
+      
+      if (selectedItems.size === 1) {
+        const item = selectedMedia[0];
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.download = item.title || `media-${item.id}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        for (const item of selectedMedia) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          const link = document.createElement('a');
+          link.href = item.url;
+          link.download = item.title || `media-${item.id}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+      
+      alert(`Successfully initiated download of ${selectedItems.size} files. Check your downloads folder.`);
+    } catch (err) {
+      console.error("Error downloading files:", err);
+      alert("There was an error downloading some files. Please try again.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) return;
+    
+    try {
+      const response = await fetch('/api/admin/gallery/create-folder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name: newFolderName,
+          parent: currentFolder 
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create folder');
+      }
+      
+      // Refresh gallery to show new folder
+      refreshGallery();
+      setShowFolderModal(false);
+      setNewFolderName('');
+      
+    } catch (err) {
+      console.error('Error creating folder:', err);
+      alert('Failed to create folder. Please try again.');
+    }
+  };
+
+  const handleMoveMedia = async () => {
+    if (!movingMedia) return;
+    
+    try {
+      const response = await fetch('/api/admin/gallery/move', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          mediaId: movingMedia.id,
+          sourceUrl: movingMedia.url,
+          targetFolder: targetFolder 
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to move media');
+      }
+      
+      // Refresh gallery after move
+      refreshGallery();
+      setShowMoveModal(false);
+      setMovingMedia(null);
+      setTargetFolder('');
+      
+    } catch (err) {
+      console.error('Error moving media:', err);
+      alert('Failed to move media. Please try again.');
+    }
+  };
+
+  const openMoveDialog = (media: GalleryMedia) => {
+    setMovingMedia(media);
+    setTargetFolder('');
+    setShowMoveModal(true);
+  };
+
+  const navigateToFolder = (folder: string) => {
+    setCurrentFolder(folder);
+  };
+
+  const navigateUp = () => {
+    if (!currentFolder) return;
+    
+    const parts = currentFolder.split('/');
+    if (parts.length <= 1) {
+      setCurrentFolder('');
+    } else {
+      setCurrentFolder(parts.slice(0, -1).join('/'));
+    }
+  };
+
+  const renderImageWithFallback = (src: string, alt: string, className: string = '') => {
+    return (
+      <div className={`relative ${className}`}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          unoptimized={true} // Skip optimization for Blobstore images
+          onError={(e) => {
+            // On error, replace with placeholder
+            e.currentTarget.src = '/placeholder-image.jpg';
+          }}
+        />
+      </div>
+    );
+  };
+
+  if (!isClient) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center my-12">
+          <div className="h-10 w-10 bg-blue-100 rounded-full"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Admin Gallery Management</h1>
-        <button 
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-md flex items-center shadow-md hover:shadow-lg transition-all"
-          onClick={handleUploadClick}
-        >
-          <FolderPlus className="mr-1.5" size={16} /> 
-          <span>Upload New Image</span>
-        </button>
+        <div className="flex space-x-2">
+          <button 
+            onClick={() => setShowFolderModal(true)}
+            className="px-3 py-2 rounded-md flex items-center bg-green-600 text-white hover:bg-green-700 transition-all"
+          >
+            <FolderPlus size={16} className="mr-1.5" />
+            New Folder
+          </button>
+          
+          <button 
+            onClick={refreshGallery}
+            className="px-3 py-2 rounded-md flex items-center bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200 transition-all"
+            title="Refresh gallery"
+            disabled={loading}
+          >
+            <RefreshCw size={16} className={`mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+          
+          <button 
+            className={`px-3 py-2 rounded-md flex items-center transition-all ${
+              selectionMode 
+                ? "bg-blue-100 text-blue-700 border border-blue-300" 
+                : "bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200"
+            }`}
+            onClick={toggleSelectionMode}
+            title={selectionMode ? "Exit selection mode" : "Enter selection mode"}
+          >
+            <Layers size={16} className="mr-1.5" />
+            {selectionMode ? "Exit Selection" : "Select Multiple"}
+          </button>
+          
+          <button 
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-md flex items-center shadow-md hover:shadow-lg transition-all"
+            onClick={handleUploadClick}
+          >
+            <Upload className="mr-1.5" size={16} /> 
+            <span>Upload New Media</span>
+          </button>
+        </div>
       </div>
+
+      {/* Folder navigation */}
+      <div className="bg-gray-50 border border-gray-200 rounded-md p-2 mb-4 flex items-center overflow-x-auto">
+        <button 
+          onClick={() => setCurrentFolder('')}
+          className={`px-2 py-1 text-sm rounded-md mr-2 ${!currentFolder ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-200'}`}
+        >
+          All Media
+        </button>
+        
+        {currentFolder && (
+          <button 
+            onClick={navigateUp}
+            className="px-2 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded-md mr-2 flex items-center"
+          >
+            <ArrowLeft size={12} className="mr-1" />
+            Up
+          </button>
+        )}
+        
+        {currentFolder.split('/').map((part, index, array) => {
+          const path = array.slice(0, index + 1).join('/');
+          return (
+            <button
+              key={path}
+              onClick={() => navigateToFolder(path)}
+              className={`px-2 py-1 text-sm rounded-md mr-2 ${
+                index === array.length - 1 ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-200'
+              }`}
+            >
+              {part}
+            </button>
+          );
+        })}
+      </div>
+
+      {selectionMode && (
+        <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6 flex justify-between items-center">
+          <div className="flex items-center">
+            <input 
+              type="checkbox" 
+              checked={selectedItems.size > 0 && selectedItems.size === images.length}
+              onChange={selectAllItems}
+              className="h-5 w-5 text-blue-600 rounded mr-2"
+            />
+            <span className="mr-4 text-blue-800 font-medium">
+              {selectedItems.size} {selectedItems.size === 1 ? 'item' : 'items'} selected
+            </span>
+          </div>
+          
+          <div className="flex space-x-2">
+            {selectedItems.size > 0 && (
+              <>
+                <button 
+                  onClick={downloadSelectedMedia}
+                  disabled={isDownloading}
+                  className="bg-blue-600 text-white px-3 py-1.5 rounded flex items-center hover:bg-blue-700 disabled:opacity-50"
+                >
+                  {isDownloading ? (
+                    <Loader2 size={16} className="mr-1.5 animate-spin" />
+                  ) : (
+                    <Download size={16} className="mr-1.5" />
+                  )}
+                  Download Selected
+                </button>
+                
+                <button 
+                  onClick={() => setSelectedItems(new Set())}
+                  className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded flex items-center hover:bg-gray-300"
+                >
+                  <X size={16} className="mr-1.5" />
+                  Clear Selection
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center my-12">
@@ -190,35 +574,84 @@ export default function AdminGalleryPage() {
           <p>{error}</p>
           <p className="text-sm">Please check your database connection or try again later.</p>
         </div>
+      ) : images.length === 0 ? (
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-12 text-center">
+          <div className="text-gray-400 mb-4">
+            <Upload size={48} className="mx-auto" />
+          </div>
+          <h3 className="text-xl font-medium text-gray-700 mb-2">
+            {currentFolder ? `No media in ${currentFolder.split('/').pop()}` : 'No media found'}
+          </h3>
+          <p className="text-gray-500 mb-6">Upload some media files to get started</p>
+          <button 
+            onClick={handleUploadClick}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Upload Media
+          </button>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {images.map((image) => (
-            <div key={image.id} className="border rounded-lg overflow-hidden bg-white shadow-md hover:shadow-lg transition-all">
+          {images.map((item) => (
+            <div 
+              key={item.id} 
+              className={`border rounded-lg overflow-hidden bg-white shadow-md transition-all ${
+                selectionMode && selectedItems.has(item.id) ? "ring-2 ring-blue-500" : "hover:shadow-lg"
+              }`}
+            >
               <div 
                 className="relative h-48 w-full cursor-pointer"
-                onClick={() => handleImageClick(image)}
+                onClick={selectionMode ? (e) => toggleItemSelection(e, item.id) : () => handleImageClick(item)}
               >
-                <Image
-                  src={image.url}
-                  alt={image.altTag || image["alt-tag"] || image.title}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-300"
-                />
+                {selectionMode && (
+                  <div className="absolute top-2 left-2 z-10">
+                    <div className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      selectedItems.has(item.id) 
+                        ? "bg-blue-500 text-white" 
+                        : "bg-black bg-opacity-40 text-white"
+                    }`}>
+                      {selectedItems.has(item.id) && <Check size={16} />}
+                    </div>
+                  </div>
+                )}
+              
+                {isVideo(item.url) ? (
+                  <div className="w-full h-full relative">
+                    <video 
+                      src={item.url}
+                      className="object-cover w-full h-full"
+                      muted
+                      playsInline
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-black bg-opacity-50 rounded-full p-3">
+                        <Film className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // Use unoptimized image with fallback
+                  renderImageWithFallback(item.url, item.title, "hover:scale-105 transition-transform duration-300")
+                )}
+                
                 <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-md">
                   <Info size={14} className="inline mr-1 align-text-bottom" />
                   <span>Details</span>
                 </div>
               </div>
+              
               <div className="p-4">
-                <h3 className="font-medium text-gray-900 truncate">{image.title}</h3>
+                <h3 className="font-medium text-gray-900 truncate">{item.title}</h3>
                 <p className="text-sm text-gray-500 truncate">
-                  Alt: {image.altTag || image["alt-tag"] || "None"}
+                  {isVideo(item.url) ? 'Video' : `Alt: ${item.altTag || item["alt-tag"] || "None"}`}
                 </p>
-                {image.folder && (
-                  <p className="text-sm text-gray-500">Folder: {image.folder}</p>
+                {item.folder && (
+                  <p className="text-sm text-gray-500 flex items-center">
+                    <Folder size={12} className="mr-1" />
+                    <span className="truncate">{item.folder}</span>
+                  </p>
                 )}
                 
-                {/* Image URL display and actions */}
                 <div className="mt-3 mb-3 bg-gray-50 p-2 rounded-md border border-gray-200 text-xs">
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-medium text-gray-700 flex items-center">
@@ -226,14 +659,14 @@ export default function AdminGalleryPage() {
                     </span>
                     <div className="flex space-x-1">
                       <button 
-                        onClick={(e) => copyImageUrl(e, image.url, image.id)}
+                        onClick={(e) => copyImageUrl(e, item.url, item.id)}
                         className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
                         title="Copy URL"
                       >
-                        {copyingImageId === image.id ? <CheckCircle size={12} /> : <Copy size={12} />}
+                        {copyingImageId === item.id ? <CheckCircle size={12} /> : <Copy size={12} />}
                       </button>
                       <button 
-                        onClick={(e) => openImageUrl(e, image.url)}
+                        onClick={(e) => openImageUrl(e, item.url)}
                         className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
                         title="Open in new tab"
                       >
@@ -241,31 +674,63 @@ export default function AdminGalleryPage() {
                       </button>
                     </div>
                   </div>
-                  <div className="truncate text-gray-600 text-[10px]" title={image.url}>
-                    {image.url}
+                  <div className="truncate text-gray-600 text-[10px]" title={item.url}>
+                    {item.url}
                   </div>
                 </div>
                 
                 <div className="flex mt-2 space-x-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditClick(image);
-                    }}
-                    className="flex-1 flex items-center justify-center px-2 py-1 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
-                  >
-                    <Edit size={14} className="mr-1" /> Edit
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteImage(image.id);
-                    }}
-                    className="flex-1 flex items-center justify-center px-2 py-1 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors"
-                    disabled={isDeletingImage}
-                  >
-                    <Trash2 size={14} className="mr-1" /> Delete
-                  </button>
+                  {!selectionMode ? (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(item);
+                        }}
+                        className="flex-1 flex items-center justify-center px-2 py-1 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
+                      >
+                        <Edit size={14} className="mr-1" /> Edit
+                      </button>
+                      
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openMoveDialog(item);
+                        }}
+                        className="flex-1 flex items-center justify-center px-2 py-1 bg-green-50 text-green-600 rounded-md hover:bg-green-100 transition-colors"
+                      >
+                        <FolderPlus size={14} className="mr-1" /> Move
+                      </button>
+                      
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteImage(item.id);
+                        }}
+                        className="flex-1 flex items-center justify-center px-2 py-1 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors"
+                        disabled={isDeletingImage}
+                      >
+                        <Trash2 size={14} className="mr-1" /> Delete
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={(e) => toggleItemSelection(e, item.id)}
+                      className={`w-full flex items-center justify-center px-2 py-1 rounded-md ${
+                        selectedItems.has(item.id)
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {selectedItems.has(item.id) ? (
+                        <>
+                          <Check size={14} className="mr-1" /> Selected
+                        </>
+                      ) : (
+                        "Select"
+                      )}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -273,7 +738,102 @@ export default function AdminGalleryPage() {
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* Create folder modal */}
+      {showFolderModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
+            <h2 className="text-xl font-bold mb-4">Create New Folder</h2>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Folder Name</label>
+              <input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="Enter folder name"
+                required
+              />
+            </div>
+            
+            {currentFolder && (
+              <div className="mb-4">
+                <p className="text-sm text-gray-500">
+                  This folder will be created inside: <span className="font-medium">{currentFolder}</span>
+                </p>
+              </div>
+            )}
+            
+            <div className="flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => setShowFolderModal(false)}
+                className="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center"
+              >
+                <X size={16} className="mr-1.5" /> Cancel
+              </button>
+              <button
+                onClick={handleCreateFolder}
+                className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+              >
+                <FolderPlus size={16} className="mr-1.5" /> Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Move media modal */}
+      {showMoveModal && movingMedia && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
+            <h2 className="text-xl font-bold mb-4">Move Media to Folder</h2>
+            
+            <div className="mb-4">
+              <p className="text-sm font-medium text-gray-700 mb-2">Moving:</p>
+              <div className="flex items-center p-2 bg-gray-50 rounded-md">
+                {isVideo(movingMedia.url) ? (
+                  <Film size={24} className="mr-2 text-gray-500" />
+                ) : (
+                  <Image size={24} className="mr-2 text-gray-500" />
+                )}
+                <span className="font-medium truncate">{movingMedia.title}</span>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Target Folder</label>
+              <select
+                value={targetFolder}
+                onChange={(e) => setTargetFolder(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              >
+                <option value="">Root (No Folder)</option>
+                {folders.map(folder => (
+                  <option key={folder} value={folder}>{folder}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => setShowMoveModal(false)}
+                className="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center"
+              >
+                <X size={16} className="mr-1.5" /> Cancel
+              </button>
+              <button
+                onClick={handleMoveMedia}
+                className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+              >
+                <ArrowRight size={16} className="mr-1.5" /> Move
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showEditModal && selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
@@ -341,12 +901,11 @@ export default function AdminGalleryPage() {
         </div>
       )}
 
-      {/* Image Details Modal */}
       {showImageModal && selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-md w-[800px] max-w-[95vw] max-h-[85vh] overflow-hidden shadow-2xl relative flex flex-col">
             <div className="flex justify-between items-center bg-blue-600 text-white px-6 py-3">
-              <h3 className="text-xl font-bold">Image Details</h3>
+              <h3 className="text-xl font-bold">{isVideo(selectedImage.url) ? 'Video' : 'Image'} Details</h3>
               <button 
                 onClick={handleCloseImageModal}
                 className="text-white hover:text-gray-200 transition-colors"
@@ -357,12 +916,20 @@ export default function AdminGalleryPage() {
             
             <div className="flex flex-col md:flex-row p-0 overflow-y-auto">
               <div className="w-full md:w-1/2 relative h-[400px] bg-gray-100 p-4">
-                <Image
-                  src={selectedImage.url}
-                  alt={selectedImage.altTag || selectedImage["alt-tag"] || selectedImage.title}
-                  fill
-                  className="object-contain"
-                />
+                {isVideo(selectedImage.url) ? (
+                  <video
+                    src={selectedImage.url}
+                    controls
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <Image
+                    src={selectedImage.url}
+                    alt={selectedImage.altTag || selectedImage["alt-tag"] || selectedImage.title}
+                    fill
+                    className="object-contain"
+                  />
+                )}
               </div>
 
               <div className="w-full md:w-1/2 p-6 space-y-4">
@@ -375,6 +942,13 @@ export default function AdminGalleryPage() {
 
                 <div>
                   <div className="grid grid-cols-1 gap-3">
+                    <div className="border-b border-gray-200 pb-2">
+                      <p className="text-sm font-medium text-gray-500">Type</p>
+                      <p className="text-base font-medium">
+                        {isVideo(selectedImage.url) ? 'Video' : 'Image'}
+                      </p>
+                    </div>
+                    
                     <div className="border-b border-gray-200 pb-2">
                       <p className="text-sm font-medium text-gray-500">Dimensions</p>
                       <p className="text-base font-medium">
@@ -398,12 +972,14 @@ export default function AdminGalleryPage() {
                       </p>
                     </div>
 
-                    <div className="border-b border-gray-200 pb-2">
-                      <p className="text-sm font-medium text-gray-500">Alt Text</p>
-                      <p className="text-base font-medium">
-                        {selectedImage.altTag || selectedImage["alt-tag"] || "No alt text"}
-                      </p>
-                    </div>
+                    {!isVideo(selectedImage.url) && (
+                      <div className="border-b border-gray-200 pb-2">
+                        <p className="text-sm font-medium text-gray-500">Alt Text</p>
+                        <p className="text-base font-medium">
+                          {selectedImage.altTag || selectedImage["alt-tag"] || "No alt text"}
+                        </p>
+                      </div>
+                    )}
                     
                     {selectedImage.folder && (
                       <div className="border-b border-gray-200 pb-2">
@@ -413,7 +989,7 @@ export default function AdminGalleryPage() {
                     )}
                     
                     <div className="pt-2">
-                      <p className="text-sm font-medium text-gray-500 mb-2">Image URL</p>
+                      <p className="text-sm font-medium text-gray-500 mb-2">Media URL</p>
                       <div className="flex items-center space-x-2 mb-2">
                         <button 
                           onClick={() => copyToClipboard(selectedImage.url)}

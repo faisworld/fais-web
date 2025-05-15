@@ -69,6 +69,7 @@
     "@types/react-dom": "^19.1.2",
     "@types/react-slick": "^0.23.13",
     "@types/slick-carousel": "^1.6.40",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.1",
     "eslint-config-next": "^15.3.2",

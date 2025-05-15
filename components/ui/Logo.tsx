@@ -1,55 +1,41 @@
 "use client"
 
-import { getBlobImage } from "@/utils/image-utils"
-import ClientImage from "@/components/ui/ClientImage"
-import Link from "next/link"
+import Link from 'next/link';
+import Image from 'next/image';
 
-type LogoProps = {
-  variant?: "white" | "black"
-  href?: string
-  className?: string
-  onClick?: () => void
-  isFooter?: boolean // Add new prop to identify footer usage
+interface LogoProps {
+  variant?: 'white' | 'black';
+  href?: string;
+  className?: string;
 }
 
-export default function Logo({ 
-  variant = "white", 
-  href = "/", 
-  className = "", 
-  onClick,
-  isFooter = false // Default to false
-}: LogoProps) {
-  const logoKey = variant === "white" ? "logo" : "logo-black"
-  const logoAlt = "Fantastic AI Studio Logo"
-
-  // Apply negative margin only if it's used in the footer
-  const footerAdjustment = isFooter ? "md:-ml-3" : ""
+export default function Logo({ variant = 'white', href = '/', className = '' }: LogoProps) {
+  const logoSrc = variant === 'white' 
+    ? "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png"
+    : "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png";
 
   const logoImage = (
-    <ClientImage
-      src={getBlobImage(logoKey)}
-      alt={logoAlt}
-      width={100}
+    <Image 
+      src={logoSrc}
+      alt="FAIS Logo"
+      width={140}
       height={40}
-      priority={variant === "white"} // Prioritize loading the header logo
-      style={{
-        width: "auto",
-        height: "40px",
-        maxWidth: "100%",
-        padding: 0,
-        margin: 0
+      style={{ 
+        height: 'auto', // This fixes the aspect ratio warning
+        width: 'auto', 
       }}
-      className={`transition-all duration-300 sm:h-[40px] h-[32px] ${footerAdjustment} ${className}`}
+      priority
+      className={`logo ${className}`}
     />
-  )
+  );
 
-  if (href) {
-    return (
-      <Link href={href} className={`flex-shrink-0 p-0 m-0 ${footerAdjustment}`} style={{ padding: 0, margin: 0 }} onClick={onClick}>
-        {logoImage}
-      </Link>
-    )
+  if (href === null) {
+    return logoImage;
   }
 
-  return logoImage
+  return (
+    <Link href={href} className="flex items-center">
+      {logoImage}
+    </Link>
+  );
 }

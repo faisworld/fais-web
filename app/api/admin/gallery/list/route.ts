@@ -1,91 +1,109 @@
-import { NextResponse } from "next/server"
-import { Client } from "@neondatabase/serverless"
-import { checkAdminAuth } from "@/utils/admin-auth"
+import { NextResponse } from 'next/server';
+import { list } from '@vercel/blob';
+import { checkAdminAuth } from '@/utils/admin-auth';
 
 export async function GET(request: Request) {
-  // Check admin authentication
-  const authResult = await checkAdminAuth(request);
-  if (!authResult.isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
-    const client = new Client(process.env.DATABASE_URL)
-    await client.connect()
-
-    // Log that we're fetching images
-    console.log("Admin: Fetching images from database...")
-
-    // Check which columns exist in the table
-    const columnsResult = await client.query(`
-      SELECT column_name 
-      FROM information_schema.columns 
-      WHERE table_name = 'images'
-    `)
-
-    const existingColumns = columnsResult.rows.map((row) => row.column_name)
-    console.log("Existing columns:", existingColumns)
-
-    // Build a query that only includes columns that exist
-    const baseColumns = ["id", "url", "title", "uploaded_at"]
-
-    // Check specifically for alt-tag with quotes since it has a hyphen
-    const hasAltTag = existingColumns.includes("alt-tag")
-
-    // Other optional columns
-    const optionalColumns = ["size", "width", "height", "folder", "format", "description"]
-    const existingOptionalColumns = optionalColumns.filter((col) => existingColumns.includes(col))
-
-    // Construct the SELECT part of the query
-    let selectParts = [...baseColumns]
-
-    // Add optional columns
-    if (existingOptionalColumns.length > 0) {
-      selectParts = [...selectParts, ...existingOptionalColumns]
+    // Verify admin authentication
+    const authResult = await checkAdminAuth(request);
+    if (!authResult.isAuthenticated) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Handle alt-tag specially due to the hyphen
-    if (hasAltTag) {
-      selectParts.push(`"alt-tag"`)
-      selectParts.push(`"alt-tag" as "altTag"`)
-    }
+    const url = new URL(request.url);
+    const folder = url.searchParams.get('folder') || '';
 
-    const selectClause = selectParts.join(", ")
-
-    const query = `
-      SELECT ${selectClause}
-      FROM images 
-      ORDER BY uploaded_at DESC
-    `
-
-    console.log("Executing query:", query)
-    const result = await client.query(query)
-
-    await client.end()
-
-    // Log the result for debugging
-    console.log(`Found ${result.rows.length} images`)
-
-    // If there are no images, add a placeholder for testing
-    if (result.rows.length === 0) {
-      console.log("No images found, adding placeholder for testing")
-      return NextResponse.json({
-        images: [
-          {
-            id: 1,
-            url: "/abstract-geometric-shapes.png",
-            title: "No images found",
-            altTag: "Placeholder image",
-            width: 800,
-            height: 600,
-          },
-        ],
+    // List all blobs from Vercel Blob Storage
+    const { blobs } = await list({
+      prefix: folder ? folder + '/' : undefined,
+    });
+    
+    // Convert blob data to gallery format and sort by uploadedAt (newest first)
+    const images = blobs
+      .filter(blob => {
+        // Filter out directories and empty placeholder files
+        return blob.pathname !== 'uploaded-image' && !blob.pathname.endsWith('/');
       })
-    }
+      .map((blob) => {
+        // Extract filename from pathname
+        const pathParts = blob.pathname.split('/');
+        const filename = pathParts[pathParts.length - 1];
+        
+        // Get file extension
+        const extension = filename.includes('.') ? filename.split('.').pop()?.toLowerCase() : '';
+        
+        // Determine if it's a video based on extension or content type
+        const videoExtensions = ['mp4', 'webm', 'mov', 'avi'];
+        const isVideo = blob.contentType?.startsWith('video/') || 
+                      (extension && videoExtensions.includes(extension));
 
-    return NextResponse.json({ images: result.rows })
+        // Generate numeric ID from URL
+        const id = hashString(blob.url);
+        
+        // Extract folder path
+        let folderPath = '';
+        if (pathParts.length > 1) {
+          folderPath = pathParts.slice(0, -1).join('/');
+        }
+        
+        // Format title from filename (remove extension)
+        const title = filename.includes('.') ? filename.split('.').slice(0, -1).join('.') : filename;
+        
+        return {
+          id,
+          url: blob.url,
+          title: title || 'Untitled',
+          altTag: title || 'Untitled',
+          "alt-tag": title || 'Untitled',
+          folder: folderPath,
+          description: '',
+          format: extension || '',
+          size: blob.size,
+          mediaType: isVideo ? 'video' : 'image',
+          uploaded_at: blob.uploadedAt
+        };
+      })
+      .sort((a, b) => {
+        // Sort by date, newest first
+        const dateA = new Date(a.uploaded_at).getTime();
+        const dateB = new Date(b.uploaded_at).getTime();
+        return dateB - dateA;
+      });
+
+    // Get unique folders for the folder selector
+    const allFolders = new Set<string>();
+    blobs.forEach(blob => {
+      const pathParts = blob.pathname.split('/');
+      if (pathParts.length > 1) {
+        // Add each level of the folder path
+        for (let i = 0; i < pathParts.length - 1; i++) {
+          const path = pathParts.slice(0, i + 1).join('/');
+          if (path) allFolders.add(path);
+        }
+      }
+    });
+
+    return NextResponse.json({ 
+      images,
+      folders: Array.from(allFolders),
+      count: images.length
+    });
   } catch (error) {
-    console.error("Error fetching images:", error)
-    return NextResponse.json({ error: "Failed to fetch images", details: String(error) }, { status: 500 })
+    console.error('Error listing gallery media:', error);
+    return NextResponse.json({ 
+      error: 'Failed to list media files',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
+}
+
+// Simple hash function to generate numeric IDs
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
 }
