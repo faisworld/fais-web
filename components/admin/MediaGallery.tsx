@@ -1,7 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, JSX } from 'react'
 import { Trash2, Download, ExternalLink, Play, Film, ImageIcon, Folder } from 'lucide-react';
+import { isGif, handleImageError } from '@/utils/media-utils';
 import Image from 'next/image';
 
+
+// Determine if a file is a video based on URL or extension
+export const isVideo = (url: string): boolean => {
+  const videoExtensions = ['.mp4', '.webm', '.mov', '.m4v', '.avi', '.mpg', '.mpeg', '.wmv', '.flv'];
+  return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+};
 // API response type for media items
 interface ApiMediaItem {
   id: string | number;
@@ -37,7 +44,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
   const [folders, setFolders] = useState<string[]>([]);
-  const [activeFolder, setActiveFolder] = useState<string>("");
+  const [activeFolder, setActiveFolder] = useState<string>('');
   
   // Determine if a file is a video based on URL or type
   const isVideoFile = (url: string): boolean => {
@@ -240,11 +247,11 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
     const isActive = activeVideoId === item.id;
     
     return (
-      <div className="video-thumbnail relative">
+      <div className='video-thumbnail relative'>
         {isActive ? (
           <video 
             src={item.url} 
-            className="w-full h-full object-cover" 
+            className='w-full h-full object-cover' 
             autoPlay 
             controls 
             muted
@@ -253,22 +260,22 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
           <>
             <video 
               src={item.url} 
-              className="w-full h-full object-cover" 
+              className='w-full h-full object-cover' 
               muted
               playsInline
-              preload="metadata"
+              preload='metadata'
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black bg-opacity-50 rounded-full p-3 cursor-pointer z-10"
+            <div className='absolute inset-0 flex items-center justify-center'>
+              <div className='bg-black bg-opacity-50 rounded-full p-3 cursor-pointer z-10'
                    onClick={(e) => toggleVideoPlay(item.id, e)}>
-                <Play className="h-8 w-8 text-white" />
+                <Play className='h-8 w-8 text-white' />
               </div>
             </div>
           </>
         )}
         
-        <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-          <Film className="inline-block h-3 w-3 mr-1" />
+        <div className='absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded'>
+          <Film className='inline-block h-3 w-3 mr-1' />
           Video
         </div>
       </div>
@@ -276,27 +283,31 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
   };
 
   // Render image preview with error handling
-  const renderImagePreview = (item: MediaItem) => {
+  const renderImagePreview: (item: MediaItem) => JSX.Element = (item: MediaItem) => {
+    // Determine if this is a GIF that should be unoptimized to preserve animation
+    const isAnimatedGif = isGif(item.url);
+    
     return (
-      <div className="relative w-full aspect-video" style={{ minHeight: '200px', height: '200px' }}>
-        <Image 
-          src={item.url} 
-          alt={item.name} 
+      <>
+        <Image
+          src={item.url}
+          alt={item.name}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover" 
-          priority={filteredItems.indexOf(item) < 3} // Add priority to first 3 images
-          style={{ objectFit: 'cover' }} // Ensure image properly fills container
-          onError={(e) => {
-            // Replace with a placeholder on error
-            (e.target as HTMLImageElement).src = `https://via.placeholder.com/300x200?text=${encodeURIComponent(item.name)}`;
-          }}
+          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+          className='object-cover'
+          priority={filteredItems.indexOf(item) < 3}
+          style={{ objectFit: 'cover' }}
+          onError={handleImageError}
+          // Don't optimize GIFs to preserve animation
+          unoptimized={isAnimatedGif}
+          // Load GIFs eagerly to ensure they start animating immediately
+          loading={isAnimatedGif ? 'eager' : 'lazy'}
         />
-        <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-          <ImageIcon className="inline-block h-3 w-3 mr-1" />
+        <div className='absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded'>
+          <ImageIcon className='inline-block h-3 w-3 mr-1' />
           Image
         </div>
-      </div>
+      </>
     );
   };
 
@@ -304,19 +315,19 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
     <div>
       {/* Folder Filter */}
       {folders.length > 0 && (
-        <div className="mb-6 bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+        <div className='mb-6 bg-white rounded-lg p-4 border border-gray-200 shadow-sm'>
           {/* Folders section */}
           {folders.length > 0 && (
-            <div className="mb-4">
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-sm font-medium text-gray-500 mr-2">
-                  <Folder className="inline-block h-4 w-4 mr-1" />
+            <div className='mb-4'>
+              <div className='flex flex-wrap gap-2 items-center'>
+                <span className='text-sm font-medium text-gray-500 mr-2'>
+                  <Folder className='inline-block h-4 w-4 mr-1' />
                   Folders:
                 </span>
                 <button
-                  onClick={() => setActiveFolder("")}
+                  onClick={() => setActiveFolder('')}
                   className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    activeFolder === "" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                    activeFolder === '' ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                   }`}
                 >
                   All
@@ -326,7 +337,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
                     key={index}
                     onClick={() => setActiveFolder(folder)}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                      activeFolder === folder ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                      activeFolder === folder ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                     }`}
                   >
                     {folder}
@@ -339,27 +350,27 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
       )}
 
       {selectedItems.size > 0 && (
-        <div className="flex justify-between items-center mb-4 p-3 bg-gray-50 rounded-md border border-gray-200">
-          <div className="flex items-center">
-            <input type="checkbox" checked className="mr-2" readOnly />
-            <p className="text-sm font-medium">
+        <div className='flex justify-between items-center mb-4 p-3 bg-gray-50 rounded-md border border-gray-200'>
+          <div className='flex items-center'>
+            <input type='checkbox' checked className='mr-2' readOnly />
+            <p className='text-sm font-medium'>
               {selectedItems.size} items selected
             </p>
           </div>
-          <div className="flex space-x-2">
+          <div className='flex space-x-2'>
             <button
               onClick={handleDeleteSelected}
-              className="px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center"
+              className='px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center'
             >
               delete selected
             </button>
             <button 
               onClick={() => setSelectedItems(new Set())}
-              className="px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center"
+              className='px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center'
             >
               clear selection
             </button>
-            <button className="px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center">
+            <button className='px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center'>
               download selected
             </button>
           </div>
@@ -367,36 +378,36 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
       )}
       
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-md border border-red-200 mb-4">
+        <div className='p-4 bg-red-50 text-red-700 rounded-md border border-red-200 mb-4'>
           {error}
         </div>
       )}
       
       {isLoading ? (
-        <div className="flex justify-center items-center py-16">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className='flex justify-center items-center py-16'>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500'></div>
         </div>
       ) : filteredItems.length === 0 ? (
-        <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+        <div className='text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300'>
           {filterType === 'videos' ? (
             <div>
-              <Film className="h-12 w-12 mx-auto text-gray-400 mb-2" />
+              <Film className='h-12 w-12 mx-auto text-gray-400 mb-2' />
               <p>No videos found</p>
             </div>
           ) : filterType === 'images' ? (
             <div>
-              <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-2" />
+              <ImageIcon className='h-12 w-12 mx-auto text-gray-400 mb-2' />
               <p>No images found</p>
             </div>
           ) : (
             <div>
               <p>No media found</p>
-              <p className="text-sm mt-1">Upload some media to see them here</p>
+              <p className='text-sm mt-1'>Upload some media to see them here</p>
             </div>
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
           {filteredItems.map((item) => (
             <div 
               key={item.id}
@@ -410,19 +421,19 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
               {item.type === 'video' ? renderVideoPreview(item) : renderImagePreview(item)}
               
               {/* Item details */}
-              <div className="p-2 bg-white border-t border-gray-100">
-                <p className="text-xs font-medium truncate" title={item.name}>{item.name}</p>
-                <p className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleDateString()}</p>
+              <div className='p-2 bg-white border-t border-gray-100'>
+                <p className='text-xs font-medium truncate' title={item.name}>{item.name}</p>
+                <p className='text-xs text-gray-500'>{new Date(item.createdAt).toLocaleDateString()}</p>
                 {item.folder && (
-                  <p className="text-xs text-gray-500 mt-1 bg-gray-100 px-1 rounded truncate">
-                    <Folder className="inline-block h-3 w-3 mr-1" />
+                  <p className='text-xs text-gray-500 mt-1 bg-gray-100 px-1 rounded truncate'>
+                    <Folder className='inline-block h-3 w-3 mr-1' />
                     {item.folder}
                   </p>
                 )}
               </div>
               
               {/* Action buttons */}
-              <div className="absolute top-2 right-2 flex space-x-1">
+              <div className='absolute top-2 right-2 flex space-x-1'>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -439,34 +450,34 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
               </div>
               
               {/* Download/open/delete buttons */}
-              <div className="absolute bottom-12 right-2 flex space-x-1">
+              <div className='absolute bottom-12 right-2 flex space-x-1'>
                 <button
                   onClick={(e) => handleDeleteItem(item.id, e)}
-                  className="p-1 bg-red-600 rounded-full text-white hover:bg-red-700"
-                  title="Delete"
+                  className='p-1 bg-red-600 rounded-full text-white hover:bg-red-700'
+                  title='Delete'
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className='h-4 w-4' />
                 </button>
                 
                 <a 
                   href={item.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                  target='_blank' 
+                  rel='noopener noreferrer'
                   onClick={(e) => e.stopPropagation()}
-                  className="p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-70"
-                  title="Open in new tab"
+                  className='p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-70'
+                  title='Open in new tab'
                 >
-                  <ExternalLink className="h-4 w-4" />
+                  <ExternalLink className='h-4 w-4' />
                 </a>
                 
                 <a 
                   href={item.url} 
                   download
                   onClick={(e) => e.stopPropagation()}
-                  className="p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-70"
-                  title="Download"
+                  className='p-1 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-70'
+                  title='Download'
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className='h-4 w-4' />
                 </a>
               </div>
             </div>

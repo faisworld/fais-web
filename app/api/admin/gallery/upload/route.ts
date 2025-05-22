@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 import { v4 as uuidv4 } from 'uuid';
 import { checkAdminAuth } from '@/utils/admin-auth';
-import { updateCarouselMediaMetadata, updateBlobImages } from '@/utils/image-utils';
+import { updateCarouselMediaMetadata, updateBlobImages } from '@/utils/media-utils';
 
 // Configure allowed file types
 const ALLOWED_TYPES = [

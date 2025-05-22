@@ -1,6 +1,6 @@
 import Image from "next/image"; // Added import
 import Link from "next/link";
-import { getBlobImage } from "../../utils/image-utils"; // Added import
+import { getBlobImage } from "../../utils/media-utils"; // Updated to use consolidated media utils
 
 export const metadata = {
   title: "AI & Blockchain Services | Fantastic AI Studio",

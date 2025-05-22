@@ -17,10 +17,10 @@ export default function ClientImage({
 
   // Create a proper set of image props, avoiding contradictory properties
   const imageProps: ImageProps = {
-    alt: alt || "Image",
+    ...props,
+    alt: alt || "Image", // Ensure alt text is always provided
     src: error ? fallbackSrc : props.src,
-    onError: () => setError(true),
-    ...props
+    onError: () => setError(true)
   };
 
   // If using fill property, remove any width and height props
@@ -35,5 +35,6 @@ export default function ClientImage({
     imageProps.height = imageProps.height || 1080;
   }
 
+  // eslint-disable-next-line jsx-a11y/alt-text
   return <Image {...imageProps} />;
 }

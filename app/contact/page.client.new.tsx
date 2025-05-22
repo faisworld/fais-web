@@ -3,7 +3,7 @@ import MailerWidget from "@/components/ui/MailerWidget";
 import { useEffect } from "react";
 import Link from "next/link";
 import { OrganizationStructuredData } from "@/components/ui/StructuredData";
-import { getBlobImage } from "@/utils/image-utils";
+import { getBlobImage } from "@/utils/media-utils";
 
 // Define grecaptcha type locally if not globally available
 declare global {

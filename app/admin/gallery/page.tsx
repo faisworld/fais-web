@@ -477,6 +477,52 @@ export default function AdminGalleryPage() {
             {selectionMode ? "Exit Selection" : "Select Multiple"}
           </button>
           
+          {/* Add the delete button here */}
+          <button 
+            className="px-3 py-2 rounded-md flex items-center bg-red-600 text-white hover:bg-red-700 transition-all"
+            onClick={() => {
+              if (selectedItems.size === 0) {
+                alert('Please select items to delete first');
+                return;
+              }
+              
+              if (window.confirm(`Are you sure you want to delete ${selectedItems.size} selected items? This cannot be undone.`)) {
+                const itemsToDelete = Array.from(selectedItems);
+                setLoading(true);
+                
+                fetch('/api/admin/gallery/images', {
+                  method: 'DELETE',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ ids: itemsToDelete })
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.results) {
+                      setImages((prev) => prev.filter((img: GalleryMedia) => !data.results.success.includes(img.id)));
+                      setSelectedItems(new Set());
+                      alert(`Successfully deleted ${data.results.successCount} items${data.results.failCount > 0 ? `, failed to delete ${data.results.failCount}` : ''}.`);
+                    } else {
+                      alert('Error: ' + (data.error || 'Unknown error occurred'));
+                    }
+                  })
+                  .catch((err) => {
+                    console.error('Error deleting items:', err);
+                    alert('Failed to delete items. Please try again.');
+                  })
+                  .finally(() => {
+                    setLoading(false);
+                  });
+              }
+            }}
+            disabled={selectedItems.size === 0 || loading}
+            title="Delete selected items"
+          >
+            <Trash2 size={16} className="mr-1.5" />
+            Delete Selected
+          </button>
+          
           <button 
             className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-md flex items-center shadow-md hover:shadow-lg transition-all"
             onClick={handleUploadClick}

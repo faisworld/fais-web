@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { getBlobImage } from "@/utils/image-utils"
+import { getBlobImage } from "@/utils/media-utils"
 import ClientImage from "@/components/ui/ClientImage"
 
 // Sample testimonial data structure

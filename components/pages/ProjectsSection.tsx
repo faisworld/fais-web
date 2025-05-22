@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { getBlobImage } from "@/utils/image-utils"
+import { getBlobImage } from "@/utils/media-utils"
 import ClientImage from "@/components/ui/ClientImage"
 
 export default function ProjectsSection() {

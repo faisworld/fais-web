@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { FiX, FiSearch, FiRefreshCw, FiCheck } from "react-icons/fi"
 import Image from "next/image"
-import { getBlobImage } from '@/utils/image-utils';
+import { getBlobImage } from '@/utils/media-utils';
 
 interface ImagePickerProps {
   isOpen: boolean

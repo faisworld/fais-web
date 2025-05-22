@@ -3,7 +3,7 @@
 import { useState } from "react" // Removed useEffect since it's not used
 import Link from "next/link"
 import Image from "next/image"
-import { getBlobImage } from "@/utils/image-utils"
+import { getBlobImage } from "@/utils/media-utils"
 // Removed Head import since it's not used
 import { blogPosts } from "./blog-data" // Removed BlogPost import since it's not used
 

@@ -1,6 +1,5 @@
-/* All imports must come first */
-@import '../../styles/admin-variables.css';
-@import '../../components/Sidebar/Sidebar.css';
+@import '@/styles/admin-variables.css';
+@import '@/components/Sidebar/Sidebar.css';
 
 .admin-layout {
   // ...existing code...

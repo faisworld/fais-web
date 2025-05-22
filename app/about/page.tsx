@@ -4,7 +4,7 @@ import MeetOurTeam from "@/components/pages/MeetOurTeam";
 import ContactUs from "@/components/pages/ContactUs";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { getBlobImage } from "@/utils/image-utils";
+import { getBlobImage } from "@/utils/media-utils";
 
 // Dynamically import the AnimatedCounter to ensure it only runs on the client
 const AnimatedCounter = dynamic(() => import('../../components/ui/AnimatedCounter'), {

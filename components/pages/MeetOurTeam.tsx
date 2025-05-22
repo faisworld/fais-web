@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getBlobImage } from "@/utils/image-utils";
+import { getBlobImage } from "@/utils/media-utils";
 
 export default function MeetOurTeam() {
     const teamMembers = [

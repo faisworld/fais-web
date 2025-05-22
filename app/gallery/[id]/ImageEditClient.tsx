@@ -15,7 +15,7 @@ import {
   FiCalendar,
   FiInfo,
 } from "react-icons/fi"
-import { handleImageError, getPlaceholderImage } from "@/utils/image-utils"
+import { handleImageError, getPlaceholderImage } from "@/utils/media-utils"
 import ConversionPanel from "./ConversionPanel"
 
 type ImageData = {

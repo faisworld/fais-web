@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { getBlobImage } from "@/utils/image-utils";
+import { getBlobImage } from "@/utils/media-utils";
 import { blogPosts } from "../blog-data";
 import OptimismLayer2Content from "../content/how-optimism-layer-2-can-transform-your-business";
 import LargeLanguageModelsContent from "../content/large-language-models-2025";

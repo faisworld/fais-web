@@ -147,6 +147,7 @@ img.logo {
   .header-logo,
   .footer-logo {
     height: 30px !important;
+    width: auto !important;
   }
 }
 
@@ -255,7 +256,7 @@ section[aria-roledescription="carousel"] {
 }
 
 .footer-column-brand .footer-logo {
-  height: 36px; /* Match the global footer logo size */
+  height: 34px; /* Match the global footer logo size */
   width: auto;
   margin-bottom: 24px;
 }

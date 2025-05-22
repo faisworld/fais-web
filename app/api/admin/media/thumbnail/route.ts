@@ -4,6 +4,7 @@ import { checkAdminAuth } from '@/utils/admin-auth';
 import { put } from '@vercel/blob';
 import sharp from 'sharp';
 import fetch from 'node-fetch';
+import { isVideo } from '@/utils/media-utils';
 
 export async function POST(request: Request) {
   // Check admin auth
@@ -15,8 +16,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { url, type, width = 300, height = 169 } = body;
+      // Enhanced video detection
+    const isVideoContent = type === 'video' || isVideo(url);
     
-    if (type === 'image') {
+    if (!isVideoContent) {
+      // Image processing
       // Download and process the image
       const response = await fetch(url);
       const buffer = await response.arrayBuffer();
@@ -37,37 +41,24 @@ export async function POST(request: Request) {
       });
       
       return NextResponse.json({ thumbnailUrl });
-    }
-      // For videos, we would ideally extract a frame using FFmpeg
-    // Since that may not be available, we'll create a consistent naming convention for video thumbnails
-    if (type === 'video') {
+    }    // Enhanced video thumbnail handling
+    if (isVideoContent) {
       try {
-        // Create a predictable thumbnail URL for the video
-        const videoFilename = url.split('/').pop() || 'video.mp4';
-        const filenameWithoutExt = videoFilename.split('.').slice(0, -1).join('.');
-        const thumbnailFilename = `${filenameWithoutExt}.jpg`;
-        
-        // Check if thumbnail with this name already exists
-        // If not in production, we'll use a placeholder
-        
-        // In production, you would use something like:
-        // const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-        // const ffmpeg = require('fluent-ffmpeg');
-        // ffmpeg.setFfmpegPath(ffmpegPath);
-        
-        // Get the first frame or thumbnail using FFmpeg (placeholder implementation)
-        const thumbnailUrl = url.replace(/\.[^.]+$/, '.jpg');
+        // For videos, we'll use the video URL itself as thumbnail
+        // This allows the browser to show the first frame
+        const thumbnailUrl = url;
         
         return NextResponse.json({ 
           thumbnailUrl,
-          message: 'Auto-generated thumbnail URL (placeholder)' 
+          message: 'Using video URL as thumbnail for browser preview',
+          isVideo: true
         });
       } catch (thumbError) {
-        console.error('Error generating video thumbnail:', thumbError);
-        // Fallback to using the video URL directly
+        console.error('Error processing video thumbnail:', thumbError);
         return NextResponse.json({ 
           thumbnailUrl: url,
-          message: 'Using video URL as thumbnail (fallback)' 
+          message: 'Fallback: using video URL directly',
+          isVideo: true
         });
       }
     }

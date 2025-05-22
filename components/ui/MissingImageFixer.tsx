@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { FiImage, FiEdit, FiX, FiRefreshCw } from "react-icons/fi"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import ImagePicker from "./ImagePicker"
-import { getBlobImage, blobImages } from "@/utils/image-utils"
+import { useState, useEffect } from 'react'
+import { FiImage, FiEdit, FiX, FiRefreshCw } from 'react-icons/fi'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import ImagePicker from './ImagePicker'
+import { getBlobImage, blobImages } from '@/utils/media-utils'
 
 type MissingImage = {
   key: string
@@ -27,100 +27,100 @@ export default function MissingImageFixer() {
   const [showImagePicker, setShowImagePicker] = useState(false)
   const [selectedImageKey, setSelectedImageKey] = useState<string | null>(null)
   const [updatedImages, setUpdatedImages] = useState<Record<string, string>>({})
-  const [currentPath, setCurrentPath] = useState<string>("")
+  const [currentPath, setCurrentPath] = useState<string>('')
   const [pageImages, setPageImages] = useState<MissingImage[]>([])
   const pathname = usePathname() // Get the current path from Next.js router
   
   // Page-specific image configurations
   const pageConfig: PageImageConfig = {
-    "/": {
-      title: "Homepage Images",
-      prefixes: [""],
+    '/': {
+      title: 'Homepage Images',
+      prefixes: [''],
       forceIncludeKeys: [
-        "pioneering-digital-transformation",
-        "innovating-future",
-        "shaping-sota-technologies",
-        "ai-solutions",
-        "blockchain-solutions",
-        "ceo-portrait",
-        "mev-staking",
-        "web3-gaming",
-        "nft-marketplace",
-        "ai-services",
-        "payment-systems"
+        'pioneering-digital-transformation',
+        'innovating-future',
+        'shaping-sota-technologies',
+        'ai-solutions',
+        'blockchain-solutions',
+        'ceo-portrait',
+        'mev-staking',
+        'web3-gaming',
+        'nft-marketplace',
+        'ai-services',
+        'payment-systems'
       ]
     },
-    "/about": {
-      title: "About Page Images",
-      prefixes: ["about-"],
+    '/about': {
+      title: 'About Page Images',
+      prefixes: ['about-'],
       forceIncludeKeys: [
-        "about-mission-image",
-        "about-vision-image",
-        "about-value-innovation-image",
-        "about-value-integrity-image",
-        "about-value-collaboration-image",
-        "about-team-member-eugene-lukyanov-image",
-        "about-team-member-andrii-stehno-image",
-        "about-team-member-julia-mazura-image",
-        "about-team-member-vitalii-melnyk-image"
+        'about-mission-image',
+        'about-vision-image',
+        'about-value-innovation-image',
+        'about-value-integrity-image',
+        'about-value-collaboration-image',
+        'about-team-member-eugene-lukyanov-image',
+        'about-team-member-andrii-stehno-image',
+        'about-team-member-julia-mazura-image',
+        'about-team-member-vitalii-melnyk-image'
       ]
     },
-    "/projects": {
-      title: "Projects Page Images",
-      prefixes: ["projects-"],
+    '/projects': {
+      title: 'Projects Page Images',
+      prefixes: ['projects-'],
       includeSubpaths: true,
       forceIncludeKeys: [
-        "projects-dopple-ai",
-        "projects-degen-kombat",
-        "projects-heroes-of-mavia",
-        "projects-multichain-dex",
-        "projects-payment-system",
-        "projects-base-org",
-        "projects-optimism-io",
-        "projects-blast-io"
+        'projects-dopple-ai',
+        'projects-degen-kombat',
+        'projects-heroes-of-mavia',
+        'projects-multichain-dex',
+        'projects-payment-system',
+        'projects-base-org',
+        'projects-optimism-io',
+        'projects-blast-io'
 
       ]
     },
-    "/services": {
-      title: "Services Page Images",
-      prefixes: ["services-"],
+    '/services': {
+      title: 'Services Page Images',
+      prefixes: ['services-'],
       includeSubpaths: true,
       forceIncludeKeys: [
-        "services-hero-banner",
-        "services-ai-overview",
-        "services-blockchain-overview",
-        "services-web-development-overview",
-        "services-consulting-visual",
-        "services-cta-banner"
+        'services-hero-banner',
+        'services-ai-overview',
+        'services-blockchain-overview',
+        'services-web-development-overview',
+        'services-consulting-visual',
+        'services-cta-banner'
       ]
     },
-    "/contact": {
-      title: "Contact Page Images",
-      prefixes: ["contact-"],
+    '/contact': {
+      title: 'Contact Page Images',
+      prefixes: ['contact-'],
       forceIncludeKeys: [
-        "contact-hero-banner",
-        "contact-form-visual",
-        "contact-map-placeholder"
+        'contact-hero-banner',
+        'contact-form-visual',
+        'contact-map-placeholder'
       ]
     },
-    "/blog": {
-      title: "Blog Page Images",
-      prefixes: ["blog-"],
+    '/blog': {
+      title: 'Blog Page Images',
+      prefixes: ['blog-'],
       includeSubpaths: true,
       forceIncludeKeys: [
-        "blog-hero-banner",
-        "blog-featured-article-main",
-        "blog-category-ai-promo",
-        "blog-category-blockchain-promo",
-        "blog-default-thumbnail"
+        'blog-hero-banner',
+        'blog-featured-article-main',
+        'blog-category-ai-promo',
+        'blog-category-blockchain-promo',
+        'blog-default-thumbnail'
       ]
     }
   }
   
   // Update current path when pathname changes
   useEffect(() => {
-    const path = pathname || "/";
-    console.log("Path from Next.js router:", path);
+    const path = pathname || '/';
+    console.log('Path from Next.js router:', path);
     
     // Always update with the latest path
     setCurrentPath(path);
@@ -133,7 +133,7 @@ export default function MissingImageFixer() {
     
     // If the component is open, refreshing the UI for the new path
     if (isOpen) {
-      console.log("Path changed while component open, refreshing:", path);
+      console.log('Path changed while component open, refreshing:', path);
       setUpdatedImages({}); // Clear any pending updates
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,8 +142,8 @@ export default function MissingImageFixer() {
   // Update path and images whenever the component is opened
   useEffect(() => {
     if (isOpen) {
-      const path = pathname || "/";
-      console.log("Component opened, refreshing path:", path);
+      const path = pathname || '/';
+      console.log('Component opened, refreshing path:', path);
       
       // Always use the latest pathname
       setCurrentPath(path);
@@ -160,9 +160,9 @@ export default function MissingImageFixer() {
   // Generate the list of images for the current page
   const generatePageImages = (path: string) => {
     // Default to root if path is empty
-    if (!path) path = "/";
+    if (!path) path = '/';
     
-    console.log("Generating images for path:", path);
+    console.log('Generating images for path:', path);
     
     // Find the most specific config that matches the path
     // First try exact match
@@ -184,7 +184,7 @@ export default function MissingImageFixer() {
     // If still no match, use a default approach
     if (!config) {
       // Extract first segment as prefix
-      const mainSegment = path.split('/')[1] || "home";
+      const mainSegment = path.split('/')[1] || 'home';
       config = {
         title: `${mainSegment.charAt(0).toUpperCase() + mainSegment.slice(1)} Page Images`,
         prefixes: [`${mainSegment}-`]
@@ -197,7 +197,7 @@ export default function MissingImageFixer() {
     
     try {
       // Add global images first (always include these on every page)
-      const globalKeys = ["logo", "logo-black", "og-image"];
+      const globalKeys = ['logo', 'logo-black', 'og-image'];
       globalKeys.forEach(key => {
         if (blobImages[key]) {
           matchingImages.push({
@@ -228,7 +228,7 @@ export default function MissingImageFixer() {
       });
       
       // For subpaths, add more specific images
-      // For example, for /projects/web3, add keys that start with "web3-"
+      // For example, for /projects/web3, add keys that start with 'web3-'
       if (pathSegments.length > 1 && config.includeSubpaths) {
         // Check each subpath segment
         for (let i = 1; i < pathSegments.length; i++) {
@@ -266,7 +266,7 @@ export default function MissingImageFixer() {
       
       // If no page-specific images found, add some generic global images
       if (matchingImages.length <= globalKeys.length) {
-        console.log("No page-specific images found, adding generic images");
+        console.log('No page-specific images found, adding generic images');
         const additionalGlobalKeys = Object.keys(blobImages).filter(key => {
           // Include keys that look global but aren't in our initial global keys list
           return (
@@ -288,9 +288,9 @@ export default function MissingImageFixer() {
       
       console.log(`Found ${matchingImages.length} images for path: ${path}`);
     } catch (error) {
-      console.error("Error generating page images:", error);
+      console.error('Error generating page images:', error);
       // Add some fallback images if there's an error
-      ["logo", "logo-black", "og-image"].forEach(key => {
+      ['logo', 'logo-black', 'og-image'].forEach(key => {
         if (blobImages[key]) {
           matchingImages.push({
             key,
@@ -317,10 +317,10 @@ export default function MissingImageFixer() {
   const isPlaceholder = (url: string) => {
     return (
       !url || 
-      url === "" || 
-      url.includes("/placeholder.svg") || 
-      url.includes("?query=") || 
-      !url.includes("vercel-storage.com")
+      url === '' || 
+      url.includes('/placeholder.svg') || 
+      url.includes('?query=') || 
+      !url.includes('vercel-storage.com')
     )
   }
 
@@ -348,7 +348,7 @@ export default function MissingImageFixer() {
           queryText = decodeURIComponent(queryMatch[1]);
         }
       } catch (error) {
-        console.warn("Error decoding query param:", error);
+        console.warn('Error decoding query param:', error);
       }
       
       return {
@@ -389,7 +389,7 @@ export default function MissingImageFixer() {
       
       // Get folder from path if available
       const folderMatch = pathname.match(/\/images\/([^\/]+)\//) || [];
-      const folder = folderMatch[1] || "images";
+      const folder = folderMatch[1] || 'images';
       
       return {
         filename,
@@ -399,7 +399,7 @@ export default function MissingImageFixer() {
         isPlaceholder: !url.includes('vercel-storage.com')
       };
     } catch (error) {
-      console.error("Error extracting image info:", error);
+      console.error('Error extracting image info:', error);
       return {
         filename: 'unknown',
         baseName: 'Unknown Image',
@@ -430,26 +430,26 @@ export default function MissingImageFixer() {
     }
     
     // Special case for project-specific images from the screenshots
-    if (currentPath === "/projects" && imageUrl.includes("Screenshot-2025-01-05")) {
+    if (currentPath === '/projects' && imageUrl.includes('Screenshot-2025-01-05')) {
       // If this is a project-specific image from the static folder
       const filename = imageUrl.split('/').pop() || '';
       
-      if (filename.includes("160711")) {
-        return "projects-dopple-ai";
-      } else if (filename.includes("160251")) {
-        return "projects-degen-kombat";
-      } else if (filename.includes("160852")) {
-        return "projects-heroes-of-mavia";
-      } else if (filename.includes("165735")) {
-        return "projects-multichain-dex";
-      } else if (filename.includes("174629")) {
-        return "projects-payment-system";
-      } else if (filename.includes("172939")) {
-        return "projects-base-org";
-      } else if (filename.includes("175331")) {
-        return "projects-optimism-io";
-      } else if (filename.includes("172306")) {
-        return "projects-blast-io";
+      if (filename.includes('160711')) {
+        return 'projects-dopple-ai';
+      } else if (filename.includes('160251')) {
+        return 'projects-degen-kombat';
+      } else if (filename.includes('160852')) {
+        return 'projects-heroes-of-mavia';
+      } else if (filename.includes('165735')) {
+        return 'projects-multichain-dex';
+      } else if (filename.includes('174629')) {
+        return 'projects-payment-system';
+      } else if (filename.includes('172939')) {
+        return 'projects-base-org';
+      } else if (filename.includes('175331')) {
+        return 'projects-optimism-io';
+      } else if (filename.includes('172306')) {
+        return 'projects-blast-io';
       }
     }
     
@@ -599,7 +599,7 @@ export default function MissingImageFixer() {
       
       return [
         `  // ${comment}`,
-        `  "${betterKey}": "${url}",`
+        `  '${betterKey}': '${url}',`
       ].join('\n');
     });
 
@@ -609,14 +609,14 @@ export default function MissingImageFixer() {
                        `// - For subpages, consider prefixes like projects-web3- or blog-article-\n` +
                        `// - Keep global images like logo, logo-black, og-image without prefixes\n\n`;
 
-    return `// Update these lines in utils/image-utils.ts\n// in the blobImages object:\n\n${helperNote}${codeLines.join("\n\n")}`
+    return `// Update these lines in utils/media-utils.ts\n// in the blobImages object:\n\n${helperNote}${codeLines.join('\n\n')}`
   };
 
   // Copy the update code to clipboard
   const copyUpdateCode = () => {
     const code = generateUpdateCode();
     navigator.clipboard.writeText(code);
-    alert("Code copied to clipboard! Remember to use descriptive keys for your images.");
+    alert('Code copied to clipboard! Remember to use descriptive keys for your images.');
   }
 
   // Get page config title
@@ -641,7 +641,7 @@ export default function MissingImageFixer() {
     }
     
     // Fall back to default
-    const mainSegment = currentPath.split('/')[1] || "home";
+    const mainSegment = currentPath.split('/')[1] || 'home';
     return `${mainSegment.charAt(0).toUpperCase() + mainSegment.slice(1)} Page Images`;
   }
 
@@ -649,54 +649,54 @@ export default function MissingImageFixer() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-40 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700"
-        title="Fix Missing Images"
+        className='fixed bottom-4 right-4 z-40 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700'
+        title='Fix Missing Images'
       >
         <FiImage size={24} />
-        {pageImages.some(img => isPlaceholder(img.currentUrl || "")) && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 bg-red-500 text-white text-xs items-center justify-center rounded-full">
-            {pageImages.filter(img => isPlaceholder(img.currentUrl || "")).length}
+        {pageImages.some(img => isPlaceholder(img.currentUrl || '')) && (
+          <span className='absolute -top-1 -right-1 flex h-5 w-5 bg-red-500 text-white text-xs items-center justify-center rounded-full'>
+            {pageImages.filter(img => isPlaceholder(img.currentUrl || '')).length}
           </span>
         )}
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b">
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
+          <div className='bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col'>
+            <div className='flex items-center justify-between p-4 border-b'>
               <div>
-                <h2 className="text-xl font-semibold">{getPageTitle()}</h2>
-                <p className="text-sm text-gray-500">Current path: {currentPath}</p>
+                <h2 className='text-xl font-semibold'>{getPageTitle()}</h2>
+                <p className='text-sm text-gray-500'>Current path: {currentPath}</p>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-700">
+              <button onClick={() => setIsOpen(false)} className='text-gray-500 hover:text-gray-700'>
                 <FiX size={24} />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-4 mb-4">
-                <div className="flex justify-between items-center">
-                  <p className="text-gray-600">
+            <div className='flex-1 overflow-y-auto p-4'>
+              <div className='space-y-4 mb-4'>
+                <div className='flex justify-between items-center'>
+                  <p className='text-gray-600'>
                     Click on any image row to select a replacement from your gallery.
                   </p>
                   <button 
-                    onClick={() => generatePageImages(pathname || "/")}
-                    className="text-sm px-3 py-1 flex items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded"
+                    onClick={() => generatePageImages(pathname || '/')}
+                    className='text-sm px-3 py-1 flex items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded'
                   >
                     <FiRefreshCw size={14} /> Refresh images
                   </button>
                 </div>
                 
-                <div className="bg-blue-50 p-3 rounded-md border border-blue-200">
-                  <h3 className="font-medium text-blue-800 mb-1">Recommended image naming for this page:</h3>
-                  <p className="text-sm text-blue-700">
-                    Use <span className="font-mono bg-blue-100 px-1 rounded">{currentPath === "/" ? "home" : currentPath.replace(/^\//, '').split('/')[0]}-descriptive-name</span> format 
-                    for better organization (e.g., <span className="font-mono bg-blue-100 px-1 rounded">{currentPath === "/" ? "home" : currentPath.replace(/^\//, '').split('/')[0]}-hero-banner</span>)
+                <div className='bg-blue-50 p-3 rounded-md border border-blue-200'>
+                  <h3 className='font-medium text-blue-800 mb-1'>Recommended image naming for this page:</h3>
+                  <p className='text-sm text-blue-700'>
+                    Use <span className='font-mono bg-blue-100 px-1 rounded'>{currentPath === '/' ? 'home' : currentPath.replace(/^\//, '').split('/')[0]}-descriptive-name</span> format 
+                    for better organization (e.g., <span className='font-mono bg-blue-100 px-1 rounded'>{currentPath === '/' ? 'home' : currentPath.replace(/^\//, '').split('/')[0]}-hero-banner</span>)
                   </p>
                   {currentPath.split('/').filter(Boolean).length > 1 && (
-                    <p className="text-sm text-blue-700 mt-1">
-                      For subpaths like <span className="font-mono bg-blue-100 px-1 rounded">{currentPath}</span>, consider using 
-                      <span className="font-mono bg-blue-100 px-1 rounded ml-1">{currentPath.split('/').filter(Boolean)[1]}-specific-name</span> for
+                    <p className='text-sm text-blue-700 mt-1'>
+                      For subpaths like <span className='font-mono bg-blue-100 px-1 rounded'>{currentPath}</span>, consider using 
+                      <span className='font-mono bg-blue-100 px-1 rounded ml-1'>{currentPath.split('/').filter(Boolean)[1]}-specific-name</span> for
                       page-specific images.
                     </p>
                   )}
@@ -704,59 +704,59 @@ export default function MissingImageFixer() {
               </div>
 
               {pageImages.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className='text-center py-8 text-gray-500'>
                   <p>No images found for this page.</p>
-                  <p className="mt-2 text-sm">
-                    Try creating image keys with the prefix: {currentPath === "/" ? "home-" : currentPath.replace(/^\//, '').split('/')[0] + "-"}
+                  <p className='mt-2 text-sm'>
+                    Try creating image keys with the prefix: {currentPath === '/' ? 'home-' : currentPath.replace(/^\//, '').split('/')[0] + '-'}
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   {pageImages.map((image) => {
-                    const currentUrl = updatedImages[image.key] || image.currentUrl || "/placeholder.svg"
+                    const currentUrl = updatedImages[image.key] || image.currentUrl || '/placeholder.svg'
                     const isMissing = isPlaceholder(currentUrl)
 
                     return (
                       <div
                         key={image.key}
                         className={`border rounded-lg overflow-hidden cursor-pointer hover:shadow-md ${
-                          isMissing ? "border-orange-300 bg-orange-50" : "border-green-300 bg-green-50"
+                          isMissing ? 'border-orange-300 bg-orange-50' : 'border-green-300 bg-green-50'
                         }`}
                         onClick={() => {
                           setSelectedImageKey(image.key)
                           setShowImagePicker(true)
                         }}
                       >
-                        <div className="flex items-center p-4">
-                          <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden mr-4 flex-shrink-0 relative">
+                        <div className='flex items-center p-4'>
+                          <div className='w-16 h-16 bg-gray-100 rounded overflow-hidden mr-4 flex-shrink-0 relative'>
                             <Image
-                              src={currentUrl || "/placeholder.svg"}
+                              src={currentUrl || '/placeholder.svg'}
                               alt={image.description}
-                              className="object-cover"
+                              className='object-cover'
                               fill
-                              sizes="64px"
+                              sizes='64px'
                               onError={(e) => {
                                 // TypeScript requires type assertion for onError event
                                 const target = e.target as HTMLImageElement;
-                                target.src = "/placeholder.svg";
+                                target.src = '/placeholder.svg';
                               }}
                             />
                           </div>
-                          <div className="flex-1">
-                            <h3 className="font-medium">{image.key}</h3>
-                            <p className="text-sm text-gray-600">{image.description}</p>
-                            <div className="mt-1 text-xs text-gray-500 truncate">{currentUrl}</div>
+                          <div className='flex-1'>
+                            <h3 className='font-medium'>{image.key}</h3>
+                            <p className='text-sm text-gray-600'>{image.description}</p>
+                            <div className='mt-1 text-xs text-gray-500 truncate'>{currentUrl}</div>
                             {isMissing && image.key !== generateBetterImageKey(image.key, currentUrl) && (
-                              <div className="mt-1 text-xs text-orange-600">
-                                Suggested key: <span className="font-mono bg-orange-100 px-1 rounded">
+                              <div className='mt-1 text-xs text-orange-600'>
+                                Suggested key: <span className='font-mono bg-orange-100 px-1 rounded'>
                                   {generateBetterImageKey(image.key, currentUrl)}
                                 </span>
                               </div>
                             )}
                           </div>
                           <div
-                            className="ml-2 p-2 text-blue-600 bg-white rounded-full shadow-sm hover:bg-blue-50"
-                            title="Select image"
+                            className='ml-2 p-2 text-blue-600 bg-white rounded-full shadow-sm hover:bg-blue-50'
+                            title='Select image'
                           >
                             <FiEdit size={20} />
                           </div>
@@ -768,41 +768,41 @@ export default function MissingImageFixer() {
               )}
             </div>
 
-            <div className="p-4 border-t">
-              <div className="flex justify-between mb-4">
-                <div className="text-sm text-gray-600">{Object.keys(updatedImages).length} image(s) updated</div>
+            <div className='p-4 border-t'>
+              <div className='flex justify-between mb-4'>
+                <div className='text-sm text-gray-600'>{Object.keys(updatedImages).length} image(s) updated</div>
                 
                 {/* Show warning if there's an og-image update and we're not on home */}
                 {Object.keys(updatedImages).some(key => key === 'og-image') && currentPath !== '/' && (
-                  <div className="text-yellow-600 text-sm flex items-center gap-1">
+                  <div className='text-yellow-600 text-sm flex items-center gap-1'>
                     <span>⚠️</span> Using &quot;og-image&quot; on a non-home page may cause conflicts
                   </div>
                 )}
               </div>
               
               {Object.keys(updatedImages).length > 0 && (
-                <div className="mb-4 p-3 bg-gray-50 border rounded text-xs text-gray-600">
-                  <p className="font-medium mb-1">When you copy and paste the code:</p>
-                  <ol className="list-decimal pl-4 space-y-1">
-                    <li>Open <span className="font-mono bg-gray-100 px-1 rounded">utils/image-utils.ts</span></li>
-                    <li>Find the <span className="font-mono bg-gray-100 px-1 rounded">blobImages</span> object</li>
+                <div className='mb-4 p-3 bg-gray-50 border rounded text-xs text-gray-600'>
+                  <p className='font-medium mb-1'>When you copy and paste the code:</p>
+                  <ol className='list-decimal pl-4 space-y-1'>
+                    <li>Open <span className='font-mono bg-gray-100 px-1 rounded'>utils/media-utils.ts</span></li>
+                    <li>Find the <span className='font-mono bg-gray-100 px-1 rounded'>blobImages</span> object</li>
                     <li>Paste the generated code in the correct position</li>
                     <li>Better keys will be suggested based on the current page context</li>
                   </ol>
                 </div>
               )}
               
-              <div className="flex justify-end">
+              <div className='flex justify-end'>
                 <button
                   onClick={copyUpdateCode}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+                  className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300'
                   disabled={Object.keys(updatedImages).length === 0}
                 >
                   Copy Update Code
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="ml-2 px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-50"
+                  className='ml-2 px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-50'
                 >
                   Close
                 </button>
