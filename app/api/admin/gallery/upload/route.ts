@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 import { v4 as uuidv4 } from 'uuid';
 import { checkAdminAuth } from '@/utils/admin-auth';
-import { updateCarouselMediaMetadata, updateBlobImages } from '@/utils/media-utils';
 
 // Configure allowed file types
 const ALLOWED_TYPES = [
@@ -93,8 +92,25 @@ export async function POST(request: Request) {
     if (folderPath.startsWith('images/carousel') || folderPath.startsWith('videos/carousel')) {
       const slideName = folderPath.split('/').pop() || '';
       const key = slideName.toLowerCase().replace(/\s+/g, '-');
-      await updateCarouselMediaMetadata([{ key, url }]);
-      updateBlobImages([{ key, url }]); // Update in-memory blobImages for immediate use
+      
+      try {
+        // Update carousel metadata directly via API
+        const response = await fetch(new URL('/api/admin/carousel/update', request.url).toString(), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ key, url }),
+        });
+        
+        if (!response.ok) {
+          console.error(`Failed to update carousel metadata: ${response.statusText}`);
+        } else {
+          console.log(`Successfully updated carousel metadata for key: ${key}`);
+        }
+      } catch (error) {
+        console.error('Error updating carousel metadata:', error);
+      }
     }
 
     return NextResponse.json({ 

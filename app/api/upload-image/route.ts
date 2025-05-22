@@ -16,8 +16,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-")
     const filename = `images/${timestamp}-${originalName}`
 
-    // Get file buffer for processing
-    const fileBuffer = await file.arrayBuffer()
+    // Get file buffer for processing (will be used in upload)
+    const arrayBuffer = await file.arrayBuffer()
 
     // Initialize variables for image metadata
     let width = null

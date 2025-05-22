@@ -1,6 +1,7 @@
 // app/api/admin/media/metadata/route.ts
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+// Import commented out as it's not currently used, but keeping for potential future use
+// import { checkAdminAuth } from '@/utils/admin-auth';
 import probe from 'probe-image-size';
 import fetch from 'node-fetch';
 

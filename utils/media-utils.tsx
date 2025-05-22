@@ -480,3 +480,77 @@ export function renderMedia(url: string, altText: string = 'Media', options: {
     </div>
   );
 }
+
+/**
+ * Update metadata for carousel media slides in the database
+ */
+export async function updateCarouselMediaMetadata(slides: Array<{
+  key: string;
+  url: string;
+  title?: string;
+  subtitle?: string;
+  button_text?: string; 
+  button_link?: string;
+  alt_tag?: string;
+  keywords?: string;
+  link?: string;
+}>): Promise<void> {
+  try {
+    // Maximum of 3 retries for each slide
+    const MAX_RETRIES = 3;
+    
+    for (const slide of slides) {
+      let retries = 0;
+      let success = false;
+      
+      while (!success && retries < MAX_RETRIES) {
+        try {
+          const response = await fetch('/api/admin/carousel/update', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(slide),
+          });
+          
+          if (response.ok) {
+            success = true;
+            console.log(`Successfully updated carousel metadata for slide with key: ${slide.key}`);
+          } else {
+            throw new Error(`Failed to update carousel metadata: ${response.statusText}`);
+          }
+        } catch (error) {
+          retries++;
+          console.error(`Error updating carousel metadata (attempt ${retries}/${MAX_RETRIES}):`, error);
+          
+          if (retries >= MAX_RETRIES) {
+            console.error(`Failed to update carousel metadata after ${MAX_RETRIES} attempts for key: ${slide.key}`);
+          } else {
+            // Wait before trying again
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error in updateCarouselMediaMetadata:', error);
+    throw error;
+  }
+}
+
+/**
+ * Update in-memory blob images map with new entries
+ */
+export function updateBlobImages(images: Array<{
+  key: string;
+  url: string;
+}>): void {
+  try {
+    images.forEach(image => {
+      blobImages[image.key] = image.url;
+      console.log(`Updated in-memory blobImages map with key: ${image.key}`);
+    });
+  } catch (error) {
+    console.error('Error in updateBlobImages:', error);
+  }
+}

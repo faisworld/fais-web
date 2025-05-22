@@ -1,13 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { checkAdminAuth } from '@/utils/admin-auth';
 
-// Placeholder URLs for testing
+// Comment out unused placeholders to avoid build errors
+// These are kept for reference but commented out to pass linting
+/*
 const PLACEHOLDER_IMAGES = [
   "https://picsum.photos/800/600",  // Use Lorem Picsum as it's reliable
   "https://picsum.photos/800/600?random=1",
   "https://picsum.photos/800/600?random=2",
 ];
 const PLACEHOLDER_VIDEO_URL = "https://download.samplelib.com/mp4/sample-5s.mp4";
+*/
 
 export async function POST(request: NextRequest) {
   console.log("🔄 Processing media generation request");

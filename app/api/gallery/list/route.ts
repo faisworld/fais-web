@@ -102,8 +102,9 @@ export async function GET() {
           try {
             const date = new Date(row.uploaded_at)
             row.uploadedDate = date.toLocaleDateString()
-          } catch (e) {
+          } catch (error) {
             // Keep the original if date parsing fails
+            console.log("Date parsing error:", error);
           }
         }
         
