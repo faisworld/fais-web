@@ -1,13 +1,17 @@
 // This script updates the sitemap.xml dates and runs after the sitemap is generated
 // Usage: node scripts/update-blog-sitemap.js
 
-const fs = require('fs');
-const path = require('path');
-const xml2js = require('xml2js');
-const { format } = require('date-fns');
+import fs from 'fs';
+import path from 'path';
+import xml2js from 'xml2js';
+import { format } from 'date-fns';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Path to the sitemap.xml file
-const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+const sitemapPath = path.join(path.resolve(__dirname, '..'), 'public', 'sitemap.xml');
 
 // Blog posts with their publish dates for more accurate lastmod values
 const blogPosts = [

@@ -1,5 +1,5 @@
 /** @type {import('next-sitemap').IConfig} */
-module.exports = {
+const config = {
   siteUrl: 'https://fais.world',
   generateRobotsTxt: false, // You already have a custom robots.txt
   outDir: './public',
@@ -96,8 +96,9 @@ module.exports = {
         loc: '/sitemap-html',
         changefreq: 'monthly',
         priority: 0.5,
-        lastmod: today,
-      },
+        lastmod: today,      },
     ];
   },
-}
+};
+
+export default config;

@@ -5,8 +5,8 @@
  * Run this after deploying a new version of your site.
  */
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 const SITE_URL = 'https://fais.world';
 const SITEMAP_URL = `${SITE_URL}/sitemap.xml`;

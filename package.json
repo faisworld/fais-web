@@ -2,12 +2,12 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "scripts": {
+  "type": "module",  "scripts": {
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
-    "postbuild": "next-sitemap && node scripts/update-sitemap-dates.js",
+    "sitemap": "next-sitemap && node scripts/update-sitemap-dates.js",
+    "postbuild": "echo \"Sitemap generation disabled for deployment\"",
     "start": "next start",
     "lint": "next lint",
     "generate-sitemap": "next-sitemap && node scripts/update-sitemap-dates.js",
