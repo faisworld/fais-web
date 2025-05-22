@@ -68,7 +68,7 @@ export function WebsiteStructuredData({
           if (data["@type"] === "WebSite") {
             document.head.removeChild(s)
           }
-        } catch (e) {
+        } catch {
           // Ignore parsing errors
         }
       })
@@ -149,7 +149,7 @@ export function OrganizationStructuredData({
           if (data["@type"] === "Organization") {
             document.head.removeChild(s)
           }
-        } catch (e) {
+        } catch {
           // Ignore parsing errors
         }
       })

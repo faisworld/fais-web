@@ -6,7 +6,12 @@ import Button from "@/components/ui/Button"
 
 declare global {
   interface Window {
-    grecaptcha: any
+    grecaptcha: {
+      enterprise: {
+        ready: (callback: () => void) => void;
+        execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      };
+    }
   }
 }
 

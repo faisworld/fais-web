@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { FiX, FiCopy, FiEdit, FiCheck, FiDownload } from "react-icons/fi"
+import Image from "next/image"
 
 interface ImageViewerProps {
   isOpen: boolean
@@ -89,13 +90,18 @@ export default function ImageViewer({ isOpen, onClose, imageUrl, imageInfo = {},
             </button>
           </div>
         </div>
-
         <div className="flex-1 overflow-auto p-4 flex items-center justify-center bg-gray-100">
-          <img
-            src={imageUrl || "/placeholder.svg"}
-            alt={imageInfo.altTag || "Image preview"}
-            className="max-w-full max-h-[calc(90vh-12rem)] object-contain"
-          />
+          <div className="relative w-full h-[calc(90vh-12rem)] flex items-center justify-center">
+            <Image
+              src={imageUrl || "/placeholder.svg"}
+              alt={imageInfo.altTag || "Image preview"}
+              className="object-contain"
+              fill
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              priority
+            />
+          </div>
+        </div>
         </div>
 
         <div className="p-4 border-t bg-gray-50">
@@ -144,6 +150,5 @@ export default function ImageViewer({ isOpen, onClose, imageUrl, imageInfo = {},
           </div>
         </div>
       </div>
-    </div>
   )
 }

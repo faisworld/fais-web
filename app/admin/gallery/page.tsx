@@ -116,20 +116,26 @@ export default function AdminGalleryPage() {
     });
     setShowEditModal(true);
   };
-
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedImage) return;
     
     try {
+      // First ensure we're using the correct ID format
+      const imageId = typeof selectedImage.id === 'number' ? selectedImage.id : parseInt(String(selectedImage.id));
+      
+      if (isNaN(imageId)) {
+        throw new Error("Invalid image ID");
+      }
+      
       const response = await fetch("/api/admin/gallery/images", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: selectedImage.id,
+          id: imageId,
           title: editData.title,
           alt: editData.alt,
           folder: editData.folder,
@@ -138,20 +144,29 @@ export default function AdminGalleryPage() {
       });
       
       if (!response.ok) {
-        throw new Error(`Error updating image: ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(`Error updating image: ${response.statusText}. ${errorData.error || ''}`);
       }
       
-      const { image } = await response.json();
+      const data = await response.json();
+      const image = data.image;
       
-      // Update the image in the local state
-      setImages(images.map(img => 
-        img.id === selectedImage.id ? { ...img, ...image } : img
-      ));
+      // Update the image in the local state with proper error checking
+      if (image) {
+        setImages(images.map(img => 
+          img.id === imageId ? { ...img, ...image } : img
+        ));
+        
+        // If folder changed, we may need to refresh
+        if (image.folder !== selectedImage.folder) {
+          refreshGallery();
+        }
+      }
       
       setShowEditModal(false);
     } catch (err) {
       console.error("Failed to update image:", err);
-      alert("Failed to update image. Please try again.");
+      alert(`Failed to update image: ${err instanceof Error ? err.message : "Unknown error"}`);
     }
   };
 
@@ -531,19 +546,64 @@ export default function AdminGalleryPage() {
             <span>Upload New Media</span>
           </button>
         </div>
-      </div>
-
-      {/* Folder navigation */}
+      </div>      {/* Folder navigation */}
       <div className="bg-gray-50 border border-gray-200 rounded-md p-2 mb-4 flex items-center overflow-x-auto">
         <button 
           onClick={() => setCurrentFolder('')}
-          className={`px-2 py-1 text-sm rounded-md mr-2 ${!currentFolder ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-200'}`}
+          className={`px-2 py-1 text-sm rounded-md mr-2 flex items-center ${!currentFolder ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-200'}`}
         >
-          All Media
+          <Folder size={14} className="mr-1" /> Root
         </button>
         
+        {/* Display default folders first for quick access */}
+        {!currentFolder && (
+          <>
+            <div className="text-gray-400 mx-2">|</div>
+            <div className="flex space-x-1">
+              <button
+                onClick={() => setCurrentFolder('images')}
+                className="px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center"
+              >
+                <ImageIcon size={14} className="mr-1 text-blue-600" /> images
+              </button>
+              <button
+                onClick={() => setCurrentFolder('carousel')}
+                className="px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center"
+              >
+                <Film size={14} className="mr-1 text-green-600" /> carousel
+              </button>
+              <button
+                onClick={() => setCurrentFolder('videos')}
+                className="px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center"
+              >
+                <Film size={14} className="mr-1 text-red-600" /> videos
+              </button>
+            </div>
+          </>
+        )}
+        
+        {/* Breadcrumb navigation */}
         {currentFolder && (
-          <button 
+          <div className="flex items-center">
+            <div className="text-gray-400 mx-2">/</div>
+            {currentFolder.split('/').map((folder, index, array) => (
+              <div key={index} className="flex items-center">
+                <button
+                  onClick={() => navigateToFolder(array.slice(0, index + 1).join('/'))}
+                  className={`px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center ${
+                    index === array.length - 1 ? 'bg-blue-100 text-blue-700 font-medium' : ''
+                  }`}
+                >
+                  {folder}
+                </button>
+                {index < array.length - 1 && <div className="text-gray-400 mx-1">/</div>}
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {currentFolder && (
+          <button
             onClick={navigateUp}
             className="px-2 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded-md mr-2 flex items-center"
           >
@@ -782,9 +842,7 @@ export default function AdminGalleryPage() {
             </div>
           ))}
         </div>
-      )}
-
-      {/* Create folder modal */}
+      )}      {/* Create folder modal */}
       {showFolderModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
@@ -797,9 +855,25 @@ export default function AdminGalleryPage() {
                 value={newFolderName}
                 onChange={(e) => setNewFolderName(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                placeholder="Enter folder name"
+                placeholder="Enter folder name (letters, numbers, hyphens)"
                 required
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Only letters, numbers, and hyphens will be kept. Special characters will be replaced with hyphens.
+              </p>
+            </div>
+            
+            <div className="mb-4 bg-blue-50 p-3 rounded-md">
+              <div className="flex items-start">
+                <Info size={16} className="text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-blue-600 font-medium">Gallery Structure</p>
+                  <p className="text-xs text-blue-700 mt-1">
+                    The gallery uses three main folders: <strong>images/</strong>, <strong>carousel/</strong>, and <strong>videos/</strong>. 
+                    New folders will be created in the <strong>images/</strong> folder by default unless specified otherwise.
+                  </p>
+                </div>
+              </div>
             </div>
             
             {currentFolder && (
@@ -907,14 +981,25 @@ export default function AdminGalleryPage() {
                 />
               </div>
               
-              <div className="mb-4">
+            <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Folder</label>
-                <input
-                  type="text"
+                <select
                   value={editData.folder}
                   onChange={(e) => setEditData({...editData, folder: e.target.value})}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
+                >
+                  <option value="">No folder</option>
+                  <option value="images">images</option>
+                  <option value="carousel">carousel</option>
+                  <option value="videos">videos</option>
+                  {folders.filter(folder => 
+                    !["images", "carousel", "videos"].includes(folder)
+                  ).map((folder, idx) => (
+                    <option key={`folder-${idx}`} value={folder}>
+                      {folder}
+                    </option>
+                  ))}
+                </select>
               </div>
               
               <div className="mb-6">
