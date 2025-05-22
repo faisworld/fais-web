@@ -1,0 +1,8 @@
+/* Make sure all @import statements are at the top */
+@import 'some-file.css';
+@import 'another-file.css';
+
+/* Then all other CSS rules */
+:root {
+  // ...existing code...
+}

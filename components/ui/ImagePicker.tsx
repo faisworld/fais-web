@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { FiX, FiSearch, FiRefreshCw, FiCheck } from "react-icons/fi"
 import Image from "next/image"
+import { getBlobImage } from '@/utils/image-utils';
 
 interface ImagePickerProps {
   isOpen: boolean
@@ -78,12 +79,11 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
       
       setImages(processedImages)
     } catch (error) {
-      console.error("Error fetching images:", error)
-      // Set some sample fallback images for development
+      console.error("Failed to fetch images, using fallback:", error);
       setImages([
         {
           id: 1,
-          url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png",
+          url: getBlobImage("logo"),
           title: "Logo White Fais",
           altTag: "FAIS Logo White",
           "alt-tag": "FAIS Logo White",
@@ -91,7 +91,7 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
         },
         {
           id: 2,
-          url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png",
+          url: getBlobImage("logo-black"),
           title: "Logo Fais Black",
           altTag: "FAIS Logo Black",
           "alt-tag": "FAIS Logo Black",

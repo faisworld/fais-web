@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
 import { v4 as uuidv4 } from 'uuid';
 import { checkAdminAuth } from '@/utils/admin-auth';
+import { updateCarouselMediaMetadata, updateBlobImages } from '@/utils/image-utils';
 
 // Configure allowed file types
 const ALLOWED_TYPES = [
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
     const filePath = `${folderPath}/${uniqueFilename}`;
 
     // Upload to Blobstore
-    const { url, pathname } = await put(filePath, file, {
+    const { url } = await put(filePath, file, {
       access: 'public',
       contentType: file.type,
       addRandomSuffix: false,
@@ -88,9 +89,16 @@ export async function POST(request: Request) {
     // Insert into your database here
     // await db.insert('gallery_media', mediaEntry);
 
+    // Automatically update carousel media if the uploaded file is for carousel
+    if (folderPath.startsWith('images/carousel') || folderPath.startsWith('videos/carousel')) {
+      const slideName = folderPath.split('/').pop() || '';
+      const key = slideName.toLowerCase().replace(/\s+/g, '-');
+      await updateCarouselMediaMetadata([{ key, url }]);
+      updateBlobImages([{ key, url }]); // Update in-memory blobImages for immediate use
+    }
+
     return NextResponse.json({ 
       success: true, 
-      url, 
       filename: uniqueFilename,
       ...mediaEntry
     });

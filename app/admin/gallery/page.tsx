@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon, Film, Download, Check, Layers, RefreshCw, Upload, ArrowLeft, ArrowRight, Folder } from "lucide-react";
+import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon, Film, Download, Check, Layers, RefreshCw, Upload, ArrowLeft, ArrowRight, Folder, Image as ImageIcon } from "lucide-react";
 
 // Extended interface to support both images and videos
 interface GalleryMedia {
@@ -156,7 +156,7 @@ export default function AdminGalleryPage() {
   };
 
   const handleDeleteImage = async (imageId: number) => {
-    if (!confirm("Are you sure you want to delete this image? This action cannot be undone.")) {
+    if (!confirm("Are you sure you want to delete this media? This action cannot be undone.")) {
       return;
     }
     
@@ -178,8 +178,8 @@ export default function AdminGalleryPage() {
       // Remove the image from the local state
       setImages(images.filter(img => img.id !== imageId));
     } catch (err) {
-      console.error("Failed to delete image:", err);
-      alert("Failed to delete image. Please try again.");
+      console.error("Failed to delete media:", err);
+      alert("Failed to delete media. Please try again.");
     } finally {
       setIsDeletingImage(false);
     }
@@ -795,7 +795,7 @@ export default function AdminGalleryPage() {
                 {isVideo(movingMedia.url) ? (
                   <Film size={24} className="mr-2 text-gray-500" />
                 ) : (
-                  <Image size={24} className="mr-2 text-gray-500" />
+                  <ImageIcon size={24} className="mr-2 text-gray-500" />
                 )}
                 <span className="font-medium truncate">{movingMedia.title}</span>
               </div>

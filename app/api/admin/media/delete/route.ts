@@ -19,6 +19,15 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'No file URL or ID provided' }, { status: 400 });
     }
     
+    // Determine if this is a video or image from URL if possible
+    const isVideo = fileUrl ? 
+      fileUrl.toLowerCase().includes('/videos/') || 
+      fileUrl.toLowerCase().endsWith('.mp4') ||
+      fileUrl.toLowerCase().endsWith('.webm') ||
+      fileUrl.toLowerCase().endsWith('.mov') : false;
+      
+    const mediaType = isVideo ? 'video' : 'media';
+    
     // Delete the file from storage
     if (fileUrl) {
       // Delete by full URL
@@ -33,11 +42,15 @@ export async function DELETE(request: Request) {
       if (fileToDelete) {
         await del(fileToDelete.url);
       } else {
-        return NextResponse.json({ error: 'File not found' }, { status: 404 });
+        return NextResponse.json({ error: `${mediaType} not found` }, { status: 404 });
       }
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ 
+      success: true,
+      mediaType,
+      message: `${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} deleted successfully`
+    });
   } catch (error) {
     console.error('Media delete error:', error);
     return NextResponse.json({ 

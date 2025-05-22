@@ -10,7 +10,7 @@ module.exports = {
     '/gallery/*', // Exclude dynamic gallery pages
   ],
   generateIndexSitemap: false,
-  additionalPaths: async (config) => {
+  additionalPaths: async () => {
     const today = new Date().toISOString().split('T')[0];
     return [
       // Homepage with highest priority

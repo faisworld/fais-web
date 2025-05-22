@@ -1,5 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Download, ExternalLink, Play, Pause, Film, ImageIcon } from 'lucide-react';
+import { Trash2, Download, ExternalLink, Play, Film, ImageIcon, Folder } from 'lucide-react';
+import Image from 'next/image';
+
+// API response type for media items
+interface ApiMediaItem {
+  id: string | number;
+  url: string;
+  title?: string;
+  name?: string;
+  mediaType?: string;
+  uploaded_at?: string;
+  createdAt?: string;
+  folder?: string;
+  altTag?: string;
+}
 
 interface MediaItem {
   id: string;
@@ -8,6 +22,7 @@ interface MediaItem {
   type: 'image' | 'video';
   createdAt: string;
   thumbnailUrl?: string;
+  folder?: string;
 }
 
 interface MediaGalleryProps {
@@ -21,6 +36,8 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
   const [error, setError] = useState<string | null>(null);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const [folders, setFolders] = useState<string[]>([]);
+  const [activeFolder, setActiveFolder] = useState<string>("");
   
   // Determine if a file is a video based on URL or type
   const isVideoFile = (url: string): boolean => {
@@ -35,24 +52,41 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
         setIsLoading(true);
         setError(null);
         
-        const response = await fetch('/api/admin/media/list');
+        // Use a more reliable API endpoint that returns both images and videos
+        const response = await fetch('/api/admin/gallery/list');
         
         if (!response.ok) {
           throw new Error('Failed to fetch media');
         }
         
-        const data = await response.json();
+        const data: { images: ApiMediaItem[] } = await response.json();
         
         // Map the data and determine media type
-        const mappedData = data.items.map((item: any) => ({
-          ...item,
-          type: item.type || isVideoFile(item.url) ? 'video' : 'image'
+        const mappedData: MediaItem[] = data.images.map((item: ApiMediaItem) => ({
+          id: item.id.toString(),
+          url: item.url,
+          name: item.title || item.name || 'Untitled',
+          type: (item.mediaType === 'video' || isVideoFile(item.url)) ? 'video' : 'image',
+          createdAt: item.uploaded_at || item.createdAt || new Date().toISOString(),
+          folder: item.folder || ''
         }));
         
         setMediaItems(mappedData);
+        
+        // Extract unique folders - filter out undefined folders
+        const uniqueFolders = Array.from(
+          new Set(mappedData
+            .filter(item => item.folder && item.folder.trim() !== '')
+            .map(item => item.folder as string))
+        );
+        setFolders(uniqueFolders);
       } catch (err) {
         console.error('Error fetching media:', err);
         setError(err instanceof Error ? err.message : 'Error loading media');
+        
+        // Provide empty arrays if fetch fails
+        setMediaItems([]);
+        setFolders([]);
       } finally {
         setIsLoading(false);
       }
@@ -61,16 +95,24 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
     fetchMedia();
   }, []);
 
-  // Apply filter when filterType or mediaItems change
+  // Apply filter when filterType, activeFolder, or mediaItems change
   useEffect(() => {
-    if (filterType === 'all') {
-      setFilteredItems(mediaItems);
-    } else if (filterType === 'images') {
-      setFilteredItems(mediaItems.filter(item => item.type === 'image'));
+    let filtered = mediaItems;
+    
+    // First apply media type filter
+    if (filterType === 'images') {
+      filtered = filtered.filter(item => item.type === 'image');
     } else if (filterType === 'videos') {
-      setFilteredItems(mediaItems.filter(item => item.type === 'video'));
+      filtered = filtered.filter(item => item.type === 'video');
     }
-  }, [filterType, mediaItems]);
+    
+    // Then apply folder filter if active
+    if (activeFolder) {
+      filtered = filtered.filter(item => item.folder === activeFolder);
+    }
+    
+    setFilteredItems(filtered);
+  }, [filterType, activeFolder, mediaItems]);
 
   // Handle media item selection
   const toggleSelect = (id: string) => {
@@ -92,41 +134,95 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
     }
     
     setIsLoading(true);
-    let successCount = 0;
-    let failCount = 0;
     
-    for (const id of selectedItems) {
-      try {
-        const item = mediaItems.find(item => item.id === id);
-        if (!item) continue;
+    try {
+      // Convert Set to Array
+      const idsToDelete = Array.from(selectedItems);
+      
+      // Use bulk deletion endpoint
+      const response = await fetch(`/api/admin/gallery/images`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ids: idsToDelete })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        console.log(`Bulk deletion result:`, data);
         
-        const response = await fetch(`/api/admin/media/delete?url=${encodeURIComponent(item.url)}`, {
-          method: 'DELETE',
-        });
+        // Update the media items list - remove all successfully deleted items
+        setMediaItems(prev => prev.filter(item => !data.results.success.includes(item.id)));
+        setSelectedItems(new Set());
         
-        if (response.ok) {
-          successCount++;
+        // Show success/error message
+        if (data.results.failCount > 0) {
+          setError(`Successfully deleted ${data.results.successCount} item(s), but failed to delete ${data.results.failCount} item(s).`);
         } else {
-          failCount++;
+          setError(`Successfully deleted ${data.results.successCount} item(s).`);
+          // Clear success message after 3 seconds
+          setTimeout(() => setError(null), 3000);
         }
-      } catch (err) {
-        console.error(`Error deleting item ${id}:`, err);
-        failCount++;
+      } else {
+        console.error(`Failed to delete items:`, data.error || 'Unknown error');
+        setError(`Failed to delete items: ${data.error || 'Unknown error'}`);
       }
+    } catch (err) {
+      console.error(`Error during bulk deletion:`, err);
+      setError(`Error during deletion: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Add a new function to handle single item deletion
+  const handleDeleteItem = async (id: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering the selection toggle
+    
+    if (!confirm(`Are you sure you want to delete this item?`)) {
+      return;
     }
     
-    // Update the media items list
-    if (successCount > 0) {
-      setMediaItems(mediaItems.filter(item => !selectedItems.has(item.id)));
-      setSelectedItems(new Set());
-    }
+    setIsLoading(true);
     
-    // Show error if some deletions failed
-    if (failCount > 0) {
-      setError(`Failed to delete ${failCount} item(s).`);
+    try {
+      const response = await fetch(`/api/admin/gallery/images`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        console.log(`Deletion result:`, data);
+        
+        // Remove the deleted item from the list
+        setMediaItems(prev => prev.filter(item => item.id !== id));
+        
+        // If the item was selected, remove it from the selection
+        if (selectedItems.has(id)) {
+          const newSelected = new Set(selectedItems);
+          newSelected.delete(id);
+          setSelectedItems(newSelected);
+        }
+        
+        setError(`Item deleted successfully.`);
+        setTimeout(() => setError(null), 3000);
+      } else {
+        console.error(`Failed to delete item:`, data.error || 'Unknown error');
+        setError(`Failed to delete item: ${data.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      console.error(`Error during deletion:`, err);
+      setError(`Error during deletion: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   // Handle video preview play/pause
@@ -179,11 +275,23 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
     );
   };
 
-  // Render image preview
+  // Render image preview with error handling
   const renderImagePreview = (item: MediaItem) => {
     return (
-      <div className="relative">
-        <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
+      <div className="relative w-full aspect-video" style={{ minHeight: '200px', height: '200px' }}>
+        <Image 
+          src={item.url} 
+          alt={item.name} 
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover" 
+          priority={filteredItems.indexOf(item) < 3} // Add priority to first 3 images
+          style={{ objectFit: 'cover' }} // Ensure image properly fills container
+          onError={(e) => {
+            // Replace with a placeholder on error
+            (e.target as HTMLImageElement).src = `https://via.placeholder.com/300x200?text=${encodeURIComponent(item.name)}`;
+          }}
+        />
         <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
           <ImageIcon className="inline-block h-3 w-3 mr-1" />
           Image
@@ -194,18 +302,65 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
 
   return (
     <div>
+      {/* Folder Filter */}
+      {folders.length > 0 && (
+        <div className="mb-6 bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+          {/* Folders section */}
+          {folders.length > 0 && (
+            <div className="mb-4">
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-sm font-medium text-gray-500 mr-2">
+                  <Folder className="inline-block h-4 w-4 mr-1" />
+                  Folders:
+                </span>
+                <button
+                  onClick={() => setActiveFolder("")}
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                    activeFolder === "" ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                  }`}
+                >
+                  All
+                </button>
+                {folders.map((folder, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveFolder(folder)}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      activeFolder === folder ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                    }`}
+                  >
+                    {folder}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {selectedItems.size > 0 && (
         <div className="flex justify-between items-center mb-4 p-3 bg-gray-50 rounded-md border border-gray-200">
-          <p className="text-sm font-medium">
-            {selectedItems.size} item(s) selected
-          </p>
+          <div className="flex items-center">
+            <input type="checkbox" checked className="mr-2" readOnly />
+            <p className="text-sm font-medium">
+              {selectedItems.size} items selected
+            </p>
+          </div>
           <div className="flex space-x-2">
-            <button 
-              onClick={handleDeleteSelected} 
-              className="text-red-600 hover:text-red-800 text-sm flex items-center"
+            <button
+              onClick={handleDeleteSelected}
+              className="px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center"
             >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Delete Selected
+              delete selected
+            </button>
+            <button 
+              onClick={() => setSelectedItems(new Set())}
+              className="px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center"
+            >
+              clear selection
+            </button>
+            <button className="px-2 py-1 bg-black text-white rounded-sm text-sm flex items-center">
+              download selected
             </button>
           </div>
         </div>
@@ -247,18 +402,52 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
               key={item.id}
               onClick={() => toggleSelect(item.id)}
               className={`
-                media-preview rounded-lg overflow-hidden border-2 cursor-pointer transition-all
+                media-preview rounded-lg overflow-hidden border-2 cursor-pointer transition-all relative
                 ${selectedItems.has(item.id) ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'}
               `}
             >
+              {/* Media preview (image or video) */}
               {item.type === 'video' ? renderVideoPreview(item) : renderImagePreview(item)}
               
+              {/* Item details */}
               <div className="p-2 bg-white border-t border-gray-100">
                 <p className="text-xs font-medium truncate" title={item.name}>{item.name}</p>
                 <p className="text-xs text-gray-500">{new Date(item.createdAt).toLocaleDateString()}</p>
+                {item.folder && (
+                  <p className="text-xs text-gray-500 mt-1 bg-gray-100 px-1 rounded truncate">
+                    <Folder className="inline-block h-3 w-3 mr-1" />
+                    {item.folder}
+                  </p>
+                )}
               </div>
               
+              {/* Action buttons */}
               <div className="absolute top-2 right-2 flex space-x-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleSelect(item.id);
+                  }}
+                  className={`px-2 py-1 text-xs font-medium rounded ${
+                    selectedItems.has(item.id) 
+                      ? 'bg-blue-600 text-white' 
+                      : 'bg-black bg-opacity-50 text-white hover:bg-opacity-70'
+                  }`}
+                >
+                  {selectedItems.has(item.id) ? 'Selected' : 'Select'}
+                </button>
+              </div>
+              
+              {/* Download/open/delete buttons */}
+              <div className="absolute bottom-12 right-2 flex space-x-1">
+                <button
+                  onClick={(e) => handleDeleteItem(item.id, e)}
+                  className="p-1 bg-red-600 rounded-full text-white hover:bg-red-700"
+                  title="Delete"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+                
                 <a 
                   href={item.url} 
                   target="_blank" 

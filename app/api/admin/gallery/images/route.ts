@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server"
-import { Client } from "@neondatabase/serverless"
-import { checkAdminAuth } from "@/utils/admin-auth"
+import { NextResponse } from "next/server";
+import { Client } from "@neondatabase/serverless";
+import { checkAdminAuth } from "@/utils/admin-auth";
+import { del, list } from "@vercel/blob";
 
 // Enable CORS
 const corsHeaders = {
@@ -232,7 +233,7 @@ export async function PATCH(request: Request) {
   }
 }
 
-// DELETE handler to delete an image
+// DELETE handler to delete media (image or video)
 export async function DELETE(request: Request) {
   // Check admin authentication
   const authResult = await checkAdminAuth(request);
@@ -241,33 +242,292 @@ export async function DELETE(request: Request) {
   }
 
   try {
-    const body = await request.json()
-    const { id } = body
-
-    if (!id) {
-      return NextResponse.json({ error: "Image ID is required" }, { status: 400, headers: corsHeaders })
-    }
-
-    const client = new Client(process.env.DATABASE_URL || "")
-    await client.connect()
-
+    // Parse the body
+    let id: string | number | string[];
+    let isBulk = false;
+    
     try {
-      await client.query("DELETE FROM images WHERE id = $1", [id])
-      return NextResponse.json({ message: "Image deleted successfully" }, { headers: corsHeaders })
-    } catch (dbError) {
-      console.error("Database error during delete:", dbError)
-      return NextResponse.json(
-        { error: "Database error during delete", details: String(dbError) },
-        { status: 500, headers: corsHeaders },
-      )
-    } finally {
-      await client.end()
+      const body = await request.json();
+      // Check if this is a bulk delete operation
+      if (body.ids && Array.isArray(body.ids)) {
+        id = body.ids;
+        isBulk = true;
+      } else {
+        id = body.id;
+      }
+    } catch {
+      // If body parsing fails, try to get ID from URL
+      const url = new URL(request.url);
+      const urlId = url.searchParams.get('id');
+      // Ensure we have a string, not null
+      id = urlId !== null ? urlId : '';
     }
+
+    if (!id || (Array.isArray(id) && id.length === 0)) {
+      return NextResponse.json({ error: "Media ID(s) required" }, { status: 400, headers: corsHeaders })
+    }
+
+    // Handle bulk deletion
+    if (isBulk) {
+      return await handleBulkDelete(id as string[]);
+    }
+    
+    // Single item deletion - existing code
+    console.log(`Attempting to delete media with ID: ${id}`);
+
+    // Variables to track deletion status
+    let foundMedia = false;
+    let mediaUrl: string | null = null;
+    let mediaType = 'media';
+    let mediaSource = '';
+
+    // First try to find the media in the database (if ID is numeric)
+    if (!isNaN(Number(id))) {
+      try {
+        const client = new Client(process.env.DATABASE_URL || "");
+        await client.connect();
+        
+        const mediaResult = await client.query("SELECT url, title FROM images WHERE id = $1", [id]);
+        
+        if (mediaResult.rows.length > 0) {
+          foundMedia = true;
+          mediaUrl = mediaResult.rows[0].url;
+          const mediaTitle = mediaResult.rows[0].title || 'Untitled';
+          mediaType = detectMediaType(mediaUrl || '');
+          mediaSource = 'database';
+          
+          console.log(`Found ${mediaType} in database: ${mediaTitle} (ID: ${id})`);
+          
+          // Delete from database
+          await client.query("DELETE FROM images WHERE id = $1", [id]);
+          console.log(`Deleted record from database`);
+        } else {
+          console.log(`ID ${id} not found in database`);
+        }
+        
+        await client.end();
+      } catch (dbError) {
+        console.error("Database error:", dbError);
+      }
+    }
+
+    // If not found in database or deletion failed, try Blob storage directly
+    if (!foundMedia) {
+      try {
+        // List all blobs
+        const { blobs } = await list();
+        
+        // Try different ways to find the blob
+        const idStr = String(id);
+        const blobToDelete = blobs.find(blob => 
+          blob.url.includes(idStr) || 
+          blob.pathname.includes(idStr) ||
+          String(hashString(blob.url)) === idStr
+        );
+        
+        if (blobToDelete) {
+          foundMedia = true;
+          mediaUrl = blobToDelete.url;
+          mediaType = detectMediaType(blobToDelete.pathname);
+          mediaSource = 'blob';
+          console.log(`Found ${mediaType} in blob storage: ${blobToDelete.url}`);
+        } else {
+          console.log(`ID ${id} not found in blob storage`);
+        }
+      } catch (blobError) {
+        console.error("Error checking blob storage:", blobError);
+        // Add additional handling to use the variable more explicitly
+        if (blobError instanceof Error) {
+          console.error(`Blob storage error details: ${blobError.message}`);
+        }
+      }
+    }
+
+    // If we didn't find the media anywhere
+    if (!foundMedia) {
+      console.error(`Media with ID ${id} not found in database or blob storage`);
+      return NextResponse.json({ 
+        error: "Media not found", 
+        details: `Media with ID ${id} not found in database or blob storage`
+      }, { status: 404, headers: corsHeaders });
+    }
+
+    // If we have a URL, try to delete from blob storage
+    let blobDeleted = false;
+    if (mediaUrl) {
+      try {
+        await del(mediaUrl);
+        blobDeleted = true;
+        console.log(`Deleted ${mediaType} from blob storage: ${mediaUrl}`);
+      } catch (deleteError) {
+        console.error(`Error deleting from blob storage:`, deleteError);
+        
+        // If we successfully deleted from database but failed blob deletion,
+        // still return a partial success
+        if (mediaSource === 'database') {
+          return NextResponse.json({ 
+            message: `${mediaType} record deleted from database, but could not delete file from storage`,
+            partial: true
+          }, { headers: corsHeaders });
+        }
+      }
+    }
+
+    // Success response
+    return NextResponse.json({ 
+      message: `${mediaType} deleted successfully`,
+      mediaType,
+      blobDeleted,
+      source: mediaSource
+    }, { headers: corsHeaders });
   } catch (error) {
-    console.error("Error deleting image:", error)
+    console.error("Error processing delete request:", error);
     return NextResponse.json(
-      { error: "Failed to delete image", details: String(error) },
+      { error: "Failed to delete media", details: String(error) },
       { status: 500, headers: corsHeaders },
-    )
+    );
   }
+  
+  // Helper function for bulk deletion
+  async function handleBulkDelete(ids: string[]) {
+    console.log(`Bulk delete request for ${ids.length} items`);
+    
+    const results = {
+      success: [] as string[],
+      failed: [] as string[],
+      totalCount: ids.length,
+      successCount: 0,
+      failCount: 0,
+      details: [] as Array<{ id: string, success: boolean, error?: string, mediaType?: string }>
+    };
+
+    // Database batch deletion
+    if (ids.some(id => !isNaN(Number(id)))) {
+      const dbIds = ids.filter(id => !isNaN(Number(id)));
+      try {
+        const client = new Client(process.env.DATABASE_URL || "");
+        await client.connect();
+        
+        // First get the URLs of the items to delete
+        const placeholders = dbIds.map((_, i) => `$${i + 1}`).join(',');
+        const mediaResult = await client.query(
+          `SELECT id, url, title FROM images WHERE id IN (${placeholders})`, 
+          dbIds
+        );
+        
+        // Map of ID to URL for blob deletion
+        const idToUrl = new Map<string, string>();
+        for (const row of mediaResult.rows) {
+          idToUrl.set(row.id.toString(), row.url);
+        }
+        
+        // Delete from database
+        if (mediaResult.rows.length > 0) {
+          const deleteResult = await client.query(
+            `DELETE FROM images WHERE id IN (${placeholders}) RETURNING id`, 
+            dbIds
+          );
+          
+          console.log(`Deleted ${deleteResult.rowCount} records from database`);
+          
+          // Track successful database deletions
+          for (const row of deleteResult.rows) {
+            const id = row.id.toString();
+            results.success.push(id);
+            results.successCount++;
+            results.details.push({ 
+              id, 
+              success: true, 
+              mediaType: detectMediaType(idToUrl.get(id) || '')
+            });
+            
+            // Try to delete from blob storage
+            if (idToUrl.has(id)) {
+              try {
+                await del(idToUrl.get(id) || '');
+              } catch (blobError) {
+                console.warn(`Failed to delete blob for ID ${id}, but database record was removed: ${blobError instanceof Error ? blobError.message : String(blobError)}`);
+              }
+            }
+          }
+        }
+        
+        await client.end();
+      } catch (dbError) {
+        console.error("Database error during bulk delete:", dbError);
+      }
+    }
+    
+    // Handle any remaining IDs or blob-only IDs
+    const remainingIds = ids.filter(id => !results.success.includes(id) && !results.failed.includes(id));
+    if (remainingIds.length > 0) {
+      const { blobs } = await list();
+      
+      for (const id of remainingIds) {
+        const idStr = String(id);
+        const blobToDelete = blobs.find(blob => 
+          blob.url.includes(idStr) || 
+          blob.pathname.includes(idStr) ||
+          String(hashString(blob.url)) === idStr
+        );
+        
+        if (blobToDelete) {
+          try {
+            await del(blobToDelete.url);
+            results.success.push(id);
+            results.successCount++;
+            results.details.push({ 
+              id, 
+              success: true, 
+              mediaType: detectMediaType(blobToDelete.pathname)
+            });
+          } catch (deleteError) {
+            console.error(`Failed to delete blob for ID ${id}: ${deleteError instanceof Error ? deleteError.message : String(deleteError)}`);
+            results.failed.push(id);
+            results.failCount++;
+            results.details.push({ 
+              id, 
+              success: false, 
+              error: "Failed to delete from blob storage",
+              mediaType: detectMediaType(blobToDelete.pathname)
+            });
+          }
+        } else {
+          results.failed.push(id);
+          results.failCount++;
+          results.details.push({ 
+            id, 
+            success: false, 
+            error: "Media not found in storage"
+          });
+        }
+      }
+    }
+    
+    return NextResponse.json({
+      message: `Bulk deletion completed: ${results.successCount} succeeded, ${results.failCount} failed`,
+      results
+    }, { headers: corsHeaders });
+  }
+}
+
+// Helper function to detect media type from URL or pathname
+function detectMediaType(path: string): string {
+  if (!path) return 'media';
+  
+  const videoExtensions = ['.mp4', '.webm', '.mov', '.m4v', '.avi'];
+  const isVideo = videoExtensions.some(ext => path.toLowerCase().endsWith(ext)) || 
+                 path.toLowerCase().includes('/videos/');
+  return isVideo ? 'video' : 'image';
+}
+
+// Hash function for IDs
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
 }

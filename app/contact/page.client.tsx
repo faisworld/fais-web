@@ -13,7 +13,8 @@ declare global {
     }
 }
 
-export default function ContactClientPage() {    useEffect(() => {
+export default function ContactClientPage() {
+    useEffect(() => {
         const scriptId = "recaptcha-enterprise-script";
         if (document.getElementById(scriptId)) return;
 

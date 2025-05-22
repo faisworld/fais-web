@@ -11,8 +11,9 @@ export default function Footer() {
         <div className="flex flex-wrap justify-between">
           {/* First Column - Logo and Navigation */}
           <div className="w-full md:w-[30%] mb-6 md:mb-0 flex flex-col items-center md:items-start">
-            <div className="mb-4">
-              <Logo variant="black" className="h-[50px]" />
+            {/* Add pl-8 class to align with navigation links */}
+            <div className="mb-8 md:pl-8">
+              <Logo variant="black" className="footer-logo" />
             </div>
             {/* Keep the pl-8 that works for alignment */}
             <ul className="list-none w-full text-center md:text-left md:pl-8">

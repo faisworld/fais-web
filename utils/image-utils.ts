@@ -140,6 +140,7 @@ export const blobImages: { [key: string]: string } = {
  * @param fallback Optional fallback URL if the image isn't found
  * @returns The actual Blob storage URL or fallback
  */
+// Get an image URL from the Blob storage by its friendly name
 export function getBlobImage(key: string, fallback?: string): string {
   // If the provided key is already a full URL, return it
   if (key && typeof key === "string" && key.startsWith("http")) {

@@ -113,11 +113,52 @@ img {
   display: block;
 }
 
+/* Logo styling - centralized control */
 img.logo {
-  width: auto;
-  height: 40px;
-  max-width: 100%;
   display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Header logo - slightly larger */
+.header-logo {
+  height: 36px !important; /* Force height with !important */
+  width: auto !important; /* Force width auto with !important */
+  display: inline-block;
+  margin-left: 0;
+}
+
+/* Footer logo - slightly smaller */
+.footer-logo {
+  height: 34px !important; /* Force height with !important */
+  width: auto !important; /* Force width auto with !important */
+  display: inline-block;
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  .footer-logo {
+    transform: translateX(-26px); /* Only apply offset on larger screens */
+  }
+}
+
+/* For extremely small screens, reduce logo size */
+@media (max-width: 350px) {
+  .header-logo,
+  .footer-logo {
+    height: 30px !important;
+  }
+}
+
+/* For larger screens, you can increase the logo size if desired */
+@media (min-width: 1200px) {
+  .header-logo {
+    height: 44px !important;
+  }
+  
+  .footer-logo {
+    height: 40px !important;
+  }
 }
 
 section {
@@ -185,7 +226,7 @@ section[aria-roledescription="carousel"] {
   padding: 0 !important;
   margin: 0 !important;
   position: relative;
-  left: -10px; /* Adjust this value as needed */
+  left: 0; /* Removed the negative positioning */
 }
 
 .site-footer .logo-container a,
@@ -197,6 +238,41 @@ section[aria-roledescription="carousel"] {
 .site-footer ul li {
   width: 100%;
   text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem 0;
+  gap: 20px;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 200px;
+  padding: 0 15px;
+}
+
+.footer-column-brand .footer-logo {
+  height: 36px; /* Match the global footer logo size */
+  width: auto;
+  margin-bottom: 24px;
+}
+
+.footer-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-navigation li {
+  margin-bottom: 10px;
+}
+
+.footer-column h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 @media (min-width: 768px) {
@@ -518,4 +594,128 @@ a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Ensure proper alignment for footer columns and logos */
+.footer-column-brand .logo-container,
+.footer-column-brand .footer-logo {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* Admin header styles */
+.admin-header {
+  padding: 0.75rem 0;
+}
+
+.admin-header .header-logo {
+  height: 30px !important; /* Make admin logo slightly smaller */
+}
+
+.admin-header nav {
+  margin-left: 0.5rem; /* Align with the left edge of the logo */
+}
+
+/* Admin header styles - improved for proper alignment */
+.admin-header-wrapper {
+  width: 100%;
+}
+
+.admin-header {
+  padding: 0.75rem 0;
+}
+
+.admin-logo {
+  height: 32px !important;
+  width: auto !important;
+}
+
+.admin-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.admin-nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+}
+
+.admin-nav-link:hover {
+  text-decoration: underline;
+}
+
+.admin-nav {
+  width: 100%;
+}
+
+.admin-controls-container {
+  padding-left: 0; /* Ensures alignment with container */
+}
+
+/* Breadcrumb styles - properly aligned */
+.breadcrumbs {
+  font-size: 14px;
+  padding-left: 0; /* Remove any padding that might cause misalignment */
+}
+
+.admin-section-nav {
+  display: flex;
+  align-items: center;
+}
+
+.admin-section-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.admin-section-link:hover {
+  background-color: #f0f0f0;
+}
+
+.admin-section-link.active {
+  background-color: #e5e7eb;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* Media Tool Buttons - Fixed visibility issues */
+.media-filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #f3f4f6; /* Light background */
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  color: #374151; /* Dark text */
+  font-weight: 500;
+  transition: all 0.2s;
+  text-decoration: none;
+  min-width: 120px;
+}
+
+.media-filter-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.media-filter-btn.active {
+  background-color: #111827; /* Dark background */
+  color: white !important; /* Force white text */
+  border-color: #111827;
+}
+
+/* Ensure icons and text are visible in all button states */
+.media-filter-btn span {
+  color: inherit; /* Inherits from parent */
+}
+
+.media-filter-btn.active svg,
+.media-filter-btn.active span {
+  color: white !important; /* Force white color for better visibility */
 }

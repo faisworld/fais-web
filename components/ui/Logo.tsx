@@ -14,17 +14,16 @@ export default function Logo({ variant = 'white', href = '/', className = '' }: 
     ? "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png"
     : "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png";
 
+  // Set loading to "eager" instead of using priority, and include proper sizes
   const logoImage = (
     <Image 
       src={logoSrc}
       alt="FAIS Logo"
       width={140}
       height={40}
-      style={{ 
-        height: 'auto', // This fixes the aspect ratio warning
-        width: 'auto', 
-      }}
-      priority
+      loading="eager"
+      sizes="(max-width: 768px) 100px, 140px"
+      style={{ height: 'auto', width: 'auto' }}
       className={`logo ${className}`}
     />
   );

@@ -1,27 +1,40 @@
-import { NextResponse } from 'next/server';
-import { list } from '@vercel/blob';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { NextResponse } from "next/server";
+import { list } from "@vercel/blob";
+import { checkAdminAuth } from "@/utils/admin-auth";
+
+interface MediaItem {
+  id: number;
+  url: string;
+  title: string;
+  altTag: string;
+  folder?: string;
+  size?: number;
+  mediaType: 'image' | 'video';
+  uploaded_at: string;
+  width?: number;
+  height?: number;
+  format?: string;
+}
 
 export async function GET(request: Request) {
+  // Check admin authentication
+  const authResult = await checkAdminAuth(request);
+  if (!authResult.isAuthenticated) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    // Verify admin authentication
-    const authResult = await checkAdminAuth(request);
-    if (!authResult.isAuthenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const url = new URL(request.url);
-    const folder = url.searchParams.get('folder') || '';
-
-    // List all blobs from Vercel Blob Storage
-    const { blobs } = await list({
-      prefix: folder ? folder + '/' : undefined,
-    });
+    console.log("Admin: Fetching media from Vercel Blob storage...")
     
-    // Convert blob data to gallery format and sort by uploadedAt (newest first)
-    const images = blobs
+    // List all blobs (both images and videos)
+    const { blobs } = await list({
+      limit: 1000,
+    })
+
+    // Extract media info from each blob
+    const images: MediaItem[] = blobs
       .filter(blob => {
-        // Filter out directories and empty placeholder files
+        // Filter out empty placeholder files
         return blob.pathname !== 'uploaded-image' && !blob.pathname.endsWith('/');
       })
       .map((blob) => {
@@ -29,14 +42,14 @@ export async function GET(request: Request) {
         const pathParts = blob.pathname.split('/');
         const filename = pathParts[pathParts.length - 1];
         
-        // Get file extension
+        // Get file extension and determine media type
         const extension = filename.includes('.') ? filename.split('.').pop()?.toLowerCase() : '';
-        
-        // Determine if it's a video based on extension or content type
         const videoExtensions = ['mp4', 'webm', 'mov', 'avi'];
-        const isVideo = blob.contentType?.startsWith('video/') || 
-                      (extension && videoExtensions.includes(extension));
-
+        
+        // Determine if it's a video based on extension instead of contentType
+        const isVideo = videoExtensions.includes(extension || '') || 
+                      blob.pathname.toLowerCase().includes('/videos/');
+                      
         // Generate numeric ID from URL
         const id = hashString(blob.url);
         
@@ -49,18 +62,19 @@ export async function GET(request: Request) {
         // Format title from filename (remove extension)
         const title = filename.includes('.') ? filename.split('.').slice(0, -1).join('.') : filename;
         
+        // Create properly typed mediaType
+        const mediaType: 'image' | 'video' = isVideo ? 'video' : 'image';
+        
         return {
           id,
           url: blob.url,
           title: title || 'Untitled',
           altTag: title || 'Untitled',
-          "alt-tag": title || 'Untitled',
-          folder: folderPath,
-          description: '',
-          format: extension || '',
+          folder: folderPath || undefined,
           size: blob.size,
-          mediaType: isVideo ? 'video' : 'image',
-          uploaded_at: blob.uploadedAt
+          mediaType,
+          uploaded_at: blob.uploadedAt.toISOString(),
+          format: extension || undefined
         };
       })
       .sort((a, b) => {
@@ -70,30 +84,15 @@ export async function GET(request: Request) {
         return dateB - dateA;
       });
 
-    // Get unique folders for the folder selector
-    const allFolders = new Set<string>();
-    blobs.forEach(blob => {
-      const pathParts = blob.pathname.split('/');
-      if (pathParts.length > 1) {
-        // Add each level of the folder path
-        for (let i = 0; i < pathParts.length - 1; i++) {
-          const path = pathParts.slice(0, i + 1).join('/');
-          if (path) allFolders.add(path);
-        }
-      }
-    });
-
-    return NextResponse.json({ 
-      images,
-      folders: Array.from(allFolders),
-      count: images.length
-    });
+    console.log(`Found ${images.length} media items in Blob storage`)
+    
+    return NextResponse.json({ images })
   } catch (error) {
-    console.error('Error listing gallery media:', error);
+    console.error("Error fetching media from Blob storage:", error)
     return NextResponse.json({ 
-      error: 'Failed to list media files',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      error: "Failed to fetch media", 
+      details: error instanceof Error ? error.message : String(error) 
+    }, { status: 500 })
   }
 }
 

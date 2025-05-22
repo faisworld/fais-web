@@ -35,11 +35,11 @@ const nextConfig = {
     ],
     unoptimized: true, // For Vercel Blob Storage images
   },
+  serverExternalPackages: ['sharp', '@neondatabase/serverless'],
   // Increase the timeout for builds
   experimental: {
-    serverComponentsExternalPackages: ['sharp', '@neondatabase/serverless'],
     cpus: 4,
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

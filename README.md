@@ -4,6 +4,11 @@ Welcome to the Fantastic AI Studio (FAIS) website project. This repository conta
 
 ---
 
+## Technical Documentation
+
+- [Quirks Mode Fix](./docs/quirks-mode-fix.md) - How we ensured proper DOCTYPE and Standards Mode rendering
+- [Carousel Video Setup](./docs/carousel-video-setup.md) - Adding videos to the homepage carousel
+
 ## Features
 
 1. **Landing Page**
@@ -38,7 +43,8 @@ Welcome to the Fantastic AI Studio (FAIS) website project. This repository conta
 
 ## File Structure
 
-```
+---
+
 app/
 ├── components/
 │   ├── Header.tsx              # Header with navigation links (Services, Projects, Blog, Contacts)
@@ -66,9 +72,9 @@ app/
 │       └── route.ts            # API route for managing pages
 └── [page]/
     └── page.tsx                # Dynamic page rendering
-```
+  
 
----
+--- 
 
 ## Future Enhancements
 

@@ -35,7 +35,7 @@ export default function BlogPage() {
       "name": "Fantastic AI Studio",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/logo-fais.png"
+        "url": getBlobImage("logo") 
       }
     },
     "blogPost": blogPosts.map(post => ({
@@ -56,7 +56,7 @@ export default function BlogPage() {
         "name": "Fantastic AI Studio",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/logo-fais.png"
+          "url": getBlobImage("logo")
         }
       },
       "image": {

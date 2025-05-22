@@ -11,10 +11,11 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { updatedMedia } = body; // Expect array of { key, url, keywords, link }
+    // Expect array of { key, url, keywords, link, mediaType, originalSlideName }
+    const { updatedMedia } = body;
 
     if (!Array.isArray(updatedMedia)) {
-      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid payload: updatedMedia should be an array' }, { status: 400 });
     }
 
     const client = new Client(process.env.DATABASE_URL);
@@ -22,18 +23,28 @@ export async function POST(request: Request) {
 
     // For each updated media, insert or update record in DB
     for (const media of updatedMedia) {
-      const { key, url, keywords, link } = media;
+      const { key, url, mediaType, originalSlideName } = media;
+      const keywords = media.keywords || '';
+      const link = media.link || '';
+
+      // Validate essential fields for each media item
+      if (!key || !url || !mediaType || !originalSlideName) {
+        console.warn('Skipping media item due to missing fields:', media);
+        continue; // Skip this item and proceed with the next
+      }
 
       // Upsert logic: update if exists, else insert
       await client.query(`
-        INSERT INTO carousel_media (key, url, keywords, link, updated_at)
-        VALUES ($1, $2, $3, $4, NOW())
+        INSERT INTO carousel_media (key, url, keywords, link, media_type, original_slide_name, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6, NOW())
         ON CONFLICT (key) DO UPDATE SET
           url = EXCLUDED.url,
           keywords = EXCLUDED.keywords,
           link = EXCLUDED.link,
+          media_type = EXCLUDED.media_type,
+          original_slide_name = EXCLUDED.original_slide_name,
           updated_at = NOW()
-      `, [key, url, keywords, link]);
+      `, [key, url, keywords, link, mediaType, originalSlideName]);
     }
 
     await client.end();
@@ -41,6 +52,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, message: 'Carousel updated successfully' });
   } catch (error) {
     console.error('Error saving carousel metadata:', error);
-    return NextResponse.json({ error: 'Failed to save carousel metadata' }, { status: 500 });
+    // Check if the error is a database-related error and provide more specific feedback
+    let detailMessage = 'Unknown error';
+    if (error instanceof Error) {
+      detailMessage = error.message;
+      // Potentially check for Neon DB specific error codes or messages if available
+    }
+    return NextResponse.json({ 
+      error: 'Failed to save carousel metadata',
+      details: detailMessage
+    }, { status: 500 });
   }
 }

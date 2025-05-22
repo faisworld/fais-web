@@ -7,11 +7,25 @@ export function middleware(request: NextRequest) {
     // Just pass through - the route groups will handle it
     return NextResponse.next()
   }
+  
+  // For all other routes, ensure DOCTYPE is present
+  if (request.nextUrl.pathname !== '/_next' && !request.nextUrl.pathname.startsWith('/_next/') && !request.nextUrl.pathname.startsWith('/api/')) {
+    const response = NextResponse.next()
+    
+    // Set a header to indicate that we should use correct doctype
+    // This will be processed by a script in the layout
+    response.headers.set('X-Use-Correct-DOCTYPE', 'true')
+    
+    return response
+  }
+  
+  return NextResponse.next()
 }
 
-// Match only the specific paths we want to handle in middleware
+// Match all paths with exceptions
 export const config = {
   matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
     '/kvitka-poloniny',
     '/kvitka-poloniny/:path*',
   ],

@@ -1,14 +1,13 @@
-import type React from "react"
-import "./globals.css"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import Header from "@/components/ui/Header"
-import Footer from "@/components/ui/Footer"
-import DynamicBreadcrumbs from "@/components/ui/DynamicBreadcrumbs"
-import MissingImageFixer from "@/components/ui/MissingImageFixer"
-import ConditionalWidgetWrapper from "@/components/ui/ConditionalWidgetWrapper"
-import { getBlobImage } from "@/utils/image-utils"; // Import getBlobImage
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import './globals.css'
+import type React from 'react'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import Header from '@/components/ui/Header'
+import Footer from '@/components/ui/Footer'
+import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
+import MissingImageFixer from '@/components/ui/MissingImageFixer'
+import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 
 
@@ -29,19 +28,14 @@ export const metadata: Metadata = {
     siteName: "Fantastic AI Studio",
     locale: "en_US",
     type: "website",
+    // Use direct URLs instead of getBlobImage to avoid unnecessary preloading
     images: [
       {
-        url: getBlobImage("logo"), // Use white logo
+        url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png", 
         width: 1200,
         height: 630,
         alt: "Fantastic AI Studio Logo",
-      },
-      {
-        url: getBlobImage("logo-black"), // Use black logo
-        width: 1200,
-        height: 630,
-        alt: "Fantastic AI Studio Logo (Black)",
-      },
+      }
     ],
   },  twitter: {
     card: "summary_large_image",

@@ -8,6 +8,13 @@ interface MediaUploaderProps {
   buttonText?: string;
 }
 
+interface UploadResponse {
+  url: string;
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
 export default function MediaUploader({
   onUploadComplete,
   maxFiles = 10,
@@ -86,12 +93,14 @@ export default function MediaUploader({
         });
         
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to upload media');
+          const errorData = await response.json() as { error: string; message: string };
+          throw new Error(errorData.message || errorData.error || 'Failed to upload media');
         }
         
-        const data = await response.json();
-        uploadedUrls.push(data.url);
+        const data = await response.json() as UploadResponse;
+        if (data.url) {
+          uploadedUrls.push(data.url);
+        }
       }
       
       setUploadProgress(100);

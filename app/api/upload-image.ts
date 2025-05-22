@@ -5,9 +5,7 @@ import formidable from 'formidable';
 import fs from 'fs/promises';
 
 export const config = {
-The Suka blades. OK when you implemented the feature, I managed to. Click on Edit and get a nice. Ly designed. Picture editing environment, but when I changed. Alt tag to from. Image to. Team of professionals. And returned to the gallery. After it was saved. And tried to edit it again. That is. Uh. I uh received the following error. And in reality the alt tag didn't change. When I returned to the gallery, I saw the old alt tag. Besides, I don't see. Dimensions of the picture it says not available, although it's width by height, it should be easily. Dragged from the picture or scanned or I don't know. However it might be received definitely. Why do I not see it? And also I don't see the size of the pictures. Although in blog store it clearly shows the size of each picture in kilobytes or megabytes. No replies. What do you like?   api: {
     bodyParser: false, // Required for file uploads
-  },
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -15,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       // Parse incoming file using formidable
       const form = new formidable.IncomingForm();
-      const [fields, files] = await form.parse(req);
+      const [, files] = await form.parse(req);
 
       const file = files.file?.[0];
       if (!file) {

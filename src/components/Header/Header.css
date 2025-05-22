@@ -1,0 +1,7 @@
+/* All imports must be at the top */
+@import '../Logo/Logo.css';
+
+/* Then component styles */
+.header {
+  // ...existing code...
+}

@@ -29,8 +29,8 @@ export default function Header() {
   return (
     <header className="site-header fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black bg-opacity-80 backdrop-blur-md text-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-4 lg:px-6 h-20">
-        {/* Logo */}
-        <Logo variant="white" href="/" onClick={handleLinkClick} />
+        {/* Apply header-logo class to white logo */}
+        <Logo variant="white" href="/" className="header-logo" />
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-start space-x-6 lg:space-x-8">
