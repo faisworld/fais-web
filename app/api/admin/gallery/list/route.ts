@@ -82,11 +82,32 @@ export async function GET(request: Request) {
         const dateA = new Date(a.uploaded_at).getTime();
         const dateB = new Date(b.uploaded_at).getTime();
         return dateB - dateA;
-      });
-
-    console.log(`Found ${images.length} media items in Blob storage`)
+      });    console.log(`Found ${images.length} media items in Blob storage`)
     
-    return NextResponse.json({ images })
+    // Extract unique folders from the media items
+    const uniqueFolders = Array.from(
+      new Set(
+        images
+          .filter(item => item.folder) // Only include items that have a folder
+          .map(item => item.folder)    // Extract folder names
+      )
+    ) as string[];
+    
+    // Add default folders if they don't exist in the list
+    const defaultFolders = ['images', 'carousel', 'videos'];
+    defaultFolders.forEach(folder => {
+      if (!uniqueFolders.includes(folder)) {
+        uniqueFolders.push(folder);
+      }
+    });
+    
+    // Sort folders alphabetically
+    uniqueFolders.sort();
+    
+    return NextResponse.json({ 
+      images,
+      folders: uniqueFolders 
+    })
   } catch (error) {
     console.error("Error fetching media from Blob storage:", error)
     return NextResponse.json({ 
