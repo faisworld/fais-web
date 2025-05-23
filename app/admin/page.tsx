@@ -5,7 +5,7 @@ import {
   FiImage, FiUpload, FiUser, FiFolder, FiVideo, 
   FiFileText, FiCpu, FiDatabase
 } from "react-icons/fi"
-import { AdminHeader } from "./components/admin-header";
+import { AdminHeader } from "./components/admin-header"
 
 export default function AdminPage() {
   const aiTools = [
@@ -44,7 +44,7 @@ export default function AdminPage() {
       href: "/admin/instant-id",
       color: "from-rose-500 to-pink-600"
     },
-  ];
+  ]
 
   const contentTools = [
     {
@@ -60,15 +60,8 @@ export default function AdminPage() {
       icon: <FiUpload size={24} />,
       href: "/admin/gallery/upload",
       color: "from-emerald-500 to-green-600"
-    },
-    {
-      title: "Carousel Upload",
-      description: "Upload and manage images for the homepage carousel",
-      icon: <FiImage size={24} />,
-      href: "/admin/carousel-upload",
-      color: "from-fuchsia-500 to-purple-600"
-    },
-  ];
+    }
+  ]
 
   return (
     <>
@@ -156,5 +149,5 @@ export default function AdminPage() {
         </div>
       </div>
     </>
-  );
+  )
 }

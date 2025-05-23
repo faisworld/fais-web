@@ -118,7 +118,7 @@ export default function AdminLogin() {
       </div>
 
       {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 text-center text-sm text-gray-500">
+        <div className="mt-8 text-center text-sm">
           <div className="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
             Development mode: Authentication is bypassed.
             <br />
