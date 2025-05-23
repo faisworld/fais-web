@@ -5,7 +5,7 @@ import { checkAdminAuth } from '@/utils/admin-auth';
 export async function POST(request: Request) {
   try {
     // Verify admin authentication
-    const authResult = await checkAdminAuth(request);
+    const authResult = await checkAdminAuth();
     if (!authResult.isAuthenticated) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

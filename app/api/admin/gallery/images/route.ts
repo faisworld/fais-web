@@ -21,7 +21,7 @@ export async function OPTIONS() {
 // GET handler to fetch a single image by ID
 export async function GET(request: Request) {
   // Check admin authentication
-  const authResult = await checkAdminAuth(request);
+  const authResult = await checkAdminAuth();
   if (!authResult.isAuthenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: corsHeaders });
   }
@@ -114,7 +114,7 @@ export async function GET(request: Request) {
 // PATCH handler to update image metadata
 export async function PATCH(request: Request) {
   // Check admin authentication
-  const authResult = await checkAdminAuth(request);
+  const authResult = await checkAdminAuth();
   if (!authResult.isAuthenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: corsHeaders });
   }
@@ -236,7 +236,7 @@ export async function PATCH(request: Request) {
 // DELETE handler to delete media (image or video)
 export async function DELETE(request: Request) {
   // Check admin authentication
-  const authResult = await checkAdminAuth(request);
+  const authResult = await checkAdminAuth();
   if (!authResult.isAuthenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: corsHeaders });
   }

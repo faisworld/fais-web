@@ -34,7 +34,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const session = await getServerSession(authOptions);
   
   // Check if we're on login page using path from headers
-  const headersList = await headers();
+  const headersList = headers();
   const path = headersList.get('x-pathname') || '';
   const isLoginPage = path.includes('/admin/login');
       
@@ -50,16 +50,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect('/admin/login');
     return null;
   }
+
   // User is authenticated and has admin role
   return (
-    <div className="admin-layout flex flex-col min-h-screen bg-gray-50">
-      {/* We'll include the AdminHeader on client-side */}
-      <div className="admin-header-placeholder">
-        {/* AdminHeader is imported in the admin page component */}
-      </div>
-      <div className="flex-1">
-        {children}
-      </div>
+    <div className="admin-layout min-h-screen bg-gray-50">
+      {children}
     </div>
   );
 }

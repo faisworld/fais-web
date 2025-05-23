@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   console.log("🔄 Processing media generation request");
   
   // Check admin authentication
-  const authResult = await checkAdminAuth(request);
+  const authResult = await checkAdminAuth();
   if (!authResult.isAuthenticated) {
     console.log("⛔ Authentication failed");
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

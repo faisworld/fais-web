@@ -8,6 +8,7 @@ Welcome to the Fantastic AI Studio (FAIS) website project. This repository conta
 
 - [Quirks Mode Fix](./docs/quirks-mode-fix.md) - How we ensured proper DOCTYPE and Standards Mode rendering
 - [Carousel Video Setup](./docs/carousel-video-setup.md) - Adding videos to the homepage carousel
+- [Authentication](./docs/authentication.md) - Admin authentication system
 
 ## Features
 
@@ -73,8 +74,7 @@ app/
 └── [page]/
     └── page.tsx                # Dynamic page rendering
   
-
---- 
+---
 
 ## Future Enhancements
 

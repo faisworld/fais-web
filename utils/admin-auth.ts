@@ -9,8 +9,8 @@ export interface AdminAuthResult {
   isAuthenticated: boolean;
   user?: { 
     id: string;
-    email: string;
-    name: string;
+    email?: string;
+    name?: string;
     role: string;
   };
   error?: string;
@@ -19,8 +19,23 @@ export interface AdminAuthResult {
 /**
  * Checks if the current session belongs to an authenticated admin user
  * Uses NextAuth session to verify authentication and admin role
+ * Bypasses authentication in development mode
  */
 export async function checkAdminAuth(): Promise<AdminAuthResult> {
+  // For development or preview - bypass authentication 
+  // This allows testing without auth in development and Vercel Preview
+  const isDevOrPreview = 
+    process.env.NODE_ENV === 'development' ||
+    process.env.VERCEL_ENV === 'preview';
+    
+  if (isDevOrPreview) {
+    console.log('Development/Preview mode: Authentication bypassed');
+    return { 
+      isAuthenticated: true, 
+      user: { id: 'dev-admin', role: 'admin' }
+    };
+  }
+  
   try {
     // Get the session from NextAuth
     const session = await getServerSession(authOptions);

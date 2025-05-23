@@ -2,9 +2,9 @@ import { NextResponse } from "next/server"
 import { list } from "@vercel/blob"
 import { checkAdminAuth } from "@/utils/admin-auth"
 
-export async function GET(request: Request) {
+export async function GET() {
   // Check admin authentication
-  const authResult = await checkAdminAuth(request);
+  const authResult = await checkAdminAuth();
   if (!authResult.isAuthenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

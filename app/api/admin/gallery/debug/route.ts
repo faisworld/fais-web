@@ -7,7 +7,7 @@ import { Client } from '@neondatabase/serverless';
  * API route to test database connection and queries for the gallery images
  */
 export async function GET(request: Request) {
-  const { isAuthenticated } = await checkAdminAuth(request);
+  const { isAuthenticated } = await checkAdminAuth();
   if (!isAuthenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

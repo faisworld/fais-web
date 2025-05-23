@@ -7,6 +7,7 @@ import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
 import MissingImageFixer from '@/components/ui/MissingImageFixer'
 import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Providers } from './providers'
 
 
 
@@ -73,11 +74,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en' className={inter.className}><body>
-        <Header />
-        <DynamicBreadcrumbs darkBg={false} />
-        <main>{children}</main>
-        <Footer />
-        <MissingImageFixer />
+        <Providers>
+          <Header />
+          <DynamicBreadcrumbs darkBg={false} />
+          <main>{children}</main>
+          <Footer />        <MissingImageFixer />
 
         {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
         <ConditionalWidgetWrapper agentId='GkOKedIUAelQwYORYU3j' />
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* WidgetBot Crate Script */}
         <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>
         <SpeedInsights />
+        </Providers>
       </body></html>
   )
 }

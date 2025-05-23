@@ -23,7 +23,7 @@ const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB
 export async function POST(request: Request) {
   try {
     // Verify admin authentication
-    const authResult = await checkAdminAuth(request);
+    const authResult = await checkAdminAuth();
     if (!authResult.isAuthenticated) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

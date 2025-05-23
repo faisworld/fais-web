@@ -16,9 +16,9 @@ interface MediaItem {
   format?: string;
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   // Check admin authentication
-  const authResult = await checkAdminAuth(request);
+  const authResult = await checkAdminAuth();
   if (!authResult.isAuthenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

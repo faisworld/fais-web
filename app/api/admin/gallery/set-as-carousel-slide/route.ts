@@ -7,7 +7,7 @@ import { Client } from '@neondatabase/serverless';
  * API route to set a gallery image as a carousel slide
  */
 export async function POST(request: Request) {
-  const { isAuthenticated } = await checkAdminAuth(request);
+  const { isAuthenticated } = await checkAdminAuth();
   if (!isAuthenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

@@ -8,7 +8,7 @@ import { isVideo } from '@/utils/media-utils';
 
 export async function POST(request: Request) {
   // Check admin auth
-  const { isAuthenticated } = await checkAdminAuth(request);
+  const { isAuthenticated } = await checkAdminAuth();
   if (!isAuthenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
