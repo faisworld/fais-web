@@ -23,7 +23,7 @@ declare module "next-auth" {
 
 // Define admin users - replace these with actual admin emails
 const ADMIN_EMAILS = [
-  "admin@fais.com",
+  "info@fais.world",
   process.env.ADMIN_EMAIL,
 ].filter(Boolean);
 

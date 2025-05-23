@@ -1,8 +1,12 @@
-"use client";
+'use client'
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
+// This is the login page for the admin area
+// It allows admin users to log in using their credentials  
+
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -10,6 +14,15 @@ export default function AdminLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    // Only redirect if authenticated, not during loading
+    if (status === "authenticated") {
+      router.push('/admin');
+    }
+    // Don't add any redirect for unauthenticated users on the login page!
+  }, [status, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

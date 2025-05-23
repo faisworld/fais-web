@@ -46,18 +46,23 @@ export const blobImages: { [key: string]: string } = {
   'pioneering-digital-transformation': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-shaping-sota-technologies.mp4',
   'innovating-future': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747831531794-tmpw2j61nje.mp4',
   'shaping-sota-technologies': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-innovating-the-future.mp4',
-
+  
   // Solutions section images
   'ai-solutions': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076648350-20250512-2151-Futuristic-Office-Collaboration-simple-compose-01jv2xcqegeqzsm27xw0wayv3d.gif',
   'blockchain-solutions': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076641901-20250512-2155-Futuristic-Blockchain-Technology-simple-compose-01jv2xkk35fg99g5m1yecjjxa3.gif',
   
-  // Project images
+  // Project section images
   'web3-gaming': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069232372-20250512-1951-Web3-Gaming-Revolution-simple-compose-01jv2phxzzeprrz0e36tjat8hy.gif',   
   'payment-systems': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747075171305-20250512-2057-Futuristic-Blockchain-Payments-remix-01jv2tacjdf7prr72x36a3r710.gif',
   'mev-staking': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055425140-20250511-2158-Futuristic-Data-Connectivity-simple-compose-01jv0bd9emep8ssw4bwmkwkptb.gif',
   'nft-marketplace': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055463123-20250511-2149-AI-Glow-Effect-storyboard-01jv0aw3mvf7et4sgshfjs7z7v.gif',
   'ai-services': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747055432399-20250511-2154-Digital-Harmony-simple-compose-01jv0b560pexvvbv6we6kkm31v.gif',
   
+  // Quote section images
+  'ceo-portrait': 
+  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp',
+  
+
   // Projects page specific images
   'projects-dopple-ai': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-160711-X4TsCx0Tznl0kEKC9xteDtdk9eifzt.png',
   'projects-degen-kombat': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-160251-a1hFy83k9Rfzoenroo51nuUuLpXwXr.png',
@@ -68,13 +73,9 @@ export const blobImages: { [key: string]: string } = {
   'projects-blast-io': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-172306-qOsrwGzaEfz7gHuseaH756pBDbR88Y.png',
   'projects-base-org': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Screenshot-2025-01-05-172939-8HJfc36gfs5XyiuijmGkMiJgjnvIGI.png',
 
-  // Services and about page images
-  'services-og-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746529491566-Shaping-State-of-The-Art-Technologies-.gif',
-  'ceo-portrait': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp',
-  'service-image-1': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-1.webp',
-  'service-image-2': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-2.webp',
-  'service-image-3': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-3.webp',
-  'service-image-4': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/service-image-4.webp',
+  // Services page images 
+  'services-og-image': 
+  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
   
   // About page images
   'about-mission-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069236709-20250512-1428-Futuristic-Innovation-Hub-simple-compose-01jv242h1dexrbkgvw5vn5wx5v.gif',

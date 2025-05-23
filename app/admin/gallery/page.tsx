@@ -22,6 +22,12 @@ interface GalleryMedia {
   mediaType?: 'image' | 'video'; // New field to indicate media type
 }
 
+// Add thumbnail URLs for GIF and video files
+export const thumbnailImages: { [key: string]: string } = {
+  'about-mission-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/thumbnails/about-mission-thumbnail.jpg',
+  // Add more thumbnail mappings as needed
+};
+
 export default function AdminGalleryPage() {
   const [images, setImages] = useState<GalleryMedia[]>([]);
   const [loading, setLoading] = useState(true);

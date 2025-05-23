@@ -1,20 +1,44 @@
-'use client';
+'use client'
 
-import Image from "next/image";
-import Link from "next/link";
-import { getBlobImage } from "../../utils/media-utils"; 
+import Image from 'next/image'
+import Link from 'next/link'
+import VideoPlayer from '@/components/ui/VideoPlayer';
+import { getBlobImage, blobImages } from '@/utils/media-utils' 
 
 // We're using getBlobImage so we no longer need this
 // const BLOB_BASE_URL = "https://mzcje1drftvqhdku.public.blob.vercel-storage.com";
 
 // Metadata moved to page.metadata.ts
 
+// Component to properly display the services video
+const ServiceVideo = () => {
+  return (
+    <div className="relative w-full h-[60vh] my-8 rounded-lg overflow-hidden">
+      <VideoPlayer 
+        src={blobImages['services-og-image']}
+        height="70vh"
+        className="rounded-lg"
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-10">
+        <div className="text-center p-8">
+          <h1 className="text-5xl font-bold text-white mb-6">Our Services</h1>
+          <p className="text-xl text-white max-w-3xl">
+            Delivering innovative solutions that transform businesses for the digital era
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function ServicesPage() {
   return (
     <div className="relative overflow-x-clip">      {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />
-        <div className="absolute bottom-[-100px] right-[-100px] w-[260px] h-[260px] rounded-full bg-neutral-200 opacity-30 blur-3xl" />
+        {/* Left background shape - positioned wider to align with logo */}
+        <div className="absolute top-[-200px] left-[-300px] w-[500px] h-[500px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />
+        {/* Right background shape - positioned wider to align with end of menu */}
+        <div className="absolute bottom-[-200px] right-[-300px] w-[500px] h-[500px] rounded-full bg-neutral-200 opacity-30 blur-3xl" />
       </div>
 
       <main className="relative z-10">        {/* Hero Section */}
@@ -117,6 +141,7 @@ export default function ServicesPage() {
           </Link>
         </section>
       </main>
+      <ServiceVideo />
     </div>
   );
 }
