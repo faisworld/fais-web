@@ -9,7 +9,8 @@ import https from 'https';
 import http from 'http';
 
 const SITE_URL = 'https://fais.world';
-const SITEMAP_URL = `${SITE_URL}/sitemap.xml`;
+// Use sitemap index for search engine pings
+const SITEMAP_URL = `${SITE_URL}/sitemap-index.xml`;
 
 // List of search engines to ping
 const searchEngines = [
@@ -30,14 +31,13 @@ const searchEngines = [
  * @param {Object} engine The search engine to ping
  */
 function pingSearchEngine(engine) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const protocol = engine.url.startsWith('https') ? https : http;
     
     const req = protocol.get(engine.url, (res) => {
       const { statusCode } = res;
-      let rawData = '';
       
-      res.on('data', (chunk) => { rawData += chunk; });
+      res.on('data', () => {}); // Just consume the data without storing it
       res.on('end', () => {
         if (statusCode < 200 || statusCode >= 300) {
           console.log(`❌ ${engine.name} ping failed with status: ${statusCode}`);

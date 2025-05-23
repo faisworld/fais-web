@@ -20,7 +20,9 @@ export async function GET(request: Request) {
     const fileSize = formatSize(Number(headRes.headers.get('content-length') || '0'));
     
     if (type === 'image') {
-      const result = await probe(url);
+      const response = await fetch(url);
+      const buffer = Buffer.from(await response.arrayBuffer());
+      const result = await probe(buffer);
       return NextResponse.json({
         width: result.width,
         height: result.height,

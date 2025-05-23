@@ -6,13 +6,12 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
-    "sitemap": "next-sitemap && node scripts/update-sitemap-dates.js",
-    "postbuild": "echo \"Sitemap generation disabled for deployment\"",
+    "postbuild": "node scripts/generate-sitemap.mjs && node scripts/generate-blog-sitemap.mjs && node scripts/generate-sitemap-index.mjs && node scripts/update-sitemap-dates.mjs",
     "start": "next start",
-    "lint": "next lint",
-    "generate-sitemap": "next-sitemap && node scripts/update-sitemap-dates.js",
-    "update-sitemap-dates": "node scripts/update-sitemap-dates.js",
-    "ping-search-engines": "node scripts/ping-search-engines.js"
+    "lint": "next lint","generate-sitemap": "npx next-sitemap --config next-sitemap.config.mjs && node scripts/update-sitemap-dates.mjs",
+    "update-sitemap-dates": "node scripts/update-sitemap-dates.mjs",
+    "update-blog-sitemap": "node scripts/update-blog-sitemap.mjs",
+    "ping-search-engines": "node scripts/ping-search-engines.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",

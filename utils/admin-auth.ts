@@ -1,46 +1,73 @@
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/lib/auth"
+
 /**
- * Simple utility for checking admin authentication
+ * Admin authentication utility using NextAuth
  */
 
 export interface AdminAuthResult {
   isAuthenticated: boolean;
   user?: { 
     id: string;
+    email: string;
+    name: string;
     role: string;
   };
   error?: string;
 }
 
 /**
- * Checks if the request is from an authenticated admin user
- * Always returns true in development or preview environment
+ * Checks if the current session belongs to an authenticated admin user
+ * Uses NextAuth session to verify authentication and admin role
  */
-export async function checkAdminAuth(request: Request): Promise<AdminAuthResult> {
-  // For development or preview - bypass authentication 
-  // This allows testing without auth in development and Vercel Preview
-  const isDevOrPreview = 
-    process.env.NODE_ENV === 'development' ||
-    process.env.VERCEL_ENV === 'preview';
+export async function checkAdminAuth(): Promise<AdminAuthResult> {
+  try {
+    // Get the session from NextAuth
+    const session = await getServerSession(authOptions);
     
-  if (isDevOrPreview) {
-    console.log('Development/Preview mode: Authentication bypassed');
-    return { 
-      isAuthenticated: true, 
-      user: { id: 'dev-admin', role: 'admin' }
+    if (!session || !session.user) {
+      return {
+        isAuthenticated: false,
+        error: 'No active session found'
+      };
+    }
+
+    // Check if user has admin role
+    if (session.user.role !== 'admin') {
+      return {
+        isAuthenticated: false,
+        error: 'Insufficient permissions - admin role required'
+      };
+    }
+
+    return {
+      isAuthenticated: true,
+      user: {
+        id: session.user.id!,
+        email: session.user.email!,
+        name: session.user.name!,
+        role: session.user.role
+      }
+    };
+  } catch (error) {
+    console.error('Admin auth check failed:', error);
+    return {
+      isAuthenticated: false,
+      error: 'Authentication check failed'
     };
   }
+}
 
-  // Get the authorization header
-  const authHeader = request.headers.get('authorization');
+/**
+ * Checks admin authentication for client-side components
+ * This should be used in API routes or server components
+ */
+export async function getAdminSession() {
+  const session = await getServerSession(authOptions);
   
-  // Simple placeholder implementation for production
-  // In production, you should implement proper authentication
-  // This is a temporary solution that will allow builds to complete
-  return {
-    isAuthenticated: true,
-    user: {
-      id: 'admin-user-id',
-      role: 'admin'
-    }
-  };
+  if (!session || !session.user || session.user.role !== 'admin') {
+    return null;
+  }
+  
+  return session;
 }

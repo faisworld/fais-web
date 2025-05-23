@@ -3,6 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap locations
+Sitemap: https://fais.world/sitemap-index.xml
 Sitemap: https://fais.world/sitemap.xml
 Sitemap: https://fais.world/blog-sitemap.xml
 

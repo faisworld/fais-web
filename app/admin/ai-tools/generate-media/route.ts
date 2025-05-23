@@ -48,7 +48,16 @@ export async function POST(request: NextRequest) {
     // Set up Replicate API call
     const replicateApiUrl = 'https://api.replicate.com/v1/predictions';
     
-    const requestBody: any = {
+    interface ReplicateRequestBody {
+      version: string;
+      input: {
+        prompt: string;
+        camera_movements?: string;
+        image?: string;
+      };
+    }
+    
+    const requestBody: ReplicateRequestBody = {
       version: modelIdentifier,
       input: {
         prompt,
@@ -75,11 +84,11 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify(requestBody),
       });
-    } catch (fetchError: any) {
+    } catch (fetchError: unknown) {
       console.error('❌ Replicate API fetch error:', fetchError);
       return NextResponse.json({ 
         error: 'Failed to connect to AI service provider',
-        message: fetchError.message
+        message: fetchError instanceof Error ? fetchError.message : String(fetchError)
       }, { status: 500 });
     }
 
@@ -110,11 +119,11 @@ export async function POST(request: NextRequest) {
             'Content-Type': 'application/json',
           },
         });
-      } catch (checkError: any) {
+      } catch (checkError: unknown) {
         console.error('❌ Replicate API check error:', checkError);
         return NextResponse.json({ 
           error: 'Failed to check prediction status',
-          message: checkError.message
+          message: checkError instanceof Error ? checkError.message : String(checkError)
         }, { status: 500 });
       }
       
