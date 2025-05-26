@@ -49,9 +49,10 @@ export async function middleware(request: NextRequest) {
   if (isAdminRoute) {
     const host = request.headers.get('host');
 
-    // Return 404 for admin routes on production
+    // Return not-found page for admin routes on production
     if (process.env.NODE_ENV === 'production' && host === 'fais.world') {
-      return NextResponse.rewrite(new URL('/404', request.url));
+      // Use notFound() to trigger the not-found page
+      return NextResponse.rewrite(new URL('/non-existent-path-to-trigger-not-found', request.url));
     }
 
     // Allow only localhost:3000 in all other environments
