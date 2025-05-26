@@ -45,11 +45,14 @@ export async function middleware(request: NextRequest) {
     response.headers.set('X-Use-Correct-DOCTYPE', 'true')
   }
   
-  const clientIp = request.headers.get('x-forwarded-for') || '127.0.0.1';
-
   // Restrict access to admin routes to localhost only
-  if (isAdminRoute && clientIp !== '127.0.0.1') {
-    return new NextResponse('Access Denied', { status: 403 });
+  if (isAdminRoute) {
+    const host = request.headers.get('host');
+
+    // Allow only requests from localhost:3000
+    if (host !== 'localhost:3000') {
+      return new NextResponse('Access Denied', { status: 403 });
+    }
   }
 
   return response
