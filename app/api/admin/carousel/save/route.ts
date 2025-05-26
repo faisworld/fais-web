@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { Client } from '@neondatabase/serverless';
 
 // Save carousel metadata and update links to Blobstore media

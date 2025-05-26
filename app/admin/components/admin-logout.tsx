@@ -1,19 +1,16 @@
-"use client";
+'use client';
 
-import { signOut } from "next-auth/react";
-import Button from "@/components/ui/Button"; // Changed to uppercase B
-import { LogOut } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 export function AdminLogout() {
+  const router = useRouter();
+  
   return (
-    <Button 
-      onClick={() => signOut({ callbackUrl: '/' })}
-      variant="outline"
-      size="sm"
-      className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+    <button 
+      className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+      onClick={() => router.push('/')}
     >
-      <LogOut size={16} />
-      <span>Logout</span>
-    </Button>
+      Back to Site
+    </button>
   );
 }

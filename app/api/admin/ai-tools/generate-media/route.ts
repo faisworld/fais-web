@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { verifyAdminRequest } from '@/utils/admin-auth';
 
 // Comment out unused placeholders to avoid build errors
 // These are kept for reference but commented out to pass linting
@@ -16,10 +16,10 @@ export async function POST(request: NextRequest) {
   console.log("🔄 Processing media generation request");
   
   // Check admin authentication
-  const authResult = await checkAdminAuth();
-  if (!authResult.isAuthenticated) {
+  const authResult = await verifyAdminRequest(request);
+  if (!authResult.success) {
     console.log("⛔ Authentication failed");
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: authResult.message }, { status: 403 });
   }
 
   try {

@@ -1,6 +1,6 @@
 // app/api/admin/gallery/set-as-carousel-slide/route.ts
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { Client } from '@neondatabase/serverless';
 
 /**

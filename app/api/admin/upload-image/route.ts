@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { put } from "@vercel/blob"
 import { Client } from "@neondatabase/serverless"
-import { checkAdminAuth } from "@/utils/admin-auth"
+import { checkAdminAuth } from "@/utils/auth-compat";
 
 export async function POST(request: Request): Promise<NextResponse> {
   // Check admin authentication

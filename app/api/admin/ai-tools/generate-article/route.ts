@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { streamText, CoreMessage } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateArticleImageTool } from '@/utils/o3-assistant-tools/generateArticleImageTool';

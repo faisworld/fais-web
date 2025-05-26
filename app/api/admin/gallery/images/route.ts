@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Client } from "@neondatabase/serverless";
-import { checkAdminAuth } from "@/utils/admin-auth";
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { del, list } from "@vercel/blob";
 
 // Enable CORS

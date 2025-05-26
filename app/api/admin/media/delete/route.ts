@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { del } from '@vercel/blob';
 
 export async function DELETE(request: Request) {

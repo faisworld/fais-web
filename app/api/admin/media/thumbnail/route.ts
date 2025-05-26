@@ -1,6 +1,6 @@
 // app/api/admin/media/thumbnail/route.ts
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { put } from '@vercel/blob';
 import sharp from 'sharp';
 import fetch from 'node-fetch';

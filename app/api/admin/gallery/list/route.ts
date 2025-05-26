@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { list } from "@vercel/blob";
-import { checkAdminAuth } from "@/utils/admin-auth";
+import { verifyAdminRequest } from '@/utils/admin-auth';
 
 interface MediaItem {
   id: number;
@@ -16,13 +16,14 @@ interface MediaItem {
   format?: string;
 }
 
-export async function GET() {
-  // Check admin authentication
-  const authResult = await checkAdminAuth();
-  if (!authResult.isAuthenticated) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(req: NextRequest) {
+  // Verify the request is from localhost
+  const authResult = await verifyAdminRequest(req);
+  
+  if (!authResult.success) {
+    return NextResponse.json({ error: authResult.message }, { status: 403 });
   }
-
+  
   try {
     console.log("Admin: Fetching media from Vercel Blob storage...")
     
@@ -82,38 +83,40 @@ export async function GET() {
         const dateA = new Date(a.uploaded_at).getTime();
         const dateB = new Date(b.uploaded_at).getTime();
         return dateB - dateA;
-      });    console.log(`Found ${images.length} media items in Blob storage`)
+      });
+      
+    console.log(`Found ${images.length} media items in Blob storage`)
     
     // Extract unique folders from the media items
     const uniqueFolders = Array.from(
       new Set(
         images
-          .filter(item => item.folder) // Only include items that have a folder
-          .map(item => item.folder)    // Extract folder names
+          .filter(item => item.folder)
+          .map(item => item.folder)
       )
     ) as string[];
     
     // Add default folders if they don't exist in the list
     const defaultFolders = ['images', 'carousel', 'videos'];
-    defaultFolders.forEach(folder => {
+    for (const folder of defaultFolders) {
       if (!uniqueFolders.includes(folder)) {
         uniqueFolders.push(folder);
       }
-    });
+    }
     
-    // Sort folders alphabetically
-    uniqueFolders.sort();
-    
-    return NextResponse.json({ 
+    return NextResponse.json({
       images,
-      folders: uniqueFolders 
-    })
+      folders: uniqueFolders.sort()
+    });
   } catch (error) {
-    console.error("Error fetching media from Blob storage:", error)
-    return NextResponse.json({ 
-      error: "Failed to fetch media", 
-      details: error instanceof Error ? error.message : String(error) 
-    }, { status: 500 })
+    console.error("Error fetching media:", 
+      error instanceof Error ? error.message : String(error)
+    );
+    
+    return NextResponse.json(
+      { error: "Failed to retrieve media" },
+      { status: 500 }
+    );
   }
 }
 

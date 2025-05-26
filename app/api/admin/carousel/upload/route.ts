@@ -1,7 +1,7 @@
 // app/api/admin/carousel/check-data/route.ts
 import { NextResponse } from 'next/server';
 import { Client } from '@neondatabase/serverless';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 
 /**
  * API route to check the database structure and data for carousel debugging

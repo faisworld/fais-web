@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { list } from "@vercel/blob"
-import { checkAdminAuth } from "@/utils/admin-auth"
+import { checkAdminAuth } from "@/utils/auth-compat";
 
 export async function GET() {
   // Check admin authentication

@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 
 // Comment out unused placeholders to avoid build errors
 // These are kept for reference but commented out to pass linting

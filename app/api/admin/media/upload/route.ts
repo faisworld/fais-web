@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/utils/admin-auth';
+import { checkAdminAuth } from "@/utils/auth-compat";
 import { put } from '@vercel/blob';
 import { v4 as uuidv4 } from 'uuid';
 
