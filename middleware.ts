@@ -45,6 +45,13 @@ export async function middleware(request: NextRequest) {
     response.headers.set('X-Use-Correct-DOCTYPE', 'true')
   }
   
+  const clientIp = request.headers.get('x-forwarded-for') || '127.0.0.1';
+
+  // Restrict access to admin routes to localhost only
+  if (isAdminRoute && clientIp !== '127.0.0.1') {
+    return new NextResponse('Access Denied', { status: 403 });
+  }
+
   return response
 }
 
@@ -54,5 +61,6 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
     '/kvitka-poloniny',
     '/kvitka-poloniny/:path*',
+    '/admin/:path*',
   ],
 }
