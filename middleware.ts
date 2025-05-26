@@ -45,11 +45,16 @@ export async function middleware(request: NextRequest) {
     response.headers.set('X-Use-Correct-DOCTYPE', 'true')
   }
   
-  // Restrict access to admin routes to localhost only
+  // Restrict access to admin routes based on environment and host
   if (isAdminRoute) {
     const host = request.headers.get('host');
 
-    // Allow only requests from localhost:3000
+    // Return 404 for admin routes on production
+    if (process.env.NODE_ENV === 'production' && host === 'fais.world') {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
+
+    // Allow only localhost:3000 in all other environments
     if (host !== 'localhost:3000') {
       return new NextResponse('Access Denied', { status: 403 });
     }
