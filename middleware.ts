@@ -1,6 +1,5 @@
 // middleware.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
 
 export async function middleware(request: NextRequest) {
   // Add pathname to headers for use in server components
@@ -12,50 +11,24 @@ export async function middleware(request: NextRequest) {
     return response
   }
   
-  // Check for admin routes that need authentication in production
+  // Check for admin routes
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
-  const isLoginRoute = request.nextUrl.pathname === '/admin/login'
-  
-  // CRITICAL FIX: Always allow direct access to login route
-  if (isLoginRoute) {
-    // Never redirect the login page to itself!
-    return response
-  }
-
-  // For development or preview - bypass authentication
-  const isDevOrPreview = 
-    process.env.NODE_ENV === 'development' ||
-    process.env.VERCEL_ENV === 'preview';
-
-  // Only enforce authentication for production admin routes
-  if (isAdminRoute && !isDevOrPreview) {
-    const token = await getToken({ 
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET
-    })
-    
-    // If no token or user is not an admin, redirect to login
-    if (!token || token.role !== 'admin') {
-      return NextResponse.redirect(new URL('/admin/login', request.url))
-    }
-  }
   
   // For all other routes, ensure DOCTYPE is present
   if (request.nextUrl.pathname !== '/_next' && !request.nextUrl.pathname.startsWith('/_next/') && !request.nextUrl.pathname.startsWith('/api/')) {
     response.headers.set('X-Use-Correct-DOCTYPE', 'true')
   }
   
-  // Restrict access to admin routes based on environment and host
+  // Restrict access to admin routes based on host
   if (isAdminRoute) {
     const host = request.headers.get('host');
 
-    // Return not-found page for admin routes on production
-    if (process.env.NODE_ENV === 'production' && host === 'fais.world') {
-      // Use notFound() to trigger the not-found page
+    // On production site: Return not-found page for admin routes
+    if (host === 'fais.world' || host?.endsWith('.fais.world')) {
       return NextResponse.rewrite(new URL('/non-existent-path-to-trigger-not-found', request.url));
     }
 
-    // Allow only localhost:3000 in all other environments
+    // Allow only localhost:3000 in all environments
     if (host !== 'localhost:3000') {
       return new NextResponse('Access Denied', { status: 403 });
     }
