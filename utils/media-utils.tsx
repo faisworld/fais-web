@@ -47,6 +47,9 @@ export const blobImages: { [key: string]: string } = {
   'innovating-future': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747831531794-tmpw2j61nje.mp4',
   'shaping-sota-technologies': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-innovating-the-future.mp4',
   
+  // Services hero video
+  'services-hero-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
+  
   // Solutions section images
   'ai-solutions': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076648350-20250512-2151-Futuristic-Office-Collaboration-simple-compose-01jv2xcqegeqzsm27xw0wayv3d.gif',
   'blockchain-solutions': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076641901-20250512-2155-Futuristic-Blockchain-Technology-simple-compose-01jv2xkk35fg99g5m1yecjjxa3.gif',
@@ -100,6 +103,27 @@ export function getBlobImage(key: string, fallback?: string): string {
 
   // Return the mapped URL or fallback
   return (key && blobImages[key]) || fallback || getPlaceholderImage(key || 'Image');
+}
+
+/**
+ * Get a Blob video URL by its friendly name
+ */
+export function getBlobVideo(key: string, fallback?: string): string {
+  // First check if it's a URL already
+  if (key && typeof key === 'string' && key.startsWith('http')) {
+    return key;
+  }
+  
+  // Look up the key in our videos map
+  if (key && blobImages[key]) {
+    const path = blobImages[key];
+    if (path.endsWith('.mp4')) {
+      return path;
+    }
+  }
+  
+  // Return fallback or empty string
+  return fallback || '';
 }
 
 /**
@@ -186,14 +210,11 @@ class VideoPlayQueue {
    */
   public queueVideo(id: string, video: HTMLVideoElement): void {
     // Cancel any previous attempt for this ID
-    if (this.pendingPlays.has(id)) {
-      try {
+    if (this.pendingPlays.has(id)) {      try {
         const previousVideo = this.pendingPlays.get(id);
-        if (previousVideo) {
-          previousVideo.pause();
-        }
+        previousVideo?.pause();
       } catch {
-        // Ignore errors
+        // Ignore errors on pause
       }
     }
 
@@ -202,7 +223,7 @@ class VideoPlayQueue {
       try {
         this.activeVideo.video.pause();
       } catch {
-        // Ignore errors during cleanup
+        // Ignore errors on pause
       }
       this.activeVideo = null;
     }
@@ -250,12 +271,13 @@ class VideoPlayQueue {
     this.pendingPlays.delete(id);
     
     // Try to play the video
-    this.safePlayVideo(video, id)
-      .then(() => {
+    this.safePlayVideo(video, id)      .then(() => {
         // Store as active video if successfully played
         this.activeVideo = { id, video };
       })
-      .catch(err => console.error('Error playing video:', err))
+      .catch(() => {
+        // Silent fail on play error - browser may block autoplay
+      })
       .finally(() => {
         this.isProcessing = false;
         // Continue processing the queue after a delay
@@ -268,8 +290,7 @@ class VideoPlayQueue {
   /**
    * Safely attempt to play a video with proper error handling
    */
-  private async safePlayVideo(video: HTMLVideoElement, id: string): Promise<void> {
-    if (!video) return;
+  private async safePlayVideo(video: HTMLVideoElement, id: string): Promise<void> {    if (!video) return;
 
     // Check if the video element has sources
     const hasSource = 
@@ -277,14 +298,12 @@ class VideoPlayQueue {
       video.querySelectorAll('source').length > 0;
 
     if (!hasSource) {
-      console.warn(`Video ${id} has no source available`);
-      throw new Error(`Video has no source available`);
+      throw new Error(`Video with id ${id} has no source available`);
     }
 
     try {
       // Ensure the video is ready to play
       if (video.readyState < 2) {
-        console.log(`Video ${id} not ready yet, waiting...`);
         
         // Wait for the video to be ready
         await new Promise<void>((resolve, reject) => {
@@ -298,26 +317,16 @@ class VideoPlayQueue {
             video.removeEventListener('canplay', handleCanPlay);
             video.removeEventListener('error', handleError);
             
-            let errorMessage = 'Unknown error';
-            if (video.error) {
-              // Get more detailed error information from the MediaError object
-              const errorCodes = {
+                        const errorCodes = {
                 1: 'MEDIA_ERR_ABORTED',
                 2: 'MEDIA_ERR_NETWORK',
                 3: 'MEDIA_ERR_DECODE',
                 4: 'MEDIA_ERR_SRC_NOT_SUPPORTED'
               };
               
-              const code = video.error.code as keyof typeof errorCodes;
-              errorMessage = errorCodes[code] || video.error.message || 'Unknown error';
-              
-              // Log additional information for debugging
-              console.error(`Video error code: ${video.error.code}`);
-              console.error(`Video source: ${video.src}`);
-              console.error(`Video network state: ${video.networkState}`);
-            }
-            
-            reject(new Error(`Video load error: ${errorMessage}`));
+              const code = video.error?.code as keyof typeof errorCodes;
+              const errorMessage = code ? errorCodes[code] : 'Unknown error';
+              reject(new Error(errorMessage));
           };
           
           video.addEventListener('canplay', handleCanPlay);
@@ -367,19 +376,15 @@ class VideoPlayQueue {
             console.error('Error loading video:', e);
           }
         });
-      }
-      
+      }      
       // Reset to beginning for consistent experience
       video.currentTime = 0;
       
       // Try to play the video with a small delay to avoid browser throttling
       await new Promise<void>(resolve => setTimeout(resolve, 50));
       await video.play();
-      
-      console.log(`Video ${id} playing successfully`);
       return;
     } catch (error) {
-      console.warn(`Play attempt failed for video ${id}:`, error);
       throw error;
     }
   }

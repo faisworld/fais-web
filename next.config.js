@@ -19,12 +19,17 @@ const nextConfig = {
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
+      },      {
+        protocol: 'https',
+        hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
+        port: '',
+        pathname: '/images/**',
       },
       {
         protocol: 'https',
         hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
         port: '',
-        pathname: '/images/**',
+        pathname: '/videos/**',
       },
     ],
     domains: [
