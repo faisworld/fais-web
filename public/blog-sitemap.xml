@@ -3,7 +3,7 @@
   <!-- Blog Main Page -->
   <url>
     <loc>https://fais.world/blog</loc>
-    <lastmod>2025-05-10</lastmod>
+    <lastmod>2025-05-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -54,30 +54,6 @@
   <url>
     <loc>https://fais.world/blog/tokenization-real-world-assets</loc>
     <lastmod>2025-04-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fais.world/blog/ai-healthcare-advancements</loc>
-    <lastmod>2025-04-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fais.world/blog/blockchain-sustainability</loc>
-    <lastmod>2025-04-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fais.world/blog/ai-ml-comparison</loc>
-    <lastmod>2025-04-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fais.world/blog/dao-governance-models</loc>
-    <lastmod>2025-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

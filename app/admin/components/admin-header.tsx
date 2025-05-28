@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AdminLogout } from "./admin-logout";
 
 interface AdminHeaderProps {
   title?: string;
@@ -52,7 +51,8 @@ export const AdminHeader = ({ title = "Admin Dashboard" }: AdminHeaderProps) => 
             </Link>
           </nav>
           
-          <AdminLogout />
+          {/* Localhost only - no logout needed */}
+          <span className="text-sm text-gray-500">Localhost Admin</span>
         </div>
       </div>
     </header>
