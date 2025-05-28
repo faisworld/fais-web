@@ -13,24 +13,20 @@ const AnimatedCounter = dynamic(() => import('@/components/ui/AnimatedCounter'),
 
 export default function AboutPage() {
   return (
-    <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20'>
-      
-      {/* Hero Section with centered title */}
-      <section className='text-center mb-20'>
+    <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20'>      {/* Hero Section with centered title */}
+      <section className='text-center mb-6'>
         <h1 className='text-5xl md:text-7xl font-extrabold mb-8 text-neutral-900 lowercase leading-tight'>
           about fantastic ai studio
         </h1>
-        <div className='max-w-4xl mx-auto'>
-          <p className='text-xl md:text-2xl text-neutral-600 mb-12 leading-relaxed lowercase'>
+        <div className='max-w-4xl mx-auto'>          <p className='text-xl md:text-2xl text-neutral-600 mb-4 leading-relaxed lowercase'>
             we are a pioneering technology company dedicated to transforming businesses through the power of artificial intelligence and blockchain innovation.
           </p>
-          <div className='w-24 h-1 bg-neutral-800 mx-auto mb-16'></div>
+          <div className='w-24 h-1 bg-neutral-800 mx-auto mb-2'></div>
         </div>
       </section>
 
-      {/* Story Timeline Section */}
-      <section className='mb-20'>
-        <h2 className='text-4xl font-bold text-center mb-16 lowercase text-neutral-800'>
+      {/* Story Timeline Section */}      <section className='mb-12'>
+        <h2 className='text-4xl font-bold text-center mb-6 lowercase text-neutral-800'>
           our story
         </h2>
         <div className='relative'>
@@ -47,15 +43,20 @@ export default function AboutPage() {
                     to drive innovation by delivering cutting-edge ai and blockchain solutions that empower businesses to thrive in the digital age. we believe technology should be accessible, transformative, and ethically implemented.
                   </p>
                 </div>
-              </div>
-              <div className='md:w-1/2 md:pl-12'>
-                <Image
-                  src={getBlobImage("about-mission-image")}
-                  alt="Our Mission in AI and Blockchain Innovation"
-                  width={600}
-                  height={400}
-                  className='rounded-2xl shadow-xl w-full object-cover'
-                />
+              </div>              <div className='md:w-1/2 md:pl-12'>
+                <div className='rounded-2xl shadow-xl overflow-hidden aspect-video bg-neutral-100 relative'>
+                  <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                    className='w-full h-full object-cover'
+                    src={getBlobImage("about-mission-video")}
+                    poster={getBlobImage("about-mission-image")}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
             </div>
             {/* Timeline Dot */}
@@ -72,15 +73,19 @@ export default function AboutPage() {
                     to be a global leader in ai and blockchain innovation, fostering sustainable growth and transformative technologies that shape the future of how businesses operate and connect.
                   </p>
                 </div>
-              </div>
-              <div className='md:w-1/2 md:pr-12'>
-                <Image
-                  src={getBlobImage("about-vision-image")}
-                  alt="Our Vision for AI and Blockchain Future"
-                  width={600}
-                  height={400}
-                  className='rounded-2xl shadow-xl w-full object-cover'
-                />
+              </div>              <div className='md:w-1/2 md:pr-12'>                <div className='rounded-2xl shadow-xl overflow-hidden aspect-video bg-neutral-100 relative'>
+                  <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                    className='w-full h-full object-cover'
+                    src={getBlobImage("about-vision-video")}
+                    poster={getBlobImage("about-vision-image")}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
             </div>
             {/* Timeline Dot */}

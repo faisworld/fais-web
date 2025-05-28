@@ -15,7 +15,7 @@ const PLACEHOLDER_VIDEO_URL = "https://download.samplelib.com/mp4/sample-5s.mp4"
 // Model version mapping - Replicate uses format: model-name:version-hash
 const MODEL_VERSIONS: Record<string, string> = {
   'nvidia/sana': 'nvidia/sana:c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6',
-  'google/imagen-3-fast': 'google/imagen-3-fast', // Keep as working version
+  'google/imagen-4': 'google/imagen-4', // Format is just "google/imagen-4" for Replicate API
   'minimax/image-01': 'minimax/image-01', // Keep as working version
   // Video models
   'google/veo-2': 'google/veo-2',
@@ -146,15 +146,15 @@ export async function POST(request: NextRequest) {
       if (numInferenceSteps) requestBody.input.num_inference_steps = numInferenceSteps;
       if (guidanceScale) requestBody.input.guidance_scale = guidanceScale;
       if (pagGuidanceScale) requestBody.input.pag_guidance_scale = pagGuidanceScale;
-      if (seed) requestBody.input.seed = seed;
-    } else if (modelIdentifier === 'minimax/image-01') {
+      if (seed) requestBody.input.seed = seed;    } else if (modelIdentifier === 'minimax/image-01') {
       // Minimax Image 01 specific parameters
       if (aspect_ratio) requestBody.input.aspect_ratio = aspect_ratio;
       if (number_of_images !== undefined) requestBody.input.number_of_images = number_of_images;
       if (prompt_optimizer !== undefined) requestBody.input.prompt_optimizer = prompt_optimizer;
-      if (subject_reference) requestBody.input.subject_reference = subject_reference;    } else if (modelIdentifier === 'google/imagen-3-fast') {
-      // Google Imagen 3 Fast specific parameters  
-      if (aspect_ratio) requestBody.input.aspect_ratio = aspect_ratio;
+      if (subject_reference) requestBody.input.subject_reference = subject_reference;
+    } else if (modelIdentifier === 'google/imagen-4') {
+      // Google Imagen 4 specific parameters  
+      if (aspectRatio || aspect_ratio) requestBody.input.aspect_ratio = aspectRatio || aspect_ratio;
       if (safety_filter_level) requestBody.input.safety_filter_level = safety_filter_level;
     } else if (modelIdentifier === 'google/veo-2') {
       // Google Veo 2 specific parameters
@@ -269,11 +269,24 @@ export async function POST(request: NextRequest) {
       console.error('❌ Replicate prediction timed out');
       return NextResponse.json({ error: 'Generation timed out' }, { status: 504 });
     }
-    
-    // Return the appropriate output based on media type
+      // Return the appropriate output based on media type
     if (mediaType === 'image') {
-      console.log(`✅ Returning image: ${result.output}`);
-      return NextResponse.json({ imageUrl: result.output });
+      // Handle multiple images for models like Minimax Image 01
+      if (Array.isArray(result.output)) {
+        console.log(`✅ Returning ${result.output.length} images: ${result.output}`);
+        return NextResponse.json({ 
+          imageUrl: result.output[0], // Primary image for backward compatibility
+          imageUrls: result.output,   // All images
+          count: result.output.length 
+        });
+      } else {
+        console.log(`✅ Returning single image: ${result.output}`);
+        return NextResponse.json({ 
+          imageUrl: result.output,
+          imageUrls: [result.output],
+          count: 1
+        });
+      }
     } else if (mediaType === 'video') {
       console.log(`✅ Returning video: ${result.output}`);
       return NextResponse.json({ videoUrl: result.output });

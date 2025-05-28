@@ -5,7 +5,7 @@ import { uploadToBlob } from '../blob-upload'; // Import Vercel Blob upload func
 
 // Define specific model identifiers with versions based on user-provided IDs
 const MODEL_MINIMAX_IMAGE_01 = "minimax/image-01:w4agaakfhnrme0cnbhgtyfmstc";
-const MODEL_GOOGLE_IMAGEN_3_FAST = "google/imagen-3-fast:swntzryxznrm80cmvc1aqbnqgg";
+const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4"; // Format is just "google/imagen-4" for Replicate API
 const MODEL_NVIDIA_SANA = "nvidia/sana:c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6";
 
 const replicate = new Replicate({
@@ -16,9 +16,11 @@ export const GenerateArticleImageParameters = z.object({
   prompt: z.string().min(5).describe('A detailed prompt for the image generation model.'),
   aspectRatio: z.enum(['1:1', '16:9', '4:3', '3:2', '9:16']).default('16:9').optional()
     .describe('Desired aspect ratio for the generated image.'),
-  modelIdentifier: z.enum([MODEL_MINIMAX_IMAGE_01, MODEL_GOOGLE_IMAGEN_3_FAST, MODEL_NVIDIA_SANA]).default(MODEL_MINIMAX_IMAGE_01)
+  modelIdentifier: z.enum([MODEL_MINIMAX_IMAGE_01, MODEL_GOOGLE_IMAGEN_4, MODEL_NVIDIA_SANA]).default(MODEL_MINIMAX_IMAGE_01)
     .describe('The Replicate model identifier (owner/name:version).'),
   negativePrompt: z.string().optional().describe('Optional negative prompt for the image generation.'),
+  safetyFilterLevel: z.enum(['block_low_and_above', 'block_medium_and_above', 'block_only_high']).default('block_only_high').optional()
+    .describe('Safety filter level for Google Imagen 4. block_low_and_above is strictest, block_only_high is most permissive.'),
 });
 
 // Helper to round to nearest multiple of 64, required by some models like nvidia/sana
@@ -27,10 +29,11 @@ const roundTo64 = (n: number) => Math.round(n / 64) * 64;
 interface ModelInput {
   prompt: string;
   aspect_ratio_str?: '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
-  aspect_ratio?: '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
+  aspect_ratio?: '1:1' | '16:9' | '4:3' | '3:2' | '9:16' | '9:16';
   width?: number;
   height?: number;
   negative_prompt?: string;
+  safety_filter_level?: 'block_low_and_above' | 'block_medium_and_above' | 'block_only_high';
   // Add other potential model-specific parameters here if known
 }
 
@@ -39,8 +42,9 @@ async function generateArticleImageLogic(
   aspectRatio: '1:1' | '16:9' | '4:3' | '3:2' | '9:16' = '16:9',
   modelIdentifier: string,
   negativePrompt?: string,
+  safetyFilterLevel?: 'block_low_and_above' | 'block_medium_and_above' | 'block_only_high',
 ): Promise<{ imageUrl: string; imageAlt: string }> {
-  console.log(`Generating image with Replicate model: ${modelIdentifier}, Prompt: \"${prompt}\", Aspect Ratio: ${aspectRatio}`);
+  console.log(`Generating image with Replicate model: ${modelIdentifier}, Prompt: \"${prompt}\", Aspect Ratio: ${aspectRatio}, Safety Filter: ${safetyFilterLevel || 'default'}`);
 
   const modelInput: ModelInput = {
     prompt: prompt,
@@ -49,7 +53,6 @@ async function generateArticleImageLogic(
   if (negativePrompt) {
     modelInput.negative_prompt = negativePrompt;
   }
-
   // Adapt input parameters based on the selected model
   const modelName = modelIdentifier.split(':')[0];
 
@@ -57,8 +60,11 @@ async function generateArticleImageLogic(
     case 'minimax/image-01':
       modelInput.aspect_ratio_str = aspectRatio;
       break;
-    case 'google/imagen-3-fast':
+    case 'google/imagen-4':
       modelInput.aspect_ratio = aspectRatio;
+      if (safetyFilterLevel) {
+        modelInput.safety_filter_level = safetyFilterLevel;
+      }
       break;
     case 'nvidia/sana':
       const baseSize = 1024;
@@ -145,6 +151,6 @@ async function generateArticleImageLogic(
 export const generateArticleImageTool = tool({
   description: 'Generates an image using a specified Replicate model, uploads it to Vercel Blob, and returns the Blob URL and alt text.',
   parameters: GenerateArticleImageParameters as ZodType<z.infer<typeof GenerateArticleImageParameters>>,
-  execute: async ({ prompt, aspectRatio, modelIdentifier, negativePrompt }: z.infer<typeof GenerateArticleImageParameters>) =>
-    generateArticleImageLogic(prompt, aspectRatio, modelIdentifier, negativePrompt),
+  execute: async ({ prompt, aspectRatio, modelIdentifier, negativePrompt, safetyFilterLevel }: z.infer<typeof GenerateArticleImageParameters>) =>
+    generateArticleImageLogic(prompt, aspectRatio, modelIdentifier, negativePrompt, safetyFilterLevel),
 });

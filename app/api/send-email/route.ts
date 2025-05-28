@@ -80,23 +80,44 @@ async function verifyRecaptchaToken(token: string, action: string) {
   }
 }
 
+// Handle GET requests (for when someone visits the URL directly)
+export async function GET() {
+  return NextResponse.json({ 
+    message: "Send Email API is working. Use POST method to send emails." 
+  }, { status: 200 })
+}
+
 export async function POST(request: Request) {
+  console.log('POST /api/send-email - Request received') // Debug log
+  
   try {
     // Get client IP
-    const ip = request.headers.get("x-forwarded-for") || "unknown"
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
+    console.log(`Request from IP: ${ip}`) // Debug log
 
     // Check rate limit
     if (isRateLimited(ip)) {
+      console.log(`Rate limited: ${ip}`) // Debug log
       return NextResponse.json({ message: "Too many requests. Please try again later." }, { status: 429 })
     }
 
     const body = await request.json()
+    console.log('Request body received:', { name: body.name, email: body.email, hasMessage: !!body.message }) // Debug log
+    
     const { name, email, message, recaptchaToken, recaptchaAction = "submit_contact_form", isDevelopment } = body
 
     // Validate required fields
     if (!name || !email || !message) {
+      console.log('Missing required fields') // Debug log
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 })
     }
+
+    // Check environment variables
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('Missing SMTP environment variables')
+      return NextResponse.json({ message: "Server configuration error" }, { status: 500 })
+    }
+    console.log('SMTP credentials configured') // Debug log
 
     // Skip reCAPTCHA verification in development mode
     const isDevEnvironment = process.env.NODE_ENV === 'development' || isDevelopment
@@ -107,6 +128,7 @@ export async function POST(request: Request) {
       if (!recaptchaToken) {
         console.warn("Missing reCAPTCHA token in request - proceeding anyway", { ip })
       } else {
+        console.log('Verifying reCAPTCHA token...') // Debug log
         // Verify the reCAPTCHA token
         const verification = await verifyRecaptchaToken(recaptchaToken, recaptchaAction)
 
@@ -116,29 +138,47 @@ export async function POST(request: Request) {
         } else if (verification.score < 0.5) {
           console.warn(`Suspicious activity detected. Score: ${verification.score}`)
           // We're not blocking the request, just logging the warning
+        } else {
+          console.log(`reCAPTCHA verified successfully. Score: ${verification.score}`) // Debug log
         }
       }
     } else {
       console.log("Development mode: Skipping reCAPTCHA verification")
     }
 
+    console.log('Creating email transporter...') // Debug log
     // Create a transporter using SMTP credentials
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com", // Update this based on your email provider
+      host: "smtp.gmail.com",
       port: 587,
-      secure: false, // true for 465, false for other ports
+      secure: false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
     })
 
+    // Test the connection
+    try {
+      await transporter.verify()
+      console.log('SMTP connection verified') // Debug log
+    } catch (verifyError) {
+      console.error('SMTP verification failed:', verifyError)
+      return NextResponse.json({ message: "Email service configuration error" }, { status: 500 })
+    }
+
+    // Create dynamic subject from first 4-5 words of message
+    const messageWords = message.trim().split(/\s+/)
+    const titleWords = messageWords.slice(0, Math.min(5, messageWords.length))
+    const dynamicTitle = titleWords.join(' ')
+    const subject = dynamicTitle.length > 0 ? `${dynamicTitle}...` : `Message from ${name}`
+
     // Format the email
     const mailOptions = {
       from: `"Contact Form" <${process.env.SMTP_USER}>`,
-      to: process.env.SMTP_USER, // or another email address if desired
-      replyTo: email, // Allow direct replies to the sender
-      subject: `New Contact Form Submission from ${name}`,
+      to: process.env.SMTP_USER,
+      replyTo: `"${name}" <${email}>`, // Now shows as "Jon Doe <johndoe@gmail.com>"
+      subject: subject,
       text: `You received a new message from ${name} (${email}):\n\n${message}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px;">
@@ -156,37 +196,25 @@ export async function POST(request: Request) {
       `,
     }
 
+    console.log('Sending email...') // Debug log
     // Send the email
     await transporter.sendMail(mailOptions)
-
-    // After sending the main email, send an auto-reply to the sender
-    // try {
-    //   const autoReplyOptions = {
-    //     from: `"Fantastic AI Studio" <${process.env.SMTP_USER}>`,
-    //     to: email,
-    //     subject: "Thank you for contacting us",
-    //     text: `Dear ${name},\n\nThank you for reaching out to us. We have received your message and will get back to you as soon as possible.\n\nBest regards,\nThe Fantastic AI Studio Team`,
-    //     html: `
-    //       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px;">
-    //         <h2 style="color: #333;">Thank You for Contacting Us</h2>
-    //         <p>Dear ${name},</p>
-    //         <p>Thank you for reaching out to us. We have received your message and will get back to you as soon as possible.</p>
-    //         <p>Best regards,<br>The Fantastic AI Studio Team</p>
-    //       </div>
-    //     `,
-    //   }
-
-    //   await transporter.sendMail(autoReplyOptions)
-    //   console.log("Auto-reply sent to", email)
-    // } catch (autoReplyError) {
-    //   console.error("Error sending auto-reply:", autoReplyError)
-    //   // Don't fail the request if auto-reply fails
-    // }
+    console.log('Email sent successfully') // Debug log
 
     // Return success response
     return NextResponse.json({ message: "Email sent successfully." })
   } catch (error) {
     console.error("Email sending error:", error)
+    
+    // More specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes('Invalid login')) {
+        return NextResponse.json({ message: "Email authentication failed. Please check server configuration." }, { status: 500 })
+      } else if (error.message.includes('ENOTFOUND')) {
+        return NextResponse.json({ message: "Unable to connect to email server." }, { status: 500 })
+      }
+    }
+    
     return NextResponse.json({ message: "Failed to send email. Please try again later." }, { status: 500 })
   }
 }

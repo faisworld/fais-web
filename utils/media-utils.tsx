@@ -78,10 +78,11 @@ export const blobImages: { [key: string]: string } = {
   // Services page images 
   'services-og-image': 
   'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
-  
   // About page images
   'about-mission-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069236709-20250512-1428-Futuristic-Innovation-Hub-simple-compose-01jv242h1dexrbkgvw5vn5wx5v.gif',
+  'about-mission-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
   'about-vision-image': '/placeholder.svg?width=500&height=300&query=Vision%20Image',
+  'about-vision-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/videos/fb3c4b1c-c5cf-4570-8082-9673b0ba6516.mp4',
   'about-value-innovation-image': '/placeholder.svg?width=300&height=200&query=Innovation%20Value',
   'about-value-integrity-image': '/placeholder.svg?width=300&height=200&query=Integrity%20Value',
   'about-value-collaboration-image': '/placeholder.svg?width=300&height=200&query=Collaboration%20Value',

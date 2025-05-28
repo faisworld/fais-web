@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, AlertCircle, CheckCircle2, Copy, ExternalLink } from "lucide-react";
+import { Loader2, AlertCircle, Check, Link } from "lucide-react";
+import Image from "next/image";
 
 // Define the available image generation models
 const IMAGE_MODELS = [
   { id: "minimax/image-01", name: "Minimax Image 01" },
-  { id: "google/imagen-3-fast", name: "Google Imagen 3 Fast" },
+  { id: "google/imagen-4", name: "Google Imagen 4" },
   { id: "nvidia/sana", name: "Nvidia Sana" },
 ];
 
@@ -119,18 +120,16 @@ export default function ImageGenerationPage() {
   const [numberOfImages, setNumberOfImages] = useState<number>(1);
   const [promptOptimizer, setPromptOptimizer] = useState<boolean>(true);
   const [subjectReference, setSubjectReference] = useState<string>("");
-  
-  // Google Imagen 3 Fast specific parameters
+    // Google Imagen 3 Fast specific parameters
   const [safetyFilterLevel, setSafetyFilterLevel] = useState<string>("block_only_high");
-  
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+    const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [originalImageUrls, setOriginalImageUrls] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [copySuccess, setCopySuccess] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
+  const [copySuccess, setCopySuccess] = useState<boolean>(false);  const [isClient, setIsClient] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
-  const [retryCount, setRetryCount] = useState<number>(0);
   const [debugInfo, setDebugInfo] = useState<Record<string, unknown> | null>(null);
   const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   
@@ -152,11 +151,9 @@ export default function ImageGenerationPage() {
       return;
     }    setIsGenerating(true);
     setError(null);
-    setGeneratedImage(null);
-    setOriginalImageUrl(null);
+    setGeneratedImage(null);    setOriginalImageUrl(null);
     setImageLoaded(false);
     setImageError(false);
-    setRetryCount(0);
     setDebugInfo(null);try {
       const requestBody: ImageGenerationRequest = {
         mediaType: "image",
@@ -171,15 +168,14 @@ export default function ImageGenerationPage() {
         requestBody.numInferenceSteps = numInferenceSteps;
         requestBody.guidanceScale = guidanceScale;
         requestBody.pagGuidanceScale = pagGuidanceScale;
-        if (seed) requestBody.seed = parseInt(seed);
-      } else if (selectedModel === 'minimax/image-01') {
+        if (seed) requestBody.seed = parseInt(seed);      } else if (selectedModel === 'minimax/image-01') {
         // Minimax Image 01 specific parameters
         requestBody.aspect_ratio = aspectRatio;
         requestBody.number_of_images = numberOfImages;
         requestBody.prompt_optimizer = promptOptimizer;
         if (subjectReference) requestBody.subject_reference = subjectReference;
-      } else if (selectedModel === 'google/imagen-3-fast') {
-        // Google Imagen 3 Fast specific parameters
+      } else if (selectedModel === 'google/imagen-4') {
+        // Google Imagen 4 specific parameters
         requestBody.aspect_ratio = aspectRatio;
         requestBody.safety_filter_level = safetyFilterLevel;
       } else {
@@ -200,17 +196,42 @@ export default function ImageGenerationPage() {
         throw new Error(data.message || "Failed to generate image");
       }      console.log('API Response:', data);
       console.log('Generated image URL:', data.imageUrl);
-        // For Replicate URLs, use our proxy to avoid CORS issues
-      let displayUrl = data.imageUrl;
-      if (data.imageUrl && (data.imageUrl.includes('replicate.delivery') || data.imageUrl.includes('replicate.com'))) {
-        displayUrl = `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}`;
-        console.log('Using proxy URL:', displayUrl);
-      }
-      
-      setOriginalImageUrl(data.imageUrl); // Store the original URL
-      setGeneratedImage(displayUrl);} catch (err) {
-      console.error("Error generating image:", err);
-      setError(err instanceof Error ? err.message : String(err));
+      console.log('All generated images:', data.imageUrls);
+      console.log('Number of images:', data.count);
+        // Handle multiple images if they exist
+      if (data.imageUrls && Array.isArray(data.imageUrls)) {
+        // Store original URLs
+        setOriginalImageUrls(data.imageUrls);
+        
+        // Process all URLs through proxy if needed
+        const processedUrls = data.imageUrls.map((url: string) => {
+          if (url && (url.includes('replicate.delivery') || url.includes('replicate.com'))) {
+            return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+          }
+          return url;
+        });
+        
+        setGeneratedImages(processedUrls);
+        setGeneratedImage(processedUrls[0]); // Set first image as primary
+        setCurrentImageIndex(0);
+      } else {
+        // Fallback for single image (backward compatibility)
+        setOriginalImageUrls([data.imageUrl]);
+        
+        let displayUrl = data.imageUrl;
+        if (data.imageUrl && (data.imageUrl.includes('replicate.delivery') || data.imageUrl.includes('replicate.com'))) {
+          displayUrl = `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}`;
+          console.log('Using proxy URL:', displayUrl);
+        }
+        
+        setGeneratedImages([displayUrl]);
+        setGeneratedImage(displayUrl);
+        setCurrentImageIndex(0);
+      }      
+      setOriginalImageUrl(data.imageUrl); // Store the original URL for backward compatibility
+    } catch (error) {
+      console.error("Error generating image:", error);
+      setError(error instanceof Error ? error.message : String(error));
       // Don't automatically set a fallback image - let user see the actual error
     } finally {
       setIsGenerating(false);
@@ -223,13 +244,19 @@ export default function ImageGenerationPage() {
     setGeneratedImage(imageUrl);
     setImageLoaded(true);
     setError(null);
-  };
-    const handleCopyUrl = () => {
-    const urlToCopy = originalImageUrl || generatedImage; // Prefer original URL
-    if (urlToCopy && navigator.clipboard) {
-      navigator.clipboard.writeText(urlToCopy);
+  };  const handleCopyUrl = async () => {
+    try {
+      const currentUrl = generatedImages[currentImageIndex];
+      // If originalImageUrls exists and has a corresponding URL, use that instead of the proxy URL
+      const urlToCopy = originalImageUrls[currentImageIndex] || currentUrl;
+      
+      await navigator.clipboard.writeText(urlToCopy);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy URL:', error);
+      // Use console.error instead of toast since toast is not defined
+      console.error("Error: Failed to copy image URL to clipboard");
     }
   };const debugImageUrl = async (url: string) => {
     try {
@@ -245,33 +272,30 @@ export default function ImageGenerationPage() {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const imgElement = e.currentTarget;
-    const imageUrl = imgElement.src;
-    
-    console.log(`Image failed to load: ${imageUrl}`);
-    console.log(`Error details:`, {
-      src: imgElement.src,
-      naturalWidth: imgElement.naturalWidth,
-      naturalHeight: imgElement.naturalHeight,
-      complete: imgElement.complete
-    });
-    
-    // Don't replace AI-generated images with placeholders automatically
-    // Instead, show the actual URL with an error message so users can debug
-    if (imageUrl && !imageUrl.includes('picsum.photos') && !imageUrl.includes('placeholder')) {
-      setError(`Generated image failed to load. The image was created at: ${imageUrl}. This may be due to CORS restrictions or the image not being immediately available. Try opening the URL directly in a new tab.`);
+    if (!imgElement.classList.contains('thumbnail-image')) {
+      // Main image error handling
       setImageError(true);
-      setImageLoaded(true);
-    } else if (retryCount < 2) {
-      // Only retry for placeholder images
-      setRetryCount(retryCount + 1);
-      const retryUrl = selectedModel === 'nvidia/sana' 
-        ? `https://picsum.photos/${selectedResolution.width}/${selectedResolution.height}?grayscale&retry=${retryCount}`
-        : getPlaceholderUrl(aspectRatio) + "?retry=" + retryCount;
-      setGeneratedImage(retryUrl);
+      setImageLoaded(false);
     } else {
-      setImageError(true);
-      setImageLoaded(true);
+      // Thumbnail error handling
+      imgElement.style.display = 'none';
+      const placeholderDiv = imgElement.parentElement?.querySelector('div');
+      if (placeholderDiv) {
+        placeholderDiv.style.display = 'flex';
+      }
     }
+  };
+
+  // Add styles for thumbnail placeholders
+  const thumbnailPlaceholderStyle = {
+    backgroundColor: '#f3f4f6', // Light gray background
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    color: '#9ca3af', // Gray text
+    fontSize: '0.75rem',
   };
 
   // Show simple loader when not on client yet (prevent hydration mismatch)
@@ -282,6 +306,16 @@ export default function ImageGenerationPage() {
       </div>
     );
   }
+
+  // Function to handle image navigation
+  const navigateToImage = (index: number) => {
+    if (index >= 0 && index < generatedImages.length) {
+      setCurrentImageIndex(index);
+      setGeneratedImage(generatedImages[index]);
+      setImageError(false);
+      setImageLoaded(false);
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -326,8 +360,7 @@ export default function ImageGenerationPage() {
                 onChange={(e) => setNegativePrompt(e.target.value)}
                 placeholder="What should NOT appear in the image..."
               />
-            </div>            {/* Model-specific controls */}
-            {selectedModel === 'nvidia/sana' ? (
+            </div>            {/* Model-specific controls */}            {selectedModel === 'nvidia/sana' ? (
               <>
                 {/* Resolution Selection for nvidia/sana */}
                 <div>
@@ -450,8 +483,7 @@ export default function ImageGenerationPage() {
                     onChange={(e) => setSeed(e.target.value)}
                     placeholder="Leave empty for random seed"
                   />                </div>
-              </>
-            ) : selectedModel === 'minimax/image-01' ? (
+              </>            ) : selectedModel === 'minimax/image-01' ? (
               <>
                 {/* Minimax Image 01 specific controls */}
                 <div>
@@ -520,9 +552,8 @@ export default function ImageGenerationPage() {
                   <p className="text-xs text-gray-500 mt-1">Optional character reference image for consistent subject generation</p>
                 </div>
               </>
-            ) : selectedModel === 'google/imagen-3-fast' ? (
-              <>
-                {/* Google Imagen 3 Fast specific controls */}
+            ) : selectedModel === 'google/imagen-4' ? (
+              <>            {/* Google Imagen 4 specific controls */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
                   <div className="grid grid-cols-5 gap-2">
@@ -558,7 +589,7 @@ export default function ImageGenerationPage() {
                   <p className="text-xs text-gray-500 mt-1">Controls content filtering strictness</p>
                 </div>
               </>
-            ) : (              /* Aspect Ratio Controls for other models */
+            ) : (/* Aspect Ratio Controls for other models */
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
                 <div className="grid grid-cols-4 gap-2">
@@ -688,12 +719,13 @@ export default function ImageGenerationPage() {
                 <Loader2 className="animate-spin h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <p className="text-gray-600">Generating your image...</p>
               </div>
-            ) : generatedImage ? (
-              <div className="w-full h-full relative">
-                <img 
-                  src={generatedImage} 
+            ) : generatedImage ? (              <div className="w-full h-full relative">                
+                <Image 
+                  src={generatedImage}
                   alt="Generated image"
-                  className="object-contain w-full h-full"
+                  className="object-contain w-full h-full main-image"
+                  fill
+                  unoptimized
                   onLoad={() => {
                     setImageLoaded(true);
                     setImageError(false);
@@ -740,36 +772,132 @@ export default function ImageGenerationPage() {
                 </div>
                 <p className="text-gray-500 mb-2">Your generated image will appear here</p>
                 <p className="text-sm text-gray-400">Enter a prompt and click &quot;Generate Image&quot;</p>
-              </div>
-            )}
+              </div>            )}
           </div>
+          
+          {/* Multiple Images Navigation */}
+          {generatedImages.length > 1 && (
+            <div className="mt-4 flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => navigateToImage(currentImageIndex - 1)}
+                  disabled={currentImageIndex === 0}
+                  className="px-3 py-1 bg-white border border-gray-300 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                >
+                  Previous
+                </button>
+                <span className="text-sm text-gray-700">
+                  Image {currentImageIndex + 1} of {generatedImages.length}
+                </span>
+                <button
+                  onClick={() => navigateToImage(currentImageIndex + 1)}
+                  disabled={currentImageIndex === generatedImages.length - 1}
+                  className="px-3 py-1 bg-white border border-gray-300 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                >
+                  Next
+                </button>
+              </div>
+              <button
+                onClick={handleCopyUrl}
+                className="flex items-center space-x-1 px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50"
+              >
+                {copySuccess ? (
+                  <>
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span>Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Link className="h-4 w-4" />
+                    <span>Copy URL</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+          
+          {/* All Images Grid (for multiple images) */}
+          {generatedImages.length > 1 && (
+            <div className="mt-4">
+              <h3 className="text-sm font-medium text-gray-700 mb-2">All Generated Images:</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {generatedImages.map((imageUrl, index) => (
+                  <button
+                    key={index}
+                    onClick={() => navigateToImage(index)}
+                    className={`aspect-square relative rounded-lg overflow-hidden border-2 ${
+                      currentImageIndex === index ? 'border-blue-500' : 'border-transparent'
+                    }`}
+                  >                    <Image
+                      src={imageUrl}
+                      alt={`Generated image ${index + 1}`}
+                      className="thumbnail-image object-cover w-full h-full"
+                      fill
+                      unoptimized
+                      onError={handleImageError}
+                    />
+                    {/* Thumbnail placeholder for error state */}
+                    <div
+                      style={thumbnailPlaceholderStyle}
+                      className="absolute inset-0 flex items-center justify-center bg-gray-100"
+                    >
+                      <span>Image {index + 1}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Image URL and Actions */}
           {generatedImage && imageLoaded && !imageError && (
-            <div className="mt-4">
-              <div className="flex justify-between items-center mb-1">
-                <p className="text-sm font-medium text-gray-700">Image URL:</p>
-                <div className="flex items-center space-x-2">                  <button
-                    onClick={handleCopyUrl}
-                    className="!text-blue-600 hover:!text-blue-800 !bg-transparent text-sm flex items-center"
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={handleCopyUrl}
+                  className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                >
+                  <Link className="h-4 w-4" />
+                  {copySuccess ? 'URL Copied!' : 'Copy Image URL'}
+                </button>
+                {originalImageUrls[currentImageIndex] && (
+                  <button
+                    onClick={() => window.open(originalImageUrls[currentImageIndex], '_blank')}
+                    className="text-sm text-gray-600 hover:text-gray-800"
                   >
-                    {copySuccess ? <CheckCircle2 size={16} className="mr-1" /> : <Copy size={16} />}
-                    {copySuccess ? "Copied!" : "Copy URL"}
+                    View Original
                   </button>
-                  <a
-                    href={generatedImage}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="!text-blue-600 hover:!text-blue-800 text-sm flex items-center"
-                  >
-                    <ExternalLink size={16} className="mr-1" />
-                    Open
-                  </a>
-                </div>
+                )}
               </div>
-              <div className="bg-gray-50 p-2 rounded border border-gray-200">
-                <p className="text-xs text-gray-600 break-all">{generatedImage}</p>
+              <div className="text-xs text-gray-500">
+                Resolution: {selectedResolution.width}x{selectedResolution.height}
               </div>
+            </div>
+          )}          {/* Thumbnail Grid View (for multiple images) */}
+          {generatedImages.length > 1 && (
+            <div className="mt-4 grid grid-cols-3 gap-2 max-w-[600px]">
+              {generatedImages.map((imageUrl, index) => (
+                <button
+                  key={index}
+                  onClick={() => navigateToImage(index)}
+                  className={`relative aspect-square w-full overflow-hidden rounded-lg border ${
+                    index === currentImageIndex
+                      ? 'border-blue-500 ring-2 ring-blue-500'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={imageUrl}
+                      alt={`Generated thumbnail ${index + 1}`}
+                      className="thumbnail-image object-cover"
+                      fill
+                      unoptimized
+                      onError={handleImageError}
+                    />
+                  </div>
+                </button>
+              ))}
             </div>
           )}
         </div>
