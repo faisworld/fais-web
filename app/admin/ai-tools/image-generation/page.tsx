@@ -109,7 +109,7 @@ export default function ImageGenerationPage() {
   const [negativePrompt, setNegativePrompt] = useState<string>("");
     // New state for resolution and nvidia/sana specific parameters
   const [selectedResolution, setSelectedResolution] = useState<{ width: number; height: number }>({ width: 1024, height: 1024 });
-  const [modelVariant, setModelVariant] = useState<string>("Sana_1600M_1024px");
+  const [modelVariant, setModelVariant] = useState<string>("1600M-1024px");
   const [numInferenceSteps, setNumInferenceSteps] = useState<number>(18);
   const [guidanceScale, setGuidanceScale] = useState<number>(5);
   const [pagGuidanceScale, setPagGuidanceScale] = useState<number>(2);
@@ -131,6 +131,8 @@ export default function ImageGenerationPage() {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [imageError, setImageError] = useState<boolean>(false);
   const [retryCount, setRetryCount] = useState<number>(0);
+  const [debugInfo, setDebugInfo] = useState<Record<string, unknown> | null>(null);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   
   // Update resolution when aspect ratio changes
   useEffect(() => {
@@ -151,9 +153,11 @@ export default function ImageGenerationPage() {
     }    setIsGenerating(true);
     setError(null);
     setGeneratedImage(null);
+    setOriginalImageUrl(null);
     setImageLoaded(false);
     setImageError(false);
-    setRetryCount(0);    try {
+    setRetryCount(0);
+    setDebugInfo(null);try {
       const requestBody: ImageGenerationRequest = {
         mediaType: "image",
         modelIdentifier: selectedModel,
@@ -190,20 +194,24 @@ export default function ImageGenerationPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
-      });
-
-      const data = await response.json();
+      });      const data = await response.json();
       
       if (!response.ok) {
         throw new Error(data.message || "Failed to generate image");
-      }      setGeneratedImage(data.imageUrl);    } catch (err) {
+      }      console.log('API Response:', data);
+      console.log('Generated image URL:', data.imageUrl);
+        // For Replicate URLs, use our proxy to avoid CORS issues
+      let displayUrl = data.imageUrl;
+      if (data.imageUrl && (data.imageUrl.includes('replicate.delivery') || data.imageUrl.includes('replicate.com'))) {
+        displayUrl = `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}`;
+        console.log('Using proxy URL:', displayUrl);
+      }
+      
+      setOriginalImageUrl(data.imageUrl); // Store the original URL
+      setGeneratedImage(displayUrl);} catch (err) {
       console.error("Error generating image:", err);
       setError(err instanceof Error ? err.message : String(err));
-      const fallbackUrl = selectedModel === 'nvidia/sana' 
-        ? `https://picsum.photos/${selectedResolution.width}/${selectedResolution.height}?grayscale`
-        : getPlaceholderUrl(aspectRatio);
-      setGeneratedImage(fallbackUrl);
-      setImageError(true);
+      // Don't automatically set a fallback image - let user see the actual error
     } finally {
       setIsGenerating(false);
     }
@@ -216,25 +224,51 @@ export default function ImageGenerationPage() {
     setImageLoaded(true);
     setError(null);
   };
-  
-  const handleCopyUrl = () => {
-    if (generatedImage && navigator.clipboard) {
-      navigator.clipboard.writeText(generatedImage);
+    const handleCopyUrl = () => {
+    const urlToCopy = originalImageUrl || generatedImage; // Prefer original URL
+    if (urlToCopy && navigator.clipboard) {
+      navigator.clipboard.writeText(urlToCopy);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     }
-  };  const handleImageError = () => {
-    console.log(`Image failed to load (attempt ${retryCount + 1})`);
+  };const debugImageUrl = async (url: string) => {
+    try {
+      const response = await fetch(`/api/debug/image-proxy?url=${encodeURIComponent(url)}`);
+      const data = await response.json();
+      setDebugInfo(data);
+      console.log('Debug info:', data);
+    } catch (error) {
+      console.error('Debug failed:', error);
+      setDebugInfo({ error: 'Debug request failed' });
+    }
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const imgElement = e.currentTarget;
+    const imageUrl = imgElement.src;
     
-    if (retryCount < 2) {
-      // Try another image source
+    console.log(`Image failed to load: ${imageUrl}`);
+    console.log(`Error details:`, {
+      src: imgElement.src,
+      naturalWidth: imgElement.naturalWidth,
+      naturalHeight: imgElement.naturalHeight,
+      complete: imgElement.complete
+    });
+    
+    // Don't replace AI-generated images with placeholders automatically
+    // Instead, show the actual URL with an error message so users can debug
+    if (imageUrl && !imageUrl.includes('picsum.photos') && !imageUrl.includes('placeholder')) {
+      setError(`Generated image failed to load. The image was created at: ${imageUrl}. This may be due to CORS restrictions or the image not being immediately available. Try opening the URL directly in a new tab.`);
+      setImageError(true);
+      setImageLoaded(true);
+    } else if (retryCount < 2) {
+      // Only retry for placeholder images
       setRetryCount(retryCount + 1);
       const retryUrl = selectedModel === 'nvidia/sana' 
         ? `https://picsum.photos/${selectedResolution.width}/${selectedResolution.height}?grayscale&retry=${retryCount}`
         : getPlaceholderUrl(aspectRatio) + "?retry=" + retryCount;
       setGeneratedImage(retryUrl);
     } else {
-      // After 3 attempts, show error state
       setImageError(true);
       setImageLoaded(true);
     }
@@ -332,18 +366,18 @@ export default function ImageGenerationPage() {
                       </button>
                     ))}
                   </div>
-                </div>
-
-                {/* Model Variant */}
-                <div>
+                </div>                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Model Variant</label>
                   <select
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={modelVariant}
                     onChange={(e) => setModelVariant(e.target.value)}
                   >
-                    <option value="Sana_1600M_1024px">Sana 1600M 1024px</option>
-                    <option value="Sana_1600M_512px">Sana 1600M 512px</option>
+                    <option value="1600M-1024px">1600M 1024px</option>
+                    <option value="1600M-1024px-multilang">1600M 1024px Multilang</option>
+                    <option value="1600M-512px">1600M 512px</option>
+                    <option value="600M-1024px-multilang">600M 1024px Multilang</option>
+                    <option value="600M-512px-multilang">600M 512px Multilang</option>
                   </select>
                 </div>
 
@@ -559,15 +593,83 @@ export default function ImageGenerationPage() {
                 ) : (
                   <span>Generate Image</span>
                 )}
-              </button>
-                <button
+              </button>                <button
                 onClick={loadDemoImage}
                 className="w-full border border-gray-300 !text-gray-700 !bg-white py-2.5 px-4 rounded-md hover:!bg-gray-50 transition"
               >
                 Load Demo Image
+              </button>              <button
+                onClick={() => {
+                  // Test with a known working Replicate image URL format
+                  const testUrl = "https://replicate.delivery/pbxt/foo.png";
+                  setGeneratedImage(testUrl);
+                  setImageLoaded(false);
+                  setImageError(false);
+                  setError(null);
+                  console.log('Testing with URL:', testUrl);
+                }}
+                className="w-full border border-orange-300 !text-orange-700 !bg-orange-50 py-2.5 px-4 rounded-md hover:!bg-orange-100 transition"
+              >
+                Test Replicate URL Format
               </button>
+              <button
+                onClick={async () => {
+                  try {
+                    setIsGenerating(true);
+                    setError(null);
+                    console.log('🧪 Running comprehensive test...');
+                    
+                    const response = await fetch('/api/test/image-generation', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ prompt: prompt || "A beautiful test image" })
+                    });
+                    
+                    const data = await response.json();
+                    console.log('🧪 Test results:', data);
+                    setDebugInfo(data);
+                    
+                    if (data.imageUrl) {
+                      setOriginalImageUrl(data.imageUrl);
+                      const displayUrl = data.imageUrl.includes('replicate') 
+                        ? `/api/image-proxy?url=${encodeURIComponent(data.imageUrl)}`
+                        : data.imageUrl;
+                      setGeneratedImage(displayUrl);
+                    }
+                  } catch (err) {
+                    console.error('🧪 Test failed:', err);
+                    setError(`Test failed: ${err instanceof Error ? err.message : String(err)}`);
+                  } finally {
+                    setIsGenerating(false);
+                  }
+                }}
+                className="w-full border border-green-300 !text-green-700 !bg-green-50 py-2.5 px-4 rounded-md hover:!bg-green-100 transition"
+                disabled={isGenerating}
+              >
+                {isGenerating ? 'Running Test...' : 'Run Comprehensive Test'}
+              </button>{(generatedImage || originalImageUrl) && (
+                <button
+                  onClick={() => {
+                    const urlToDebug = originalImageUrl || generatedImage;
+                    if (urlToDebug) debugImageUrl(urlToDebug);
+                  }}
+                  className="w-full border border-blue-300 !text-blue-700 !bg-blue-50 py-2.5 px-4 rounded-md hover:!bg-blue-100 transition"
+                >
+                  Debug Current Image URL
+                </button>
+              )}
             </div>
           </div>
+
+          {/* Debug Information */}
+          {debugInfo && (
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <h4 className="font-medium text-blue-800 mb-2">Debug Information:</h4>
+              <pre className="text-xs text-blue-700 whitespace-pre-wrap">
+                {JSON.stringify(debugInfo, null, 2)}
+              </pre>
+            </div>
+          )}
 
           {/* Error Message */}
           {error && (
@@ -581,8 +683,7 @@ export default function ImageGenerationPage() {
         {/* Generated Image Section */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-6">Generated Image</h2>
-            <div className="bg-gray-100 rounded-lg overflow-hidden border border-gray-200 h-[400px] relative flex items-center justify-center">
-            {isGenerating ? (
+            <div className="bg-gray-100 rounded-lg overflow-hidden border border-gray-200 h-[400px] relative flex items-center justify-center">            {isGenerating ? (
               <div className="text-center">
                 <Loader2 className="animate-spin h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <p className="text-gray-600">Generating your image...</p>
@@ -593,10 +694,33 @@ export default function ImageGenerationPage() {
                   src={generatedImage} 
                   alt="Generated image"
                   className="object-contain w-full h-full"
-                  onLoad={() => setImageLoaded(true)}
+                  onLoad={() => {
+                    setImageLoaded(true);
+                    setImageError(false);
+                    console.log('Image loaded successfully:', generatedImage);
+                  }}
                   onError={handleImageError}
                   style={{ display: imageError ? 'none' : 'block' }}
                 />
+                {imageError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100">                    <div className="text-center p-4">
+                      <AlertCircle className="h-12 w-12 text-orange-500 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600 mb-2">Image display failed</p>
+                      <p className="text-xs text-gray-500 mb-1 break-all">Display URL: {generatedImage}</p>
+                      {originalImageUrl && originalImageUrl !== generatedImage && (
+                        <p className="text-xs text-gray-500 mb-3 break-all">Original URL: {originalImageUrl}</p>
+                      )}
+                      <a 
+                        href={originalImageUrl || generatedImage} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        Open original in new tab
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (              <div className="text-center p-4">
                 <div className="mb-4">
