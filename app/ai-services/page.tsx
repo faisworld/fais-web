@@ -49,18 +49,16 @@ export default function AIServicesPage() {
           <div className="max-w-5xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900">
               {"{ai}"} solutions by fAi{"{s}"}tudio
-            </h1>
-            <p className="text-xl md:text-2xl mb-10 text-neutral-700 max-w-3xl mx-auto">
-              at fantastic ai studio, we provide a diverse range of artificial intelligence solutions tailored to meet the unique needs of businesses and corporations.
+            </h1>            <p className="text-xl md:text-2xl mb-10 text-neutral-700 max-w-3xl mx-auto">
+              fantastic ai studio is dedicated to delivering top-tier AI technologies that drive innovation and efficiency. we provide a diverse range of artificial intelligence solutions tailored to meet the unique needs of businesses and corporations.
             </p>
             {/* Image Placeholder */}
             <div className="flex justify-center mb-10">
               <div className="w-full max-w-2xl h-64 bg-neutral-100 rounded-2xl flex items-center justify-center border-2 border-dashed border-neutral-300 shadow-lg">
                 <span className="text-neutral-400 text-lg">[ai solutions image]</span>
               </div>
-            </div>
-            <p className="text-lg mb-10 text-neutral-700 max-w-3xl mx-auto">
-              our innovative ai services are designed to enhance operational efficiency, drive data-driven decision-making, and foster intelligent automation.
+            </div>            <p className="text-lg mb-10 text-neutral-700 max-w-3xl mx-auto">
+              our team of experts works closely with you to understand your unique needs and provide tailored ai services that meet the highest standards of quality and performance. our innovative ai services are designed to enhance operational efficiency, drive data-driven decision-making, and foster intelligent automation.
             </p>
             <Link
               href="/contact"
@@ -176,32 +174,31 @@ export default function AIServicesPage() {
         <section className="bg-neutral-100 py-20 px-4">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center">why fAi{"{s}"}tudio?</h2>
-            <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white rounded-xl p-6 shadow-md">
+            <div className="grid md:grid-cols-4 gap-6">              <div className="bg-white rounded-xl p-6 shadow-md">
                 <h3 className="text-xl font-bold mb-2">expertise & experience</h3>
                 <p className="text-neutral-700">
-                  Our team of AI specialists combines deep technical knowledge with years of industry experience to deliver superior solutions.
+                  fantastic ai studio is dedicated to delivering top-tier AI technologies with our team of specialists who combine deep technical knowledge with years of industry experience.
                 </p>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-md">
-                <h3 className="text-xl font-bold mb-2">customized approach</h3>
+                <h3 className="text-xl font-bold mb-2">tailored solutions</h3>
                 <p className="text-neutral-700">
-                  We tailor our AI solutions to address your specific business challenges and objectives, ensuring maximum impact and ROI.
+                  we work closely with you to understand your unique needs and provide customized ai services that meet the highest standards of quality and performance.
                 </p>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-md">
-                <h3 className="text-xl font-bold mb-2">cutting-edge technology</h3>
+                <h3 className="text-xl font-bold mb-2">cutting-edge innovation</h3>
                 <p className="text-neutral-700">
-                  We stay at the forefront of AI innovation, utilizing the latest frameworks, models, and techniques to deliver state-of-the-art solutions.
+                  we stay at the forefront of AI innovation, utilizing the latest frameworks, models, and techniques to drive efficiency and deliver state-of-the-art solutions.
                 </p>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-md">
-                <h3 className="text-xl font-bold mb-2">end-to-end support</h3>
+                <h3 className="text-xl font-bold mb-2">competitive advantage</h3>
                 <p className="text-neutral-700">
-                  From initial consultation to deployment and ongoing maintenance, we provide comprehensive support throughout your AI journey.
+                  our ai solutions transform business operations and provide a competitive edge in the market through intelligent automation and data-driven insights.
                 </p>
               </div>
             </div>
@@ -255,21 +252,86 @@ export default function AIServicesPage() {
                 We integrate AI into your workflows with ongoing support.
               </p>
             </div>
-          </div>
-        </section>
+          </div>        </section>
 
-        {/* Call to Action */}
+        {/* Related AI Technologies & Resources */}
+        <section className="max-w-7xl mx-auto px-4 py-20">
+          <h2 className="text-4xl font-bold mb-12 text-center">explore our ai ecosystem</h2>
+          <div className="bg-white/90 rounded-2xl shadow-xl p-8 border border-neutral-100 backdrop-blur">
+            <p className="text-lg mb-8 text-neutral-700 text-center max-w-3xl mx-auto">
+              contact us today to discover how our ai solutions can transform your business operations and provide a competitive edge in the market.
+            </p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-3 text-black">bitcoin ai</h3>
+                <p className="text-neutral-700 mb-4">
+                  Specialized AI assistant for cryptocurrency and Bitcoin analytics.
+                </p>
+                <a 
+                  href="https://chatgpt.com/g/g-6756a52a58b88191b89dbd4b700f249e-bitcoin-ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
+                >
+                  explore bitcoin ai
+                </a>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-3 text-black">blockchain services</h3>
+                <p className="text-neutral-700 mb-4">
+                  Comprehensive blockchain development and consulting services.
+                </p>
+                <Link 
+                  href="/blockchain-services"
+                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
+                >
+                  learn more
+                </Link>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-3 text-black">ai & blockchain blog</h3>
+                <p className="text-neutral-700 mb-4">
+                  Latest insights and trends in AI and blockchain technology.
+                </p>
+                <Link 
+                  href="/blog"
+                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
+                >
+                  read our blog
+                </Link>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-3 text-black">crypto tools</h3>
+                <p className="text-neutral-700 mb-4">
+                  Professional cryptocurrency management and trading tools.
+                </p>
+                <a 
+                  href="https://trusteeglobal.com/?referrals=awWEek3GCMb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
+                >
+                  explore tools
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>        {/* Call to Action */}
         <section className="bg-neutral-200 py-16 text-center shadow-inner">
           <h2 className="text-4xl font-bold mb-4">ready to harness the power of ai?</h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto text-neutral-700">
-            partner with fantastic ai studio to transform your business with innovative ai solutions. our expert team is dedicated to delivering top-tier ai technologies that drive innovation and efficiency.
+            partner with fantastic ai studio to transform your business with innovative ai solutions. our team of experts is dedicated to delivering top-tier ai technologies that drive innovation, efficiency, and provide a competitive edge in the market.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
               className="btn inline-block px-8 py-3 bg-black text-white font-semibold rounded-lg shadow-lg hover:bg-black hover:text-white hover:opacity-90 transition"
             >
-              schedule a consultation
+              contact us today
             </Link>
             <Link
               href="/services"

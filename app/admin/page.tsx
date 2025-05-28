@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { 
   FiImage, FiUpload, FiUser, FiFolder, FiVideo, 
-  FiFileText, FiCpu, FiDatabase
+  FiFileText, FiCpu, FiDatabase, FiMonitor
 } from "react-icons/fi"
 import { AdminHeader } from "./components/admin-header"
 
@@ -45,7 +45,6 @@ export default function AdminPage() {
       color: "from-rose-500 to-pink-600"
     },
   ]
-
   const contentTools = [
     {
       title: "Gallery Management",
@@ -60,6 +59,13 @@ export default function AdminPage() {
       icon: <FiUpload size={24} />,
       href: "/admin/gallery/upload",
       color: "from-emerald-500 to-green-600"
+    },
+    {
+      title: "Video Quality Monitor",
+      description: "Analyze and monitor carousel video quality",
+      icon: <FiMonitor size={24} />,
+      href: "/admin/video-quality",
+      color: "from-purple-500 to-violet-600"
     }
   ]
 

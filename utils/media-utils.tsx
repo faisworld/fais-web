@@ -41,11 +41,10 @@ export const blobImages: { [key: string]: string } = {
   // Use actual Blob URLs for logos
   logo: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
   'logo-black': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746460117071-logo-fais-black.png',
-
-  // Carousel and feature images
-  'pioneering-digital-transformation': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-shaping-sota-technologies.mp4',
-  'innovating-future': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747831531794-tmpw2j61nje.mp4',
-  'shaping-sota-technologies': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-innovating-the-future.mp4',
+  // Carousel and feature images - Fixed mapping
+  'pioneering-digital-transformation': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-pioneering-digital-transformation.mp4',
+  'innovating-future': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-innovating-the-future.mp4',
+  'shaping-sota-technologies': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-shaping-sota-technologies.mp4',
   
   // Services hero video
   'services-hero-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',

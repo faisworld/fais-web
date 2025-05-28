@@ -12,6 +12,35 @@ const PLACEHOLDER_IMAGES = [
 const PLACEHOLDER_VIDEO_URL = "https://download.samplelib.com/mp4/sample-5s.mp4";
 */
 
+// Model version mapping - Replicate uses format: model-name:version-hash
+const MODEL_VERSIONS: Record<string, string> = {
+  'nvidia/sana': 'nvidia/sana:c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6',
+  'google/imagen-3-fast': 'google/imagen-3-fast', // Keep as working version
+  'minimax/image-01': 'minimax/image-01', // Keep as working version
+  // Video models
+  'google/veo-2': 'google/veo-2',
+  'minimax/video-01-director': 'minimax/video-01-director',
+  'minimax/video-01': 'minimax/video-01',
+};
+
+// Helper function to convert aspect ratio to standard dimensions
+function getStandardDimensions(aspectRatio: string): { width: number; height: number } {
+  switch (aspectRatio) {
+    case "16:9":
+      return { width: 1024, height: 576 };
+    case "1:1":
+      return { width: 1024, height: 1024 };
+    case "4:3":
+      return { width: 1024, height: 768 };
+    case "3:2":
+      return { width: 1024, height: 683 };
+    case "9:16":
+      return { width: 576, height: 1024 };
+    default:
+      return { width: 1024, height: 1024 };
+  }
+}
+
 export async function POST(request: NextRequest) {
   console.log("🔄 Processing media generation request");
   
@@ -21,10 +50,32 @@ export async function POST(request: NextRequest) {
     console.log("⛔ Authentication failed");
     return NextResponse.json({ error: authResult.message }, { status: 403 });
   }
-
-  try {
-    const body = await request.json();
-    const { mediaType, modelIdentifier, prompt, cameraMovements, imageUrl } = body;
+  try {    const body = await request.json();    const { 
+      mediaType, 
+      modelIdentifier, 
+      prompt, 
+      negativePrompt,
+      width,
+      height,
+      aspectRatio,
+      modelVariant,
+      numInferenceSteps,
+      guidanceScale,
+      pagGuidanceScale,
+      seed,
+      cameraMovements, 
+      imageUrl,
+      // Video generation specific parameters
+      durationSeconds,
+      first_frame_image,
+      subject_reference,
+      // Minimax Image 01 specific parameters
+      aspect_ratio,
+      number_of_images,
+      prompt_optimizer,
+      // Google Imagen 3 Fast specific parameters  
+      safety_filter_level
+    } = body;
 
     // Basic validation
     if (!mediaType || !modelIdentifier || !prompt) {
@@ -34,7 +85,16 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    console.log(`📝 Request details: ${mediaType} generation using ${modelIdentifier}`);
+    // Get the actual model version string for Replicate
+    const modelVersion = MODEL_VERSIONS[modelIdentifier];
+    if (!modelVersion) {
+      console.log(`⚠️ Unsupported model: ${modelIdentifier}`);
+      return NextResponse.json({ 
+        error: `Unsupported model: ${modelIdentifier}. Available models: ${Object.keys(MODEL_VERSIONS).join(', ')}` 
+      }, { status: 400 });
+    }
+
+    console.log(`📝 Request details: ${mediaType} generation using ${modelIdentifier} (version: ${modelVersion})`);
     console.log(`📝 Prompt: ${prompt.substring(0, 50)}...`);
 
     // Check for correct API tokens
@@ -46,30 +106,90 @@ export async function POST(request: NextRequest) {
     }
 
     // Set up Replicate API call
-    const replicateApiUrl = 'https://api.replicate.com/v1/predictions';
-    
-    interface ReplicateRequest {
+    const replicateApiUrl = 'https://api.replicate.com/v1/predictions';    interface ReplicateRequest {
       version: string;
       input: {
         prompt: string;
+        negative_prompt?: string;
+        width?: number;
+        height?: number;
+        model_variant?: string;
+        num_inference_steps?: number;
+        guidance_scale?: number;
+        pag_guidance_scale?: number;
+        seed?: number;
         camera_movements?: string;
         image?: string;
+        // Video specific parameters
+        duration_seconds?: number;
+        first_frame_image?: string;
+        // Minimax Image 01 specific
+        aspect_ratio?: string;
+        number_of_images?: number;
+        prompt_optimizer?: boolean;
+        subject_reference?: string;
+        // Google Imagen 3 Fast specific
+        safety_filter_level?: string;
       };
-    }
-    
-    const requestBody: ReplicateRequest = {
-      version: modelIdentifier,
+    }const requestBody: ReplicateRequest = {
+      version: modelVersion, // Use the actual version hash
       input: {
         prompt,
       },
-    };
+    };    // Add model-specific parameters based on the model type
+    if (modelIdentifier === 'nvidia/sana') {
+      // Nvidia Sana specific parameters
+      if (negativePrompt) requestBody.input.negative_prompt = negativePrompt;
+      if (width) requestBody.input.width = width;
+      if (height) requestBody.input.height = height;
+      if (modelVariant) requestBody.input.model_variant = modelVariant;
+      if (numInferenceSteps) requestBody.input.num_inference_steps = numInferenceSteps;
+      if (guidanceScale) requestBody.input.guidance_scale = guidanceScale;
+      if (pagGuidanceScale) requestBody.input.pag_guidance_scale = pagGuidanceScale;
+      if (seed) requestBody.input.seed = seed;
+    } else if (modelIdentifier === 'minimax/image-01') {
+      // Minimax Image 01 specific parameters
+      if (aspect_ratio) requestBody.input.aspect_ratio = aspect_ratio;
+      if (number_of_images !== undefined) requestBody.input.number_of_images = number_of_images;
+      if (prompt_optimizer !== undefined) requestBody.input.prompt_optimizer = prompt_optimizer;
+      if (subject_reference) requestBody.input.subject_reference = subject_reference;    } else if (modelIdentifier === 'google/imagen-3-fast') {
+      // Google Imagen 3 Fast specific parameters  
+      if (aspect_ratio) requestBody.input.aspect_ratio = aspect_ratio;
+      if (safety_filter_level) requestBody.input.safety_filter_level = safety_filter_level;
+    } else if (modelIdentifier === 'google/veo-2') {
+      // Google Veo 2 specific parameters
+      if (seed) requestBody.input.seed = seed;
+      if (first_frame_image) requestBody.input.first_frame_image = first_frame_image;
+      if (durationSeconds) requestBody.input.duration_seconds = durationSeconds;
+    } else if (modelIdentifier === 'minimax/video-01-director') {
+      // Minimax Video 01 Director specific parameters
+      if (prompt_optimizer !== undefined) requestBody.input.prompt_optimizer = prompt_optimizer;
+      if (first_frame_image) requestBody.input.first_frame_image = first_frame_image;
+      if (cameraMovements) requestBody.input.camera_movements = cameraMovements;
+      if (durationSeconds) requestBody.input.duration_seconds = durationSeconds;
+    } else if (modelIdentifier === 'minimax/video-01') {
+      // Minimax Video 01 specific parameters
+      if (prompt_optimizer !== undefined) requestBody.input.prompt_optimizer = prompt_optimizer;
+      if (first_frame_image) requestBody.input.first_frame_image = first_frame_image;
+      if (subject_reference) requestBody.input.subject_reference = subject_reference;
+      if (imageUrl) requestBody.input.image = imageUrl;
+      if (durationSeconds) requestBody.input.duration_seconds = durationSeconds;
+    } else {
+      // For other models, use legacy aspectRatio if provided
+      if (aspectRatio) {
+        // Convert aspectRatio to width/height for models that support it
+        const dimensions = getStandardDimensions(aspectRatio);
+        requestBody.input.width = dimensions.width;
+        requestBody.input.height = dimensions.height;
+      }
+    }
 
-    // Add camera movements if present
+    // Add camera movements if present (for video models)
     if (cameraMovements) {
       requestBody.input.camera_movements = cameraMovements;
     }
 
-    // Add image URL if present
+    // Add image URL if present (for image-to-image models)
     if (imageUrl) {
       requestBody.input.image = imageUrl;
     }

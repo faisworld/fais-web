@@ -156,9 +156,32 @@ img.logo {
   .header-logo {
     height: 44px !important;
   }
-  
-  .footer-logo {
+    .footer-logo {
     height: 40px !important;
+  }
+}
+
+/* Breadcrumb alignment with logo "F" letter */
+.breadcrumb-alignment {
+  margin-left: 22px; /* Align with "F" letter for smaller screens */
+}
+
+@media (min-width: 768px) {
+  .breadcrumb-alignment {
+    margin-left: 25px; /* Adjust for medium screens */
+  }
+}
+
+@media (min-width: 1200px) {
+  .breadcrumb-alignment {
+    margin-left: 30px; /* Adjust for larger screens where logo is bigger */
+  }
+}
+
+/* For extremely small screens, reduce the offset */
+@media (max-width: 350px) {
+  .breadcrumb-alignment {
+    margin-left: 18px;
   }
 }
 

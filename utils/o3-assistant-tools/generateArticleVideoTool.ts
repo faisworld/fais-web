@@ -26,6 +26,11 @@ export const videoParamsSchema = z.object({
     .describe('For minimax/video-01-director: An array of up to 3 camera movement strings (e.g., ["Pan left", "Zoom in"]). These will be prepended to the prompt.'),
   image_url: z.string().url().optional()
     .describe('For minimax/video-01: URL of an image to use as a reference for image-to-video generation.'),
+  // New model-specific parameters
+  seed: z.number().int().optional().describe('Optional seed for reproducible results (Google Veo 2).'),
+  prompt_optimizer: z.boolean().optional().describe('Optional prompt optimizer for Minimax models.'),
+  first_frame_image: z.string().url().optional().describe('Optional URL of image to use as first frame.'),
+  subject_reference: z.string().url().optional().describe('Optional subject reference image URL (Minimax Video 01).'),
 });
 
 interface VideoModelInput {
@@ -35,6 +40,11 @@ interface VideoModelInput {
   fps?: number;
   aspect_ratio?: string;
   image_url?: string; // For minimax/video-01
+  // New model-specific parameters
+  seed?: number;
+  prompt_optimizer?: boolean;
+  first_frame_image?: string;
+  subject_reference?: string;
   // Allow other properties that Replicate might accept for specific models.
   // These are validated by Replicate itself.
   [key: string]: unknown; 
@@ -42,8 +52,7 @@ interface VideoModelInput {
 
 async function generateArticleVideoLogic(
   params: z.infer<typeof videoParamsSchema>
-): Promise<{ videoUrl: string; videoAlt: string; thumbnailUrl?: string }> {
-  const {
+): Promise<{ videoUrl: string; videoAlt: string; thumbnailUrl?: string }> {  const {
     model_identifier,
     prompt,
     negative_prompt,
@@ -51,7 +60,11 @@ async function generateArticleVideoLogic(
     fps,
     aspect_ratio,
     camera_movements,
-    image_url
+    image_url,
+    seed,
+    prompt_optimizer,
+    first_frame_image,
+    subject_reference
   } = params;
 
   let finalPrompt = prompt;
@@ -66,29 +79,34 @@ async function generateArticleVideoLogic(
   const modelInput: VideoModelInput = {
     prompt: finalPrompt,
   };
-
   if (duration_seconds) modelInput.duration = duration_seconds;
   if (fps) modelInput.fps = fps;
   if (negative_prompt) modelInput.negative_prompt = negative_prompt;
   if (aspect_ratio) modelInput.aspect_ratio = aspect_ratio; // Use from params if provided
 
-  const modelName = model_identifier.split(':')[0];
+  // Add common video-specific parameters
+  if (first_frame_image) modelInput.first_frame_image = first_frame_image;
 
+  const modelName = model_identifier.split(':')[0];
   // Model-specific input adaptations & defaults if not provided in params
   switch (modelName) {
     case 'google/veo-2':
       if (!modelInput.aspect_ratio) modelInput.aspect_ratio = "16:9"; // Default if not set
+      if (seed) modelInput.seed = seed; // Google Veo 2 supports seed
       // Add any other specific defaults or transformations for Veo-2
       break;
     case 'minimax/video-01-director':
       if (!modelInput.aspect_ratio) modelInput.aspect_ratio = "16:9";
       if (!modelInput.fps) modelInput.fps = 25;
+      if (prompt_optimizer !== undefined) modelInput.prompt_optimizer = prompt_optimizer;
       // if (!modelInput.duration) modelInput.duration = 6; // Default duration if not provided by user
       break;
     case 'minimax/video-01':
       if (image_url) { // image_url is specific to this model's capabilities
         modelInput.image_url = image_url;
       }
+      if (subject_reference) modelInput.subject_reference = subject_reference;
+      if (prompt_optimizer !== undefined) modelInput.prompt_optimizer = prompt_optimizer;
       if (!modelInput.aspect_ratio) modelInput.aspect_ratio = "16:9";
       if (!modelInput.fps) modelInput.fps = 25;
       // if (!modelInput.duration) modelInput.duration = 6; // Default duration if not provided by user
