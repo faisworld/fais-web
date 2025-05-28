@@ -4,20 +4,21 @@ import { getBlobImage } from "@/utils/media-utils";
 export default function MeetOurTeam() {
     const teamMembers = [
         {
-            name: "eugene lukyanov",
+            name: "yevhen lukyanov",
             role: "ceo, phd in medical informatics",
-            image: getBlobImage("about-team-member-eugene-lukyanov-image")
+            image: getBlobImage("about-team-member-yevhen-lukyanov-image")
+        },
+        {
+            name: "arik vigas",
+            role: "CTO, expert developer",
+            image: getBlobImage("about-team-member-arik-vigas-image")
         },
         {
             name: "andrii stehno",
-            role: "cto",
+            role: "blockchain developer expert",
             image: getBlobImage("about-team-member-andrii-stehno-image")
         },
-        {
-            name: "julia mazura",
-            role: "web3.0 expert",
-            image: getBlobImage("about-team-member-julia-mazura-image")
-        },
+
         {
             name: "vitalii melnyk",
             role: "chief project manager",

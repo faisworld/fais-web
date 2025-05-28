@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "AI Solutions | Fantastic AI Studio",
@@ -48,7 +49,7 @@ export default function AIServicesPage() {
         <section className="py-20 px-4 text-center">
           <div className="max-w-5xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900">
-              {"{ai}"} solutions by fAi{"{s}"}tudio
+              ai solutions by fAistudio
             </h1>            <p className="text-xl md:text-2xl mb-10 text-neutral-700 max-w-3xl mx-auto">
               fantastic ai studio is dedicated to delivering top-tier AI technologies that drive innovation and efficiency. we provide a diverse range of artificial intelligence solutions tailored to meet the unique needs of businesses and corporations.
             </p>
@@ -127,9 +128,12 @@ export default function AIServicesPage() {
           <h2 className="text-4xl font-bold mb-12 text-center">ai across industries</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Healthcare */}
-            <div className="bg-white/90 rounded-xl shadow-lg p-6 border border-neutral-100">
+            <div className="bg-white/90 rounded-xl shadow-lg p-6 border border-neutral-100 flex flex-col items-center">
+              <div className="w-16 h-16 mb-4">
+                <Image src="/icons/healthcare-icon.svg" alt="Healthcare Icon" width={64} height={64} />
+              </div>
               <h3 className="text-2xl font-bold mb-3 text-black">healthcare</h3>
-              <p className="text-neutral-700 mb-4">
+              <p className="text-neutral-700 mb-4 text-center">
                 Transform patient care, diagnostics, and healthcare operations with AI-powered solutions that enhance accuracy and efficiency.
               </p>
               <ul className="text-neutral-800 space-y-2 list-disc pl-5">
@@ -141,9 +145,12 @@ export default function AIServicesPage() {
             </div>
 
             {/* Retail & E-Commerce */}
-            <div className="bg-white/90 rounded-xl shadow-lg p-6 border border-neutral-100">
+            <div className="bg-white/90 rounded-xl shadow-lg p-6 border border-neutral-100 flex flex-col items-center">
+              <div className="w-16 h-16 mb-4">
+                <Image src="/icons/retail-ecommerce-icon.svg" alt="Retail & E-Commerce Icon" width={64} height={64} />
+              </div>
               <h3 className="text-2xl font-bold mb-3 text-black">retail & e-commerce</h3>
-              <p className="text-neutral-700 mb-4">
+              <p className="text-neutral-700 mb-4 text-center">
                 Enhance customer experiences and optimize operations with AI-driven personalization, forecasting, and inventory management.
               </p>
               <ul className="text-neutral-800 space-y-2 list-disc pl-5">
@@ -154,10 +161,13 @@ export default function AIServicesPage() {
               </ul>
             </div>
 
-            {/* Finance */}
-            <div className="bg-white/90 rounded-xl shadow-lg p-6 border border-neutral-100">
+            {/* Finance & Banking */}
+            <div className="bg-white/90 rounded-xl shadow-lg p-6 border border-neutral-100 flex flex-col items-center">
+              <div className="w-16 h-16 mb-4">
+                <Image src="/icons/finance-banking-icon.svg" alt="Finance & Banking Icon" width={64} height={64} />
+              </div>
               <h3 className="text-2xl font-bold mb-3 text-black">finance & banking</h3>
-              <p className="text-neutral-700 mb-4">
+              <p className="text-neutral-700 mb-4 text-center">
                 Strengthen security, improve customer service, and optimize financial operations with AI-powered analytics and automation.
               </p>
               <ul className="text-neutral-800 space-y-2 list-disc pl-5">
@@ -210,117 +220,58 @@ export default function AIServicesPage() {
           <h2 className="text-4xl font-bold mb-12 text-center">our ai implementation process</h2>
           <div className="grid md:grid-cols-5 gap-4">
             <div className="relative">
-              <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+              <div className="w-12 h-12 mx-auto mb-4">
+                <Image src="/icons/discovery-icon.svg" alt="Discovery Icon" width={48} height={48} />
+              </div>
               <h3 className="text-xl font-bold mb-2 text-center">discovery</h3>
               <p className="text-neutral-700 text-center">
                 We analyze your business needs and identify AI opportunities.
               </p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-neutral-300 -z-10"></div>
             </div>
 
             <div className="relative">
-              <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+              <div className="w-12 h-12 mx-auto mb-4">
+                <Image src="/icons/data-assessment-icon.svg" alt="Data Assessment Icon" width={48} height={48} />
+              </div>
               <h3 className="text-xl font-bold mb-2 text-center">data assessment</h3>
               <p className="text-neutral-700 text-center">
                 We evaluate your data infrastructure and prepare datasets.
               </p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-neutral-300 -z-10"></div>
             </div>
 
             <div className="relative">
-              <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+              <div className="w-12 h-12 mx-auto mb-4">
+                <Image src="/icons/solution-design-icon.svg" alt="Solution Design Icon" width={48} height={48} />
+              </div>
               <h3 className="text-xl font-bold mb-2 text-center">solution design</h3>
               <p className="text-neutral-700 text-center">
                 We architect custom AI solutions tailored to your requirements.
               </p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-neutral-300 -z-10"></div>
             </div>
 
             <div className="relative">
-              <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+              <div className="w-12 h-12 mx-auto mb-4">
+                <Image src="/icons/development-icon.svg" alt="Development Icon" width={48} height={48} />
+              </div>
               <h3 className="text-xl font-bold mb-2 text-center">development</h3>
               <p className="text-neutral-700 text-center">
                 We build, train, and validate your AI models and systems.
               </p>
-              <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-neutral-300 -z-10"></div>
             </div>
 
             <div>
-              <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">5</div>
+              <div className="w-12 h-12 mx-auto mb-4">
+                <Image src="/icons/deployment-icon.svg" alt="Deployment Icon" width={48} height={48} />
+              </div>
               <h3 className="text-xl font-bold mb-2 text-center">deployment</h3>
               <p className="text-neutral-700 text-center">
                 We integrate AI into your workflows with ongoing support.
               </p>
             </div>
-          </div>        </section>
-
-        {/* Related AI Technologies & Resources */}
-        <section className="max-w-7xl mx-auto px-4 py-20">
-          <h2 className="text-4xl font-bold mb-12 text-center">explore our ai ecosystem</h2>
-          <div className="bg-white/90 rounded-2xl shadow-xl p-8 border border-neutral-100 backdrop-blur">
-            <p className="text-lg mb-8 text-neutral-700 text-center max-w-3xl mx-auto">
-              contact us today to discover how our ai solutions can transform your business operations and provide a competitive edge in the market.
-            </p>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <h3 className="text-xl font-bold mb-3 text-black">bitcoin ai</h3>
-                <p className="text-neutral-700 mb-4">
-                  Specialized AI assistant for cryptocurrency and Bitcoin analytics.
-                </p>
-                <a 
-                  href="https://chatgpt.com/g/g-6756a52a58b88191b89dbd4b700f249e-bitcoin-ai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
-                >
-                  explore bitcoin ai
-                </a>
-              </div>
-
-              <div className="text-center">
-                <h3 className="text-xl font-bold mb-3 text-black">blockchain services</h3>
-                <p className="text-neutral-700 mb-4">
-                  Comprehensive blockchain development and consulting services.
-                </p>
-                <Link 
-                  href="/blockchain-services"
-                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
-                >
-                  learn more
-                </Link>
-              </div>
-
-              <div className="text-center">
-                <h3 className="text-xl font-bold mb-3 text-black">ai & blockchain blog</h3>
-                <p className="text-neutral-700 mb-4">
-                  Latest insights and trends in AI and blockchain technology.
-                </p>
-                <Link 
-                  href="/blog"
-                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
-                >
-                  read our blog
-                </Link>
-              </div>
-
-              <div className="text-center">
-                <h3 className="text-xl font-bold mb-3 text-black">crypto tools</h3>
-                <p className="text-neutral-700 mb-4">
-                  Professional cryptocurrency management and trading tools.
-                </p>
-                <a 
-                  href="https://trusteeglobal.com/?referrals=awWEek3GCMb"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-6 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition"
-                >
-                  explore tools
-                </a>
-              </div>
-            </div>
           </div>
-        </section>        {/* Call to Action */}
+        </section>
+
+       {/* Call to Action */}
         <section className="bg-neutral-200 py-16 text-center shadow-inner">
           <h2 className="text-4xl font-bold mb-4">ready to harness the power of ai?</h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto text-neutral-700">

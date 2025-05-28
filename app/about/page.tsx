@@ -1,7 +1,6 @@
 'use client';
 
 import MeetOurTeam from "@/components/pages/MeetOurTeam";
-import ContactUs from "@/components/pages/ContactUs";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { getBlobImage } from "@/utils/media-utils";
@@ -103,8 +102,7 @@ export default function AboutPage() {
           three fundamental principles guide everything we do, ensuring we deliver exceptional value while maintaining the highest ethical standards.
         </p>
         
-        <div className='space-y-12'>
-          {/* Innovation Value */}
+        <div className='space-y-12'>          {/* Innovation Value */}
           <div className='flex flex-col lg:flex-row items-center gap-12'>
             <div className='lg:w-1/3'>
               <Image
@@ -123,9 +121,7 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Integrity Value */}
+          </div>          {/* Integrity Value */}
           <div className='flex flex-col lg:flex-row-reverse items-center gap-12'>
             <div className='lg:w-1/3'>
               <Image
@@ -144,9 +140,7 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Collaboration Value */}
+          </div>          {/* Collaboration Value */}
           <div className='flex flex-col lg:flex-row items-center gap-12'>
             <div className='lg:w-1/3'>
               <Image
@@ -293,9 +287,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <MeetOurTeam />
-
-      {/* Contact Section */}
+      <MeetOurTeam />      {/* Contact Section */}
       <section className='mb-12'>
         <div className='bg-white rounded-3xl p-12 shadow-xl border border-neutral-200'>
           <h3 className='text-3xl font-bold text-center mb-8 lowercase text-neutral-800'>
@@ -304,7 +296,14 @@ export default function AboutPage() {
           <p className='text-center text-neutral-600 mb-8 text-lg lowercase max-w-2xl mx-auto'>
             let&apos;s discuss how we can help transform your business with innovative ai and blockchain solutions.
           </p>
-          <ContactUs />
+          <div className="text-center">
+            <a 
+              href="/contact" 
+              className="inline-block px-8 py-3 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors duration-300 rounded-md shadow-lg font-medium lowercase"
+            >
+              contact us now
+            </a>
+          </div>
         </div>
       </section>
     </div>

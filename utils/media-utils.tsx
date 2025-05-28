@@ -80,16 +80,14 @@ export const blobImages: { [key: string]: string } = {
   'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
   // About page images
   'about-mission-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069236709-20250512-1428-Futuristic-Innovation-Hub-simple-compose-01jv242h1dexrbkgvw5vn5wx5v.gif',
-  'about-mission-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
-  'about-vision-image': '/placeholder.svg?width=500&height=300&query=Vision%20Image',
-  'about-vision-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/videos/fb3c4b1c-c5cf-4570-8082-9673b0ba6516.mp4',
-  'about-value-innovation-image': '/placeholder.svg?width=300&height=200&query=Innovation%20Value',
-  'about-value-integrity-image': '/placeholder.svg?width=300&height=200&query=Integrity%20Value',
-  'about-value-collaboration-image': '/placeholder.svg?width=300&height=200&query=Collaboration%20Value',
-  'about-team-member-eugene-lukyanov-image': '/placeholder.svg?width=200&height=200&query=Eugene%20Lukyanov',
-  'about-team-member-andrii-stehno-image': '/placeholder.svg?width=200&height=200&query=Andrii%20Stehno',
-  'about-team-member-julia-mazura-image': '/placeholder.svg?width=200&height=200&query=Julia%20Mazura',
-  'about-team-member-vitalii-melnyk-image': '/placeholder.svg?width=200&height=200&query=Vitalii%20Melnyk',
+  'about-mission-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',  'about-vision-image': '/placeholder.svg?width=500&height=300&query=Vision%20Image',
+  'about-vision-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/videos/fb3c4b1c-c5cf-4570-8082-9673b0ba6516.mp4',  'about-value-innovation-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/cc47ef93-db7a-4e21-9663-7051131a4a79.png',
+  'about-value-integrity-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/01a7d351-f4ef-4f95-9261-bb79a7affc2d.png',
+  'about-value-collaboration-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/67d6bcc8-fdf2-4bde-addb-5a19b0f4e196.png',
+  'about-team-member-yevhen-lukyanov-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Eugene-Lukyanov-HLDs14ajHXg6FcQy0aYKb0MTkloeko.jpg',
+  'about-team-member-arik-vigas-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-06_14-10-40-UXOlLLTn4PXpt3zuJZotwguhCZcXlz.jpg',
+  'about-team-member-andrii-stehno-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1525272441578-qsun1wc6mdk3geegvjjt75pmibcc8iv3drkakgyblc-lc4eX0RKR35BecEHkh7GWgSy1yg0Rp.webp',
+  'about-team-member-vitalii-melnyk-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Vitaliy-Melnyk-wLuvov0LC7IyMYiE2kcCgkfTaWPpfc.webp',
 };
 
 /**
