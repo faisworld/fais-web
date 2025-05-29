@@ -9,7 +9,7 @@ import PreFooterSection from '@/components/pages/PreFooterSection'
 // Enhanced metadata for the home page - CRITICAL SEO FIX
 export const metadata: Metadata = {
   title: 'Fantastic AI Studio | #1 Enterprise AI & Blockchain Development Company | USA, UK, Germany',
-  description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms, enterprise blockchain implementation. 95% client satisfaction rate. Free consultation available.',
+  description: 'Leading enterprise AI & blockchain development company serving numerous clients across USA, UK, Germany and Ukraine. Custom AI solutions, smart contracts, DeFi platforms, enterprise blockchain implementation. 95% client satisfaction rate. Free consultation available.',
   keywords: [
     // Primary high-value keywords
     'enterprise AI development company',
