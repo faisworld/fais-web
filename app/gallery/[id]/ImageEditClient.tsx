@@ -418,7 +418,7 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
                 </span>
               </div>
             ) : (
-              <span className="text-gray-600">Dimensions not available</span>
+              <span className="text-gray-400 italic">Width × Height info not available</span>
             )}
           </div>
 

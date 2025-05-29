@@ -1075,13 +1075,12 @@ export default function AdminGalleryPage() {
                         {isVideo(selectedImage.url) ? 'Video' : 'Image'}
                       </p>
                     </div>
-                    
-                    <div className="border-b border-gray-200 pb-2">
+                      <div className="border-b border-gray-200 pb-2">
                       <p className="text-sm font-medium text-gray-500">Dimensions</p>
                       <p className="text-base font-medium">
                         {selectedImage.width && selectedImage.height 
-                          ? `${selectedImage.width} × ${selectedImage.height} px` 
-                          : "Dimensions not available"}
+                          ? `${selectedImage.width} × ${selectedImage.height} pixels` 
+                          : <span className="text-gray-400 italic">Width × Height info not available</span>}
                       </p>
                     </div>
                     
