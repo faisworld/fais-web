@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { BlogPost } from '../page';
+import { BlogPost } from '../blog-data';
 
 // This is a dynamic metadata generation function for individual blog posts
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -34,9 +34,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
           height: 630,
           alt: post.title,
         },
-      ],
-      publishedTime: post.date,
-      authors: [post.author || 'Fantastic AI Studio'],
+      ],      publishedTime: post.date,
+      authors: [post.author || 'Fantastic AI'],
       section: post.category === 'ai' ? 'Artificial Intelligence' : 'Blockchain',
       tags: [post.category, 'technology', 'innovation'],
     },
@@ -67,10 +66,9 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     title: "Example Blog Post",
     excerpt: "This is an example blog post description.",
     date: "May 8, 2025",
-    readTime: "8 min read",
-    category: "ai",
+    readTime: "8 min read",    category: "ai",
     coverImage: "blog-ai-llm",
-    author: "Sarah Johnson",
-    authorImage: "author-sarah"
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
   };
 }

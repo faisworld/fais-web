@@ -18,9 +18,8 @@ export default function SolutionsSection() {
         </div>
 
         {/* Two-column layout that maintains alignment on all screen sizes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* AI-Powered Solutions Column */}
-          <div className="flex flex-col items-center" itemScope itemType="https://schema.org/Product">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">          {/* AI-Powered Solutions Column */}
+          <div className="flex flex-col items-center" itemScope itemType="https://schema.org/Service">
             <h3 className="text-2xl font-bold mb-6 text-center" itemProp="name">ai-powered solutions</h3>
             <div className="relative w-full aspect-[3/2] mb-6">
               <ClientImage
@@ -38,11 +37,9 @@ export default function SolutionsSection() {
               Harness the power of artificial intelligence to optimize your operations, enhance decision-making, and
               create intelligent systems that learn and adapt.
             </p>
-            <meta itemProp="category" content="AI Technology" />
-          </div>
-
-          {/* Blockchain Innovations Column */}
-          <div className="flex flex-col items-center" itemScope itemType="https://schema.org/Product">
+            <meta itemProp="serviceType" content="AI Technology" />
+          </div>          {/* Blockchain Innovations Column */}
+          <div className="flex flex-col items-center" itemScope itemType="https://schema.org/Service">
             <h3 className="text-2xl font-bold mb-6 text-center" itemProp="name">blockchain innovations</h3>
             <div className="relative w-full aspect-[3/2] mb-6">
               <ClientImage
@@ -60,7 +57,7 @@ export default function SolutionsSection() {
               Secure and transparent blockchain applications custom-designed to streamline your business processes and
               ensure integrity in every transaction.
             </p>
-            <meta itemProp="category" content="Blockchain Technology" />
+            <meta itemProp="serviceType" content="Blockchain Technology" />
           </div>
         </div>
       </div>

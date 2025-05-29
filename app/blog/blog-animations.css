@@ -1,0 +1,77 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.blog-card-animation {
+  animation-name: fadeInUp;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+.blog-card-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.blog-card-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.blog-card-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.blog-card-delay-4 {
+  animation-delay: 0.4s;
+}
+
+.blog-card-delay-5 {
+  animation-delay: 0.5s;
+}
+
+.blog-card-delay-6 {
+  animation-delay: 0.6s;
+}
+
+.pulse-on-hover:hover {
+  animation: pulse 1s ease infinite;
+}
+
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}

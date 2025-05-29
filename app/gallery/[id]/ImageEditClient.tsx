@@ -412,8 +412,8 @@ export default function ImageEditClient({ img, alt }: { img: ImageData; alt: str
           <div>
             <label className="font-medium text-gray-700 block mb-1">Dimensions:</label>
             {img.width && img.height ? (
-              <div className="flex gap-2 items-center">
-                <span className="text-gray-600">
+              <div className="flex items-center">
+                <span className="text-gray-600 font-mono">
                   {img.width} × {img.height} pixels
                 </span>
               </div>

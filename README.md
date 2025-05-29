@@ -9,6 +9,7 @@ Welcome to the Fantastic AI Studio (FAIS) website project. This repository conta
 - [Quirks Mode Fix](./docs/quirks-mode-fix.md) - How we ensured proper DOCTYPE and Standards Mode rendering
 - [Carousel Video Setup](./docs/carousel-video-setup.md) - Adding videos to the homepage carousel
 - [Authentication](./docs/authentication.md) - Admin authentication system
+- [Article Generation System](./docs/article-generation-system.md) - Automated blog post generation with AI
 
 ## Features
 
@@ -19,6 +20,8 @@ Welcome to the Fantastic AI Studio (FAIS) website project. This repository conta
 2. **Blog**
    - A dynamic blog section for publishing articles and updates.
    - Supports categories, tags, and search functionality.
+   - Includes an AI-powered article generation tool that automatically creates content with relevant images.
+   - Automated system can crawl the web for the latest AI and blockchain news.
 
 3. **AI Editor**
    - Use the AI editor to create, edit, and manage pages effortlessly.

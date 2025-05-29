@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OG Image Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    .canvas-container {
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    .download-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fantastic AI Blog OG Images</h1>
+  
+  <div class="download-buttons">
+    <button id="downloadOG">Download OG Image (1200x630)</button>
+    <button id="downloadTwitter">Download Twitter Card (1200x600)</button>
+  </div>
+  
+  <div class="canvas-container">
+    <canvas id="ogCanvas" width="1200" height="630"></canvas>
+  </div>
+  
+  <div class="canvas-container">
+    <canvas id="twitterCanvas" width="1200" height="600"></canvas>
+  </div>
+
+  <script>
+    // Function to draw OG image
+    function drawOGImage() {
+      const canvas = document.getElementById('ogCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#0f172a');
+      gradient.addColorStop(1, '#1e293b');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Add decorative elements - futuristic digital pattern
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      
+      // Draw grid pattern
+      for (let i = 0; i < canvas.width; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+      }
+      
+      for (let i = 0; i < canvas.height; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+      }
+      
+      // Draw glowing accent
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+      ctx.beginPath();
+      ctx.arc(900, 200, 200, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Blog title
+      ctx.font = 'bold 60px Arial, sans-serif';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'left';
+      ctx.fillText('Fantastic AI', 100, 180);
+      
+      // Blog subtitle
+      ctx.font = '40px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.fillText('Insights & Innovation', 100, 250);
+      
+      // Tagline
+      ctx.font = '30px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.9)';
+      ctx.fillText('Shaping the Future with AI & Blockchain', 100, 320);
+      
+      // Bottom URL
+      ctx.font = '24px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.textAlign = 'right';
+      ctx.fillText('www.fantastic-ai.com/blog', 1100, 580);
+
+      // Company logo placeholder - stylized F and A
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 120px Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('FA', 1000, 320);
+      
+      // Circle around logo
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.8)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(1000, 280, 100, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    // Function to draw Twitter card
+    function drawTwitterCard() {
+      const canvas = document.getElementById('twitterCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Background gradient - slightly different from OG image
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#0f172a');
+      gradient.addColorStop(1, '#172554');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Add decorative geometric elements
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      
+      // Draw diagonal lines
+      for (let i = -canvas.height; i < canvas.width; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i + canvas.height, canvas.height);
+        ctx.stroke();
+      }
+      
+      // Draw accent shape
+      ctx.fillStyle = 'rgba(96, 165, 250, 0.2)';
+      ctx.beginPath();
+      ctx.moveTo(800, 100);
+      ctx.lineTo(1100, 200);
+      ctx.lineTo(1000, 500);
+      ctx.lineTo(700, 400);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Blog title
+      ctx.font = 'bold 60px Arial, sans-serif';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'left';
+      ctx.fillText('Fantastic AI', 100, 180);
+      
+      // Twitter handle
+      ctx.font = '36px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.9)';
+      ctx.fillText('@FantasticAI', 100, 240);
+      
+      // Tagline
+      ctx.font = '30px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.fillText('Pioneering Digital Transformation', 100, 310);
+      
+      // Bottom URL
+      ctx.font = '24px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.textAlign = 'right';
+      ctx.fillText('www.fantastic-ai.com', 1100, 550);
+      
+      // Stylized logo
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 100px Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('FA', 950, 300);
+      
+      // Add a highlight
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.8)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(950, 280, 80, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    // Initialize both canvases when page loads
+    window.onload = function() {
+      drawOGImage();
+      drawTwitterCard();
+      
+      // Set up download buttons
+      document.getElementById('downloadOG').addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = 'blog-og-image-fais-1200x630.png';
+        link.href = document.getElementById('ogCanvas').toDataURL('image/png');
+        link.click();
+      });
+      
+      document.getElementById('downloadTwitter').addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = 'blog-twitter-card-fais.png';
+        link.href = document.getElementById('twitterCanvas').toDataURL('image/png');
+        link.click();
+      });
+    };
+  </script>
+</body>
+</html>

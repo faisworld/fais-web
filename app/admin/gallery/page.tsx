@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon, Film, Download, Check, Layers, RefreshCw, Upload, ArrowLeft, ArrowRight, Folder, Image as ImageIcon } from "lucide-react";
+import { isGif, handleImageError } from "@/utils/media-utils";
 
 // Extended interface to support both images and videos
 interface GalleryMedia {
@@ -422,7 +423,6 @@ export default function AdminGalleryPage() {
   const navigateToFolder = (folder: string) => {
     setCurrentFolder(folder);
   };
-
   const navigateUp = () => {
     if (!currentFolder) return;
     
@@ -432,24 +432,6 @@ export default function AdminGalleryPage() {
     } else {
       setCurrentFolder(parts.slice(0, -1).join('/'));
     }
-  };
-
-  const renderImageWithFallback = (src: string, alt: string, className: string = '') => {
-    return (
-      <div className={`relative ${className}`}>
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="object-cover"
-          unoptimized={true} // Skip optimization for Blobstore images
-          onError={(e) => {
-            // On error, replace with placeholder
-            e.currentTarget.src = '/placeholder-image.jpg';
-          }}
-        />
-      </div>
-    );
   };
 
   if (!isClient) {
@@ -740,10 +722,18 @@ export default function AdminGalleryPage() {
                         <Film className="h-8 w-8 text-white" />
                       </div>
                     </div>
+                  </div>                ) : (
+                  <div className="w-full h-full relative">
+                    <Image
+                      src={item.url}
+                      alt={item.title || "Gallery image"}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      unoptimized={isGif(item.url)}
+                      loading={isGif(item.url) ? "eager" : "lazy"}
+                      onError={handleImageError}
+                    />
                   </div>
-                ) : (
-                  // Use unoptimized image with fallback
-                  renderImageWithFallback(item.url, item.title, "hover:scale-105 transition-transform duration-300")
                 )}
                 
                 <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-md">

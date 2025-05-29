@@ -1,12 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { getBlobImage } from "@/utils/media-utils";
 import { blogPosts } from "../blog-data";
 import OptimismLayer2Content from "../content/how-optimism-layer-2-can-transform-your-business";
 import LargeLanguageModelsContent from "../content/large-language-models-2025";
 import BlockchainForSupplyChainContent from "../content/blockchain-for-supply-chain"; // Added import
+import { AuthorImage, BlogCoverImage, RelatedPostImage } from "../components/client-images";
 
 type Props = {
   params: {
@@ -71,19 +70,13 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
       {/* Blog header */}
       <header className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">{post.title}</h1>
-        
-        <div className="flex items-center text-gray-600 mb-4">
+          <div className="flex items-center text-gray-600 mb-4">
           {post.author && post.authorImage && (
             <div className="flex items-center mr-4">
-              <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                <Image 
-                  src={getBlobImage(post.authorImage)} 
-                  alt={post.author}
-                  width={32}
-                  height={32}
-                  className="object-cover"
-                />
-              </div>
+              <AuthorImage 
+                authorImage={post.authorImage}
+                author={post.author}
+              />
               <span>{post.author}</span>
             </div>
           )}
@@ -95,16 +88,12 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
           </div>
         </div>
       </header>
-      
-      {/* Cover image */}
+        {/* Cover image */}
       <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden">
-        <Image
-          src={getBlobImage(post.coverImage)}
+        <BlogCoverImage
+          src={post.coverImage}
           alt={post.title}
-          fill
-          className="object-cover"
-          priority
-        /> {/* Added closing tag */}
+        />
         <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
@@ -115,33 +104,55 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
         {slug === "how-optimism-layer-2-can-transform-your-business" && <OptimismLayer2Content />} {/* Fixed */}
         {slug === "large-language-models-2025" && <LargeLanguageModelsContent />} {/* Fixed */}
         {slug === "blockchain-for-supply-chain" && <BlockchainForSupplyChainContent />} {/* Added new content */}
-      </div>
-      
-      {/* Related posts */}
+      </div>      {/* Related posts */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <h3 className="text-xl font-bold mb-4">Continue Reading</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {blogPosts
-            .filter(relatedPost => relatedPost.slug !== slug && relatedPost.category === post.category)
-            .slice(0, 2)
-            .map(relatedPost => (
-              <Link 
-                href={`/blog/${relatedPost.slug}`} 
-                key={relatedPost.id}
-                className="group block"
-              >
-                <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden">
-                  <Image
-                    src={getBlobImage(relatedPost.coverImage)}
-                    alt={relatedPost.title}
-                    fill
-                    className="object-cover transition duration-300 group-hover:scale-105"
-                  /> {/* Added closing tag */}
+          {(() => {
+            // First try posts from same category
+            const sameCategory = blogPosts.filter(relatedPost => 
+              relatedPost.slug !== slug && 
+              relatedPost.category === post.category
+            ).slice(0, 2);
+            
+            // Then add posts from other categories if needed
+            const otherCategories = blogPosts.filter(relatedPost => 
+              relatedPost.slug !== slug && 
+              relatedPost.category !== post.category
+            ).slice(0, 2 - sameCategory.length);
+            
+            const relatedPosts = [...sameCategory, ...otherCategories];
+            
+            // If we have related posts, display them
+            if (relatedPosts.length > 0) {
+              return relatedPosts.map(relatedPost => (
+                <Link 
+                  href={`/blog/${relatedPost.slug}`} 
+                  key={relatedPost.id}
+                  className="group block"
+                >
+                  <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden">
+                    <RelatedPostImage
+                      src={relatedPost.coverImage}
+                      alt={relatedPost.title}
+                    />
+                  </div>
+                  <h4 className="font-medium text-lg group-hover:text-blue-600 transition">{relatedPost.title}</h4>
+                  <p className="text-sm text-gray-600">{relatedPost.readTime}</p>
+                </Link>
+              ));
+            } else {
+              // Fallback if no related posts available
+              return (
+                <div className="col-span-2 text-center py-8">
+                  <p className="text-gray-600">No related articles available at this time.</p>
+                  <Link href="/blog" className="inline-block mt-4 text-blue-600 hover:text-blue-800">
+                    View all blog posts
+                  </Link>
                 </div>
-                <h4 className="font-medium text-lg group-hover:text-blue-600 transition">{relatedPost.title}</h4>
-                <p className="text-sm text-gray-600">{relatedPost.readTime}</p>
-              </Link>
-            ))}
+              );
+            }
+          })()}
         </div>
       </div>
     </div>

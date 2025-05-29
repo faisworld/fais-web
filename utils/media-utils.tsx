@@ -77,8 +77,7 @@ export const blobImages: { [key: string]: string } = {
 
   // Services page images 
   'services-og-image': 
-  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
-  // About page images
+  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',  // About page images
   'about-mission-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747069236709-20250512-1428-Futuristic-Innovation-Hub-simple-compose-01jv242h1dexrbkgvw5vn5wx5v.gif',
   'about-mission-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',  'about-vision-image': '/placeholder.svg?width=500&height=300&query=Vision%20Image',
   'about-vision-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/videos/fb3c4b1c-c5cf-4570-8082-9673b0ba6516.mp4',  'about-value-innovation-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/cc47ef93-db7a-4e21-9663-7051131a4a79.png',
@@ -86,8 +85,16 @@ export const blobImages: { [key: string]: string } = {
   'about-value-collaboration-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/67d6bcc8-fdf2-4bde-addb-5a19b0f4e196.png',
   'about-team-member-yevhen-lukyanov-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Eugene-Lukyanov-HLDs14ajHXg6FcQy0aYKb0MTkloeko.jpg',
   'about-team-member-arik-vigas-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-06_14-10-40-UXOlLLTn4PXpt3zuJZotwguhCZcXlz.jpg',
-  'about-team-member-andrii-stehno-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1525272441578-qsun1wc6mdk3geegvjjt75pmibcc8iv3drkakgyblc-lc4eX0RKR35BecEHkh7GWgSy1yg0Rp.webp',
-  'about-team-member-vitalii-melnyk-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Vitaliy-Melnyk-wLuvov0LC7IyMYiE2kcCgkfTaWPpfc.webp',
+  'about-team-member-andrii-stehno-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1525272441578-qsun1wc6mdk3geegvjjt75pmibcc8iv3drkakgyblc-lc4eX0RKR35BecEHkh7GWgSy1yg0Rp.webp',  'about-team-member-vitalii-melnyk-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Vitaliy-Melnyk-wLuvov0LC7IyMYiE2kcCgkfTaWPpfc.webp',
+    // Blog post images
+  'blog-ai-llm': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/30369d5f-2bd3-42b2-b24e-d03a0e269b92.png',  'blog-blockchain-supply': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/20d56314-2eb0-4f86-a329-ce1465cd3448.png',
+  'blog-blockchain-optimism': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076641901-20250512-2155-Futuristic-Blockchain-Technology-simple-compose-01jv2xkk35fg99g5m1yecjjxa3.gif',
+  'blog-og-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/a36adc18-4752-49bd-b970-f6b1e5814b2e.png',
+  'blog-twitter-card': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/6e972845-d283-487c-be43-db051920940c.png',
+    // Author images
+  'author-fantastic': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp',
+  'author-yevhen': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Eugene-Lukyanov-HLDs14ajHXg6FcQy0aYKb0MTkloeko.jpg',
+  'author-tech-team': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-06_14-10-40-UXOlLLTn4PXpt3zuJZotwguhCZcXlz.jpg',
 };
 
 /**
