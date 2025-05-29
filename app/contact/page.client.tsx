@@ -5,38 +5,15 @@ import Link from "next/link";
 import { OrganizationStructuredData } from "@/components/ui/StructuredData";
 import { getBlobImage } from "@/utils/media-utils";
 import Button from "@/components/ui/Button";
-
-// Define grecaptcha type locally if not globally available
-declare global {
-    interface Window {
-        grecaptcha: any; // Define grecaptcha on window
-    }
-}
+import { loadRecaptchaScript } from "@/utils/recaptcha";
 
 export default function ContactClientPage() {
     useEffect(() => {
-        const scriptId = "recaptcha-enterprise-script";
-        if (document.getElementById(scriptId)) return;
-
-        const script = document.createElement('script');
-        script.id = scriptId;
-        script.src = "https://www.google.com/recaptcha/enterprise.js?render=6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z";
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-            console.log("reCAPTCHA script loaded");
-        };
-        script.onerror = (error) => {
-            console.error("Error loading reCAPTCHA script:", error);
-        };
-        document.head.appendChild(script);
-        
-        return () => {
-            // cleanup on unmount: remove script and grecaptcha from window
-            const existing = document.getElementById(scriptId);
-            if (existing) existing.remove();
-            // Don't delete window.grecaptcha as it might be used by other components
-        };
+        // Load reCAPTCHA script using the new utility
+        loadRecaptchaScript(
+            () => console.log("reCAPTCHA script loaded successfully"),
+            (error) => console.error("Failed to load reCAPTCHA script:", error)
+        );
     }, []);
 
     return (

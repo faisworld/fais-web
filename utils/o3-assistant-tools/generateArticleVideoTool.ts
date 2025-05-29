@@ -2,7 +2,7 @@
 import { tool } from 'ai';
 import { z, ZodType } from 'zod';
 import Replicate from 'replicate';
-import { uploadToBlob } from '../blob-upload';
+import { uploadToBlobServer } from '../blob-upload-server';
 
 // Define specific model identifiers with versions
 const MODEL_GOOGLE_VEO_2 = "google/veo-2:tjqhsk4eddrma0cn7w38c91tq8";
@@ -139,19 +139,15 @@ async function generateArticleVideoLogic(
     const videoResponse = await fetch(replicateVideoUrl);
     if (!videoResponse.ok) {
       throw new Error(`Failed to download video from Replicate: ${videoResponse.statusText}`);
-    }
-
-    const videoBuffer = await videoResponse.arrayBuffer();
+    }    const videoBuffer = await videoResponse.arrayBuffer();
     const contentType = videoResponse.headers.get('content-type') || 'video/mp4';
     const modelNameForFile = modelName.replace('/', '-');
     const safePromptPart = finalPrompt.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '-');
     const fileExtension = contentType.split('/')[1] || 'mp4';
     const filename = `vid-${modelNameForFile}-${safePromptPart}-${Date.now()}.${fileExtension}`;
 
-    const videoFile = new File([videoBuffer], filename, { type: contentType });
-
     console.log(`Uploading video to Vercel Blob as ${filename}...`);
-    const blobUploadResult = await uploadToBlob(videoFile, {
+    const blobUploadResult = await uploadToBlobServer(videoBuffer, filename, contentType, {
       folder: 'article-videos', 
       prefix: modelNameForFile + '/', 
     });

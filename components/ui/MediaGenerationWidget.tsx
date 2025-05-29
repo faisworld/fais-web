@@ -10,9 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Loader2, AlertCircle } from 'lucide-react';
 
 const imageModels = [
-  { id: "minimax/image-01:w4agaakfhnrme0cnbhgtyfmstc", name: "Minimax Image 01" },
-  { id: "google/imagen-3-fast:swntzryxznrm80cmvc1aqbnqgg", name: "Google Imagen 3 Fast" },
-  { id: "nvidia/sana:c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6", name: "Nvidia Sana" },
+  { id: "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316", name: "Stability AI SDXL" },
+  { id: "google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d", name: "Google Imagen 4" },
+  { id: "nvidia/ediffi:2f3520af3d61af76f0a91a8efef86dda1b1698ceac5bb9224fee8e32824aac9b", name: "Nvidia EDIFFI" },
 ];
 
 const videoModels = [

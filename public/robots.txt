@@ -1,17 +1,28 @@
-# Allow all robots to index all content
+# Robots.txt for Fantastic AI Studio (fais.world)
+# Allow all search engines to index all content
 User-agent: *
 Allow: /
 
-# Sitemap locations
+# Sitemap locations for better discoverability
 Sitemap: https://fais.world/sitemap-index.xml
 Sitemap: https://fais.world/sitemap.xml
 Sitemap: https://fais.world/blog-sitemap.xml
 
-# Specifically allow blog content to be crawled and indexed
+# Explicitly allow important sections
+Allow: /about
+Allow: /ai-services
+Allow: /blockchain-services
+Allow: /contact
+Allow: /projects
 Allow: /blog/
 Allow: /blog$
 
-# Disallow admin and API routes
+# Disallow admin and API routes for security
 Disallow: /admin/
 Disallow: /api/
 Disallow: /image-fixer/
+Disallow: /_next/
+Disallow: /temp_images/
+
+# Crawl delay for respectful crawling (optional)
+Crawl-delay: 1

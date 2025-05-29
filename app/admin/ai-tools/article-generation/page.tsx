@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Loader2, RefreshCw, Check } from "lucide-react";
+import Image from "next/image";
 
 export default function ArticleGenerationPage() {
   const [topic, setTopic] = useState<string>("");
@@ -22,6 +23,8 @@ export default function ArticleGenerationPage() {
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   const handleGenerate = async () => {
     if (!topic) {
@@ -61,6 +64,44 @@ export default function ArticleGenerationPage() {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleSaveToBlog = async () => {
+    if (!generatedContent) {
+      setError("No article to save");
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveMessage(null);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/admin/ai-tools/save-article', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: generatedContent.title,
+          content: generatedContent.content,
+          imageUrl: generatedContent.imageUrl,
+          slug: generatedContent.slug,
+          category: 'ai', // Default category, could be made configurable
+          keywords: keywords.split(',').map(k => k.trim()).filter(Boolean),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save article to blog");
+      }      await response.json();
+      setSaveMessage("Article saved to blog successfully!");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -192,18 +233,18 @@ export default function ArticleGenerationPage() {
           {generatedContent && (
             <div className="article-preview">
               <h1 className="text-2xl font-bold mb-4">{generatedContent.title}</h1>
-              
               {generatedContent.imageUrl && (
                 <div className="mb-4">
-                  <img 
+                  <Image 
                     src={generatedContent.imageUrl} 
                     alt={generatedContent.title}
+                    width={800}
+                    height={256}
                     className="rounded-md w-full h-auto max-h-64 object-cover"
                   />
                   <p className="text-xs text-gray-500 mt-1">Generated featured image</p>
                 </div>
               )}
-              
               <div className="prose max-w-none">
                 {generatedContent.content.split('\n\n').map((paragraph, idx) => (
                   <p key={idx} className="mb-4">{paragraph}</p>
@@ -235,6 +276,32 @@ export default function ArticleGenerationPage() {
                     Download Markdown
                   </button>
                 </div>
+
+                <div className="mt-4">
+                  <button
+                    onClick={handleSaveToBlog}
+                    disabled={isSaving || !generatedContent}
+                    className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Loader2 className="animate-spin h-5 w-5" />
+                        Saving to Blog...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="h-5 w-5" />
+                        Save to Blog
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {saveMessage && (
+                  <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md">
+                    {saveMessage}
+                  </div>
+                )}
               </div>
             </div>
           )}

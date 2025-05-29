@@ -1,23 +1,22 @@
 import { tool } from 'ai';
 import { z, ZodType } from 'zod';
 import Replicate from 'replicate';
-import { uploadToBlob } from '../blob-upload'; // Import Vercel Blob upload function
+import { uploadToBlobServer } from '../blob-upload-server'; // Import server-side Vercel Blob upload function
 
-// Define specific model identifiers with versions based on user-provided IDs
-const MODEL_MINIMAX_IMAGE_01 = "minimax/image-01:w4agaakfhnrme0cnbhgtyfmstc";
-const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4"; // Format is just "google/imagen-4" for Replicate API
-const MODEL_NVIDIA_SANA = "nvidia/sana:c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6";
+// Define the best image generation models based on quality and cost balance
+const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d";
+const MODEL_STABILITY_SDXL = "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316";
 
 const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN, // Corrected to use REPLICATE_API_TOKEN from .env.local
+  auth: process.env.REPLICATE_API_TOKEN,
 });
 
 export const GenerateArticleImageParameters = z.object({
   prompt: z.string().min(5).describe('A detailed prompt for the image generation model.'),
   aspectRatio: z.enum(['1:1', '16:9', '4:3', '3:2', '9:16']).default('16:9').optional()
     .describe('Desired aspect ratio for the generated image.'),
-  modelIdentifier: z.enum([MODEL_MINIMAX_IMAGE_01, MODEL_GOOGLE_IMAGEN_4, MODEL_NVIDIA_SANA]).default(MODEL_MINIMAX_IMAGE_01)
-    .describe('The Replicate model identifier (owner/name:version).'),
+  modelIdentifier: z.enum([MODEL_GOOGLE_IMAGEN_4, MODEL_STABILITY_SDXL]).default(MODEL_GOOGLE_IMAGEN_4)
+    .describe('The Replicate model identifier. Google Imagen 4 (best quality) or Stability SDXL (good quality, lower cost).'),
   negativePrompt: z.string().optional().describe('Optional negative prompt for the image generation.'),
   safetyFilterLevel: z.enum(['block_low_and_above', 'block_medium_and_above', 'block_only_high']).default('block_only_high').optional()
     .describe('Safety filter level for Google Imagen 4. block_low_and_above is strictest, block_only_high is most permissive.'),
@@ -52,25 +51,16 @@ async function generateArticleImageLogic(
 
   if (negativePrompt) {
     modelInput.negative_prompt = negativePrompt;
-  }
-  // Adapt input parameters based on the selected model
+  }  // Adapt input parameters based on the selected model
   const modelName = modelIdentifier.split(':')[0];
 
   switch (modelName) {
-    case 'minimax/image-01':
-      modelInput.aspect_ratio_str = aspectRatio;
-      break;
-    case 'google/imagen-4':
-      modelInput.aspect_ratio = aspectRatio;
-      if (safetyFilterLevel) {
-        modelInput.safety_filter_level = safetyFilterLevel;
-      }
-      break;
-    case 'nvidia/sana':
+    case 'stability-ai/sdxl':
+      // SDXL uses width and height parameters
+      const [ratioW, ratioH] = aspectRatio.split(':').map(Number);
       const baseSize = 1024;
       let width: number, height: number;
-      const [ratioW, ratioH] = aspectRatio.split(':').map(Number);
-
+      
       if (ratioW >= ratioH) { // Landscape or square
         width = baseSize;
         height = baseSize * (ratioH / ratioW);
@@ -78,13 +68,19 @@ async function generateArticleImageLogic(
         height = baseSize;
         width = baseSize * (ratioW / ratioH);
       }
+      
       modelInput.width = roundTo64(width);
       modelInput.height = roundTo64(height);
       break;
+        case 'google/imagen-4':
+      modelInput.aspect_ratio = aspectRatio;
+      if (safetyFilterLevel) {
+        modelInput.safety_filter_level = safetyFilterLevel;
+      }
+      break;
+      
     default:
       console.warn(`Model ${modelIdentifier} not explicitly handled for custom params, using generic prompt approach.`);
-      // For unhandled models, we can only pass the prompt and hope the model infers aspect ratio or uses a default.
-      // The enum for modelIdentifier should prevent this case with the current setup.
       break;
   }
 
@@ -110,19 +106,15 @@ async function generateArticleImageLogic(
     const imageResponse = await fetch(replicateImageUrl);
     if (!imageResponse.ok) {
       throw new Error(`Failed to download image from Replicate: ${imageResponse.statusText}`);
-    }
-
-    const imageBuffer = await imageResponse.arrayBuffer();
+    }    const imageBuffer = await imageResponse.arrayBuffer();
     const contentType = imageResponse.headers.get('content-type') || 'image/png';
     const modelNameForFile = modelName.replace('/', '-');
     const safePromptPart = prompt.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '-');
     const fileExtension = contentType.split('/')[1] || 'png';
     const filename = `img-${modelNameForFile}-${safePromptPart}-${Date.now()}.${fileExtension}`;
 
-    const imageFile = new File([imageBuffer], filename, { type: contentType });
-
     console.log(`Uploading image to Vercel Blob as ${filename}...`);
-    const blobUploadResult = await uploadToBlob(imageFile, {
+    const blobUploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
       folder: 'article-images',
       prefix: modelNameForFile + '/',
     });

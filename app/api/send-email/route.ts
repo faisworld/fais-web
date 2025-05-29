@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
 import nodemailer from "nodemailer"
-import { RecaptchaEnterpriseServiceClient } from "@google-cloud/recaptcha-enterprise"
+import { 
+  verifyRecaptchaTokenEnhanced, 
+  SERVER_RECAPTCHA_CONFIG
+} from "@/utils/recaptcha-server"
 
 // Simple in-memory rate limiting
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour in milliseconds
@@ -26,58 +29,6 @@ function isRateLimited(ip: string): boolean {
   }
 
   return true
-}
-
-// Function to verify reCAPTCHA token using the official client
-async function verifyRecaptchaToken(token: string, action: string) {
-  try {
-    // Create the reCAPTCHA client
-    const client = new RecaptchaEnterpriseServiceClient()
-    const projectPath = client.projectPath("fantastic-ai-stu-1742763229808")
-
-    // Build the assessment request
-    const request = {
-      assessment: {
-        event: {
-          token: token,
-          siteKey: "6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z",
-        },
-      },
-      parent: projectPath,
-    }
-
-    // Create the assessment
-    const [response] = await client.createAssessment(request)
-    
-    // Check if the token is valid
-    if (!response?.tokenProperties?.valid) {
-      const reason = response?.tokenProperties?.invalidReason || 'Unknown reason'
-      console.log(`Token validation failed: ${reason}`)
-      return { valid: false, score: 0, reason }
-    }
-
-    // Check if the expected action was executed
-    if (response?.tokenProperties?.action !== action) {
-      const actualAction = response?.tokenProperties?.action || 'unknown'
-      console.log(`Action mismatch: expected ${action}, got ${actualAction}`)
-      return { valid: false, score: 0, reason: "Action mismatch" }
-    }
-
-    // Get the risk score
-    const score = response?.riskAnalysis?.score || 0
-    console.log(`reCAPTCHA score: ${score}`)
-
-    // Log any risk reasons
-    const reasons = response?.riskAnalysis?.reasons
-    if (reasons && reasons.length > 0) {
-      console.log("Risk reasons:", reasons)
-    }
-
-    return { valid: true, score, reason: null }
-  } catch (error) {
-    console.error("Error verifying reCAPTCHA token:", error)
-    return { valid: false, score: 0, reason: "Verification error" }
-  }
 }
 
 // Handle GET requests (for when someone visits the URL directly)
@@ -129,8 +80,19 @@ export async function POST(request: Request) {
         console.warn("Missing reCAPTCHA token in request - proceeding anyway", { ip })
       } else {
         console.log('Verifying reCAPTCHA token...') // Debug log
-        // Verify the reCAPTCHA token
-        const verification = await verifyRecaptchaToken(recaptchaToken, recaptchaAction)
+        // Get client IP and user agent for enhanced verification
+        const userAgent = request.headers.get("user-agent") || "unknown"
+        
+        // Verify the reCAPTCHA token with enhanced security
+        const verification = await verifyRecaptchaTokenEnhanced(
+          recaptchaToken, 
+          ip, 
+          userAgent,
+          { 
+            expectedAction: SERVER_RECAPTCHA_CONFIG.ACTIONS.CONTACT_FORM,
+            minimumScore: 0.5 
+          }
+        )
 
         if (!verification.valid) {
           console.warn(`reCAPTCHA verification failed: ${verification.reason}`)

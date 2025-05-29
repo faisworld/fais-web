@@ -1,37 +1,58 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "AI Solutions | Fantastic AI Studio",
-  description: "Discover our innovative AI solutions including predictive analytics, NLP, computer vision, and custom machine learning models to transform your business.",
+export const metadata: Metadata = {
+  title: "Enterprise AI Development Services | Custom AI Solutions & Machine Learning",
+  description: "Transform your business with enterprise AI development services. Custom machine learning models, predictive analytics, NLP, computer vision, AI chatbots. Serving Fortune 500 companies across USA, UK, Germany. 95% client satisfaction rate.",
   keywords: [
-    "AI services",
-    "predictive analytics",
-    "natural language processing",
-    "NLP",
-    "computer vision",
-    "machine learning models",
-    "AI chatbots",
-    "robotic process automation",
-    "RPA",
-    "recommendation systems",
-    "speech recognition",
-    "data analytics",
-    "AI cybersecurity",
+    // Primary keywords
+    "enterprise AI development", "custom AI solutions", "machine learning development", "AI consulting services",
+    // Service-specific keywords
+    "predictive analytics", "natural language processing", "NLP development", "computer vision AI",
+    "AI chatbot development", "robotic process automation", "RPA implementation", "recommendation systems",
+    // Technical keywords
+    "deep learning models", "neural networks", "AI model training", "speech recognition AI",
+    "data analytics AI", "AI cybersecurity", "conversational AI", "AI automation",
+    // Location-based keywords
+    "AI development USA", "AI services UK", "machine learning Germany", "Fortune 500 AI solutions",
+    // Company
     "Fantastic AI Studio"
-  ],
+  ].join(", "),
   openGraph: {
-    title: "AI Solutions | Fantastic AI Studio",
-    description: "Enhance operational efficiency and drive data-driven decision-making with our innovative AI solutions.",
+    title: "Enterprise AI Development Services | Custom AI Solutions & Machine Learning - Fantastic AI Studio",
+    description: "Transform your business with cutting-edge AI development services. Custom machine learning models, predictive analytics, NLP solutions. Trusted by Fortune 500 companies worldwide.",
     url: "https://fais.world/ai-services",
+    type: "website",
     images: [
       {
-        url: "/ai-services-hero-placeholder.png",
+        url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/ai-services-hero-1200x630-NqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
         width: 1200,
         height: 630,
-        alt: "Fantastic AI Studio AI Solutions"
+        alt: "Enterprise AI Development Services - Fantastic AI Studio",
+        type: "image/png"
+      }
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Enterprise AI Development Services | Custom AI Solutions & Machine Learning",
+    description: "Transform your business with cutting-edge AI development services. Custom machine learning models, predictive analytics, NLP solutions.",
+    images: [
+      {
+        url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/ai-services-hero-1200x630-NqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
+        width: 1200,
+        height: 630,
+        alt: "Enterprise AI Development Services - Fantastic AI Studio"
       }
     ]
+  },
+  alternates: {
+    canonical: "https://fais.world/ai-services"
+  },
+  other: {
+    "article:section": "AI Services",
+    "article:tag": "AI Development, Machine Learning, Enterprise AI"
   }
 };
 

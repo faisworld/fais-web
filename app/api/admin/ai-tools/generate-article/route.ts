@@ -45,7 +45,8 @@ export async function POST(request: Request) {
         role: 'user',
         content: `Write a comprehensive article about "${topic}" ${keywordsText}. 
         The article should be ${lengthText} long. Use markdown formatting for headers and structure.
-        Start with a title in # format, followed by well-structured content with appropriate subheadings.`
+        Do NOT include a title at the beginning - start directly with the introduction. 
+        Use ## for main sections and ### for subsections. Focus on creating engaging, well-structured content.`
       }
     ];
 
@@ -71,10 +72,13 @@ export async function POST(request: Request) {
     let imageUrl = undefined;
     if (includeImage) {
       try {
+        // Create a detailed, professional prompt for better image quality
+        const enhancedPrompt = `Professional, high-quality blog featured image about ${topic}. Modern, clean, visually appealing design. Corporate style, professional photography aesthetic. Relevant icons, graphics, or abstract representation. Bright, vibrant colors. No text overlays. Suitable for a technology blog header.`;
+        
         const imageResult = await generateArticleImageTool.execute({
-          prompt: `High quality featured image for article about: ${topic}`,
+          prompt: enhancedPrompt,
           aspectRatio: '16:9',
-          modelIdentifier: "minimax/image-01:w4agaakfhnrme0cnbhgtyfmstc"
+          modelIdentifier: "google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d" // Use Google Imagen 4 for best quality
         }, {
           toolCallId: "admin-article-image-" + Date.now(),
           messages: []

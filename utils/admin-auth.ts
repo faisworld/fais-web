@@ -11,8 +11,8 @@ import { NextRequest } from 'next/server';
 export async function verifyAdminRequest(req: NextRequest) {
   const host = req.headers.get('host');
   
-  // Allow localhost:3000 in all environments
-  if (host !== 'localhost:3000') {
+  // Allow any localhost port in development
+  if (!host || !host.startsWith('localhost:')) {
     return {
       success: false,
       message: 'Unauthorized: Admin endpoints are only accessible from localhost'

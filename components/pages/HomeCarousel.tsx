@@ -14,27 +14,27 @@ export default function HomeCarousel() {
   const carouselItems = useMemo(() => [
     {
       key: 'pioneering-digital-transformation',
-      alt: 'Pioneering Digital Transformation - AI and blockchain solutions for digital transformation',
-      title: 'Pioneering Digital Transformation',
-      subtitle: 'Being at the forefront of digital revolutions delivering powerful, integrated solutions for your growth and success',
-      buttonText: 'learn more',
-      buttonLink: '/projects'
+      alt: 'Enterprise AI Development - Leading Fortune 500 AI solutions and custom machine learning development',
+      title: 'Enterprise AI Development',
+      subtitle: 'Transform your business with custom AI solutions trusted by Fortune 500 companies. 95% client satisfaction rate across USA, UK, Germany.',
+      buttonText: 'Get Free AI Consultation',
+      buttonLink: '/contact'
     },
     {
       key: 'innovating-future',
-      alt: 'Innovating the Future - Advanced technology solutions for business innovation',
-      title: 'Innovating the Future',
-      subtitle: 'Dive into the world of advanced AI and blockchain solutions, and explore tailor-made technologies shaping a sustainable digital future.',
-      buttonText: 'explore solutions',
-      buttonLink: '/services'
+      alt: 'Blockchain Innovation - Smart contracts, DeFi platforms, and enterprise blockchain solutions',
+      title: 'Blockchain Innovation Leaders',
+      subtitle: 'Pioneer blockchain transformation with smart contracts, DeFi platforms, and enterprise blockchain solutions. Proven results, cutting-edge technology.',
+      buttonText: 'Explore Blockchain Services',
+      buttonLink: '/blockchain-services'
     },
     {
       key: 'shaping-sota-technologies',
-      alt: 'Shaping State-of-the-Art Technologies - Cutting-edge AI and blockchain implementation',
-      title: 'Shaping Sota Technologies',
-      subtitle: 'Leveraging cutting-edge AI and Blockchain technologies for smarter solutions across industries.',
-      buttonText: 'our services',
-      buttonLink: '/ai-services'
+      alt: 'Digital Transformation - AI and blockchain solutions for enterprise digital innovation',
+      title: 'Digital Transformation Experts',
+      subtitle: 'Accelerate your digital journey with integrated AI and blockchain solutions. Custom development, strategic consulting, measurable ROI.',
+      buttonText: 'View Our Projects',
+      buttonLink: '/projects'
     },
   ], [])
 

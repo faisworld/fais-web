@@ -6,6 +6,7 @@ import OptimismLayer2Content from "../content/how-optimism-layer-2-can-transform
 import LargeLanguageModelsContent from "../content/large-language-models-2025";
 import BlockchainForSupplyChainContent from "../content/blockchain-for-supply-chain"; // Added import
 import { AuthorImage, BlogCoverImage, RelatedPostImage } from "../components/client-images";
+import { getMarkdownPost } from "@/utils/markdown";
 
 type Props = {
   params: {
@@ -54,6 +55,9 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
     notFound();
   }
   
+  // Try to get markdown content for dynamically generated posts
+  const markdownPost = await getMarkdownPost(slug);
+  
   return (
     <div className="container mx-auto px-4 pt-20 pb-8 max-w-4xl"> {/* Changed py-8 to pt-20 pb-8 */}
       {/* Back link */}
@@ -98,13 +102,28 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
       </div>
-      
-      {/* Blog content */}
+        {/* Blog content */}
       <div className="enhanced-blog-content pb-8">
-        {slug === "how-optimism-layer-2-can-transform-your-business" && <OptimismLayer2Content />} {/* Fixed */}
-        {slug === "large-language-models-2025" && <LargeLanguageModelsContent />} {/* Fixed */}
-        {slug === "blockchain-for-supply-chain" && <BlockchainForSupplyChainContent />} {/* Added new content */}
-      </div>      {/* Related posts */}
+        {/* Render hardcoded content components for specific legacy posts */}
+        {slug === "how-optimism-layer-2-can-transform-your-business" && <OptimismLayer2Content />}
+        {slug === "large-language-models-2025" && <LargeLanguageModelsContent />}
+        {slug === "blockchain-for-supply-chain" && <BlockchainForSupplyChainContent />}
+        
+        {/* Render markdown content for dynamically generated posts */}
+        {markdownPost && !["how-optimism-layer-2-can-transform-your-business", "large-language-models-2025", "blockchain-for-supply-chain"].includes(slug) && (
+          <div 
+            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-strong:text-gray-900"
+            dangerouslySetInnerHTML={{ __html: markdownPost.htmlContent }}
+          />
+        )}
+        
+        {/* Fallback for posts without markdown files */}
+        {!markdownPost && !["how-optimism-layer-2-can-transform-your-business", "large-language-models-2025", "blockchain-for-supply-chain"].includes(slug) && (
+          <div className="text-center py-8">
+            <p className="text-gray-600">Content for this article is being prepared. Please check back soon.</p>
+          </div>
+        )}
+      </div>{/* Related posts */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <h3 className="text-xl font-bold mb-4">Continue Reading</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

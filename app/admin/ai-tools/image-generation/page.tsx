@@ -6,9 +6,9 @@ import Image from "next/image";
 
 // Define the available image generation models
 const IMAGE_MODELS = [
-  { id: "minimax/image-01", name: "Minimax Image 01" },
+  { id: "stability-ai/sdxl", name: "Stability AI SDXL" },
   { id: "google/imagen-4", name: "Google Imagen 4" },
-  { id: "nvidia/sana", name: "Nvidia Sana" },
+  { id: "nvidia/ediffi", name: "Nvidia EDIFFI" },
 ];
 
 // Interface for the request body
@@ -164,16 +164,13 @@ export default function ImageGenerationPage() {
         requestBody.negativePrompt = negativePrompt || undefined;
         requestBody.width = selectedResolution.width;
         requestBody.height = selectedResolution.height;
-        requestBody.modelVariant = modelVariant;
-        requestBody.numInferenceSteps = numInferenceSteps;
+        requestBody.modelVariant = modelVariant;        requestBody.numInferenceSteps = numInferenceSteps;
         requestBody.guidanceScale = guidanceScale;
         requestBody.pagGuidanceScale = pagGuidanceScale;
-        if (seed) requestBody.seed = parseInt(seed);      } else if (selectedModel === 'minimax/image-01') {
-        // Minimax Image 01 specific parameters
-        requestBody.aspect_ratio = aspectRatio;
-        requestBody.number_of_images = numberOfImages;
-        requestBody.prompt_optimizer = promptOptimizer;
-        if (subjectReference) requestBody.subject_reference = subjectReference;
+        if (seed) requestBody.seed = parseInt(seed);      } else if (selectedModel === 'stability-ai/sdxl') {
+        // Stability AI SDXL specific parameters
+        requestBody.aspectRatio = aspectRatio;
+        if (negativePrompt) requestBody.negativePrompt = negativePrompt;
       } else if (selectedModel === 'google/imagen-4') {
         // Google Imagen 4 specific parameters
         requestBody.aspect_ratio = aspectRatio;
@@ -480,12 +477,11 @@ export default function ImageGenerationPage() {
                     type="number"
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={seed}
-                    onChange={(e) => setSeed(e.target.value)}
-                    placeholder="Leave empty for random seed"
+                    onChange={(e) => setSeed(e.target.value)}                  placeholder="Leave empty for random seed"
                   />                </div>
-              </>            ) : selectedModel === 'minimax/image-01' ? (
+              </>            ) : selectedModel === 'stability-ai/sdxl' ? (
               <>
-                {/* Minimax Image 01 specific controls */}
+                {/* Stability AI SDXL specific controls */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
                   <div className="grid grid-cols-4 gap-2">

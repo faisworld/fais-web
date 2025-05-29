@@ -1,19 +1,9 @@
 "use client"
 
 import type React from "react"
-import { type FC, useState, useEffect } from "react"
+import { type FC, useState } from "react"
 import Button from "@/components/ui/Button"
-
-declare global {
-  interface Window {
-    grecaptcha: {
-      enterprise: {
-        ready: (callback: () => void) => void;
-        execute: (siteKey: string, options: { action: string }) => Promise<string>;
-      };
-    }
-  }
-}
+import { useRecaptcha, RECAPTCHA_CONFIG } from "@/utils/recaptcha"
 
 const MailerWidget: FC = () => {
   const [name, setName] = useState("")
@@ -21,27 +11,9 @@ const MailerWidget: FC = () => {
   const [message, setMessage] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
-  const [recaptchaReady, setRecaptchaReady] = useState(false)
-
-  // Check if reCAPTCHA is ready
-  useEffect(() => {
-    // Wait for grecaptcha to be loaded
-    const checkRecaptcha = setInterval(() => {
-      if (window.grecaptcha && window.grecaptcha.enterprise) {
-        clearInterval(checkRecaptcha)
-        
-        window.grecaptcha.enterprise.ready(() => {
-          console.log("reCAPTCHA Enterprise is ready")
-          setRecaptchaReady(true)
-        })
-      }
-    }, 500)
-
-    // Clean up
-    return () => {
-      clearInterval(checkRecaptcha)
-    }
-  }, [])
+  
+  // Use the new reCAPTCHA hook
+  const { isReady: recaptchaReady, generateToken } = useRecaptcha()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,25 +27,19 @@ const MailerWidget: FC = () => {
     setStatus("loading")
 
     try {
-      let recaptchaToken = "";
+      let recaptchaToken = ""
       
-      // Get reCAPTCHA token if available
-      if (recaptchaReady && window.grecaptcha && window.grecaptcha.enterprise) {
-        try {
-          console.log("Executing reCAPTCHA...");
-          recaptchaToken = await window.grecaptcha.enterprise.execute("6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z", {
-            action: "submit_contact_form",
-          });
-          console.log("reCAPTCHA token acquired:", recaptchaToken ? "Yes" : "No");
-        } catch (recaptchaError) {
-          console.error("reCAPTCHA error:", recaptchaError);
+      // Get reCAPTCHA token using the new utility
+      if (recaptchaReady) {
+        const tokenResult = await generateToken(RECAPTCHA_CONFIG.ACTIONS.CONTACT_FORM)
+        if (tokenResult.success && tokenResult.token) {
+          recaptchaToken = tokenResult.token
+          console.log("reCAPTCHA token acquired successfully")
+        } else {
+          console.warn("reCAPTCHA token generation failed:", tokenResult.error)
         }
       } else {
-        console.warn("reCAPTCHA not ready:", {
-          recaptchaReady,
-          hasGrecaptcha: Boolean(window.grecaptcha),
-          hasEnterprise: window.grecaptcha ? Boolean(window.grecaptcha.enterprise) : false
-        });
+        console.warn("reCAPTCHA not ready, proceeding without token")
       }
 
       // Submit form with or without token

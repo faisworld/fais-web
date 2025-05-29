@@ -13,10 +13,10 @@ const PLACEHOLDER_VIDEO_URL = "https://download.samplelib.com/mp4/sample-5s.mp4"
 */
 
 // Model version mapping - Replicate uses format: model-name:version-hash
+// Using only the best quality and cost-effective models
 const MODEL_VERSIONS: Record<string, string> = {
-  'nvidia/sana': 'nvidia/sana:c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6',
-  'google/imagen-4': 'google/imagen-4', // Format is just "google/imagen-4" for Replicate API
-  'minimax/image-01': 'minimax/image-01', // Keep as working version
+  'google/imagen-4': 'google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d', // Best quality
+  'stability-ai/sdxl': 'stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316', // Good quality, lower cost
   // Video models
   'google/veo-2': 'google/veo-2',
   'minimax/video-01-director': 'minimax/video-01-director',
@@ -143,19 +143,32 @@ export async function POST(request: NextRequest) {
       if (width) requestBody.input.width = width;
       if (height) requestBody.input.height = height;
       if (modelVariant) requestBody.input.model_variant = modelVariant;
-      if (numInferenceSteps) requestBody.input.num_inference_steps = numInferenceSteps;
-      if (guidanceScale) requestBody.input.guidance_scale = guidanceScale;
+      if (numInferenceSteps) requestBody.input.num_inference_steps = numInferenceSteps;      if (guidanceScale) requestBody.input.guidance_scale = guidanceScale;
       if (pagGuidanceScale) requestBody.input.pag_guidance_scale = pagGuidanceScale;
-      if (seed) requestBody.input.seed = seed;    } else if (modelIdentifier === 'minimax/image-01') {
-      // Minimax Image 01 specific parameters
-      if (aspect_ratio) requestBody.input.aspect_ratio = aspect_ratio;
-      if (number_of_images !== undefined) requestBody.input.number_of_images = number_of_images;
-      if (prompt_optimizer !== undefined) requestBody.input.prompt_optimizer = prompt_optimizer;
-      if (subject_reference) requestBody.input.subject_reference = subject_reference;
+      if (seed) requestBody.input.seed = seed;    } else if (modelIdentifier === 'stability-ai/sdxl') {
+      // Stability AI SDXL specific parameters
+      if (negativePrompt) requestBody.input.negative_prompt = negativePrompt;
+      if (aspect_ratio) {
+        const [ratioW, ratioH] = aspect_ratio.split(':').map(Number);
+        const baseSize = 1024;
+        let width, height;
+        
+        if (ratioW >= ratioH) {
+          width = baseSize;
+          height = Math.round(baseSize * (ratioH / ratioW));
+        } else {
+          height = baseSize;
+          width = Math.round(baseSize * (ratioW / ratioH));
+        }
+        
+        requestBody.input.width = Math.round(width / 64) * 64;
+        requestBody.input.height = Math.round(height / 64) * 64;
+      }
     } else if (modelIdentifier === 'google/imagen-4') {
-      // Google Imagen 4 specific parameters  
+      // Google Imagen 4 specific parameters
       if (aspectRatio || aspect_ratio) requestBody.input.aspect_ratio = aspectRatio || aspect_ratio;
       if (safety_filter_level) requestBody.input.safety_filter_level = safety_filter_level;
+      if (number_of_images) requestBody.input.number_of_images = number_of_images;
     } else if (modelIdentifier === 'google/veo-2') {
       // Google Veo 2 specific parameters
       if (seed) requestBody.input.seed = seed;
@@ -268,16 +281,18 @@ export async function POST(request: NextRequest) {
     if (attempts >= maxAttempts) {
       console.error('❌ Replicate prediction timed out');
       return NextResponse.json({ error: 'Generation timed out' }, { status: 504 });
-    }
       // Return the appropriate output based on media type
     if (mediaType === 'image') {
       // Handle multiple images for models like Minimax Image 01
       if (Array.isArray(result.output)) {
-        console.log(`✅ Returning ${result.output.length} images: ${result.output}`);
+        // Limit output to requested number of images (up to 9)
+        const requestedCount = number_of_images ? Math.min(number_of_images, 9) : result.output.length;
+        const limitedOutput = result.output.slice(0, requestedCount);
+        console.log(`✅ Returning ${limitedOutput.length} images (requested: ${requestedCount}): ${limitedOutput}`);
         return NextResponse.json({ 
-          imageUrl: result.output[0], // Primary image for backward compatibility
-          imageUrls: result.output,   // All images
-          count: result.output.length 
+          imageUrl: limitedOutput[0], // Primary image for backward compatibility
+          imageUrls: limitedOutput,   // All images
+          count: limitedOutput.length 
         });
       } else {
         console.log(`✅ Returning single image: ${result.output}`);
@@ -286,6 +301,7 @@ export async function POST(request: NextRequest) {
           imageUrls: [result.output],
           count: 1
         });
+      }
       }
     } else if (mediaType === 'video') {
       console.log(`✅ Returning video: ${result.output}`);

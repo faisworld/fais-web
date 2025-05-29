@@ -8,11 +8,10 @@ export default function Footer() {
     <footer className="site-footer">
       {/* Upper Block */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 mt-12">
-        <div className="flex flex-wrap justify-between">
-          {/* First Column - Logo and Navigation */}
+        <div className="flex flex-wrap justify-between">          {/* First Column - Logo and Navigation */}
           <div className="w-full md:w-[30%] mb-6 md:mb-0 flex flex-col items-center md:items-start">
-            {/* Add pl-8 class to align with navigation links */}
-            <div className="mb-8 md:pl-8">
+            {/* Reduce margin to align navigation with other columns */}
+            <div className="mb-2 md:pl-8">
               <Logo variant="black" className="footer-logo" />
             </div>
             {/* Keep the pl-8 that works for alignment */}

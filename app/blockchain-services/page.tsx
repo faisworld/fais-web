@@ -1,33 +1,59 @@
 import Link from "next/link";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Blockchain Services | Fantastic AI Studio",
-  description: "Empower your business with our comprehensive blockchain solutions including smart contracts, DeFi applications, NFTs, and enterprise blockchain integration.",
+export const metadata: Metadata = {
+  title: "Enterprise Blockchain Development Services | Smart Contracts & DeFi Solutions",
+  description: "Leading blockchain development company specializing in smart contracts, DeFi platforms, NFT development, tokenization, and enterprise blockchain solutions. Serving Fortune 500 clients across USA, UK, Germany. 95% success rate.",
   keywords: [
-    "blockchain services",
-    "blockchain solutions",
-    "smart contracts",
-    "decentralized applications",
-    "DeFi solutions",
-    "NFT development",
-    "tokenization",
-    "enterprise blockchain",
-    "blockchain consulting",
-    "web3 development",
+    // Primary keywords
+    "blockchain development services", "smart contracts development", "DeFi platform development", "enterprise blockchain solutions",
+    // Service-specific keywords
+    "NFT development", "tokenization services", "decentralized applications", "web3 development",
+    "blockchain consulting", "cryptocurrency development", "blockchain integration", "digital asset development",
+    // Technical keywords
+    "Ethereum development", "Solidity programming", "blockchain security audit", "consensus algorithms",
+    "distributed ledger technology", "blockchain architecture", "dApp development", "DeFi protocols",
+    // Industry keywords
+    "fintech blockchain", "supply chain blockchain", "healthcare blockchain", "real estate tokenization",
+    // Location-based keywords
+    "blockchain development USA", "blockchain services UK", "blockchain company Germany", "Fortune 500 blockchain",
+    // Company
     "Fantastic AI Studio"
-  ],
+  ].join(", "),
   openGraph: {
-    title: "Blockchain Services | Fantastic AI Studio",
-    description: "Discover our innovative blockchain solutions tailored for enterprise, startups, and digital transformation initiatives.",
+    title: "Enterprise Blockchain Development Services | Smart Contracts & DeFi Solutions - Fantastic AI Studio",
+    description: "Transform your business with cutting-edge blockchain development services. Smart contracts, DeFi platforms, NFT development. Trusted by Fortune 500 companies worldwide.",
     url: "https://fais.world/blockchain-services",
+    type: "website",
     images: [
       {
-        url: "/blockchain-services-hero-placeholder.png",
+        url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blockchain-services-hero-1200x630-NqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
         width: 1200,
         height: 630,
-        alt: "Fantastic AI Studio Blockchain Services"
+        alt: "Enterprise Blockchain Development Services - Fantastic AI Studio",
+        type: "image/png"
       }
     ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Enterprise Blockchain Development Services | Smart Contracts & DeFi Solutions",
+    description: "Transform your business with cutting-edge blockchain development services. Smart contracts, DeFi platforms, NFT development.",
+    images: [
+      {
+        url: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blockchain-services-hero-1200x630-NqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png",
+        width: 1200,
+        height: 630,
+        alt: "Enterprise Blockchain Development Services - Fantastic AI Studio"
+      }
+    ]
+  },
+  alternates: {
+    canonical: "https://fais.world/blockchain-services"
+  },
+  other: {
+    "article:section": "Blockchain Services",
+    "article:tag": "Blockchain Development, Smart Contracts, DeFi"
   }
 };
 
