@@ -7,6 +7,7 @@ import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
 import MissingImageFixer from '@/components/ui/MissingImageFixer'
 import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/next'
 import { Providers } from './providers'
 
 
@@ -173,8 +174,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-      </head>
-      <body>
+      </head>      <body>
         <Providers>
           <Header />
           <DynamicBreadcrumbs darkBg={false} />
@@ -188,6 +188,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>
           <SpeedInsights />
+          <Analytics />
         </Providers>
       </body>
     </html>
