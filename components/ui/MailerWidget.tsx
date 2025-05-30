@@ -4,6 +4,7 @@ import type React from "react"
 import { type FC, useState } from "react"
 import Button from "@/components/ui/Button"
 import { useRecaptcha, RECAPTCHA_CONFIG } from "@/utils/recaptcha"
+import { track } from '@vercel/analytics';
 
 const MailerWidget: FC = () => {
   const [name, setName] = useState("")
@@ -18,9 +19,23 @@ const MailerWidget: FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // Track form submission attempt
+    track('contact_form_submit_attempt', {
+      timestamp: new Date().toISOString(),
+      has_name: !!name,
+      has_email: !!email,
+      has_message: !!message
+    });
+
     if (!name || !email || !message) {
       setStatus("error")
       setErrorMessage("Please fill in all fields")
+      
+      // Track validation error
+      track('contact_form_validation_error', {
+        timestamp: new Date().toISOString(),
+        error: 'missing_fields'
+      });
       return
     }
 
@@ -54,21 +69,32 @@ const MailerWidget: FC = () => {
         }),
       })
 
-      const result = await response.json()
-
       if (response.ok) {
         setStatus("success")
         setName("")
         setEmail("")
         setMessage("")
+        setErrorMessage("")
+        
+        // Track successful form submission
+        track('contact_form_submit_success', {
+          timestamp: new Date().toISOString(),
+          has_recaptcha: !!recaptchaToken
+        });
       } else {
-        setStatus("error")
-        setErrorMessage(result.message || "Failed to send message. Please try again.")
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to send message")
       }
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error sending message:", error)
       setStatus("error")
-      setErrorMessage("An error occurred. Please try again.")
+      setErrorMessage(error instanceof Error ? error.message : "Failed to send message")
+      
+      // Track form submission error
+      track('contact_form_submit_error', {
+        timestamp: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'unknown_error'
+      });
     }
   }
 

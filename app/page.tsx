@@ -6,6 +6,7 @@ import ProjectsSection from '@/components/pages/ProjectsSection'
 import QuoteSection from '@/components/pages/QuoteSection'
 import PreFooterSection from '@/components/pages/PreFooterSection'
 import AnalyticsTest from '@/components/ui/AnalyticsTest'
+import HomePageAnalytics from '@/components/ui/HomePageAnalytics'
 
 // Enhanced metadata for the home page - CRITICAL SEO FIX
 export const metadata: Metadata = {
@@ -141,12 +142,14 @@ export default function Home() {
         name: 'Enterprise Consulting',
         description: 'Strategic AI and blockchain consulting for digital transformation',
         category: 'Consulting'
-      }
-    ]
+      }    ]
   };
 
   return (
     <>
+      {/* Analytics tracking component */}
+      <HomePageAnalytics />
+      
       {/* Service-specific structured data for home page */}
       <script
         type="application/ld+json"

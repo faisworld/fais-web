@@ -6,9 +6,16 @@ import { OrganizationStructuredData } from "@/components/ui/StructuredData";
 import { getBlobImage } from "@/utils/media-utils";
 import Button from "@/components/ui/Button";
 import { loadRecaptchaScript } from "@/utils/recaptcha";
+import { track } from '@vercel/analytics';
 
 export default function ContactClientPage() {
     useEffect(() => {
+        // Track contact page visit
+        track('contact_page_visit', {
+            timestamp: new Date().toISOString(),
+            source: 'direct'
+        });
+
         // Load reCAPTCHA script using the new utility
         loadRecaptchaScript(
             () => console.log("reCAPTCHA script loaded successfully"),
