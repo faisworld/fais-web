@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Test - FAIS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #0070f3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0051cc;
+        }
+        .log {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vercel Analytics Test Page</h1>
+    <p>This page is designed to test Vercel Analytics implementation and debug any issues.</p>
+
+    <div class="test-section">
+        <h2>Analytics Status</h2>
+        <div id="analytics-status" class="status warning">Checking analytics...</div>
+        <div id="analytics-log" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Page View Tests</h2>
+        <p>Test different types of page views and navigation:</p>
+        <button class="test-button" onclick="testPageView()">Test Page View</button>
+        <button class="test-button" onclick="testNavigation()">Test Navigation</button>
+        <button class="test-button" onclick="testExternalLink()">Test External Link</button>
+        <div id="pageview-log" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Custom Event Tests</h2>
+        <p>Test custom analytics events:</p>
+        <button class="test-button" onclick="testCustomEvent()">Test Custom Event</button>
+        <button class="test-button" onclick="testUserAction()">Test User Action</button>
+        <button class="test-button" onclick="testConversion()">Test Conversion</button>
+        <div id="event-log" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Environment Information</h2>
+        <div id="env-info" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Network Tests</h2>
+        <p>Test analytics network requests:</p>
+        <button class="test-button" onclick="testNetworkRequests()">Monitor Network</button>
+        <button class="test-button" onclick="clearLogs()">Clear Logs</button>
+        <div id="network-log" class="log"></div>
+    </div>
+
+    <script>
+        // Global variables for logging
+        let analyticsLog = [];
+        let pageviewLog = [];
+        let eventLog = [];
+        let networkLog = [];
+
+        // Log function
+        function log(category, message) {
+            const timestamp = new Date().toISOString();
+            const logEntry = `[${timestamp}] ${message}`;
+            
+            switch(category) {
+                case 'analytics':
+                    analyticsLog.push(logEntry);
+                    document.getElementById('analytics-log').textContent = analyticsLog.join('\n');
+                    break;
+                case 'pageview':
+                    pageviewLog.push(logEntry);
+                    document.getElementById('pageview-log').textContent = pageviewLog.join('\n');
+                    break;
+                case 'event':
+                    eventLog.push(logEntry);
+                    document.getElementById('event-log').textContent = eventLog.join('\n');
+                    break;
+                case 'network':
+                    networkLog.push(logEntry);
+                    document.getElementById('network-log').textContent = networkLog.join('\n');
+                    break;
+            }
+            console.log(logEntry);
+        }
+
+        // Check if Vercel Analytics is loaded
+        function checkAnalytics() {
+            log('analytics', 'Checking for Vercel Analytics...');
+            
+            // Check for Vercel Analytics script
+            const scripts = document.getElementsByTagName('script');
+            let vercelScript = false;
+            for (let script of scripts) {
+                if (script.src && script.src.includes('vercel')) {
+                    vercelScript = true;
+                    log('analytics', `Found Vercel script: ${script.src}`);
+                }
+            }
+            
+            // Check for analytics functions
+            if (typeof window.va !== 'undefined') {
+                log('analytics', 'Vercel Analytics (va) object found');
+                document.getElementById('analytics-status').textContent = 'Analytics loaded successfully';
+                document.getElementById('analytics-status').className = 'status success';
+            } else {
+                log('analytics', 'Vercel Analytics (va) object NOT found');
+                document.getElementById('analytics-status').textContent = 'Analytics not loaded';
+                document.getElementById('analytics-status').className = 'status error';
+            }
+            
+            // Check for web vitals
+            if (typeof window.webVitals !== 'undefined') {
+                log('analytics', 'Web Vitals found');
+            } else {
+                log('analytics', 'Web Vitals NOT found');
+            }
+        }
+
+        // Test page view tracking
+        function testPageView() {
+            log('pageview', 'Testing page view...');
+            
+            if (typeof window.va !== 'undefined' && window.va.track) {
+                try {
+                    window.va.track('pageview', { page: '/analytics-test' });
+                    log('pageview', 'Page view tracked successfully');
+                } catch (error) {
+                    log('pageview', `Error tracking page view: ${error.message}`);
+                }
+            } else {
+                log('pageview', 'Analytics not available for page view tracking');
+            }
+        }
+
+        // Test navigation
+        function testNavigation() {
+            log('pageview', 'Testing navigation...');
+            
+            // Simulate navigation by changing URL hash
+            const oldHash = window.location.hash;
+            window.location.hash = '#test-navigation';
+            
+            setTimeout(() => {
+                window.location.hash = oldHash;
+                log('pageview', 'Navigation test completed');
+            }, 1000);
+        }
+
+        // Test external link
+        function testExternalLink() {
+            log('pageview', 'Testing external link click...');
+            
+            if (typeof window.va !== 'undefined' && window.va.track) {
+                try {
+                    window.va.track('external_link', { 
+                        url: 'https://example.com',
+                        text: 'Test External Link' 
+                    });
+                    log('pageview', 'External link tracked successfully');
+                } catch (error) {
+                    log('pageview', `Error tracking external link: ${error.message}`);
+                }
+            } else {
+                log('pageview', 'Analytics not available for external link tracking');
+            }
+        }
+
+        // Test custom event
+        function testCustomEvent() {
+            log('event', 'Testing custom event...');
+            
+            if (typeof window.va !== 'undefined' && window.va.track) {
+                try {
+                    window.va.track('custom_test_event', {
+                        category: 'test',
+                        action: 'button_click',
+                        label: 'analytics_test'
+                    });
+                    log('event', 'Custom event tracked successfully');
+                } catch (error) {
+                    log('event', `Error tracking custom event: ${error.message}`);
+                }
+            } else {
+                log('event', 'Analytics not available for custom event tracking');
+            }
+        }
+
+        // Test user action
+        function testUserAction() {
+            log('event', 'Testing user action...');
+            
+            if (typeof window.va !== 'undefined' && window.va.track) {
+                try {
+                    window.va.track('user_action', {
+                        action_type: 'click',
+                        element: 'test_button',
+                        section: 'analytics_test'
+                    });
+                    log('event', 'User action tracked successfully');
+                } catch (error) {
+                    log('event', `Error tracking user action: ${error.message}`);
+                }
+            } else {
+                log('event', 'Analytics not available for user action tracking');
+            }
+        }
+
+        // Test conversion
+        function testConversion() {
+            log('event', 'Testing conversion...');
+            
+            if (typeof window.va !== 'undefined' && window.va.track) {
+                try {
+                    window.va.track('conversion', {
+                        type: 'test_conversion',
+                        value: 1,
+                        currency: 'USD'
+                    });
+                    log('event', 'Conversion tracked successfully');
+                } catch (error) {
+                    log('event', `Error tracking conversion: ${error.message}`);
+                }
+            } else {
+                log('event', 'Analytics not available for conversion tracking');
+            }
+        }
+
+        // Monitor network requests
+        function testNetworkRequests() {
+            log('network', 'Starting network monitoring...');
+            
+            // Override fetch to monitor requests
+            const originalFetch = window.fetch;
+            window.fetch = function(...args) {
+                const url = args[0];
+                if (typeof url === 'string' && (url.includes('vercel') || url.includes('analytics'))) {
+                    log('network', `Analytics request: ${url}`);
+                }
+                return originalFetch.apply(this, args);
+            };
+            
+            // Override XMLHttpRequest
+            const originalXHR = window.XMLHttpRequest;
+            window.XMLHttpRequest = function() {
+                const xhr = new originalXHR();
+                const originalOpen = xhr.open;
+                xhr.open = function(method, url) {
+                    if (url.includes('vercel') || url.includes('analytics')) {
+                        log('network', `XHR Analytics request: ${method} ${url}`);
+                    }
+                    return originalOpen.apply(this, arguments);
+                };
+                return xhr;
+            };
+            
+            log('network', 'Network monitoring enabled');
+        }
+
+        // Display environment information
+        function displayEnvInfo() {
+            const info = [
+                `User Agent: ${navigator.userAgent}`,
+                `URL: ${window.location.href}`,
+                `Referrer: ${document.referrer || 'None'}`,
+                `Screen: ${screen.width}x${screen.height}`,
+                `Viewport: ${window.innerWidth}x${window.innerHeight}`,
+                `Language: ${navigator.language}`,
+                `Cookies Enabled: ${navigator.cookieEnabled}`,
+                `Do Not Track: ${navigator.doNotTrack || 'Not set'}`,
+                `Local Storage: ${typeof(Storage) !== "undefined" ? 'Available' : 'Not available'}`,
+                `Session Storage: ${typeof(sessionStorage) !== "undefined" ? 'Available' : 'Not available'}`
+            ];
+            
+            document.getElementById('env-info').textContent = info.join('\n');
+        }
+
+        // Clear all logs
+        function clearLogs() {
+            analyticsLog = [];
+            pageviewLog = [];
+            eventLog = [];
+            networkLog = [];
+            
+            document.getElementById('analytics-log').textContent = '';
+            document.getElementById('pageview-log').textContent = '';
+            document.getElementById('event-log').textContent = '';
+            document.getElementById('network-log').textContent = '';
+            
+            log('analytics', 'All logs cleared');
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            log('analytics', 'Analytics test page loaded');
+            displayEnvInfo();
+            
+            // Check analytics after a short delay to allow scripts to load
+            setTimeout(checkAnalytics, 1000);
+            
+            // Check again after 3 seconds
+            setTimeout(checkAnalytics, 3000);
+        });
+
+        // Monitor for analytics script loading
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.tagName === 'SCRIPT' && node.src && node.src.includes('vercel')) {
+                        log('analytics', `Vercel script loaded: ${node.src}`);
+                        setTimeout(checkAnalytics, 500);
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.head, { childList: true, subtree: true });
+    </script>
+</body>
+</html>
