@@ -186,9 +186,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ConditionalWidgetWrapper agentId='GkOKedIUAelQwYORYU3j' />
           
           {/* WidgetBot Crate Script */}
-          <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>
-          <SpeedInsights />
-          <Analytics />
+          <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>          <SpeedInsights />
+          <Analytics mode={'production'} debug={process.env.NODE_ENV === 'development'} />
         </Providers>
       </body>
     </html>

@@ -5,6 +5,7 @@ import ProjectsSection from '@/components/pages/ProjectsSection'
 // import TestimonialsSection from '@/components/pages/TestimonialsSection'
 import QuoteSection from '@/components/pages/QuoteSection'
 import PreFooterSection from '@/components/pages/PreFooterSection'
+import AnalyticsTest from '@/components/ui/AnalyticsTest'
 
 // Enhanced metadata for the home page - CRITICAL SEO FIX
 export const metadata: Metadata = {
@@ -174,6 +175,9 @@ export default function Home() {
         {/* PreFooterSection */}
         <PreFooterSection />
       </div>
+
+      {/* Analytics Test Component - For Debugging */}
+      <AnalyticsTest />
     </>
   )
 }
