@@ -173,7 +173,7 @@ export default function ArticleGenerationPage() {
                 id="includeImage"
                 checked={includeImage}
                 onChange={(e) => setIncludeImage(e.target.checked)}
-                className="h-4 w-4 text-blue-600 rounded"
+                className="h-4 w-4 text-gray-600 rounded"
               />
               <label htmlFor="includeImage" className="ml-2 text-sm text-gray-700">
                 Generate and include a featured image
@@ -183,7 +183,7 @@ export default function ArticleGenerationPage() {
             <button
               onClick={handleGenerate}
               disabled={isGenerating || !topic}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isGenerating ? (
                 <>
@@ -218,7 +218,7 @@ export default function ArticleGenerationPage() {
           
           {isGenerating && (
             <div className="flex flex-col items-center justify-center p-8">
-              <Loader2 className="animate-spin h-8 w-8 text-blue-500 mb-4" />
+              <Loader2 className="animate-spin h-8 w-8 text-gray-500 mb-4" />
               <p className="text-gray-600">Generating your article...</p>
               <p className="text-sm text-gray-500 mt-2">This may take 1-2 minutes</p>
             </div>
@@ -271,7 +271,7 @@ export default function ArticleGenerationPage() {
                       a.click();
                       document.body.removeChild(a);
                     }}
-                    className="px-3 py-1 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 text-sm"
+                    className="px-3 py-1 bg-gray-50 text-gray-700 rounded hover:bg-gray-100 text-sm"
                   >
                     Download Markdown
                   </button>

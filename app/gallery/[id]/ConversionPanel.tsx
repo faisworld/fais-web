@@ -127,7 +127,7 @@ export default function ConversionPanel({ imageUrl, imageAlt }: ConversionPanelP
               type="button"
               onClick={() => setMethod("server")}
               className={`px-2 py-1 text-xs rounded-md flex items-center ${
-                method === "server" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"
+                method === "server" ? "bg-gray-200 text-gray-800" : "bg-gray-100 text-gray-700"
               }`}
               title="Better quality, uses server"
             >
@@ -137,7 +137,7 @@ export default function ConversionPanel({ imageUrl, imageAlt }: ConversionPanelP
               type="button"
               onClick={() => setMethod("browser")}
               className={`px-2 py-1 text-xs rounded-md flex items-center ${
-                method === "browser" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"
+                method === "browser" ? "bg-gray-200 text-gray-800" : "bg-gray-100 text-gray-700"
               }`}
               title="Faster, converts in your browser"
             >
@@ -161,7 +161,7 @@ export default function ConversionPanel({ imageUrl, imageAlt }: ConversionPanelP
         <button
           onClick={handleConvert}
           disabled={isConverting}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300 flex items-center"
+          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 disabled:bg-gray-400 flex items-center"
         >
           {isConverting ? (
             <>
@@ -176,7 +176,7 @@ export default function ConversionPanel({ imageUrl, imageAlt }: ConversionPanelP
         {convertedImageUrl && (
           <button
             onClick={downloadImage}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center"
+            className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 flex items-center"
           >
             <FiDownload className="mr-2" /> Download JPEG
           </button>

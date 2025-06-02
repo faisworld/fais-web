@@ -40,7 +40,7 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
         ...prevUploadStatuses,
         ...newFiles.map((file) => ({
           file,
-          status: "pending",
+          status: "pending" as const,
           progress: 0,
         })),
       ])
@@ -229,7 +229,7 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-sm text-blue-600 hover:text-blue-800"
+              className="text-sm text-gray-700 hover:text-gray-900"
               disabled={isUploading}
             >
               Add More Files
@@ -261,9 +261,8 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
                 {uploadStatuses.map((status, index) => (
                   <div key={index} className="flex items-center p-3 border-b border-gray-200 last:border-b-0">
                     <div className="flex-shrink-0 mr-3">
-                      {status.status === "pending" && <FiImage className="text-gray-400" size={24} />}
-                      {status.status === "uploading" && (
-                        <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                      {status.status === "pending" && <FiImage className="text-gray-400" size={24} />}                      {status.status === "uploading" && (
+                        <div className="w-6 h-6 border-2 border-gray-500 border-t-transparent rounded-full animate-spin" />
                       )}
                       {status.status === "success" && <FiCheck className="text-green-500" size={24} />}
                       {status.status === "error" && <FiAlertCircle className="text-red-500" size={24} />}
@@ -281,7 +280,7 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
                       {status.status === "uploading" && (
                         <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
                           <div
-                            className="bg-blue-600 h-1.5 rounded-full"
+                            className="bg-gray-600 h-1.5 rounded-full"
                             style={{ width: `${status.progress}%` }}
                           ></div>
                         </div>
@@ -313,7 +312,7 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
-                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                className="bg-gray-600 h-2.5 rounded-full transition-all duration-300"
                 style={{ width: `${overallProgress}%` }}
               ></div>
             </div>
@@ -333,7 +332,7 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
           <button
             type="button"
             onClick={handleBatchUpload}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:bg-gray-400"
             disabled={isUploading || files.length === 0}
           >
             {isUploading ? `Uploading (${overallProgress}%)` : `Upload ${files.length} Files`}

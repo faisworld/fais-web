@@ -438,7 +438,7 @@ export default function AdminGalleryPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-center my-12">
-          <div className="h-10 w-10 bg-blue-100 rounded-full"></div>
+          <div className="h-10 w-10 bg-gray-100 rounded-full"></div>
         </div>
       </div>
     );
@@ -467,10 +467,9 @@ export default function AdminGalleryPage() {
             Refresh
           </button>
           
-          <button 
-            className={`px-3 py-2 rounded-md flex items-center transition-all ${
+          <button            className={`px-3 py-2 rounded-md flex items-center transition-all ${
               selectionMode 
-                ? "bg-blue-100 text-blue-700 border border-blue-300" 
+                ? "bg-gray-100 text-gray-700 border border-gray-300" 
                 : "bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200"
             }`}
             onClick={toggleSelectionMode}
@@ -527,7 +526,7 @@ export default function AdminGalleryPage() {
           </button>
           
           <button 
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-md flex items-center shadow-md hover:shadow-lg transition-all"
+            className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-3 py-2 rounded-md flex items-center shadow-md hover:shadow-lg transition-all"
             onClick={handleUploadClick}
           >
             <Upload className="mr-1.5" size={16} /> 
@@ -538,7 +537,7 @@ export default function AdminGalleryPage() {
       <div className="bg-gray-50 border border-gray-200 rounded-md p-2 mb-4 flex items-center overflow-x-auto">
         <button 
           onClick={() => setCurrentFolder('')}
-          className={`px-2 py-1 text-sm rounded-md mr-2 flex items-center ${!currentFolder ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-200'}`}
+          className={`px-2 py-1 text-sm rounded-md mr-2 flex items-center ${!currentFolder ? 'bg-gray-100 text-gray-700' : 'hover:bg-gray-200'}`}
         >
           <Folder size={14} className="mr-1" /> Root
         </button>
@@ -552,7 +551,7 @@ export default function AdminGalleryPage() {
                 onClick={() => setCurrentFolder('images')}
                 className="px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center"
               >
-                <ImageIcon size={14} className="mr-1 text-blue-600" /> images
+                <ImageIcon size={14} className="mr-1 text-gray-600" /> images
               </button>
               <button
                 onClick={() => setCurrentFolder('carousel')}
@@ -577,9 +576,8 @@ export default function AdminGalleryPage() {
             {currentFolder.split('/').map((folder, index, array) => (
               <div key={index} className="flex items-center">
                 <button
-                  onClick={() => navigateToFolder(array.slice(0, index + 1).join('/'))}
-                  className={`px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center ${
-                    index === array.length - 1 ? 'bg-blue-100 text-blue-700 font-medium' : ''
+                  onClick={() => navigateToFolder(array.slice(0, index + 1).join('/'))}                  className={`px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center ${
+                    index === array.length - 1 ? 'bg-gray-100 text-gray-700 font-medium' : ''
                   }`}
                 >
                   {folder}
@@ -605,9 +603,8 @@ export default function AdminGalleryPage() {
           return (
             <button
               key={path}
-              onClick={() => navigateToFolder(path)}
-              className={`px-2 py-1 text-sm rounded-md mr-2 ${
-                index === array.length - 1 ? 'bg-blue-100 text-blue-700' : 'hover:bg-gray-200'
+              onClick={() => navigateToFolder(path)}              className={`px-2 py-1 text-sm rounded-md mr-2 ${
+                index === array.length - 1 ? 'bg-gray-100 text-gray-700' : 'hover:bg-gray-200'
               }`}
             >
               {part}
@@ -617,15 +614,14 @@ export default function AdminGalleryPage() {
       </div>
 
       {selectionMode && (
-        <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6 flex justify-between items-center">
+        <div className="bg-gray-50 border border-gray-200 rounded-md p-4 mb-6 flex justify-between items-center">
           <div className="flex items-center">
             <input 
               type="checkbox" 
               checked={selectedItems.size > 0 && selectedItems.size === images.length}
-              onChange={selectAllItems}
-              className="h-5 w-5 text-blue-600 rounded mr-2"
+              onChange={selectAllItems}              className="h-5 w-5 text-gray-600 rounded mr-2"
             />
-            <span className="mr-4 text-blue-800 font-medium">
+            <span className="mr-4 text-gray-800 font-medium">
               {selectedItems.size} {selectedItems.size === 1 ? 'item' : 'items'} selected
             </span>
           </div>
@@ -636,7 +632,7 @@ export default function AdminGalleryPage() {
                 <button 
                   onClick={downloadSelectedMedia}
                   disabled={isDownloading}
-                  className="bg-blue-600 text-white px-3 py-1.5 rounded flex items-center hover:bg-blue-700 disabled:opacity-50"
+                  className="bg-black text-white px-3 py-1.5 rounded flex items-center hover:bg-gray-800 disabled:opacity-50"
                 >
                   {isDownloading ? (
                     <Loader2 size={16} className="mr-1.5 animate-spin" />
@@ -661,7 +657,7 @@ export default function AdminGalleryPage() {
 
       {loading ? (
         <div className="flex justify-center my-12">
-          <Loader2 className="animate-spin text-blue-600" size={48} />
+          <Loader2 className="animate-spin text-gray-600" size={48} />
         </div>
       ) : error ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -679,7 +675,7 @@ export default function AdminGalleryPage() {
           <p className="text-gray-500 mb-6">Upload some media files to get started</p>
           <button 
             onClick={handleUploadClick}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
           >
             Upload Media
           </button>
@@ -688,9 +684,8 @@ export default function AdminGalleryPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {images.map((item) => (
             <div 
-              key={item.id} 
-              className={`border rounded-lg overflow-hidden bg-white shadow-md transition-all ${
-                selectionMode && selectedItems.has(item.id) ? "ring-2 ring-blue-500" : "hover:shadow-lg"
+              key={item.id}              className={`border rounded-lg overflow-hidden bg-white shadow-md transition-all ${
+                selectionMode && selectedItems.has(item.id) ? "ring-2 ring-gray-500" : "hover:shadow-lg"
               }`}
             >
               <div 
@@ -701,7 +696,7 @@ export default function AdminGalleryPage() {
                   <div className="absolute top-2 left-2 z-10">
                     <div className={`h-6 w-6 rounded-full flex items-center justify-center ${
                       selectedItems.has(item.id) 
-                        ? "bg-blue-500 text-white" 
+                        ? "bg-black text-white" 
                         : "bg-black bg-opacity-40 text-white"
                     }`}>
                       {selectedItems.has(item.id) && <Check size={16} />}
@@ -759,17 +754,16 @@ export default function AdminGalleryPage() {
                     <span className="font-medium text-gray-700 flex items-center">
                       <LinkIcon size={12} className="mr-1" /> URL
                     </span>
-                    <div className="flex space-x-1">
-                      <button 
+                    <div className="flex space-x-1">                      <button 
                         onClick={(e) => copyImageUrl(e, item.url, item.id)}
-                        className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
+                        className="text-gray-600 hover:text-gray-800 p-1 rounded hover:bg-gray-50"
                         title="Copy URL"
                       >
                         {copyingImageId === item.id ? <CheckCircle size={12} /> : <Copy size={12} />}
                       </button>
                       <button 
                         onClick={(e) => openImageUrl(e, item.url)}
-                        className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50"
+                        className="text-gray-600 hover:text-gray-800 p-1 rounded hover:bg-gray-50"
                         title="Open in new tab"
                       >
                         <ExternalLink size={12} />
@@ -789,7 +783,7 @@ export default function AdminGalleryPage() {
                           e.stopPropagation();
                           handleEditClick(item);
                         }}
-                        className="flex-1 flex items-center justify-center px-2 py-1 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
+                        className="flex-1 flex items-center justify-center px-2 py-1 bg-gray-50 text-gray-600 rounded-md hover:bg-gray-100 transition-colors"
                       >
                         <Edit size={14} className="mr-1" /> Edit
                       </button>
@@ -820,7 +814,7 @@ export default function AdminGalleryPage() {
                       onClick={(e) => toggleItemSelection(e, item.id)}
                       className={`w-full flex items-center justify-center px-2 py-1 rounded-md ${
                         selectedItems.has(item.id)
-                          ? "bg-blue-100 text-blue-700"
+                          ? "bg-gray-100 text-gray-700"
                           : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                       }`}
                     >
@@ -858,13 +852,12 @@ export default function AdminGalleryPage() {
                 Only letters, numbers, and hyphens will be kept. Special characters will be replaced with hyphens.
               </p>
             </div>
-            
-            <div className="mb-4 bg-blue-50 p-3 rounded-md">
+              <div className="mb-4 bg-gray-50 p-3 rounded-md">
               <div className="flex items-start">
-                <Info size={16} className="text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                <Info size={16} className="text-gray-600 mt-0.5 mr-2 flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-blue-600 font-medium">Gallery Structure</p>
-                  <p className="text-xs text-blue-700 mt-1">
+                  <p className="text-sm text-gray-600 font-medium">Gallery Structure</p>
+                  <p className="text-xs text-gray-700 mt-1">
                     The gallery uses three main folders: <strong>images/</strong>, <strong>carousel/</strong>, and <strong>videos/</strong>. 
                     New folders will be created in the <strong>images/</strong> folder by default unless specified otherwise.
                   </p>
@@ -887,10 +880,9 @@ export default function AdminGalleryPage() {
                 className="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center"
               >
                 <X size={16} className="mr-1.5" /> Cancel
-              </button>
-              <button
+              </button>              <button
                 onClick={handleCreateFolder}
-                className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+                className="px-3 py-2 bg-black text-white rounded-md hover:bg-gray-800 flex items-center"
               >
                 <FolderPlus size={16} className="mr-1.5" /> Create
               </button>
@@ -938,10 +930,9 @@ export default function AdminGalleryPage() {
                 className="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center"
               >
                 <X size={16} className="mr-1.5" /> Cancel
-              </button>
-              <button
+              </button>              <button
                 onClick={handleMoveMedia}
-                className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+                className="px-3 py-2 bg-black text-white rounded-md hover:bg-gray-800 flex items-center"
               >
                 <ArrowRight size={16} className="mr-1.5" /> Move
               </button>
@@ -1015,10 +1006,9 @@ export default function AdminGalleryPage() {
                   className="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center"
                 >
                   <X size={16} className="mr-1.5" /> Cancel
-                </button>
-                <button
+                </button>                <button
                   type="submit"
-                  className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+                  className="px-3 py-2 bg-black text-white rounded-md hover:bg-gray-800 flex items-center"
                 >
                   <CheckCircle size={16} className="mr-1.5" /> Save
                 </button>
@@ -1031,7 +1021,7 @@ export default function AdminGalleryPage() {
       {showImageModal && selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-md w-[800px] max-w-[95vw] max-h-[85vh] overflow-hidden shadow-2xl relative flex flex-col">
-            <div className="flex justify-between items-center bg-blue-600 text-white px-6 py-3">
+            <div className="flex justify-between items-center bg-black text-white px-6 py-3">
               <h3 className="text-xl font-bold">{isVideo(selectedImage.url) ? 'Video' : 'Image'} Details</h3>
               <button 
                 onClick={handleCloseImageModal}
@@ -1116,10 +1106,9 @@ export default function AdminGalleryPage() {
                     
                     <div className="pt-2">
                       <p className="text-sm font-medium text-gray-500 mb-2">Media URL</p>
-                      <div className="flex items-center space-x-2 mb-2">
-                        <button 
+                      <div className="flex items-center space-x-2 mb-2">                        <button 
                           onClick={() => copyToClipboard(selectedImage.url)}
-                          className="flex items-center text-blue-600 hover:text-blue-800 px-3 py-1 bg-blue-50 rounded-md"
+                          className="flex items-center text-gray-600 hover:text-gray-800 px-3 py-1 bg-gray-50 rounded-md"
                         >
                           {copySuccess ? <CheckCircle size={16} className="mr-1.5" /> : <Copy size={16} className="mr-1.5" />}
                           {copySuccess ? "Copied!" : "Copy URL"}
@@ -1128,7 +1117,7 @@ export default function AdminGalleryPage() {
                           href={selectedImage.url} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="flex items-center text-blue-600 hover:text-blue-800 px-3 py-1 bg-blue-50 rounded-md"
+                          className="flex items-center text-gray-600 hover:text-gray-800 px-3 py-1 bg-gray-50 rounded-md"
                         >
                           <ExternalLink size={16} className="mr-1.5" />
                           Open
@@ -1143,10 +1132,9 @@ export default function AdminGalleryPage() {
               </div>
             </div>
             
-            <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex justify-end space-x-3">
-              <button
+            <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex justify-end space-x-3">              <button
                 onClick={() => handleEditClick(selectedImage)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors shadow-sm flex items-center"
+                className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors shadow-sm flex items-center"
               >
                 <Edit size={16} className="mr-1.5" /> Edit Details
               </button>

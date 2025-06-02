@@ -126,7 +126,7 @@ const MailerWidget: FC = () => {
             onChange={(e) => setName(e.target.value)}
             required
             disabled={status === "loading"}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
             autoComplete="name"
           />
         </div>
@@ -144,7 +144,7 @@ const MailerWidget: FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             disabled={status === "loading"}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white"
             autoComplete="email"
           />
         </div>
@@ -161,7 +161,7 @@ const MailerWidget: FC = () => {
             onChange={(e) => setMessage(e.target.value)}
             required
             disabled={status === "loading"}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-48 bg-white"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 resize-none h-48 bg-white"
           />
         </div>
 

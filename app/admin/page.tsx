@@ -21,7 +21,7 @@ export default function AdminPage() {
       description: "Generate images with various AI models",
       icon: <FiImage size={24} />,
       href: "/admin/ai-tools/image-generation",
-      color: "from-blue-500 to-blue-600"
+      color: "from-gray-500 to-gray-600"
     },
     {
       title: "Video Generation",
@@ -74,7 +74,7 @@ export default function AdminPage() {
       <AdminHeader title="Admin Dashboard" />
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-700">
             Admin Dashboard
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -105,8 +105,7 @@ export default function AdminPage() {
                     </div>
                     <h3 className="text-xl font-bold">{tool.title}</h3>
                   </div>
-                  <p className="text-gray-600">{tool.description}</p>
-                  <div className="mt-4 text-sm font-medium text-blue-600 group-hover:text-indigo-600 flex items-center transition-colors">
+                  <p className="text-gray-600">{tool.description}</p>                  <div className="mt-4 text-sm font-medium text-gray-600 group-hover:text-gray-800 flex items-center transition-colors">
                     Open Tool
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -142,7 +141,7 @@ export default function AdminPage() {
                     <h3 className="text-xl font-bold">{tool.title}</h3>
                   </div>
                   <p className="text-gray-600">{tool.description}</p>
-                  <div className="mt-4 text-sm font-medium text-blue-600 group-hover:text-indigo-600 flex items-center transition-colors">
+                  <div className="mt-4 text-sm font-medium text-gray-600 group-hover:text-gray-800 flex items-center transition-colors">
                     Open Tool
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

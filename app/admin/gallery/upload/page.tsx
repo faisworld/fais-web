@@ -134,7 +134,7 @@ export default function UploadPage() {
       <div className="flex items-center mb-6">
         <Link 
           href="/admin/gallery" 
-          className="flex items-center text-blue-600 hover:text-blue-800 mr-4"
+          className="flex items-center text-gray-600 hover:text-gray-800 mr-4"
         >
           <ArrowLeft size={16} className="mr-1" /> Back to Gallery
         </Link>
@@ -190,9 +190,8 @@ export default function UploadPage() {
             disabled={uploading}
           />
           <label 
-            htmlFor="file-upload"
-            className={`inline-block px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer
-              hover:bg-blue-700 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            htmlFor="file-upload"            className={`inline-block px-4 py-2 bg-black text-white rounded-md cursor-pointer
+              hover:bg-gray-800 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Select Files
           </label>
@@ -226,7 +225,7 @@ export default function UploadPage() {
                       {uploading && (
                         <div className="w-full bg-gray-200 h-1.5 mt-2 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-blue-600 transition-all duration-300"
+                            className="h-full bg-gray-600 transition-all duration-300"
                             style={{ width: `${progress}%` }}
                           ></div>
                         </div>
@@ -262,7 +261,7 @@ export default function UploadPage() {
           </button>
           <button
             onClick={handleUpload}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50"
+            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center disabled:opacity-50"
             disabled={!files.length || uploading}
           >
             {uploading ? (
@@ -294,7 +293,7 @@ export default function UploadPage() {
             <div className="flex justify-end">
               <Link
                 href="/admin/gallery"
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                className="text-gray-600 hover:text-gray-800 font-medium"
               >
                 Go to Gallery
               </Link>

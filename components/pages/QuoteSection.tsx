@@ -1,11 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
 
 export default function QuoteSection() {
-  const [imageError, setImageError] = useState(false)
-
   return (
     <section className="relative w-full py-16 px-4 sm:px-6 lg:px-8 bg-gray-100 overflow-hidden">
       {/* Light patterned background */}
@@ -31,7 +28,7 @@ export default function QuoteSection() {
           {/* Right Side */}
           <div className="w-full md:w-1/2 text-center">
             <div className="relative w-48 h-48 mx-auto mb-4">
-              <div className="absolute inset-0 rounded-full border-4 border-blue-100 shadow-lg"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-gray-200 shadow-lg"></div>
               <Image
                 src="https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/fais-ceo-Eugene-Lukyanov-qyYzZG41iWLwtsiAgqM8MKitVwupgn.jpg"
                 alt="CEO and Founder of Fantastic AI Studio, Eugene Lukyanov"
@@ -52,11 +49,11 @@ export default function QuoteSection() {
                 into tangible benefits for your business, optimizing processes and securing transactions.
               </p>
 
-              <blockquote className="mt-6 border-l-4 border-blue-300 pl-4 italic">
+              <blockquote className="mt-6 border-l-4 border-gray-400 pl-4 italic">
                 <p className="text-lg text-gray-700">
-                  "choosing fantastic AI studio not only ensures access to top-tier AI and blockchain development but
+                  &quot;choosing fantastic AI studio not only ensures access to top-tier AI and blockchain development but
                   also reduces the need for extensive external resources, offering a streamlined path to digital
-                  transformation."
+                  transformation.&quot;
                 </p>
               </blockquote>
             </div>

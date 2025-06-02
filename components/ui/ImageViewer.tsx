@@ -61,7 +61,7 @@ export default function ImageViewer({ isOpen, onClose, imageUrl, imageInfo = {},
             {onEdit && (
               <button
                 onClick={onEdit}
-                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded-full"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full"
                 title="Edit image"
               >
                 <FiEdit size={20} />
@@ -69,14 +69,14 @@ export default function ImageViewer({ isOpen, onClose, imageUrl, imageInfo = {},
             )}
             <button
               onClick={copyToClipboard}
-              className="p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded-full"
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full"
               title="Copy image URL"
             >
               {copied ? <FiCheck size={20} /> : <FiCopy size={20} />}
             </button>
             <button
               onClick={downloadImage}
-              className="p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded-full"
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full"
               title="Download image"
             >
               <FiDownload size={20} />

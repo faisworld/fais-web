@@ -107,7 +107,7 @@ export default function GalleryPage() {
         <button
           onClick={() => setCurrentFolder("")}
           className={`px-2 py-1 text-sm rounded-md mr-2 flex items-center ${
-            !currentFolder ? "bg-blue-100 text-blue-700" : "hover:bg-gray-200"
+            !currentFolder ? "bg-gray-200 text-gray-800" : "hover:bg-gray-200"
           }`}
         >
           <FolderOpen size={14} className="mr-1" /> All Media
@@ -122,7 +122,7 @@ export default function GalleryPage() {
                   onClick={() => setCurrentFolder(folder)}
                   className="px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center"
                 >
-                  {folder === "images" && <ImageIcon size={14} className="mr-1 text-blue-600" />}
+                  {folder === "images" && <ImageIcon size={14} className="mr-1 text-gray-600" />}
                   {folder === "carousel" && <Film size={14} className="mr-1 text-green-600" />}
                   {folder === "videos" && <Film size={14} className="mr-1 text-red-600" />}
                   {!["images", "carousel", "videos"].includes(folder) && <FolderOpen size={14} className="mr-1 text-gray-600" />}
@@ -142,7 +142,7 @@ export default function GalleryPage() {
                 <button
                   onClick={() => navigateToFolder(array.slice(0, index + 1).join("/"))}
                   className={`px-2 py-1 text-sm rounded-md hover:bg-gray-200 flex items-center ${
-                    index === array.length - 1 ? "bg-blue-100 text-blue-700 font-medium" : ""
+                    index === array.length - 1 ? "bg-gray-200 text-gray-800 font-medium" : ""
                   }`}
                 >
                   {folder}
@@ -166,7 +166,7 @@ export default function GalleryPage() {
 
       {loading ? (
         <div className="flex justify-center my-12">
-          <Loader2 className="animate-spin text-blue-600" size={48} />
+          <Loader2 className="animate-spin text-gray-600" size={48} />
         </div>
       ) : error ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -187,7 +187,7 @@ export default function GalleryPage() {
           {searchTerm && (
             <button
               onClick={() => setSearchTerm("")}
-              className="text-blue-600 hover:text-blue-800 mt-2"
+              className="text-gray-600 hover:text-gray-800 mt-2"
             >
               Clear search
             </button>

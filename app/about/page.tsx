@@ -296,10 +296,9 @@ export default function AboutPage() {
           <p className='text-center text-neutral-600 mb-8 text-lg lowercase max-w-2xl mx-auto'>
             let&apos;s discuss how we can help transform your business with innovative ai and blockchain solutions.
           </p>
-          <div className="text-center">
-            <a 
+          <div className="text-center">            <a 
               href="/contact" 
-              className="inline-block px-8 py-3 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors duration-300 rounded-md shadow-lg font-medium lowercase"
+              className="btn btn-primary px-8 py-3 transition-colors duration-300 rounded-md shadow-lg font-medium lowercase"
             >
               contact us now
             </a>

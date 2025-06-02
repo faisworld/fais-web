@@ -299,7 +299,7 @@ export default function ImageGenerationPage() {
   if (!isClient) {
     return (
       <div className="flex justify-center items-center min-h-[40vh]">
-        <Loader2 className="animate-spin h-8 w-8 text-blue-600" />
+        <Loader2 className="animate-spin h-8 w-8 text-gray-600" />
       </div>
     );
   }
@@ -369,7 +369,7 @@ export default function ImageGenerationPage() {
                         type="button"
                         onClick={() => setSelectedResolution({ width: resolution.width, height: resolution.height })}                        className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                           selectedResolution.width === resolution.width && selectedResolution.height === resolution.height
-                            ? 'bg-blue-600 !text-white border-blue-600 shadow-md !bg-blue-600'
+                            ? 'bg-black !text-white border-black shadow-md !bg-black'
                             : 'bg-white !text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 !bg-white hover:!bg-gray-50'
                         }`}
                       >
@@ -388,7 +388,7 @@ export default function ImageGenerationPage() {
                         onClick={() => setAspectRatio(ratio)}
                         className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                           aspectRatio === ratio
-                            ? '!bg-blue-600 !text-white border-blue-600 shadow-md'
+                            ? '!bg-black !text-white border-black shadow-md'
                             : '!bg-white !text-gray-700 border-gray-300 hover:!bg-gray-50 hover:border-gray-400'
                         }`}
                       >
@@ -492,7 +492,7 @@ export default function ImageGenerationPage() {
                         onClick={() => setAspectRatio(ratio)}
                         className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                           aspectRatio === ratio
-                            ? '!bg-blue-600 !text-white border-blue-600 shadow-md'
+                            ? '!bg-black !text-white border-black shadow-md'
                             : '!bg-white !text-gray-700 border-gray-300 hover:!bg-gray-50 hover:border-gray-400'
                         }`}
                       >
@@ -560,7 +560,7 @@ export default function ImageGenerationPage() {
                         onClick={() => setAspectRatio(ratio)}
                         className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                           aspectRatio === ratio
-                            ? '!bg-blue-600 !text-white border-blue-600 shadow-md'
+                            ? '!bg-black !text-white border-black shadow-md'
                             : '!bg-white !text-gray-700 border-gray-300 hover:!bg-gray-50 hover:border-gray-400'
                         }`}
                       >
@@ -596,7 +596,7 @@ export default function ImageGenerationPage() {
                       onClick={() => setAspectRatio(ratio)}
                       className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                         aspectRatio === ratio
-                          ? '!bg-blue-600 !text-white border-blue-600 shadow-md'
+                          ? '!bg-black !text-white border-black shadow-md'
                           : '!bg-white !text-gray-700 border-gray-300 hover:!bg-gray-50 hover:border-gray-400'
                       }`}
                     >
@@ -610,7 +610,7 @@ export default function ImageGenerationPage() {
               <button
                 onClick={handleGenerate}
                 disabled={isGenerating || !prompt}
-                className="w-full !bg-blue-600 !text-white py-2.5 px-4 rounded-md hover:!bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-2"
+                className="w-full !bg-black !text-white py-2.5 px-4 rounded-md hover:!bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-2"
               >
                 {isGenerating ? (
                   <>
@@ -680,7 +680,7 @@ export default function ImageGenerationPage() {
                     const urlToDebug = originalImageUrl || generatedImage;
                     if (urlToDebug) debugImageUrl(urlToDebug);
                   }}
-                  className="w-full border border-blue-300 !text-blue-700 !bg-blue-50 py-2.5 px-4 rounded-md hover:!bg-blue-100 transition"
+                  className="w-full border border-gray-300 !text-gray-700 !bg-gray-50 py-2.5 px-4 rounded-md hover:!bg-gray-100 transition"
                 >
                   Debug Current Image URL
                 </button>
@@ -689,10 +689,9 @@ export default function ImageGenerationPage() {
           </div>
 
           {/* Debug Information */}
-          {debugInfo && (
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-              <h4 className="font-medium text-blue-800 mb-2">Debug Information:</h4>
-              <pre className="text-xs text-blue-700 whitespace-pre-wrap">
+          {debugInfo && (            <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-md">
+              <h4 className="font-medium text-gray-800 mb-2">Debug Information:</h4>
+              <pre className="text-xs text-gray-700 whitespace-pre-wrap">
                 {JSON.stringify(debugInfo, null, 2)}
               </pre>
             </div>
@@ -712,7 +711,7 @@ export default function ImageGenerationPage() {
           <h2 className="text-xl font-semibold mb-6">Generated Image</h2>
             <div className="bg-gray-100 rounded-lg overflow-hidden border border-gray-200 h-[400px] relative flex items-center justify-center">            {isGenerating ? (
               <div className="text-center">
-                <Loader2 className="animate-spin h-8 w-8 text-blue-600 mx-auto mb-2" />
+                <Loader2 className="animate-spin h-8 w-8 text-gray-600 mx-auto mb-2" />
                 <p className="text-gray-600">Generating your image...</p>
               </div>
             ) : generatedImage ? (              <div className="w-full h-full relative">                
@@ -742,7 +741,7 @@ export default function ImageGenerationPage() {
                         href={originalImageUrl || generatedImage} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 text-sm"
+                        className="text-gray-600 hover:text-gray-800 text-sm"
                       >
                         Open original in new tab
                       </a>
@@ -822,7 +821,7 @@ export default function ImageGenerationPage() {
                     key={index}
                     onClick={() => navigateToImage(index)}
                     className={`aspect-square relative rounded-lg overflow-hidden border-2 ${
-                      currentImageIndex === index ? 'border-blue-500' : 'border-transparent'
+                      currentImageIndex === index ? 'border-gray-500' : 'border-transparent'
                     }`}
                   >                    <Image
                       src={imageUrl}
@@ -851,7 +850,7 @@ export default function ImageGenerationPage() {
               <div className="flex items-center justify-between">
                 <button
                   onClick={handleCopyUrl}
-                  className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                  className="text-sm text-gray-600 hover:text-gray-800 flex items-center gap-1"
                 >
                   <Link className="h-4 w-4" />
                   {copySuccess ? 'URL Copied!' : 'Copy Image URL'}
@@ -878,7 +877,7 @@ export default function ImageGenerationPage() {
                   onClick={() => navigateToImage(index)}
                   className={`relative aspect-square w-full overflow-hidden rounded-lg border ${
                     index === currentImageIndex
-                      ? 'border-blue-500 ring-2 ring-blue-500'
+                      ? 'border-gray-500 ring-2 ring-gray-500'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >

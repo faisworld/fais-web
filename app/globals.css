@@ -34,10 +34,7 @@
   line-height: 1.4em;
 }
 
-/* Dark mode settings are the same as light mode currently */
-@media (prefers-color-scheme: dark) {
-  /* If you need different dark mode styles in the future, add them here */
-}
+/* Clean white theme - no dark mode */
 
 body {
   color: var(--primary-text-color);
@@ -76,7 +73,8 @@ h3 {
   font-weight: 600;
 }
 
-button,
+/* Clean white theme buttons */
+button:not(.tailwind-override),
 .btn {
   display: inline-block;
   padding: 0.6rem 1.2rem;
@@ -87,21 +85,28 @@ button,
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
   text-transform: lowercase;
+  background-color: #000 !important;
+  color: #fff !important;
 }
 
-/* Default button styles - only apply if no other background/color classes */
-button:not([class*="bg-"]):not([class*="text-"]),
-.btn:not([class*="bg-"]):not([class*="text-"]) {
-  color: var(--button-text-color);
-  background-color: var(--button-bg-color);
-}
-
-button:not([class*="bg-"]):not([class*="text-"]):hover,
-.btn:not([class*="bg-"]):not([class*="text-"]):hover {
-  background-color: var(--button-bg-hover-color);
-  color: var(--button-text-hover-color);
+button:not(.tailwind-override):hover,
+.btn:hover {
+  background-color: #222 !important;
+  color: #fff !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Override any conflicting styles for specific button styling */
+.btn-primary {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover {
+  background-color: #222 !important;
+  color: #fff !important;
+}
+/* Clean focus and active states */
 button:active,
 .btn:active {
   transform: scale(0.98);
@@ -109,7 +114,7 @@ button:active,
 }
 button:focus,
 .btn:focus {
-  outline: 2px solid var(--button-bg-hover-color);
+  outline: 2px solid #222;
   outline-offset: 2px;
 }
 
@@ -348,7 +353,6 @@ section[aria-roledescription="carousel"] {
 }
 
 .button,
-.btn,
 .custom-button,
 .contact-section .button {
   color: #fff;
@@ -455,40 +459,7 @@ a:hover {
   visibility: hidden !important;
 }
 
-/* Color inversion utilities */
-.invert-colors {
-  filter: invert(1);
-}
-
-/* Dark background text color rules */
-.bg-dark {
-  color: white;
-}
-.bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6 {
-  color: white;
-}
-
-/* Auto text color adjustment based on background */
-.bg-black, .bg-neutral-900, .bg-neutral-800, [class*="bg-black"],
-[class*="bg-neutral-900"], [class*="bg-neutral-800"] {
-  color: white;
-}
-.bg-black h1, .bg-black h2, .bg-black h3, .bg-black h4, .bg-black h5, .bg-black h6,
-.bg-neutral-900 h1, .bg-neutral-900 h2, .bg-neutral-900 h3, .bg-neutral-900 h4, .bg-neutral-900 h5, .bg-neutral-900 h6,
-.bg-neutral-800 h1, .bg-neutral-800 h2, .bg-neutral-800 h3, .bg-neutral-800 h4, .bg-neutral-800 h5, .bg-neutral-800 h6 {
-  color: white;
-}
-
-/* White background text color rules */
-.bg-white, .bg-neutral-100, .bg-neutral-200, .bg-neutral-50 {
-  color: black;
-}
-.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4, .bg-white h5, .bg-white h6,
-.bg-neutral-100 h1, .bg-neutral-100 h2, .bg-neutral-100 h3, .bg-neutral-100 h4, .bg-neutral-100 h5, .bg-neutral-100 h6,
-.bg-neutral-200 h1, .bg-neutral-200 h2, .bg-neutral-200 h3, .bg-neutral-200 h4, .bg-neutral-200 h5, .bg-neutral-200 h6,
-.bg-neutral-50 h1, .bg-neutral-50 h2, .bg-neutral-50 h3, .bg-neutral-50 h4, .bg-neutral-50 h5, .bg-neutral-50 h6 {
-  color: black;
-}
+/* Remove all dark theme related CSS */
 
 /* Enhanced typography for blog content */
 .enhanced-blog-content h2 {
@@ -496,7 +467,7 @@ a:hover {
 }
 
 .enhanced-blog-content h3 {
-  @apply text-xl font-semibold mt-8 mb-3 text-blue-700;
+  @apply text-xl font-semibold mt-8 mb-3 text-gray-800;
 }
 
 .enhanced-blog-content p {
@@ -516,7 +487,7 @@ a:hover {
 }
 
 .enhanced-blog-content a {
-  @apply text-blue-600 font-medium hover:text-blue-800 underline decoration-blue-300 underline-offset-2 transition-colors;
+  @apply text-gray-800 font-medium hover:text-black underline decoration-gray-400 underline-offset-2 transition-colors;
 }
 
 /* Blog page animations */
@@ -606,7 +577,7 @@ a:hover {
 
 /* Add styles for callout boxes (use in your content components) */
 .callout {
-  @apply bg-blue-50 border-l-4 border-blue-500 p-4 my-6 rounded-r-lg;
+  @apply bg-gray-50 border-l-4 border-gray-500 p-4 my-6 rounded-r-lg;
 }
 
 .callout-warning {

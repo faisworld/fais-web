@@ -219,7 +219,7 @@ export default function CarouselUploadPage() {
       <div className="flex items-center mb-6">
         <Link 
           href="/admin" 
-          className="flex items-center text-blue-600 hover:text-blue-800 mr-4"
+          className="flex items-center text-gray-600 hover:text-gray-800 mr-4"
         >
           <ArrowLeft size={16} className="mr-1" /> Back to Admin
         </Link>
@@ -260,8 +260,8 @@ export default function CarouselUploadPage() {
                 <label 
                   htmlFor={`file-${slide.name}`}
                   className={`
-                    flex items-center justify-center px-4 py-2 border border-blue-500 text-blue-600 
-                    rounded-md cursor-pointer hover:bg-blue-50 transition-colors
+                    flex items-center justify-center px-4 py-2 border border-gray-500 text-gray-600 
+                    rounded-md cursor-pointer hover:bg-gray-50 transition-colors
                     ${uploadingSlide === slide.name ? 'opacity-50 cursor-not-allowed' : ''}
                   `}
                 >
@@ -342,9 +342,8 @@ export default function CarouselUploadPage() {
       </div>
       
       {/* Guidance note */}
-      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
-        <h3 className="font-medium text-blue-800 mb-2">How carousel updates work:</h3>
-        <ol className="list-decimal list-inside text-blue-700 space-y-1 ml-2">
+      <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-md">        <h3 className="font-medium text-gray-800 mb-2">How carousel updates work:</h3>
+        <ol className="list-decimal list-inside text-gray-700 space-y-1 ml-2">
           <li>Upload your image or video for each slide</li>
           <li>Once uploads are complete, click "Save and Update Carousel"</li>
           <li>The homepage carousel will immediately reflect your changes</li>

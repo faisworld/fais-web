@@ -1,15 +1,21 @@
 "use client"
 
-import { useState } from "react" 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { getBlobImage } from "@/utils/media-utils"
 import { blogPosts } from "./blog-data"
-import "./blog-animations.css"
 
 export default function BlogPage() {
   const [filter, setFilter] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [isClient, setIsClient] = useState(false)
+  
+  // Prevent hydration mismatch layout shifts
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Filter posts based on category and search query
   const filteredPosts = blogPosts.filter(post => {
@@ -28,7 +34,7 @@ export default function BlogPage() {
     "@context": "https://schema.org",
     "@type": "Blog",
     "headline": "AI & Blockchain Blog | Fantastic AI Studio",
-    "description": "Stay informed with the latest insights, trends, and innovations in AI and blockchain technologies.",
+    "description": "Stay informed with the latest insights and innovations in AI and blockchain.",
     "url": "https://fais.world/blog",
     "publisher": {
       "@type": "Organization",
@@ -73,215 +79,106 @@ export default function BlogPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogStructuredData) }}
-      />      <main className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-50 relative">
-        {/* Animated background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gray-200 to-transparent animate-pulse"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(0,0,0,0.05)_1px,_transparent_1px)] bg-[length:20px_20px]"></div>
-        </div>
-        {/* Clean white background with subtle patterns */}
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+      />
+
+      <main className="w-full bg-white text-gray-800">
+        {/* Fixed max-width container to prevent width changes during layout */}
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-20">
           
           {/* Hero Section */}
-          <section className="text-center mb-16">
-            <div className="py-12 px-4">
-              <div className="inline-block mb-6 px-4 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+          <section className="text-center mb-16 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-50 via-white to-gray-50 opacity-50 rounded-2xl"></div>
+            <div className="relative py-12 px-4 rounded-2xl border border-gray-100 shadow-sm">              <div className="inline-block mb-6 px-4 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
                 Insights & Ideas
-              </div>
-              <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-gray-900">
+              </div>              <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-gray-900">
                 AI & Blockchain Blog
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                Stay informed with the latest insights, trends, and innovations in{" "}
-                <span className="font-semibold text-blue-600">{"{ai}"}</span> and{" "}
-                <span className="font-semibold text-green-600">[blockchain]</span> technologies.
-              </p>              <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <a href="#featured" className="btn-3d btn-pulse">
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+                Stay informed with the latest insights, trends, and innovations in{" "}                <span className="font-semibold text-gray-800">{"{ai}"}</span> and{" "}
+                <span className="font-semibold text-gray-800">[blockchain]</span> technologies.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-4">                <a href="#featured" className="btn btn-primary px-6 py-3 rounded-md transition-colors shadow-sm hover:shadow-md">
                   Featured Articles
-                </a>
-                <a href="#newsletter" className="btn-3d-dark">
-                  Subscribe to Newsletter
                 </a>
               </div>
             </div>
-          </section>            {/* Empty State */}
-          {blogPosts.length === 0 && (
-            <section className="mb-16 text-center py-16 px-4 bg-gray-50 rounded-xl border border-gray-200">
-              <div className="max-w-2xl mx-auto">
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-16 w-16 mx-auto mb-6 text-gray-400" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={1.5} 
-                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" 
-                  />
-                </svg>
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">No Articles Yet</h2>
-                <p className="text-gray-600 mb-8">
-                  Our AI article generator is ready to create fresh content about AI and blockchain. 
-                  Visit the admin panel to generate new articles with relevant images.
-                </p>                <Link 
-                  href="/admin/ai-tools/article-generation" 
-                  className="btn-3d btn-pulse inline-flex items-center"
-                >
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5 mr-2" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6" 
-                    />
-                  </svg>
-                  Generate Articles
-                </Link>
-              </div>
-            </section>
-          )}
+          </section>
           
           {/* Featured Posts Section */}
-          {featuredPosts.length > 0 && (
+          {isClient && featuredPosts.length > 0 && (
             <section className="mb-16" id="featured">
-              <h2 className="text-2xl font-semibold mb-8 lowercase flex items-center after:content-[''] after:h-px after:flex-1 after:ml-6 after:bg-gray-200">
-                Featured Articles
-              </h2>
+              <h2 className="text-2xl font-semibold mb-8">Featured Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {featuredPosts.map((post, index) => (
+                {featuredPosts.map(post => (
                   <Link 
                     href={`/blog/${post.slug}`} 
                     key={post.id}
-                    className={`group block overflow-hidden rounded-xl border border-gray-200 hover:border-blue-300 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 blog-card-animation ${index === 0 ? 'blog-card-delay-1' : 'blog-card-delay-2'}`}
+                    className="group block overflow-hidden rounded-xl border border-gray-200 hover:border-gray-400 shadow-md hover:shadow-xl transition-all duration-300"
                   >
                     <div className="relative h-72 overflow-hidden">
                       <Image 
-                        src={post.coverImage.startsWith('http') ? post.coverImage : getBlobImage(post.coverImage) || "/placeholder.svg"} 
-                        alt={`${post.title} - Featured ${post.category === "ai" ? "AI" : "Blockchain"} article by ${post.author || "Fantastic AI Studio"}`}
+                        src={post.coverImage.startsWith("http") ? post.coverImage : getBlobImage(post.coverImage) || "/placeholder.svg"} 
+                        alt={`${post.title} article`}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover"
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        priority={true}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                      <div className="absolute bottom-0 left-0 p-6 w-full">
-                        <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase bg-blue-600 text-white rounded-full mb-3">
-                          {post.category === "ai" ? "Artificial Intelligence" : "Blockchain"}
-                        </span>
-                        <h3 className="text-2xl font-bold text-white mb-3">{post.title}</h3>
-                        <div className="flex items-center text-gray-300 text-sm">
-                          <span>{post.date}</span>
-                          <span className="mx-2">•</span>
-                          <span className="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {post.readTime}
-                          </span>
-                          {post.author && (
-                            <>
-                              <span className="mx-2">•</span>
-                              <span className="flex items-center">
-                                {post.authorImage && (
-                                  <div className="w-4 h-4 rounded-full overflow-hidden mr-1">
-                                    <Image 
-                                      src={post.authorImage?.startsWith('http') ? post.authorImage : getBlobImage(post.authorImage) || "/placeholder.svg"} 
-                                      alt={post.author || "Author"}
-                                      width={16}
-                                      height={16}
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                )}
-                                {post.author}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
                     </div>
                   </Link>
                 ))}
               </div>
             </section>
-          )}          {/* Filters and Search */}
+          )}
+
+          {/* Filters and Search */}
           <section className="mb-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">              <div className="flex items-center space-x-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center space-x-4">
                 <button 
                   onClick={() => setFilter("all")}
-                  className={`px-4 py-2 rounded-md lowercase transition-all ${filter === "all" ? "bg-blue-600 text-white shadow-md" : "bg-white border border-gray-300 hover:bg-gray-50 text-gray-900 hover:text-gray-700"}`}
+                  className={`px-4 py-2 rounded-md ${filter === "all" ? "bg-gray-800 text-white" : "bg-white border"}`}
                 >
                   All
-                </button>
-                <button 
+                </button>                <button 
                   onClick={() => setFilter("ai")}
-                  className={`px-4 py-2 rounded-md lowercase transition-all ${filter === "ai" ? "bg-blue-600 text-white shadow-md" : "bg-white border border-gray-300 hover:bg-gray-50 text-gray-900 hover:text-gray-700"}`}
+                  className={`px-4 py-2 rounded-md ${filter === "ai" ? "bg-gray-800 text-white" : "bg-white border"}`}
                 >
-                  <span className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    AI
-                  </span>
+                  AI
                 </button>
                 <button 
                   onClick={() => setFilter("blockchain")}
-                  className={`px-4 py-2 rounded-md lowercase transition-all ${filter === "blockchain" ? "bg-blue-600 text-white shadow-md" : "bg-white border border-gray-300 hover:bg-gray-50 text-gray-900 hover:text-gray-700"}`}
+                  className={`px-4 py-2 rounded-md ${filter === "blockchain" ? "bg-gray-800 text-white" : "bg-white border"}`}
                 >
-                  <span className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                    </svg>
-                    Blockchain
-                  </span>
+                  Blockchain
                 </button>
               </div>
-              <div className="w-full md:w-auto relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                  </svg>
-                </div>                <input
+              <div className="relative">
+                <input
                   type="text"
+                  id="search-input"
+                  name="search-input"
                   placeholder="Search articles..."
-                  className="w-full md:w-64 pl-10 pr-4 py-2 rounded-md border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                  className="pl-10 pr-4 py-2 rounded-md border border-gray-300"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                 />
-                {searchQuery && (
-                  <button 
-                    onClick={() => setSearchQuery("")} 
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-                )}
               </div>
             </div>
-          </section>          {/* Blog Post Grid */}
+          </section>
+
+          {/* Blog Post Grid */}
           <section className="mb-16">
-            <h2 className="text-2xl font-semibold mb-8 lowercase flex items-center after:content-[''] after:h-px after:flex-1 after:ml-6 after:bg-gray-200 text-gray-900">
-              Recent Articles
-            </h2>
-            {filteredPosts.length > 0 ? (
+            <h2 className="text-2xl font-semibold mb-8">Recent Articles</h2>
+            {isClient && filteredPosts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {filteredPosts.map((post, index) => (
+                {filteredPosts.map(post => (
                   <Link 
                     href={`/blog/${post.slug}`} 
                     key={post.id}
-                    className={`group block transform transition duration-300 hover:-translate-y-1 blog-card-animation blog-card-delay-${Math.min(index + 1, 6)}`}
+                    className="group block transition duration-300"
                   >
-                    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-blue-300 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col group-hover:shadow-2xl">
+                    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg h-full flex flex-col">
                       <div className="relative h-56 overflow-hidden">
                         <Image 
                           src={post.coverImage.startsWith('http') ? post.coverImage : getBlobImage(post.coverImage) || "/placeholder.svg"} 
@@ -292,20 +189,20 @@ export default function BlogPage() {
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute top-3 right-3">
-                          <span className={`inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase rounded-full ${post.category === "ai" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}`}>
+                        <div className="absolute top-3 right-3">                          <span className={`inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase rounded-full ${post.category === "ai" ? "bg-gray-800 text-white" : "bg-gray-600 text-white"}`}>
                             {post.category === "ai" ? "AI" : "Blockchain"}
                           </span>
                         </div>
                       </div>
                       <div className="p-6 flex-1 flex flex-col">
                         <div className="mb-4">
-                          <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-3">{post.title}</h3>
+                          <h3 className="text-xl font-bold text-gray-800 group-hover:text-gray-900 transition-colors duration-300 mb-3">{post.title}</h3>
                           <p className="text-sm text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
-                        </div>                        <div className="mt-auto pt-4 border-t border-gray-200">
+                        </div>
+                        <div className="mt-auto pt-4 border-t border-gray-100">
                           {post.author && (
                             <div className="flex items-center mb-3">
-                              <div className="w-8 h-8 rounded-full bg-gray-100 overflow-hidden mr-3 ring-2 ring-gray-200">
+                              <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden mr-3 ring-2 ring-gray-100">
                                 {post.authorImage && (
                                   <Image 
                                     src={post.authorImage?.startsWith('http') ? post.authorImage : getBlobImage(post.authorImage) || "/placeholder.svg"} 
@@ -328,8 +225,7 @@ export default function BlogPage() {
                               </svg>
                               {post.readTime}
                             </span>
-                            <div className="ml-auto">
-                              <span className="inline-flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
+                            <div className="ml-auto">                              <span className="inline-flex items-center text-gray-800 group-hover:text-black transition-colors">
                                 Read article
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -342,140 +238,119 @@ export default function BlogPage() {
                     </div>
                   </Link>
                 ))}
-              </div>            ) : (
+              </div>
+            ) : (
               <div className="text-center py-16 bg-gray-50 rounded-lg border border-gray-200">
-                <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                </svg>
-                <h3 className="text-xl font-medium text-gray-800 mb-2">No articles found</h3>
-                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria.</p>                <button 
-                  onClick={() => { setFilter("all"); setSearchQuery(""); }}
-                  className="btn-3d"
-                >
-                  Reset filters
-                </button>
+                <h3 className="text-xl font-medium">No articles found</h3>
               </div>
             )}
-          </section>          {/* Newsletter Signup */}
+          </section>
+
+          {/* Newsletter Signup */}
           <section className="mb-16" id="newsletter">
-            <div className="bg-gradient-to-r from-blue-50 via-white to-blue-50 p-10 rounded-2xl shadow-lg border border-blue-200 text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400"></div>
-              <h2 className="text-3xl font-bold mb-4 lowercase text-gray-900">stay updated</h2>
-              <p className="text-lg mb-8 max-w-2xl mx-auto text-gray-600">
-                Subscribe to our newsletter for the latest insights on AI and blockchain technologies, delivered directly to your inbox.
-              </p>
-              <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+            <div className="bg-gradient-to-r from-gray-50 to-gray-50 p-10 rounded-2xl shadow-sm border border-gray-200 text-center">
+              <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+              <p className="text-lg mb-8 max-w-2xl mx-auto">Subscribe to our newsletter for the latest insights on AI and blockchain.</p>
+              <form onSubmit={e => e.preventDefault()} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input
                   type="email"
+                  id="newsletter-email"
+                  name="newsletter-email"
                   placeholder="Your email address"
-                  className="flex-1 px-4 py-3 rounded-md border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
-                />                <button className="btn-3d-dark">
-                  Subscribe
-                </button>
-              </div>
-                <div className="mt-10 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-600 mb-3">Share our blog with your network</p>
-                <div className="flex justify-center space-x-6">
-                  <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors transform hover:scale-110" aria-label="Share on Twitter">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-                    </svg>
-                  </a>
-                  <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors transform hover:scale-110" aria-label="Share on LinkedIn">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
-                    </svg>
-                  </a>
-                  <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors transform hover:scale-110" aria-label="Share on Facebook">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
+                  className="flex-1 px-4 py-3 rounded-md border border-gray-300"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+                <button type="submit" className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800">Subscribe</button>
+              </form>
             </div>
-          </section>          {/* Topic Breakdown */}
+          </section>
+
+          {/* Topic Breakdown */}
           <section className="mb-16">
-            <h2 className="text-2xl font-semibold mb-8 lowercase flex items-center after:content-[''] after:h-px after:flex-1 after:ml-6 after:bg-gray-200 text-gray-900">Explore Topics</h2>
+            <h2 className="text-2xl font-semibold mb-8">Explore Topics</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">              {/* AI Topics */}
-              <div className="bg-gradient-to-br from-blue-50 via-white to-blue-50 p-8 rounded-xl border border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-blue-300">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center mb-6">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 ring-2 ring-blue-200">
+                  <div className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">Artificial Intelligence</h3>
-                </div>                <ul className="space-y-3 pl-2">
+                  <h3 className="text-xl font-bold text-gray-800">Artificial Intelligence</h3>
+                </div>
+                <ul className="space-y-3 pl-2">
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=large-language-models" className="text-gray-700 hover:text-blue-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=large-language-models" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Large Language Models
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=machine-learning" className="text-gray-700 hover:text-blue-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=machine-learning" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Machine Learning
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=computer-vision" className="text-gray-700 hover:text-blue-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=computer-vision" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Computer Vision
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=generative-ai" className="text-gray-700 hover:text-blue-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=generative-ai" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Generative AI
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=ethics" className="text-gray-700 hover:text-blue-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=ethics" className="text-gray-700 hover:text-gray-900 transition-colors">
                       AI Ethics
                     </Link>
                   </li>
                 </ul>
               </div>
-                {/* Blockchain Topics */}
-              <div className="bg-gradient-to-br from-green-50 via-white to-green-50 p-8 rounded-xl border border-green-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-green-300">
+              
+              {/* Blockchain Topics */}
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center mb-6">
-                  <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-3 ring-2 ring-green-200">
+                  <div className="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center mr-3">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">Blockchain Technology</h3>
-                </div>                <ul className="space-y-3 pl-2">
+                  <h3 className="text-xl font-bold text-gray-800">Blockchain Technology</h3>
+                </div>
+                <ul className="space-y-3 pl-2">
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=cryptocurrency" className="text-gray-700 hover:text-green-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=cryptocurrency" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Cryptocurrency
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=defi" className="text-gray-700 hover:text-green-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=defi" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Decentralized Finance (DeFi)
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=nfts" className="text-gray-700 hover:text-green-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=nfts" className="text-gray-700 hover:text-gray-900 transition-colors">
                       NFTs
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=smart-contracts" className="text-gray-700 hover:text-green-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=smart-contracts" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Smart Contracts
                     </Link>
                   </li>
                   <li className="flex items-center transition-transform hover:translate-x-1">
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    <Link href="/blog?topic=dao" className="text-gray-700 hover:text-green-600 transition-colors">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span>
+                    <Link href="/blog?topic=dao" className="text-gray-700 hover:text-gray-900 transition-colors">
                       Decentralized Autonomous Organizations
                     </Link>
                   </li>

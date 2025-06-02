@@ -63,7 +63,7 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
       {/* Back link */}
       <Link 
         href="/blog" 
-        className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6"
+        className="inline-flex items-center text-gray-800 hover:text-black mb-6"
       >
         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -97,8 +97,7 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
         <BlogCoverImage
           src={post.coverImage}
           alt={post.title}
-        />
-        <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm">
+        />        <div className="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full text-sm">
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
       </div>
@@ -112,7 +111,7 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
         {/* Render markdown content for dynamically generated posts */}
         {markdownPost && !["how-optimism-layer-2-can-transform-your-business", "large-language-models-2025", "blockchain-for-supply-chain"].includes(slug) && (
           <div 
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-strong:text-gray-900"
+            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900"
             dangerouslySetInnerHTML={{ __html: markdownPost.htmlContent }}
           />
         )}
@@ -156,7 +155,7 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
                       alt={relatedPost.title}
                     />
                   </div>
-                  <h4 className="font-medium text-lg group-hover:text-blue-600 transition">{relatedPost.title}</h4>
+                  <h4 className="font-medium text-lg group-hover:text-gray-900 transition">{relatedPost.title}</h4>
                   <p className="text-sm text-gray-600">{relatedPost.readTime}</p>
                 </Link>
               ));
@@ -164,8 +163,7 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
               // Fallback if no related posts available
               return (
                 <div className="col-span-2 text-center py-8">
-                  <p className="text-gray-600">No related articles available at this time.</p>
-                  <Link href="/blog" className="inline-block mt-4 text-blue-600 hover:text-blue-800">
+                  <p className="text-gray-600">No related articles available at this time.</p>                  <Link href="/blog" className="inline-block mt-4 text-gray-800 hover:text-black">
                     View all blog posts
                   </Link>
                 </div>

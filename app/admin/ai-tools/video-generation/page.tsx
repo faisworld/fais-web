@@ -247,7 +247,7 @@ export default function VideoGenerationPage() {
   if (!isLoaded) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <Loader2 className="animate-spin h-8 w-8 text-blue-600" />
+        <Loader2 className="animate-spin h-8 w-8 text-gray-600" />
       </div>
     );
   }
@@ -256,7 +256,7 @@ export default function VideoGenerationPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">AI Video Generation</h1>
       
-      <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6 text-blue-800">
+      <div className="bg-gray-50 border border-gray-200 rounded-md p-4 mb-6 text-gray-800">
         <p className="text-sm">
           <strong>Development Mode:</strong> This tool uses a placeholder video in development.
           For production deployment, please ensure your AI API keys are properly configured.
@@ -322,8 +322,7 @@ export default function VideoGenerationPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
               <div className="grid grid-cols-3 gap-2">
-                {selectedModel === MODEL_ID_GOOGLE_VEO_2 ? (
-                  // Google Veo 2 supports only 16:9 and 9:16
+                {selectedModel === MODEL_ID_GOOGLE_VEO_2 ? (                // Google Veo 2 supports only 16:9 and 9:16
                   ["16:9", "9:16"].map((ratio) => (
                     <button
                       key={ratio}
@@ -331,15 +330,14 @@ export default function VideoGenerationPage() {
                       onClick={() => setAspectRatio(ratio)}
                       className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                         aspectRatio === ratio
-                          ? '!bg-blue-600 !text-white border-blue-600 shadow-md'
+                          ? '!bg-black !text-white border-black shadow-md'
                           : '!bg-white !text-gray-700 border-gray-300 hover:!bg-gray-50 hover:border-gray-400'
                       }`}
                     >
                       {ratio}
                     </button>
                   ))
-                ) : (
-                  // Minimax models support more ratios
+                ) : (                  // Minimax models support more ratios
                   ["16:9", "1:1", "4:3", "3:2", "9:16"].map((ratio) => (
                     <button
                       key={ratio}
@@ -347,7 +345,7 @@ export default function VideoGenerationPage() {
                       onClick={() => setAspectRatio(ratio)}
                       className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                         aspectRatio === ratio
-                          ? '!bg-blue-600 !text-white border-blue-600 shadow-md'
+                          ? '!bg-black !text-white border-black shadow-md'
                           : '!bg-white !text-gray-700 border-gray-300 hover:!bg-gray-50 hover:border-gray-400'
                       }`}
                     >
@@ -424,7 +422,7 @@ export default function VideoGenerationPage() {
                       type="checkbox"
                       checked={promptOptimizer}
                       onChange={(e) => setPromptOptimizer(e.target.checked)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="rounded border-gray-300 text-gray-600 focus:ring-gray-500"
                     />
                     Prompt Optimizer
                   </label>
@@ -464,7 +462,7 @@ export default function VideoGenerationPage() {
               <button
                 onClick={handleGenerate}
                 disabled={isGenerating || !prompt}
-                className="w-full bg-blue-600 text-white py-2.5 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-2"
+                className="w-full bg-black text-white py-2.5 px-4 rounded-md hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-2"
               >
                 {isGenerating ? (
                   <>
@@ -506,7 +504,7 @@ export default function VideoGenerationPage() {
           <div className="bg-gray-100 rounded-md overflow-hidden" style={{ minHeight: '400px' }}>
             {isGenerating ? (
               <div className="flex flex-col items-center justify-center h-[400px]">
-                <Loader2 className="animate-spin h-8 w-8 text-blue-600 mb-2" />
+                <Loader2 className="animate-spin h-8 w-8 text-gray-600 mb-2" />
                 <p className="text-gray-500">Generating your video...</p>
                 <p className="text-sm text-gray-400 mt-1">This might take several minutes</p>
               </div>
@@ -543,7 +541,7 @@ export default function VideoGenerationPage() {
                   download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
+                  className="flex-1 flex items-center justify-center px-3 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors text-sm"
                 >
                   Download Video
                 </a>

@@ -327,7 +327,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
                 <button
                   onClick={() => setActiveFolder('')}
                   className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    activeFolder === '' ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                    activeFolder === '' ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                   }`}
                 >
                   All
@@ -337,7 +337,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
                     key={index}
                     onClick={() => setActiveFolder(folder)}
                     className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                      activeFolder === folder ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                      activeFolder === folder ? 'bg-gray-800 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                     }`}
                   >
                     {folder}
@@ -385,7 +385,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
       
       {isLoading ? (
         <div className='flex justify-center items-center py-16'>
-          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500'></div>
+          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600'></div>
         </div>
       ) : filteredItems.length === 0 ? (
         <div className='text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300'>
@@ -414,7 +414,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
               onClick={() => toggleSelect(item.id)}
               className={`
                 media-preview rounded-lg overflow-hidden border-2 cursor-pointer transition-all relative
-                ${selectedItems.has(item.id) ? 'border-blue-500 shadow-md' : 'border-transparent hover:border-gray-300'}
+                ${selectedItems.has(item.id) ? 'border-gray-600 shadow-md' : 'border-transparent hover:border-gray-300'}
               `}
             >
               {/* Media preview (image or video) */}
@@ -441,7 +441,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
                   }}
                   className={`px-2 py-1 text-xs font-medium rounded ${
                     selectedItems.has(item.id) 
-                      ? 'bg-blue-600 text-white' 
+                      ? 'bg-gray-800 text-white' 
                       : 'bg-black bg-opacity-50 text-white hover:bg-opacity-70'
                   }`}
                 >

@@ -1,6 +1,5 @@
-import { notFound } from "next/navigation"
-import ImageEditClient from "./ImageEditClient"; // Corrected import path
 import Link from 'next/link';
+import ImageEditClient from "./ImageEditClient";
 
 // This is a Server Component that fetches data server-side
 export default async function GalleryImageEditPage({ params }: { params: { id: string } }) {
@@ -47,7 +46,7 @@ export default async function GalleryImageEditPage({ params }: { params: { id: s
       <div className="container mx-auto px-4 pt-20 pb-10 text-center"> {/* Ensured pt-20 */}
         <h1 className="text-2xl font-bold mb-4 text-red-600">Error Loading Image</h1>
         <p className="mb-4">We couldn&apos;t find the image you&apos;re looking for. It may have been deleted or the ID might be incorrect.</p>
-        <Link href="/gallery" className="btn bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded">
+        <Link href="/gallery" className="btn bg-black text-white hover:bg-gray-800 px-4 py-2 rounded">
           Back to Gallery
         </Link>
       </div>

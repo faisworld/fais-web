@@ -43,7 +43,7 @@ export default function OptimismLayer2Content() {
       </p>
           
       <p className="mb-6">
-        Want to learn more? Explore how Optimism Layer 2 can work for your business by visiting our <Link href="/blockchain-services" className="text-blue-600 hover:text-blue-800 underline">Blockchain Services page</Link>.
+        Want to learn more? Explore how Optimism Layer 2 can work for your business by visiting our <Link href="/blockchain-services" className="text-gray-800 hover:text-black underline">Blockchain Services page</Link>.
       </p>
     </div>
   );

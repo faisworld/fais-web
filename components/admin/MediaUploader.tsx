@@ -60,7 +60,7 @@ export default function MediaUploader({
 
   const getFileIcon = (file: File) => {
     if (file.type.startsWith('image/')) {
-      return <ImageIcon className="h-4 w-4 text-blue-500" />;
+      return <ImageIcon className="h-4 w-4 text-gray-600" />;
     } else if (file.type.startsWith('video/')) {
       return <Film className="h-4 w-4 text-purple-500" />;
     } else {
@@ -155,7 +155,7 @@ export default function MediaUploader({
           <button
             onClick={handleUpload}
             disabled={isUploading}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mt-3"
+            className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-md mt-3"
           >
             {isUploading ? 'Uploading...' : 'Upload Selected Files'}
           </button>
@@ -165,7 +165,7 @@ export default function MediaUploader({
       {isUploading && (
         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
           <div 
-            className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" 
+            className="bg-gray-600 h-2.5 rounded-full transition-all duration-300" 
             style={{ width: `${uploadProgress}%` }}
           ></div>
           <p className="text-xs text-gray-500 mt-1">

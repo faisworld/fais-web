@@ -1,8 +1,9 @@
 // filepath: c:\Users\solar\Projects\fais-web\components\admin/VideoQualityMonitor.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { carouselVideoConfigs, analyzeVideoQuality } from '@/utils/video-config'
+
 
 interface VideoAnalysis {
   key: string
@@ -17,32 +18,7 @@ export default function VideoQualityMonitor() {
   const [analyses, setAnalyses] = useState<VideoAnalysis[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    analyzeAllVideos()
-  }, [])
-
-  const analyzeAllVideos = async () => {
-    setLoading(true)
-    const results: VideoAnalysis[] = []
-
-    for (const config of carouselVideoConfigs) {
-      try {
-        const analysis = await analyzeVideo(config)
-        results.push(analysis)
-      } catch (error) {
-        results.push({
-          key: config.key,
-          name: config.name,
-          loadError: error instanceof Error ? error.message : 'Unknown error'
-        })
-      }
-    }
-
-    setAnalyses(results)
-    setLoading(false)
-  }
-
-  const analyzeVideo = (config: typeof carouselVideoConfigs[0]): Promise<VideoAnalysis> => {
+  const analyzeVideo = (config: { key: string; name: string; url: string }): Promise<VideoAnalysis> => {
     return new Promise((resolve, reject) => {
       const video = document.createElement('video')
       video.crossOrigin = 'anonymous'
@@ -81,12 +57,42 @@ export default function VideoQualityMonitor() {
     })
   }
 
+  const analyzeAllVideos = useCallback(async () => {
+    setLoading(true)
+    try {
+      const results = await Promise.allSettled(
+        carouselVideoConfigs.map(config => analyzeVideo(config))
+      )
+      
+      const analyses = results.map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return result.value
+        } else {
+          return {
+            key: carouselVideoConfigs[index].key,
+            name: carouselVideoConfigs[index].name,
+            loadError: result.reason.message
+          }
+        }
+      })
+      
+      setAnalyses(analyses)
+    } catch (error) {
+      console.error('Error analyzing videos:', error)
+    }
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
+    analyzeAllVideos()
+  }, [analyzeAllVideos])
+
   if (loading) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-lg">
         <h3 className="text-lg font-semibold mb-4">Analyzing Video Quality...</h3>
         <div className="flex items-center space-x-2">
-          <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-6 h-6 border-2 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
           <span>Loading video metadata...</span>
         </div>
       </div>
@@ -139,11 +145,9 @@ export default function VideoQualityMonitor() {
             )}
           </div>
         ))}
-      </div>
-
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-        <h4 className="font-medium text-blue-900 mb-2">Quick Fixes:</h4>
-        <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+      </div>      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        <h4 className="font-medium text-gray-900 mb-2">Quick Fixes:</h4>
+        <ul className="text-sm text-gray-800 space-y-1 list-disc list-inside">
           <li>Videos with poor quality should be re-encoded to 1920×1080 (16:9 aspect ratio)</li>
           <li>Consider using object-fit: contain for videos with significant aspect ratio differences</li>
           <li>Apply consistent color grading and brightness across all carousel videos</li>
@@ -153,7 +157,7 @@ export default function VideoQualityMonitor() {
       
       <button 
         onClick={analyzeAllVideos}
-        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        className="mt-4 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition-colors"
       >
         Re-analyze Videos
       </button>

@@ -41,7 +41,7 @@ export default function ErrorNotification({
       ? "bg-red-50 border-red-200 text-red-700"
       : type === "warning"
         ? "bg-yellow-50 border-yellow-200 text-yellow-700"
-        : "bg-blue-50 border-blue-200 text-blue-700"
+        : "bg-gray-50 border-gray-200 text-gray-700"
 
   return (
     <div className={`fixed top-24 right-4 z-50 max-w-md p-4 rounded-lg shadow-lg border ${bgColor} animate-fade-in`}>
@@ -60,7 +60,7 @@ export default function ErrorNotification({
                 ? "focus:ring-red-500"
                 : type === "warning"
                   ? "focus:ring-yellow-500"
-                  : "focus:ring-blue-500"
+                  : "focus:ring-gray-500"
             }`}
             onClick={handleClose}
           >

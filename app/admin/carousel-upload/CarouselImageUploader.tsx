@@ -5,6 +5,7 @@ import type React from 'react'
 import { useState, useRef } from 'react'
 import { FiUpload, FiCheck, FiAlertCircle, FiCopy } from 'react-icons/fi'
 import { uploadToBlob } from '@/utils/blob-upload'
+import Image from 'next/image'
 
 type CarouselSlot = {
   key: string
@@ -185,12 +186,12 @@ export default function CarouselImageUploader() {
                           ? 'bg-green-50 border-green-300 hover:bg-green-100'
                           : status.error
                             ? 'bg-red-50 border-red-300 hover:bg-red-100'
-                            : 'bg-blue-50 border-blue-300 hover:bg-blue-100'
+                            : 'bg-gray-50 border-gray-300 hover:bg-gray-100'
                     }`}
                   >
                     {status.isUploading ? (
                       <div className='flex items-center gap-2'>
-                        <div className='w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin'></div>
+                        <div className='w-5 h-5 border-2 border-gray-500 border-t-transparent rounded-full animate-spin'></div>
                         <span>Uploading...</span>
                       </div>
                     ) : status.success ? (
@@ -204,7 +205,7 @@ export default function CarouselImageUploader() {
                         <span>Error: {status.error}</span>
                       </div>
                     ) : (
-                      <div className='flex items-center gap-2 text-blue-600'>
+                      <div className='flex items-center gap-2 text-gray-600'>
                         <FiUpload size={20} />
                         <span>Select image for {slot.title}</span>
                       </div>
@@ -215,7 +216,7 @@ export default function CarouselImageUploader() {
                     <div className='mt-2'>
                       <div className='w-full bg-gray-200 rounded-full h-2.5'>
                         <div
-                          className='bg-blue-600 h-2.5 rounded-full transition-all duration-300'
+                          className='bg-gray-600 h-2.5 rounded-full transition-all duration-300'
                           style={{ width: `${status.progress}%` }}
                         ></div>
                       </div>
@@ -227,10 +228,12 @@ export default function CarouselImageUploader() {
                 {status.success && status.url && (
                   <div className='flex-1'>
                     <div className='relative aspect-video bg-gray-100 rounded-lg overflow-hidden'>
-                      <img
+                      <Image
                         src={status.url || '/placeholder.svg'}
                         alt={slot.title}
-                        className='w-full h-full object-cover'
+                        fill
+                        className='object-cover'
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
                     <div className='mt-2 flex items-center gap-2'>

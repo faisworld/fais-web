@@ -75,7 +75,7 @@ export default function ProjectsPage() {
           <div className='bg-neutral-50 p-8 rounded-lg shadow-md border border-neutral-200'>
             <h4 className='text-lg font-semibold mb-2 lowercase text-neutral-800'>feemaker.io</h4>
             <p className='mb-2 text-neutral-700 lowercase'>
-              explore how we&apos;ve successfully implemented non-custodial payment systems with <a href='https://feemaker.io/' className='text-blue-600 hover:underline' target='_blank' rel='noopener noreferrer'>feemaker.io</a>, optimizing transaction processes for enhanced security and efficiency.
+              explore how we&apos;ve successfully implemented non-custodial payment systems with <a href='https://feemaker.io/' className='text-gray-800 hover:text-black hover:underline' target='_blank' rel='noopener noreferrer'>feemaker.io</a>, optimizing transaction processes for enhanced security and efficiency.
             </p>
             <p className='mb-2 text-neutral-700 lowercase'>
               <strong>wallet link (metamask + telegram integration):</strong> enhance your payment options by integrating seamless wallet connections. we&apos;ve developed robust solutions that link metamask and telegram wallets for streamlined operations.
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
           <div className='bg-neutral-50 p-8 rounded-lg shadow-md border border-neutral-200'>
             <h4 className='text-lg font-semibold mb-2 lowercase text-neutral-800'>multichain dex</h4>
             <p className='mb-2 text-neutral-700 lowercase'>
-              check out <a href='https://wagyuswap.app/' className='text-blue-600 hover:underline' target='_blank' rel='noopener noreferrer'>wagyuswap.app</a> for an example of our dex development work.
+              check out <a href='https://wagyuswap.app/' className='text-gray-800 hover:text-black hover:underline' target='_blank' rel='noopener noreferrer'>wagyuswap.app</a> for an example of our dex development work.
             </p>
           </div>
         </div>

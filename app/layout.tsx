@@ -174,7 +174,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-      </head>      <body>
+      </head>
+      <body className="antialiased">
         <Providers>
           <Header />
           <DynamicBreadcrumbs darkBg={false} />

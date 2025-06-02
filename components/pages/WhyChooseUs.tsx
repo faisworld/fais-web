@@ -39,7 +39,7 @@ const WhyChooseUs: React.FC = () => {
                                     alt={`${feature.title} icon`} 
                                     width={64} 
                                     height={64} 
-                                    className="mx-auto h-16 w-16 text-blue-600" 
+                                    className="mx-auto h-16 w-16 text-gray-800" 
                                 />
                             </div>
                             <h3 className="text-xl font-bold mb-2">{feature.title}</h3>

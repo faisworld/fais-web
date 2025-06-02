@@ -111,7 +111,7 @@ export default function InstantIdPage() {
             />
           </div>
           <button
-            className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+            className="flex items-center justify-center gap-2 w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition"
             onClick={() => fileInputRef.current?.click()}
           >
             <FiUpload /> Upload Image

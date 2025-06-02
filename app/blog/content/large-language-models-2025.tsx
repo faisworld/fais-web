@@ -66,7 +66,7 @@ export default function LargeLanguageModelsContent() {
       </p>
       
       <p className="mb-6">
-        To learn more about how your organization can leverage advanced AI technologies, explore our <Link href="/ai-services" className="text-blue-600 hover:text-blue-800 underline">AI Services</Link> or contact our team of experts.
+        To learn more about how your organization can leverage advanced AI technologies, explore our <Link href="/ai-services" className="text-gray-800 hover:text-black underline">AI Services</Link> or contact our team of experts.
       </p>
     </div>
   );

@@ -80,7 +80,7 @@ export default function TermsOfUsePage() { // Renamed function
                         <section>
                             <h2 className="text-2xl font-bold mb-4 text-neutral-900">6. privacy policy</h2>
                             <p className="text-neutral-700">
-                                Your use of the website is also subject to FAIS&apos;s Privacy Policy. Please review our <Link href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</Link>, which also governs the site and informs users of our data collection practices.
+                                Your use of the website is also subject to FAIS&apos;s Privacy Policy. Please review our <Link href="/privacy-policy" className="text-gray-800 hover:text-black hover:underline">Privacy Policy</Link>, which also governs the site and informs users of our data collection practices.
                             </p>
                         </section>
 

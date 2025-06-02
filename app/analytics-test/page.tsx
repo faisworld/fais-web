@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { track } from '@vercel/analytics';
 
+
 export default function AnalyticsTestPage() {
   const [logs, setLogs] = useState<{[key: string]: string[]}>({
     analytics: [],
@@ -36,44 +37,37 @@ export default function AnalyticsTestPage() {
       return;
     }
 
-    // Check for Vercel Analytics script
-    const scripts = Array.from(document.getElementsByTagName('script'));
-    const vercelScripts = scripts.filter(script => 
-      script.src && script.src.includes('vercel')
-    );
-    
-    if (vercelScripts.length > 0) {
+    try {
+      // Check for Vercel Analytics script
+      const scripts = Array.from(document.getElementsByTagName('script'));
+      const vercelScripts = scripts.filter(script => 
+        script.src && script.src.includes('vercel')
+      );
+      
       vercelScripts.forEach(script => {
         log('analytics', `Found Vercel script: ${script.src}`);
       });
-    } else {
-      log('analytics', 'No Vercel scripts found');
-    }
-    
-    // Check for analytics functions
-    if (typeof (window as any).va !== 'undefined') {
-      log('analytics', 'Vercel Analytics (va) object found');
-      setAnalyticsStatus({
-        status: 'Analytics loaded successfully',
-        className: 'status success'
-      });
-    } else {
-      log('analytics', 'Vercel Analytics (va) object NOT found');
-      setAnalyticsStatus({
-        status: 'Analytics not loaded',
-        className: 'status error'
-      });
-    }
-    
-    // Check for @vercel/analytics track function
-    try {
-      if (typeof track === 'function') {
-        log('analytics', '@vercel/analytics track function available');
+      
+      if (vercelScripts.length === 0) {
+        log('analytics', 'No Vercel scripts found');
+      }
+      
+      // Check for analytics functions
+      if (typeof (window as any).va !== 'undefined') {
+        log('analytics', 'Vercel Analytics (va) object found');
+        setAnalyticsStatus({
+          status: 'Analytics loaded successfully',
+          className: 'status success'
+        });
       } else {
-        log('analytics', '@vercel/analytics track function NOT available');
+        log('analytics', 'Vercel Analytics (va) object NOT found');
+        setAnalyticsStatus({
+          status: 'Analytics not loaded',
+          className: 'status error'
+        });
       }
     } catch (error) {
-      log('analytics', `Error checking track function: ${error}`);
+      log('analytics', `Error checking analytics: ${error}`);
     }
   };
 
@@ -81,16 +75,17 @@ export default function AnalyticsTestPage() {
     log('pageview', 'Testing page view...');
     
     try {
-      track('test_pageview', { page: '/analytics-test-page' });
+      // Use the official @vercel/analytics track function
+      track('pageview', { page: '/analytics-test-page' });
       log('pageview', 'Page view tracked successfully with @vercel/analytics');
     } catch (error: any) {
       log('pageview', `Error tracking page view: ${error.message}`);
     }
 
-    // Also try with window.va if available
-    if (typeof window !== 'undefined' && (window as any).va?.track) {
+    // Also try with window.va if available (using correct Vercel Analytics API)
+    if (typeof window !== 'undefined' && (window as any).va) {
       try {
-        (window as any).va.track('pageview', { page: '/analytics-test-page' });
+        (window as any).va('pageview', { page: '/analytics-test-page' });
         log('pageview', 'Page view tracked successfully with window.va');
       } catch (error: any) {
         log('pageview', `Error tracking with window.va: ${error.message}`);
@@ -102,10 +97,10 @@ export default function AnalyticsTestPage() {
     log('event', 'Testing custom event...');
     
     try {
-      track('custom_test_event', {
-        category: 'test',
+      track('custom_event', {
         action: 'button_click',
-        label: 'analytics_test_page'
+        element: 'test_button',
+        section: 'analytics_test_page'
       });
       log('event', 'Custom event tracked successfully');
     } catch (error: any) {
@@ -118,9 +113,8 @@ export default function AnalyticsTestPage() {
     
     try {
       track('user_action', {
-        action_type: 'click',
-        element: 'test_button',
-        section: 'analytics_test_page'
+        action: 'button_click',
+        element: 'test_button'
       });
       log('event', 'User action tracked successfully');
     } catch (error: any) {
@@ -204,9 +198,8 @@ export default function AnalyticsTestPage() {
 
       <div className="border border-gray-300 rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-3">Page View Tests</h2>
-        <p className="text-gray-600 mb-3">Test different types of page views and navigation:</p>
-        <div className="space-x-2">
-          <button onClick={testPageView} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <p className="text-gray-600 mb-3">Test different types of page views and navigation:</p>        <div className="space-x-2">
+          <button onClick={testPageView} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
             Test Page View
           </button>
         </div>
@@ -220,14 +213,13 @@ export default function AnalyticsTestPage() {
       <div className="border border-gray-300 rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-3">Custom Event Tests</h2>
         <p className="text-gray-600 mb-3">Test custom analytics events:</p>
-        <div className="space-x-2">
-          <button onClick={testCustomEvent} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <div className="space-x-2">          <button onClick={testCustomEvent} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
             Test Custom Event
           </button>
-          <button onClick={testUserAction} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          <button onClick={testUserAction} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
             Test User Action
           </button>
-          <button onClick={testConversion} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          <button onClick={testConversion} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
             Test Conversion
           </button>
         </div>

@@ -17,7 +17,7 @@ export default function Breadcrumbs({
             {idx < items.length - 1 ? (
               <Link
                 href={item.href}
-                className={darkBg ? "hover:underline text-white" : "hover:underline text-blue-600"}
+                className={darkBg ? "hover:underline text-white" : "hover:underline text-gray-800"}
               >
                 {item.label}
               </Link>

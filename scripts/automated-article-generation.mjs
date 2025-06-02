@@ -6,6 +6,16 @@
  */
 
 import { generateArticle } from './article-generator.mjs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
+
+// Get the directory name for proper path resolution
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const TOPICS = [
   "Latest advancements in large language models",
@@ -55,6 +65,9 @@ async function generateMultipleArticles() {
     }
   }
   
+  // Track generated article slugs for RAG update
+  const generatedSlugs = [];
+  
   // Generate articles for selected topics
   for (const index of selectedIndices) {
     const topic = TOPICS[index];
@@ -63,8 +76,13 @@ async function generateMultipleArticles() {
     console.log(`Generating article on topic: ${topic}`);
     
     try {
-      await generateArticle(topic, keywords);
+      const articleResult = await generateArticle(topic, keywords);
       console.log(`✅ Successfully generated article about: ${topic}`);
+      
+      // Store the slug for RAG update
+      if (articleResult && articleResult.slug) {
+        generatedSlugs.push(articleResult.slug);
+      }
     } catch (error) {
       console.error(`❌ Failed to generate article about: ${topic}`, error);
     }
@@ -74,12 +92,48 @@ async function generateMultipleArticles() {
   }
   
   console.log("Article generation completed!");
+  return generatedSlugs;
 }
 
 // Run the process
 generateMultipleArticles()
-  .then(() => {
+  .then(async (generatedSlugs) => {
     console.log("Article generation process completed successfully");
+    
+    // Update the RAG knowledge base with new blog articles
+    if (generatedSlugs && generatedSlugs.length > 0) {
+      console.log("Updating RAG knowledge base with new articles...");
+      try {
+        // Run the blog knowledge base update script with the new article slugs
+        const scriptPath = join(__dirname, 'update-blog-knowledge-base.mjs');
+        const args = generatedSlugs.join(' ');
+        const command = `node ${scriptPath} ${args}`;
+        
+        const { stdout, stderr } = await execAsync(command);
+        console.log("RAG knowledge base update output:", stdout);
+        if (stderr) console.error("RAG update stderr:", stderr);
+        
+        console.log("✅ RAG knowledge base updated successfully with new articles");
+      } catch (error) {
+        console.error("❌ Failed to update RAG knowledge base:", error);
+      }
+    } else {
+      console.log("No articles were generated, skipping RAG knowledge base update");
+    }
+    
+    // Also run the general website update as a fallback
+    console.log("Running general RAG knowledge base update...");
+    try {
+      const generalScriptPath = join(__dirname, 'update-rag-knowledge-base.mjs');
+      const { stdout, stderr } = await execAsync(`node ${generalScriptPath}`);
+      
+      console.log("General RAG update output:", stdout);
+      if (stderr) console.error("General RAG update stderr:", stderr);
+      console.log("✅ General RAG knowledge base update completed");
+    } catch (error) {
+      console.error("❌ Failed to run general RAG knowledge base update:", error);
+    }
+    
     process.exit(0);
   })
   .catch((error) => {

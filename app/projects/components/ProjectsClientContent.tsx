@@ -120,7 +120,7 @@ export default function ProjectsClientContent() {
                 </div>
             </section>
 
-            <section className="py-8 px-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm my-12 border border-blue-100">
+            <section className="py-8 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-sm my-12 border border-gray-200">
                 <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800">Why Partner with Us?</h2>
                 <p className="text-gray-700 text-center max-w-3xl mx-auto">
                     Discover how our tailored AI and blockchain solutions, combined with deep ecosystem expertise, can elevate your project and drive success in the evolving digital landscape.
@@ -154,7 +154,7 @@ export default function ProjectsClientContent() {
                     <h3 className="text-xl font-semibold mb-4 text-gray-800">Non-Custodial Payment System Integration</h3>
                     <p className="text-gray-600 mb-2">Seamlessly integrating non-custodial payment systems for secure, efficient, and user-controlled transactions.</p>
                     <p className="text-gray-600 mb-4">Eliminate third-party custody, maintain asset control, and enhance security.</p>
-                    <p className="text-gray-600 mb-2"><strong>Example:</strong> <a href="https://feemaker.io/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">feemaker.io</a> - Optimized transaction processes.</p>
+                    <p className="text-gray-600 mb-2"><strong>Example:</strong> <a href="https://feemaker.io/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">feemaker.io</a> - Optimized transaction processes.</p>
                     <p className="text-gray-600"><strong>Features:</strong> Wallet link (Metamask + Telegram integration) for streamlined operations.</p>
                 </section>
 
@@ -162,11 +162,10 @@ export default function ProjectsClientContent() {
                     <h3 className="text-xl font-semibold mb-4 text-gray-800">Web3 Game Development</h3>
                     <p className="text-gray-600 mb-2">Building the future of gaming with innovative, blockchain-based games offering immersive experiences and decentralized ownership.</p>
                     <p className="text-gray-600 mb-4">Creating engaging and secure gaming environments leveraging blockchain power.</p>
-                    <p className="text-gray-600 mb-2"><strong>Examples:</strong></p>
-                    <ul className="list-disc list-inside text-gray-600 space-y-1">
-                        <li><a href="https://beta.dopple.ai/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Dopple AI</a> - AI-driven personalized gaming.</li>
-                        <li><a href="https://degenkombat.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Degen Kombat</a> - Action-packed blockchain gaming with DeFi elements.</li>
-                        <li><a href="https://www.mavia.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Heroes of Mavia</a> - Strategic base-building blockchain game.</li>
+                    <p className="text-gray-600 mb-2"><strong>Examples:</strong></p>                    <ul className="list-disc list-inside text-gray-600 space-y-1">
+                        <li><a href="https://beta.dopple.ai/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">Dopple AI</a> - AI-driven personalized gaming.</li>
+                        <li><a href="https://degenkombat.com/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">Degen Kombat</a> - Action-packed blockchain gaming with DeFi elements.</li>
+                        <li><a href="https://www.mavia.com/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">Heroes of Mavia</a> - Strategic base-building blockchain game.</li>
                     </ul>
                 </section>
 
@@ -174,7 +173,7 @@ export default function ProjectsClientContent() {
                     <h3 className="text-xl font-semibold mb-4 text-gray-800">Decentralized Exchange (DEX) Development</h3>
                     <p className="text-gray-600 mb-2">Building secure DEX platforms using Uniswap V2 protocols for seamless, intermediary-free trading.</p>
                     <p className="text-gray-600 mb-4">Enabling users to trade directly from their wallets, fostering true decentralization.</p>
-                    <p className="text-gray-600"><strong>Example:</strong> <a href="https://wagyuswap.app/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Wagyuswap (Multichain DEX)</a></p>
+                    <p className="text-gray-600"><strong>Example:</strong> <a href="https://wagyuswap.app/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">Wagyuswap (Multichain DEX)</a></p>
                 </section>
 
                 <section className="p-6 bg-white rounded-lg shadow border border-gray-200">
@@ -185,11 +184,10 @@ export default function ProjectsClientContent() {
 
                 <section className="p-6 bg-yellow-100 border border-yellow-300 rounded-lg shadow">
                     <h3 className="text-xl font-semibold mb-4 text-yellow-800">Attention: Replicable Project Examples</h3>
-                    <p className="text-yellow-700 mb-4">While the following are not our direct projects, we possess the capability and expertise to replicate their quality and functionality:</p>
-                    <ul className="list-disc list-inside text-yellow-700 space-y-2">
-                        <li><a href="https://www.base.org/" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">Base.org</a>: Ethereum L2 built on Optimism Superchain, incubated by Coinbase.</li>
-                        <li><a href="https://www.optimism.io/" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">Optimism.io</a>: The Superchain vision for a composable, unified network powered by the OP Stack.</li>
-                        <li><a href="http://blast.io/" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline font-medium">Blast.io</a>: EVM chain featuring native yield for ETH and stablecoins.</li>
+                    <p className="text-yellow-700 mb-4">While the following are not our direct projects, we possess the capability and expertise to replicate their quality and functionality:</p>                    <ul className="list-disc list-inside text-yellow-700 space-y-2">
+                        <li><a href="https://www.base.org/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline font-medium">Base.org</a>: Ethereum L2 built on Optimism Superchain, incubated by Coinbase.</li>
+                        <li><a href="https://www.optimism.io/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline font-medium">Optimism.io</a>: The Superchain vision for a composable, unified network powered by the OP Stack.</li>
+                        <li><a href="http://blast.io/" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline font-medium">Blast.io</a>: EVM chain featuring native yield for ETH and stablecoins.</li>
                     </ul>
                 </section>
             </div>

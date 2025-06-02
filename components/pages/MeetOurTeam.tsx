@@ -2,36 +2,13 @@ import Image from 'next/image';
 import { getBlobImage } from "@/utils/media-utils";
 
 export default function MeetOurTeam() {
-    const teamMembers = [
-        {
-            name: "yevhen lukyanov",
-            role: "ceo, phd in medical informatics",
-            image: getBlobImage("about-team-member-yevhen-lukyanov-image")
-        },
-        {
-            name: "arik vigas",
-            role: "CTO, expert developer",
-            image: getBlobImage("about-team-member-arik-vigas-image")
-        },
-        {
-            name: "andrii stehno",
-            role: "blockchain developer expert",
-            image: getBlobImage("about-team-member-andrii-stehno-image")
-        },
-
-        {
-            name: "vitalii melnyk",
-            role: "chief project manager",
-            image: getBlobImage("about-team-member-vitalii-melnyk-image")
-        }
-    ];
-
     return (
         <div className="mt-24 mb-24">
             <h2 className="text-3xl font-semibold text-center mb-16 lowercase relative after:content-[''] after:absolute after:w-16 after:h-[3px] after:bg-gradient-to-r after:from-neutral-300 after:to-neutral-500 after:bottom-[-12px] after:left-1/2 after:transform after:-translate-x-1/2">
                 meet our team
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-20">
+  
                 {teamMembers.map((member) => (
                     <div 
                         className="group relative transition-all duration-300 rounded-md bg-white"
@@ -61,3 +38,27 @@ export default function MeetOurTeam() {
         </div>
     );
 }
+
+   const teamMembers = [
+        {
+            name: "yevhen lukyanov",
+            role: "ceo, phd in medical informatics",
+            image: getBlobImage("about-team-member-yevhen-lukyanov-image")
+        },
+        {
+            name: "arik vigas",
+            role: "CTO, expert developer",
+            image: getBlobImage("about-team-member-arik-vigas-image")
+        },
+        {
+            name: "andrii stehno",
+            role: "blockchain developer expert",
+            image: getBlobImage("about-team-member-andrii-stehno-image")
+        },
+
+        {
+            name: "vitalii melnyk",
+            role: "chief project manager",
+            image: getBlobImage("about-team-member-vitalii-melnyk-image")
+        }
+    ];
