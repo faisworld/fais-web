@@ -16,14 +16,14 @@ const inter = Inter({ subsets: ['latin'] })
 
 // Define Twitter/OG image URL using Blob storage
 const twitterImageUrl =
-  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/twitter-card-image-fais-1200x630-NqvcixzlHRVD1xlXsWGkAvjM9YPJgQ.png'
+  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/6e972845-d283-487c-be43-db051920940c.png'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fais.world'),  title: {
     template: '%s | Fantastic AI Studio',
     default: 'Fantastic AI Studio | #1 Enterprise AI & Blockchain Development Company | USA, UK, Germany | Custom Solutions & 95% Client Satisfaction'
   },
-  description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms, enterprise blockchain implementation. 95% client satisfaction rate. Free consultation available.',
+  description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany and Spain. Custom AI solutions, smart contracts, DeFi platforms, enterprise blockchain implementation. 95% client satisfaction rate. Free consultation available.',
   keywords: [
     // Primary keywords
     'enterprise AI development', 'blockchain development company', 'custom AI solutions', 'smart contracts development',
@@ -35,82 +35,82 @@ export const metadata: Metadata = {
     'enterprise digital transformation', 'blockchain consulting', 'AI software development', 'cryptocurrency development',
     // Industry keywords
     'fintech AI solutions', 'healthcare blockchain', 'supply chain AI', 'enterprise automation'
-  ].join(', '),
-  authors: [{ name: 'Fantastic AI Studio', url: 'https://fais.world' }],
-  creator: 'Yevhen Lukyanov',
-  publisher: 'Fantastic AI Studio',
-  applicationName: 'Fantastic AI Studio',
-  category: 'Technology',
-  classification: 'Business',
-  icons: { 
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-    shortcut: '/favicon-16x16.png'
-  },
-  manifest: '/site.webmanifest',
-  openGraph: {
-    title: 'Fantastic AI Studio | #1 Enterprise AI & Blockchain Development Company',
-    description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients in USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms. 95% client satisfaction. Get free consultation.',
-    url: 'https://fais.world',
-    siteName: 'Fantastic AI Studio',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
-        width: 1200,
-        height: 630,
-        alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',
-        type: 'image/png'
-      }
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Fantastic AI Studio | #1 Enterprise AI & Blockchain Development Company',
-    description: 'Leading enterprise AI & blockchain development. Fortune 500 clients. Custom AI solutions, smart contracts, DeFi platforms. 95% client satisfaction. Free consultation.',
-    creator: '@fantasticaistudio',
-    site: '@fantasticaistudio',
-    images: [
-      {
-        url: twitterImageUrl,
-        width: 1200,
-        height: 630,
-        alt: 'Fantastic AI Studio - Innovative AI and Blockchain Solutions',
-      },
-    ],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
+    ].join(', '),
+    authors: [{ name: 'Fantastic AI Studio', url: 'https://fais.world' }],
+    creator: 'Yevhen Lukyanov',
+    publisher: 'Fantastic AI Studio',
+    applicationName: 'Fantastic AI Studio',
+    category: 'Technology',
+    classification: 'Business',
+    icons: { 
+      icon: '/favicon.ico',
+      apple: '/apple-touch-icon.png',
+      shortcut: '/favicon-16x16.png'
+    },
+    manifest: '/site.webmanifest',
+    openGraph: {
+      title: 'Fantastic AI Studio | #1 Enterprise AI & Blockchain Development Company',
+      description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients in USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms. 95% client satisfaction. Get free consultation.',
+      url: 'https://fais.world',
+      siteName: 'Fantastic AI Studio',
+      locale: 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
+          width: 1200,
+          height: 630,
+          alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',
+          type: 'image/png'
+        }
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Fantastic AI Studio | #1 Enterprise AI & Blockchain Development Company',
+      description: 'Leading enterprise AI & blockchain development. Fortune 500 clients. Custom AI solutions, smart contracts, DeFi platforms. 95% client satisfaction. Free consultation.',
+      creator: '@fantasticaistudio',
+      site: '@fantasticaistudio',
+      images: [
+        {
+          url: twitterImageUrl,
+          width: 1200,
+          height: 630,
+          alt: 'Fantastic AI Studio - Innovative AI and Blockchain Solutions',
+        },
+      ],
+    },
+    robots: {
       index: true,
       follow: true,
-      noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  appleWebApp: { 
-    capable: true, 
-    title: 'Fantastic AI Studio',
-    statusBarStyle: 'default'
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  alternates: {
-    canonical: 'https://fais.world',
-    languages: {
-      'en-US': 'https://fais.world',
-      'en-GB': 'https://fais.world/gb',
-      'de-DE': 'https://fais.world/de',
+    appleWebApp: { 
+      capable: true, 
+      title: 'Fantastic AI Studio',
+      statusBarStyle: 'default'
     },
-  },
-  other: {
-    'google-site-verification': 'your-google-verification-code', // Replace with actual verification code
+    formatDetection: {
+      telephone: false,
+    },
+    alternates: {
+      canonical: 'https://fais.world',
+      languages: {
+        'en-US': 'https://fais.world',
+        'en-GB': 'https://fais.world/gb',
+        'de-DE': 'https://fais.world/de',
+      },
+    },
+    other: {
+      'google-site-verification': 'your-google-verification-code', // Replace with actual verification code
     'msvalidate.01': 'your-bing-verification-code', // Replace with actual verification code
     'yandex-verification': 'your-yandex-verification-code', // Replace with actual verification code
     'facebook-domain-verification': 'your-facebook-verification-code', // Replace with actual verification code
@@ -124,7 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Fantastic AI Studio',
-    alternateName: 'FAIS',
+    alternateName: 'fAis',
     url: 'https://fais.world',
     logo: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
     description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms.',
@@ -149,8 +149,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       availableLanguage: ['English', 'German']
     },
     sameAs: [
-      'https://twitter.com/fantasticaistudio',
-      'https://linkedin.com/company/fantastic-ai-studio'
+      process.env.NEXT_PUBLIC_TWITTER_URL || 'https://x.com/faisworld',
+      process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com/company/faistudio/'
     ],
     offers: {
       '@type': 'Offer',

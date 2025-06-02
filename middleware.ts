@@ -37,7 +37,6 @@ export async function middleware(request: NextRequest) {
   return response
 }
 
-// Match all paths with exceptions
 export const config = {
   matcher: [
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
