@@ -37,7 +37,10 @@ const nextConfig = {
       'mzcje1drftvqhdku.public.blob.vercel-storage.com',
       'vercel-storage.com',
     ],
-    unoptimized: true, // For Vercel Blob Storage images
+    unoptimized: false, // For Vercel Blob Storage images
+    // Use unoptimized images to avoid issues with Vercel's image optimization
+    // This is necessary for Vercel Blob Storage images
+    // See: https://vercel.com/docs/storage/vercel-blob#images
   },
   serverExternalPackages: ['sharp', '@neondatabase/serverless'],
   // Increase the timeout for builds
