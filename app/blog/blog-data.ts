@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2532&q=80",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537152438-img-google-imagen-4-Professional--high-quality-b-j0nA8x5hYVqZgTEm6M7nHfG3tK9bS.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -40,7 +40,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2532&q=80",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537201562-img-google-imagen-4-Professional--high-quality-b-x7pN2y8hMVqZgTEm6M9fHfG3tK7bS.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -52,7 +52,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537264789-img-google-imagen-4-Professional--high-quality-b-m9pQ3z5hXVqZgTEm6L8kHfG3tN6cS.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -64,7 +64,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2552&q=80",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537318923-img-google-imagen-4-Professional--high-quality-b-k4rL7w8hQVqZgTEm6P5mHfG3tX2dS.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -76,11 +76,11 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537372156-img-google-imagen-4-Professional--high-quality-b-h8tM9v5hWVqZgTEm6R3nHfG3tY4eS.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  }
+  },
   {
     id: "f76578b8",
     slug: "latest-advancements-in-large-language-models",
@@ -89,8 +89,9 @@ export const blogPosts: BlogPost[] = [{
     date: "June 3, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "undefined",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/e01e3be4-5e49-4d94-a14c-7cb385636ff7.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  },];
+  }
+];

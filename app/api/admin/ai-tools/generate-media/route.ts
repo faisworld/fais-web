@@ -276,12 +276,12 @@ export async function POST(request: NextRequest) {
     if (result.status === 'failed') {
       console.error('❌ Replicate prediction failed:', result.error);
       return NextResponse.json({ error: result.error || 'Generation failed' }, { status: 500 });
-    }
-    
-    if (attempts >= maxAttempts) {
+    }    if (attempts >= maxAttempts) {
       console.error('❌ Replicate prediction timed out');
       return NextResponse.json({ error: 'Generation timed out' }, { status: 504 });
-      // Return the appropriate output based on media type
+    }
+    
+    // Return the appropriate output based on media type
     if (mediaType === 'image') {
       // Handle multiple images for models like Minimax Image 01
       if (Array.isArray(result.output)) {
@@ -295,13 +295,11 @@ export async function POST(request: NextRequest) {
           count: limitedOutput.length 
         });
       } else {
-        console.log(`✅ Returning single image: ${result.output}`);
-        return NextResponse.json({ 
+        console.log(`✅ Returning single image: ${result.output}`);        return NextResponse.json({ 
           imageUrl: result.output,
           imageUrls: [result.output],
           count: 1
         });
-      }
       }
     } else if (mediaType === 'video') {
       console.log(`✅ Returning video: ${result.output}`);

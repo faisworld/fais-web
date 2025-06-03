@@ -18,11 +18,15 @@ const blogImageData = [
     slug: "recent-advancements-in-ai-and-machine-learning",
     title: "Recent Advancements in AI and Machine Learning",
     imageUrl: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537318923-img-google-imagen-4-Professional--high-quality-b-k4rL7w8hQVqZgTEm6P5mHfG3tX2dS.png"
-  },
-  {
+  },  {
     slug: "the-future-of-quantum-computing-in-ai",
     title: "The Future of Quantum Computing in AI",
     imageUrl: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537372156-img-google-imagen-4-Professional--high-quality-b-h8tM9v5hWVqZgTEm6R3nHfG3tY4eS.png"
+  },
+  {
+    slug: "latest-advancements-in-large-language-models",
+    title: "Latest Advancements in Large Language Models", 
+    imageUrl: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/e01e3be4-5e49-4d94-a14c-7cb385636ff7.png"
   }
 ];
 
