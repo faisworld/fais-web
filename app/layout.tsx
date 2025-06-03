@@ -175,10 +175,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="antialiased">
-        <Providers>
+      <body className="antialiased">        <Providers>
           <Header />
-          <DynamicBreadcrumbs darkBg={false} />          <main>{children}</main>
+          <DynamicBreadcrumbs darkBg={false} />
+          <main className="mt-20">{children}</main>
           <Footer />
 
           {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}

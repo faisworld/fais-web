@@ -4,9 +4,9 @@ import Link from 'next/link';
 import './services-video.css';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
-export default function ServicesPage() {  return (    <div className="relative overflow-x-clip">
-      {/* No preload needed with ServicesVideo component */}
-      
+export default function ServicesPage() {
+  return (    
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative overflow-x-clip">
       {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         {/* Left background shape - positioned wider to align with logo */}
@@ -16,7 +16,7 @@ export default function ServicesPage() {  return (    <div className="relative o
       </div>
 
       <main className="relative z-10">        {/* Hero Section */}
-        <section className="py-20 px-4 text-center">
+        <section className="text-center mb-12">
           <div className="max-w-5xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-neutral-900">
               professional ai & blockchain services
@@ -38,7 +38,7 @@ export default function ServicesPage() {  return (    <div className="relative o
             </Link>
           </div>
         </section>        {/* Services Overview */}
-        <section className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-16">
+        <section className="grid md:grid-cols-2 gap-16 mb-12">
           {/* AI Services */}
           <div className="bg-white/90 rounded-2xl shadow-xl p-8 border border-neutral-100 backdrop-blur">
             <h2 className="text-3xl font-bold mb-4 text-black">artificial intelligence solutions</h2>

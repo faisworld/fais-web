@@ -28,7 +28,7 @@ export default function Header() {
 
   return (
     <header className="site-header fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black bg-opacity-80 backdrop-blur-md text-white">
-      <div className="w-full max-w-none mx-auto flex items-center justify-between px-6 h-20">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
         {/* Apply header-logo class to white logo */}
         <Logo variant="white" href="/" className="header-logo" />
 

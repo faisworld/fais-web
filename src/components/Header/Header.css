@@ -1,6 +1,4 @@
-@import '@/Logo/Logo.css';
-
-// Then component styles 
+// Header component styles - Logo.css import removed as it doesn't exist
 .header {
   // ...existing code...
 }

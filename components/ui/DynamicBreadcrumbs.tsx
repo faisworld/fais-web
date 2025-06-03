@@ -109,8 +109,8 @@ export default function DynamicBreadcrumbs({ darkBg = false }: { darkBg?: boolea
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-4 mt-20">
-      <div className="breadcrumb-alignment">
+    <div className="sticky top-[80px] z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+      <div className="breadcrumbs-container container mx-auto max-w-7xl py-4">
         <Breadcrumbs items={items} darkBg={darkBg} />
       </div>
     </div>

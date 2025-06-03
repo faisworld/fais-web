@@ -8,14 +8,12 @@ export default function Footer() {
     <footer className="site-footer">
       {/* Upper Block */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 mt-12">
-        <div className="flex flex-wrap justify-between">          {/* First Column - Logo and Navigation */}
-          <div className="w-full md:w-[30%] mb-6 md:mb-0 flex flex-col items-center md:items-start">
-            {/* Reduce margin to align navigation with other columns */}
-            <div className="mb-2 md:pl-8">
+        <div className="flex flex-wrap justify-between">          {/* First Column - Logo and Navigation */}          <div className="w-full md:w-[30%] mb-6 md:mb-0 flex flex-col items-center md:items-start">
+            {/* Logo aligned with container */}
+            <div className="mb-2 logo-container">
               <Logo variant="black" className="footer-logo" />
-            </div>
-            {/* Keep the pl-8 that works for alignment */}
-            <ul className="list-none w-full text-center md:text-left md:pl-8">
+            </div>            {/* Navigation aligned with breadcrumbs */}
+            <ul className="footer-navigation-links list-none w-full text-center md:text-left">
               <li className="mb-2">
                 <Link href="/" className="footer-link lowercase">
                   home
