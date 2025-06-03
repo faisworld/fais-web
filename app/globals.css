@@ -128,7 +128,7 @@ img {
 
 /* Header logo - with alignment offset */
 .header-logo img {
-  height: 36px !important;
+  height: 34px !important;
   width: auto !important;
   display: inline-block;
   object-fit: contain;
@@ -136,41 +136,52 @@ img {
   margin-left: -4px !important; /* Moved 4px to the right (was -8px, now -4px) */
 }
 
-/* Footer logo - same styling as header */
+/* Footer logo - perfect centering */
 .footer-logo {
-  height: 36px !important;
+  height: 34px !important;
   width: auto !important;
   display: inline-block;
   object-fit: contain;
   aspect-ratio: 3.5;
-  margin-left: 8px !important; /* Moved 16px to the right (was -8px, now +8px) */
+  margin: 0 !important; /* Remove all margins for clean Flexbox alignment */
+}
+
+/* Force precise centering on mobile */
+@media (max-width: 767px) {
+  .footer-logo {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    height: 34px !important;
+    width: auto !important;
+  }
 }
 
 /* For extremely small screens, reduce logo size consistently with proportional offset */
 @media (max-width: 350px) {
-  .header-logo img,
-  .footer-logo {
-    height: 30px !important;
+  .header-logo img {
+    height: 34px !important;
     width: auto !important;
-    margin-left: -2px !important; /* Proportionally adjusted for header (was -6px) */
+    margin-left: -2px !important; /* Proportionally adjusted for header */
   }
   
   .footer-logo {
-    margin-left: 6px !important; /* Proportionally adjusted for footer (was -6px, now +6px) */
+    height: 34px !important;
+    width: auto !important;
+
   }
 }
 
 /* For larger screens, increase size consistently with proportional offset */
 @media (min-width: 1200px) {
-  .header-logo img,
-  .footer-logo {
-    height: 44px !important;
+  .header-logo img {
+    height: 36px !important;
     width: auto !important;
-    margin-left: -6px !important; /* Proportionally adjusted for header (was -10px) */
   }
   
   .footer-logo {
-    margin-left: 10px !important; /* Proportionally adjusted for footer (was -10px, now +10px) */
+    height: 36px !important;
+    width: auto !important;
+    /* Remove margin-left - let Flexbox handle positioning */
   }
 }
 
@@ -194,16 +205,18 @@ img {
   }
 }
 
-/* Footer navigation links - align with main page content */
+/* Footer navigation links - centered on mobile, positioned on desktop */
 .footer-navigation-links {
-  padding-left: 16px !important; /* Moved 16px to the right */
+  padding-left: 0 !important; /* Centered on mobile */
   padding-right: 0 !important;
+  text-align: center; /* Center navigation on mobile */
 }
 
 @media (min-width: 640px) {
   .footer-navigation-links {
     padding-left: calc(1.5rem + 16px) !important; /* 24px + 16px offset */
     padding-right: 0 !important;
+    text-align: left; /* Left align on larger screens */
   }
 }
 
@@ -211,6 +224,7 @@ img {
   .footer-navigation-links {
     padding-left: calc(2rem + 16px) !important; /* 32px + 16px offset */
     padding-right: 0 !important;
+    text-align: left; /* Left align on larger screens */
   }
 }
 
@@ -298,12 +312,22 @@ section[aria-roledescription="carousel"] {
   text-align: center;
 }
 
-/* Remove any extra padding from logo container */
+/* Perfect logo container centering */
 .site-footer .logo-container {
   padding: 0 !important;
-  margin: 0 !important;
-  position: relative;
-  left: -18px; /* Adjusted to move logo 16px right (was -24px, now -8px) */
+  margin: 0 !important; 
+  /* Remove positioning - let Flexbox handle alignment */
+}
+
+/* Force perfect centering on mobile view */
+@media (max-width: 767px) {
+  .site-footer .logo-container {
+    display: flex !important;
+    justify-content: center !important; 
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }
 
 .site-footer ul li {
