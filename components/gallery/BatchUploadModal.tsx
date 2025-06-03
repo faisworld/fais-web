@@ -234,19 +234,17 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
             >
               Add More Files
             </button>
-          </div>
-
-          <input
+          </div>          <input
             type="file"
             ref={fileInputRef}
             accept="image/*"
             multiple
             className="hidden"
+            id="batch-upload-file-input"
+            name="batchUploadFiles"
             onChange={handleFileSelect}
             disabled={isUploading}
-          />
-
-          {files.length === 0 ? (
+          />          {files.length === 0 ? (
             <div
               className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:bg-gray-50"
               onClick={() => fileInputRef.current?.click()}
@@ -254,6 +252,9 @@ export default function BatchUploadModal({ folders, onClose, onSuccess }: BatchU
               <FiUpload className="mx-auto h-12 w-12 text-gray-400" />
               <p className="mt-2 text-sm text-gray-600">Click to select files or drag and drop</p>
               <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+              <label htmlFor="batch-upload-file-input" className="sr-only">
+                Select image files for batch upload
+              </label>
             </div>
           ) : (
             <div className="border border-gray-200 rounded-lg overflow-hidden">

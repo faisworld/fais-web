@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
-import MissingImageFixer from '@/components/ui/MissingImageFixer'
+
 import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
@@ -178,17 +178,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased">
         <Providers>
           <Header />
-          <DynamicBreadcrumbs darkBg={false} />
-          <main>{children}</main>
+          <DynamicBreadcrumbs darkBg={false} />          <main>{children}</main>
           <Footer />
-          <MissingImageFixer />
 
           {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
           <ConditionalWidgetWrapper agentId='GkOKedIUAelQwYORYU3j' />
           
           {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>          <SpeedInsights />
-          <Analytics mode={'production'} debug={process.env.NODE_ENV === 'development'} />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
         </Providers>
       </body>
     </html>

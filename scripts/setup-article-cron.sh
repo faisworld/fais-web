@@ -23,8 +23,9 @@ fi
 mkdir -p "$PROJECT_DIR/logs"
 
 # Create or update the cron job
-# Run every day at 2:00 AM
-CRON_JOB="0 2 * * * cd $PROJECT_DIR && /usr/bin/node scripts/automated-article-generation.mjs >> logs/article-generation.log 2>&1"
+# Run every day at 2:00 PM (14:00) with necessary environment variables
+# Note: Update the INTERNAL_API_KEY value with your actual secret key
+CRON_JOB="0 14 * * * cd $PROJECT_DIR && NODE_ENV=production INTERNAL_API_KEY=your_secret_internal_api_key_here /usr/bin/node scripts/automated-article-generation.mjs >> logs/article-generation.log 2>&1"
 
 # Check if the cron job already exists
 EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "automated-article-generation.mjs")
@@ -32,7 +33,13 @@ EXISTING_CRON=$(crontab -l 2>/dev/null | grep -F "automated-article-generation.m
 if [ -z "$EXISTING_CRON" ]; then
   # Add the new cron job
   (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
-  echo "Cron job added successfully. Articles will be generated daily at 2:00 AM."
+  echo "Cron job added successfully. Articles will be generated daily at 2:00 PM."
+  echo ""
+  echo "⚠️  IMPORTANT: You must update the INTERNAL_API_KEY in the cron job!"
+  echo "   Run 'crontab -e' and replace 'your_secret_internal_api_key_here'"
+  echo "   with a secure random string (e.g., a UUID or long random string)."
+  echo "   Then add the same key to your production environment variables:"
+  echo "   INTERNAL_API_KEY=your_actual_secret_key"
 else
   echo "A cron job for article generation already exists. No changes were made."
 fi

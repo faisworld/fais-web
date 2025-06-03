@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { list } from "@vercel/blob";
 import { verifyAdminRequest } from '@/utils/admin-auth';
+import probe from 'probe-image-size';
 
 interface MediaItem {
   id: number;
@@ -141,20 +142,30 @@ async function getImageDimensions(url: string): Promise<{ width?: number; height
       return {};
     }
 
-    // Create a simple probe request to get dimensions
-    const response = await fetch(url, { 
-      method: 'HEAD',
-      signal: AbortSignal.timeout(3000) // 3 second timeout
+    // Fetch the image data
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(5000) // 5 second timeout
     });
 
     if (!response.ok) {
       return {};
     }
 
-    // For now, return empty dimensions - we can enhance this later with image-size library
-    // This is a placeholder that can be improved with proper image dimension detection
-    return {};  } catch {
-    // Don't log errors for dimension detection to avoid spam
+    // Get array buffer and use probe-image-size
+    const buffer = await response.arrayBuffer();
+    const result = probe.sync(Buffer.from(buffer));
+
+    if (result) {
+      return {
+        width: result.width,
+        height: result.height
+      };
+    }
+
+    return {};
+  } catch {
+    // Silently handle errors and return empty dimensions
+    // This prevents console spam but still provides fallback
     return {};
   }
 }

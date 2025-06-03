@@ -142,12 +142,13 @@ export default function UploadPage() {
       </div>
       
       <div className="bg-white rounded-lg p-6 shadow-md">
-        {/* Folder selection */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        {/* Folder selection */}        <div className="mb-6">
+          <label htmlFor="folder-select" className="block text-sm font-medium text-gray-700 mb-2">
             Select Target Folder (optional)
           </label>
           <select
+            id="folder-select"
+            name="folderSelect"
             value={selectedFolder}
             onChange={(e) => setSelectedFolder(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
@@ -178,19 +179,20 @@ export default function UploadPage() {
           }}
         >
           <Upload size={40} className="mx-auto text-gray-400 mb-4" />
-          <p className="text-gray-600 mb-4">Drag and drop media files here, or click to select</p>
-          <input
+          <p className="text-gray-600 mb-4">Drag and drop media files here, or click to select</p>          <input
             ref={fileInputRef}
             type="file"
             multiple
             accept="image/*,video/*"
             onChange={handleFileChange}
             className="hidden"
-            id="file-upload"
+            id="gallery-file-upload"
+            name="galleryFileUpload"
             disabled={uploading}
           />
           <label 
-            htmlFor="file-upload"            className={`inline-block px-4 py-2 bg-black text-white rounded-md cursor-pointer
+            htmlFor="gallery-file-upload"
+            className={`inline-block px-4 py-2 bg-black text-white rounded-md cursor-pointer
               hover:bg-gray-800 transition-colors ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Select Files

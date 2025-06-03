@@ -322,11 +322,12 @@ export default function ImageGenerationPage() {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-6">Generation Controls</h2>
           
-          <div className="space-y-4">
-            {/* AI Model Select */}
+          <div className="space-y-4">            {/* AI Model Select */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">AI Model</label>
+              <label htmlFor="ai-model-select" className="block text-sm font-medium text-gray-700 mb-1">AI Model</label>
               <select 
+                id="ai-model-select"
+                name="aiModel"
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
@@ -339,8 +340,10 @@ export default function ImageGenerationPage() {
 
             {/* Prompt Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Prompt</label>
+              <label htmlFor="prompt-textarea" className="block text-sm font-medium text-gray-700 mb-1">Prompt</label>
               <textarea 
+                id="prompt-textarea"
+                name="prompt"
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3 min-h-[120px]"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -350,14 +353,16 @@ export default function ImageGenerationPage() {
 
             {/* Negative Prompt Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Negative Prompt</label>
+              <label htmlFor="negative-prompt-textarea" className="block text-sm font-medium text-gray-700 mb-1">Negative Prompt</label>
               <textarea 
+                id="negative-prompt-textarea"
+                name="negativePrompt"
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3 min-h-[80px]"
                 value={negativePrompt}
                 onChange={(e) => setNegativePrompt(e.target.value)}
                 placeholder="What should NOT appear in the image..."
               />
-            </div>            {/* Model-specific controls */}            {selectedModel === 'nvidia/sana' ? (
+            </div>{/* Model-specific controls */}            {selectedModel === 'nvidia/sana' ? (
               <>
                 {/* Resolution Selection for nvidia/sana */}
                 <div>
@@ -500,14 +505,14 @@ export default function ImageGenerationPage() {
                       </button>
                     ))}
                   </div>
-                </div>
-
-                {/* Number of Images */}
+                </div>                {/* Number of Images */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="number-of-images-range" className="block text-sm font-medium text-gray-700 mb-1">
                     Number of Images: {numberOfImages}
                   </label>
                   <input
+                    id="number-of-images-range"
+                    name="numberOfImages"
                     type="range"
                     min="1"
                     max="9"
@@ -523,8 +528,10 @@ export default function ImageGenerationPage() {
 
                 {/* Prompt Optimizer */}
                 <div>
-                  <label className="flex items-center">
+                  <label htmlFor="prompt-optimizer-checkbox" className="flex items-center">
                     <input
+                      id="prompt-optimizer-checkbox"
+                      name="promptOptimizer"
                       type="checkbox"
                       checked={promptOptimizer}
                       onChange={(e) => setPromptOptimizer(e.target.checked)}
@@ -537,8 +544,10 @@ export default function ImageGenerationPage() {
 
                 {/* Subject Reference */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Subject Reference (optional)</label>
+                  <label htmlFor="subject-reference-input" className="block text-sm font-medium text-gray-700 mb-1">Subject Reference (optional)</label>
                   <input
+                    id="subject-reference-input"
+                    name="subjectReference"
                     type="url"
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={subjectReference}
@@ -568,12 +577,12 @@ export default function ImageGenerationPage() {
                       </button>
                     ))}
                   </div>
-                </div>
-
-                {/* Safety Filter Level */}
+                </div>                {/* Safety Filter Level */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Safety Filter Level</label>
+                  <label htmlFor="safety-filter-select" className="block text-sm font-medium text-gray-700 mb-1">Safety Filter Level</label>
                   <select
+                    id="safety-filter-select"
+                    name="safetyFilterLevel"
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={safetyFilterLevel}
                     onChange={(e) => setSafetyFilterLevel(e.target.value)}

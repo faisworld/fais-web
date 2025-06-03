@@ -49,12 +49,12 @@ const MailerWidget: FC = () => {
         const tokenResult = await generateToken(RECAPTCHA_CONFIG.ACTIONS.CONTACT_FORM)
         if (tokenResult.success && tokenResult.token) {
           recaptchaToken = tokenResult.token
-          console.log("reCAPTCHA token acquired successfully")
+          // console.log("reCAPTCHA token acquired successfully")
         } else {
-          console.warn("reCAPTCHA token generation failed:", tokenResult.error)
+          // console.warn("reCAPTCHA token generation failed:", tokenResult.error)
         }
       } else {
-        console.warn("reCAPTCHA not ready, proceeding without token")
+        // console.warn("reCAPTCHA not ready, proceeding without token")
       }
 
       // Submit form with or without token
@@ -86,7 +86,7 @@ const MailerWidget: FC = () => {
         throw new Error(errorData.error || "Failed to send message")
       }
     } catch (error) {
-      console.error("Error sending message:", error)
+      // console.error("Error sending message:", error)
       setStatus("error")
       setErrorMessage(error instanceof Error ? error.message : "Failed to send message")
       

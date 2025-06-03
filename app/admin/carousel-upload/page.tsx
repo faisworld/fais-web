@@ -13,6 +13,12 @@ interface CarouselSlide {
   uploadedAt?: string;
 }
 
+interface MediaItem {
+  slideName: string;
+  url: string;
+  mediaType?: 'image' | 'video';
+}
+
 export default function CarouselUploadPage() {
   // Define carousel slides
   const carouselSlides: CarouselSlide[] = [
@@ -36,7 +42,6 @@ export default function CarouselUploadPage() {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [refreshRequired, setRefreshRequired] = useState(false);
-
   // Fetch existing carousel media on load
   useEffect(() => {
     const fetchCarouselMedia = async () => {
@@ -44,10 +49,9 @@ export default function CarouselUploadPage() {
         const response = await fetch('/api/admin/carousel/list');
         if (response.ok) {
           const data = await response.json();
-          
           // Map images/videos to slides by name
           const mediaMap: {[key: string]: {url: string, type: 'image' | 'video'}} = {};
-          data.mediaItems.forEach((item: any) => {
+          data.mediaItems.forEach((item: MediaItem) => {
             mediaMap[item.slideName] = {
               url: item.url,
               type: item.mediaType || 'image' // Default to image if type not specified
@@ -68,6 +72,26 @@ export default function CarouselUploadPage() {
   const getMediaType = (file: File): 'image' | 'video' => {
     if (file.type.startsWith('video/')) return 'video';
     return 'image';
+  };
+
+  // Update carousel metadata function
+  const updateCarouselMediaMetadata = async (mediaData: Array<{key: string, url: string, keywords: string, link: string}>) => {
+    try {
+      const response = await fetch('/api/admin/carousel/metadata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mediaItems: mediaData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update metadata');
+      }
+    } catch (error) {
+      console.error('Error updating carousel metadata:', error);
+      throw error;
+    }
   };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>, slideName: string) => {
@@ -104,9 +128,8 @@ export default function CarouselUploadPage() {
       }
       
       const data = await response.json();
-      
-      // Update local state with new media
-      setSlideMedia(prev => ({
+        // Update local state with new media
+      setSlideMedia((prev: {[key: string]: {url: string, type: 'image' | 'video'}}) => ({
         ...prev,
         [slideName]: {
           url: data.url,
@@ -120,9 +143,7 @@ export default function CarouselUploadPage() {
         url: data.url,
         keywords: '', // Add keywords if applicable
         link: '', // Add link if applicable
-      }]);
-
-      setUploadSuccess(slideName);
+      }]);      setUploadSuccess(slideName);
       onUploadSuccess();
     } catch (err) {
       console.error(`Error uploading for ${slideName}:`, err);
@@ -248,17 +269,17 @@ export default function CarouselUploadPage() {
                 {renderMediaPreview(slide.name)}
               </div>
               
-              <div className="w-full md:w-auto">
-                <input
+              <div className="w-full md:w-auto">                <input
                   type="file"
-                  id={`file-${slide.name}`}
+                  id={`carousel-media-input-${slide.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  name={`carouselMedia-${slide.name.toLowerCase().replace(/\s+/g, '-')}`}
                   className="hidden"
                   accept="image/*,video/*"
                   onChange={(e) => handleFileSelect(e, slide.name)}
                   disabled={uploadingSlide === slide.name}
                 />
                 <label 
-                  htmlFor={`file-${slide.name}`}
+                  htmlFor={`carousel-media-input-${slide.name.toLowerCase().replace(/\s+/g, '-')}`}
                   className={`
                     flex items-center justify-center px-4 py-2 border border-gray-500 text-gray-600 
                     rounded-md cursor-pointer hover:bg-gray-50 transition-colors
@@ -345,7 +366,7 @@ export default function CarouselUploadPage() {
       <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-md">        <h3 className="font-medium text-gray-800 mb-2">How carousel updates work:</h3>
         <ol className="list-decimal list-inside text-gray-700 space-y-1 ml-2">
           <li>Upload your image or video for each slide</li>
-          <li>Once uploads are complete, click "Save and Update Carousel"</li>
+          <li>Once uploads are complete, click &quot;Save and Update Carousel&quot;</li>
           <li>The homepage carousel will immediately reflect your changes</li>
           <li>Changes are permanent and will be visible to all users</li>
         </ol>

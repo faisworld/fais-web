@@ -80,4 +80,17 @@ export const blogPosts: BlogPost[] = [{
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  }];
+  }
+  {
+    id: "f76578b8",
+    slug: "latest-advancements-in-large-language-models",
+    title: "Latest advancements in large language models",
+    excerpt: "In recent years, the field of artificial intelligence (AI) has witnessed remarkable advancements, particularly in the domain of large language models ...",
+    date: "June 3, 2025",
+    readTime: "5 min read",
+    category: "ai",
+    coverImage: "undefined",
+    featured: false,
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
+  },];

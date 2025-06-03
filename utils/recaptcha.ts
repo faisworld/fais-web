@@ -67,7 +67,7 @@ export function loadRecaptchaScript(
     script.defer = true
 
     script.onload = () => {
-      console.log("reCAPTCHA Enterprise script loaded successfully")
+      // reCAPTCHA Enterprise script loaded successfully
       resolve()
       onLoad?.()
     }
@@ -95,7 +95,7 @@ export function waitForRecaptchaReady(timeoutMs: number = 10000): Promise<void> 
     const checkRecaptcha = () => {
       if (window.grecaptcha?.enterprise) {
         window.grecaptcha.enterprise.ready(() => {
-          console.log("reCAPTCHA Enterprise is ready")
+          // reCAPTCHA Enterprise is ready
           resolve()
         })
         return
@@ -146,7 +146,7 @@ export async function generateRecaptchaToken(
       throw new Error("reCAPTCHA Enterprise not available")
     }
 
-    console.log(`Generating reCAPTCHA token for action: ${action}`)
+    // Generating reCAPTCHA token for action: ${action}
     
     const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_CONFIG.SITE_KEY, {
       action,
@@ -156,7 +156,7 @@ export async function generateRecaptchaToken(
       throw new Error("Failed to generate reCAPTCHA token")
     }
 
-    console.log("reCAPTCHA token generated successfully")
+    // reCAPTCHA token generated successfully
     return {
       success: true,
       token,
@@ -166,7 +166,7 @@ export async function generateRecaptchaToken(
     console.error("reCAPTCHA token generation error:", errorMessage)
 
     if (fallbackOnError) {
-      console.warn("Proceeding without reCAPTCHA token due to error")
+      // Proceeding without reCAPTCHA token due to error
       return {
         success: false,
         error: errorMessage,
@@ -240,7 +240,7 @@ export function cleanupRecaptcha(): void {
   }
   
   // Note: We don't delete window.grecaptcha as it might be used by other components
-  console.log("reCAPTCHA script cleanup completed")
+  // reCAPTCHA script cleanup completed
 }
 
 /**

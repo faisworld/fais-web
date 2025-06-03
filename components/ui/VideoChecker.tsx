@@ -42,11 +42,10 @@ export default function VideoChecker({ videoUrl, showDetails = false }: VideoChe
         const result = await checkVideoAvailability(videoUrl) as VideoCheckResult;
         setStatus({
           loading: false,
-          ...result
-        });
+          ...result        });
         
         // Log result to console for debugging
-        console.log('Video check result:', result);
+        // console.log('Video check result:', result);
       } catch (error) {
         setStatus({
           loading: false,

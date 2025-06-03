@@ -15,14 +15,14 @@ export function isClientSide(): boolean {
  */
 export function copyToClipboard(text: string): Promise<boolean> {
   if (!isClientSide() || !navigator.clipboard) {
-    console.warn('Clipboard API not available');
+    // console.warn('Clipboard API not available');
     return Promise.resolve(false);
   }
   
   return navigator.clipboard.writeText(text)
     .then(() => true)
-    .catch((err) => {
-      console.error('Failed to copy text:', err);
+    .catch(() => {
+      // console.error('Failed to copy text:', err);
       return false;
     });
 }
@@ -32,7 +32,7 @@ export function copyToClipboard(text: string): Promise<boolean> {
  */
 export function openInNewTab(url: string): boolean {
   if (!isClientSide()) {
-    console.warn('Window API not available');
+    // console.warn('Window API not available');
     return false;
   }
   
@@ -40,8 +40,8 @@ export function openInNewTab(url: string): boolean {
     const newWindow = window.open(url, '_blank');
     if (newWindow) newWindow.opener = null;
     return true;
-  } catch (err) {
-    console.error('Failed to open URL:', err);
+  } catch {
+    // console.error('Failed to open URL:', err);
     return false;
   }
 }

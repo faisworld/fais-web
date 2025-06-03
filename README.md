@@ -41,7 +41,7 @@ Welcome to the Fantastic AI Studio (FAIS) website project. This repository conta
 2. Navigate to the project directory.
 3. Install the required dependencies using `npm install` or `yarn install`.
 4. Start the development server using `npm run dev` or `yarn dev`.
-5. Open your browser and navigate to `http://localhost:3000` to access the website.
+5. Open your browser and navigate to `http://localhost:3000` (or the port shown in your terminal) to access the website.
 
 ---
 

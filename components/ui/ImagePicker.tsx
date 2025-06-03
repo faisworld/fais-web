@@ -43,14 +43,14 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
     setLoading(true)
     try {
       // Try the direct-list endpoint first, fall back to the list endpoint if that fails
-      console.log("Attempting to fetch images from direct-list endpoint...")
+      // console.log("Attempting to fetch images from direct-list endpoint...")
       let response = await fetch("/api/gallery/direct-list")
       
       if (!response.ok) {
-        console.log("Falling back to original gallery list endpoint...")
+        // console.log("Falling back to original gallery list endpoint...")
         response = await fetch("/api/gallery/list")
         if (!response.ok) {
-          console.error("Both image endpoints failed")
+          // console.error("Both image endpoints failed")
           throw new Error("Failed to fetch images from both endpoints")
         }
       }
@@ -144,7 +144,10 @@ export default function ImagePicker({ isOpen, onClose, onSelect, title = "Select
         <div className="p-4 border-b">
           <div className="flex gap-2">
             <div className="relative flex-1">
+              <label htmlFor="image-search-input" className="sr-only">Search images</label>
               <input
+                id="image-search-input"
+                name="imageSearch"
                 type="text"
                 placeholder="Search images..."
                 className="w-full px-4 py-2 pl-10 border rounded-md"

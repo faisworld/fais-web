@@ -21,7 +21,7 @@ export const SaveBlogPostParameters = z.object({
 async function saveBlogPostLogic(
   params: z.infer<typeof SaveBlogPostParameters>
 ): Promise<{ success: boolean; message: string; filePath?: string }> {
-  console.log(`Saving blog post with slug: ${params.slug}`);
+  // console.log(`Saving blog post with slug: ${params.slug}`);
   const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'content');
   const filePath = path.join(postsDirectory, `${params.slug}.md`);
 
@@ -53,7 +53,7 @@ async function saveBlogPostLogic(
     };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'An unknown error occurred';
-    console.error(`Failed to save blog post ${params.slug}:`, message);
+    // console.error(`Failed to save blog post ${params.slug}:`, message);
     return {
       success: false,
       message: `Failed to save blog post ${params.slug}: ${message}`,

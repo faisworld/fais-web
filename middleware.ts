@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname !== '/_next' && !request.nextUrl.pathname.startsWith('/_next/') && !request.nextUrl.pathname.startsWith('/api/')) {
     response.headers.set('X-Use-Correct-DOCTYPE', 'true')
   }
-  
   // Restrict access to admin routes based on host
   if (isAdminRoute) {
     const host = request.headers.get('host');
@@ -26,10 +25,8 @@ export async function middleware(request: NextRequest) {
     // On production site: Return not-found page for admin routes
     if (host === 'fais.world' || host?.endsWith('.fais.world')) {
       return NextResponse.rewrite(new URL('/non-existent-path-to-trigger-not-found', request.url));
-    }
-
-    // Allow only localhost:3000 in all environments
-    if (host !== 'localhost:3000') {
+    }    // Allow any localhost port in development environments
+    if (!host || (!host.startsWith('localhost:') && host !== 'localhost')) {
       return new NextResponse('Access Denied', { status: 403 });
     }
   }

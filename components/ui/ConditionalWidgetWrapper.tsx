@@ -8,10 +8,11 @@ export default function ConditionalWidgetWrapper({ agentId }: { agentId: string 
   
   // Check if this is the Kvitka Poloniny page
   const isKvitkaPage = pathname?.includes("/kvitka-poloniny");
-
-  // Don't render the global widget on the Kvitka page
-  if (isKvitkaPage) {
-    console.log('Skipping global widget on Kvitka Poloniny page');
+  
+  // Check if this is an admin page
+  const isAdminPage = pathname?.startsWith("/admin");
+  // Don't render the global widget on the Kvitka page or admin pages
+  if (isKvitkaPage || isAdminPage) {
     return null;
   }
 

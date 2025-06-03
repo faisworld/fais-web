@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 <Image 
   src="https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png"
-  alt="FAIS Logo"
+  alt="fAis logo"
   width={150}
   height={40}
-  style={{ height: 'auto' }}  // Maintain aspect ratio
   className="logo"
+  sizes="(max-width: 350px) 105px, (max-width: 768px) 126px, (min-width: 1200px) 154px, 150px"
 />

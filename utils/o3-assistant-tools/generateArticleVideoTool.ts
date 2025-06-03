@@ -74,7 +74,7 @@ async function generateArticleVideoLogic(
     finalPrompt = `${movementsString} ${prompt}`;
   }
   
-  console.log(`Generating video with Replicate model: ${model_identifier}, Prompt: \"${finalPrompt}\"...`);
+  // console.log(`Generating video with Replicate model: ${model_identifier}, Prompt: \"${finalPrompt}\"...`);
 
   const modelInput: VideoModelInput = {
     prompt: finalPrompt,
@@ -112,7 +112,7 @@ async function generateArticleVideoLogic(
       // if (!modelInput.duration) modelInput.duration = 6; // Default duration if not provided by user
       break;
     default:
-      console.warn(`Model ${model_identifier} not explicitly handled for custom video params. Applying general defaults.`);
+      // console.warn(`Model ${model_identifier} not explicitly handled for custom video params. Applying general defaults.`);
       if (!modelInput.aspect_ratio) modelInput.aspect_ratio = "16:9"; // General default
       break;
   }
@@ -133,9 +133,9 @@ async function generateArticleVideoLogic(
       throw new Error('Failed to generate video: Invalid response from Replicate.');
     }
 
-    console.log('Generated video URL from Replicate:', replicateVideoUrl);
+    // console.log('Generated video URL from Replicate:', replicateVideoUrl);
 
-    console.log('Downloading video from Replicate...');
+    // console.log('Downloading video from Replicate...');
     const videoResponse = await fetch(replicateVideoUrl);
     if (!videoResponse.ok) {
       throw new Error(`Failed to download video from Replicate: ${videoResponse.statusText}`);
@@ -146,7 +146,7 @@ async function generateArticleVideoLogic(
     const fileExtension = contentType.split('/')[1] || 'mp4';
     const filename = `vid-${modelNameForFile}-${safePromptPart}-${Date.now()}.${fileExtension}`;
 
-    console.log(`Uploading video to Vercel Blob as ${filename}...`);
+    // console.log(`Uploading video to Vercel Blob as ${filename}...`);
     const blobUploadResult = await uploadToBlobServer(videoBuffer, filename, contentType, {
       folder: 'article-videos', 
       prefix: modelNameForFile + '/', 
@@ -157,7 +157,7 @@ async function generateArticleVideoLogic(
       throw new Error(`Failed to upload video to Vercel Blob: ${blobUploadResult.error}`);
     }
 
-    console.log('Video uploaded to Vercel Blob:', blobUploadResult.url);
+    // console.log('Video uploaded to Vercel Blob:', blobUploadResult.url);
 
     // TODO: Implement thumbnail generation.
     // Some Replicate models might return a thumbnail, or a separate step might be needed.

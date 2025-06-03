@@ -121,10 +121,11 @@ export default function MediaUploader({
   };
 
   return (
-    <div className="w-full">
-      <div className="mb-4">
-        <label className="media-upload-label">
+    <div className="w-full">      <div className="mb-4">
+        <label htmlFor="media-upload-input" className="media-upload-label">
           <input
+            id="media-upload-input"
+            name="mediaFiles"
             ref={fileInputRef}
             type="file"
             className="media-upload-input"

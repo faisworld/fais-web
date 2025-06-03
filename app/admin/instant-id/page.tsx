@@ -101,8 +101,9 @@ export default function InstantIdPage() {
                 <FiImage size={48} className="mb-2 text-gray-400" />
                 <p className="text-gray-500">Click to upload an image</p>
               </>
-            )}
-            <input
+            )}            <input
+              id="instant-id-file-input"
+              name="sourceImage"
               type="file"
               ref={fileInputRef}
               className="hidden"
@@ -116,11 +117,12 @@ export default function InstantIdPage() {
           >
             <FiUpload /> Upload Image
           </button>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        </div>        <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Prompt</h2>
+          <label htmlFor="instant-id-prompt-textarea" className="sr-only">Describe the style, scene, or concept</label>
           <textarea
+            id="instant-id-prompt-textarea"
+            name="prompt"
             className="w-full border border-gray-300 rounded-lg p-3 mb-4 h-32"
             placeholder="Describe the style, scene, or concept (e.g., 'a cyberpunk character in a neon city')"
             value={prompt}

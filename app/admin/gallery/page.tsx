@@ -77,13 +77,12 @@ export default function AdminGalleryPage() {
         if (!response.ok) {
           throw new Error(`Error fetching images: ${response.statusText}`);
         }
-        
-        const data = await response.json();
+          const data = await response.json();
         setImages(data.images || []);
         setFolders(data.folders || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
-        console.error("Failed to fetch images:", err);
+        // Error fetching images
       } finally {
         setLoading(false);
       }
@@ -103,17 +102,13 @@ export default function AdminGalleryPage() {
       }
       
       const data = await response.json();
-      setImages(data.images || []);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-      console.error("Failed to fetch images:", err);
+      setImages(data.images || []);      setError(null);    } catch {
+      setError("An error occurred while fetching images");
+      // console.error("Failed to fetch images:", err);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleEditClick = (image: GalleryMedia) => {
+  };  const handleEditClick = (image: GalleryMedia) => {
     setSelectedImage(image);
     setEditData({
       title: image.title || "",
@@ -169,11 +164,9 @@ export default function AdminGalleryPage() {
           refreshGallery();
         }
       }
-      
-      setShowEditModal(false);
-    } catch (err) {
-      console.error("Failed to update image:", err);
-      alert(`Failed to update image: ${err instanceof Error ? err.message : "Unknown error"}`);
+        setShowEditModal(false);    } catch {
+      // console.error("Failed to update image:", err);
+      alert(`Failed to update image: Unknown error occurred`);
     }
   };
 
@@ -197,10 +190,8 @@ export default function AdminGalleryPage() {
         throw new Error(`Error deleting image: ${response.statusText}`);
       }
       
-      // Remove the image from the local state
-      setImages(images.filter(img => img.id !== imageId));
-    } catch (err) {
-      console.error("Failed to delete media:", err);
+      // Remove the image from the local state      setImages(images.filter(img => img.id !== imageId));    } catch {
+      // console.error("Failed to delete media:", err);
       alert("Failed to delete media. Please try again.");
     } finally {
       setIsDeletingImage(false);
@@ -219,11 +210,9 @@ export default function AdminGalleryPage() {
   const handleCloseImageModal = () => {
     setShowImageModal(false);
     setSelectedImage(null);
-  };
-
-  const copyToClipboard = (text: string) => {
+  };  const copyToClipboard = (text: string) => {
     if (typeof navigator === 'undefined' || !navigator.clipboard) {
-      console.warn('Clipboard API not available');
+      // console.warn('Clipboard API not available');
       return;
     }
     
@@ -232,16 +221,14 @@ export default function AdminGalleryPage() {
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
       })
-      .catch(err => {
-        console.error('Failed to copy text:', err);
+      .catch(() => {
+        // console.error('Failed to copy text:', err);
       });
-  };
-
-  const copyImageUrl = (e: React.MouseEvent, imageUrl: string, imageId: number) => {
+  };const copyImageUrl = (e: React.MouseEvent, imageUrl: string, imageId: number) => {
     e.stopPropagation(); // Prevent triggering the image click handler
     
     if (typeof navigator === 'undefined' || !navigator.clipboard) {
-      console.warn('Clipboard API not available');
+      // console.warn('Clipboard API not available');
       return;
     }
     
@@ -250,16 +237,15 @@ export default function AdminGalleryPage() {
         setCopyingImageId(imageId);
         setTimeout(() => setCopyingImageId(null), 2000);
       })
-      .catch(err => {
-        console.error('Failed to copy image URL:', err);
+      .catch(() => {
+        // console.error('Failed to copy image URL:', err);
       });
   };
-
   const openImageUrl = (e: React.MouseEvent, imageUrl: string) => {
     e.stopPropagation(); // Prevent triggering the image click handler
     
     if (typeof window === 'undefined') {
-      console.warn('Window API not available');
+      // console.warn('Window API not available');
       return;
     }
     
@@ -347,9 +333,8 @@ export default function AdminGalleryPage() {
         }
       }
       
-      alert(`Successfully initiated download of ${selectedItems.size} files. Check your downloads folder.`);
-    } catch (err) {
-      console.error("Error downloading files:", err);
+      alert(`Successfully initiated download of ${selectedItems.size} files. Check your downloads folder.`);    } catch {
+      // console.error("Error downloading files:", err);
       alert("There was an error downloading some files. Please try again.");
     } finally {
       setIsDownloading(false);
@@ -375,11 +360,9 @@ export default function AdminGalleryPage() {
       
       // Refresh gallery to show new folder
       refreshGallery();
-      setShowFolderModal(false);
-      setNewFolderName('');
-      
-    } catch (err) {
-      console.error('Error creating folder:', err);
+      setShowFolderModal(false);      setNewFolderName('');
+        } catch {
+      // console.error('Error creating folder:', err);
       alert('Failed to create folder. Please try again.');
     }
   };
@@ -405,11 +388,9 @@ export default function AdminGalleryPage() {
       // Refresh gallery after move
       refreshGallery();
       setShowMoveModal(false);
-      setMovingMedia(null);
-      setTargetFolder('');
-      
-    } catch (err) {
-      console.error('Error moving media:', err);
+      setMovingMedia(null);      setTargetFolder('');
+        } catch {
+      // console.error('Error moving media:', err);
       alert('Failed to move media. Please try again.');
     }
   };
@@ -508,9 +489,8 @@ export default function AdminGalleryPage() {
                     } else {
                       alert('Error: ' + (data.error || 'Unknown error occurred'));
                     }
-                  })
-                  .catch((err) => {
-                    console.error('Error deleting items:', err);
+                  })                  .catch(() => {
+                    // console.error('Error deleting items:', err);
                     alert('Failed to delete items. Please try again.');
                   })
                   .finally(() => {
@@ -837,10 +817,11 @@ export default function AdminGalleryPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
             <h2 className="text-xl font-bold mb-4">Create New Folder</h2>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Folder Name</label>
+              <div className="mb-4">
+              <label htmlFor="folder-name-input" className="block text-sm font-medium text-gray-700 mb-1">Folder Name</label>
               <input
+                id="folder-name-input"
+                name="folderName"
                 type="text"
                 value={newFolderName}
                 onChange={(e) => setNewFolderName(e.target.value)}
@@ -908,10 +889,11 @@ export default function AdminGalleryPage() {
                 <span className="font-medium truncate">{movingMedia.title}</span>
               </div>
             </div>
-            
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Target Folder</label>
+              <div className="mb-6">
+              <label htmlFor="target-folder-select" className="block text-sm font-medium text-gray-700 mb-1">Target Folder</label>
               <select
+                id="target-folder-select"
+                name="targetFolder"
                 value={targetFolder}
                 onChange={(e) => setTargetFolder(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -939,17 +921,16 @@ export default function AdminGalleryPage() {
             </div>
           </div>
         </div>
-      )}
-
-      {showEditModal && selectedImage && (
+      )}      {showEditModal && selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
             <h2 className="text-xl font-bold mb-4">Edit Image</h2>
             
-            <form onSubmit={handleEditSubmit}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <form onSubmit={handleEditSubmit}>              <div className="mb-4">
+                <label htmlFor="edit-title-input" className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                 <input
+                  id="edit-title-input"
+                  name="title"
                   type="text"
                   value={editData.title}
                   onChange={(e) => setEditData({...editData, title: e.target.value})}
@@ -959,18 +940,21 @@ export default function AdminGalleryPage() {
               </div>
               
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Alt Text</label>
+                <label htmlFor="edit-alt-input" className="block text-sm font-medium text-gray-700 mb-1">Alt Text</label>
                 <input
+                  id="edit-alt-input"
+                  name="altText"
                   type="text"
                   value={editData.alt}
                   onChange={(e) => setEditData({...editData, alt: e.target.value})}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
-              
-            <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Folder</label>
+                <div className="mb-4">
+                <label htmlFor="edit-folder-select" className="block text-sm font-medium text-gray-700 mb-1">Folder</label>
                 <select
+                  id="edit-folder-select"
+                  name="folder"
                   value={editData.folder}
                   onChange={(e) => setEditData({...editData, folder: e.target.value})}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -988,10 +972,11 @@ export default function AdminGalleryPage() {
                   ))}
                 </select>
               </div>
-              
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <div className="mb-6">
+                <label htmlFor="edit-description-textarea" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea
+                  id="edit-description-textarea"
+                  name="description"
                   value={editData.description}
                   onChange={(e) => setEditData({...editData, description: e.target.value})}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -1131,9 +1116,8 @@ export default function AdminGalleryPage() {
                 </div>
               </div>
             </div>
-            
-            <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex justify-end space-x-3">              <button
-                onClick={() => handleEditClick(selectedImage)}
+              <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex justify-end space-x-3">              <button
+                onClick={() => selectedImage && handleEditClick(selectedImage)}
                 className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors shadow-sm flex items-center"
               >
                 <Edit size={16} className="mr-1.5" /> Edit Details

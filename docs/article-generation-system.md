@@ -64,15 +64,20 @@ To set up automated generation (optional):
    ```env
    OPENAI_API_KEY=your_openai_key
    REPLICATE_API_TOKEN=your_replicate_token
-   INTERNAL_API_BASE_URL=https://your-site-url.com
-   INTERNAL_API_KEY=your_internal_api_key
+   # Production-specific variables
+   INTERNAL_API_KEY=your_secure_random_api_key_here
+   NODE_ENV=production
+   # Optional: Override default API endpoint (auto-detects in production)
+   INTERNAL_API_BASE_URL=https://fais.world
    ```
+
+   **Note**: For production deployment, see `docs/automated-article-system-production-setup.md` for detailed setup instructions.
 
 2. Set up a cron job to run the script at regular intervals:
 
    ```bash
-   # Run daily at 2 AM
-   0 2 * * * cd /path/to/fais-web && node scripts/automated-article-generation.mjs >> logs/article-gen.log 2>&1
+   # Run daily at 2 PM (production schedule)
+   0 14 * * * cd /path/to/fais-web && NODE_ENV=production INTERNAL_API_KEY=your_key node scripts/automated-article-generation.mjs >> logs/article-gen.log 2>&1
    ```
 
 ## Available Models for Image Generation

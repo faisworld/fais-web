@@ -82,7 +82,6 @@ export default function HomeCarousel() {
 
   const renderSlideMedia = (slide: typeof carouselItems[number], index: number) => {
     const mediaUrl = getBlobImage(slide.key)
-      // All carousel items should be videos based on our mapping
     const isVideoItem = 
       slide.key === 'pioneering-digital-transformation' ||
       slide.key === 'innovating-future' ||
@@ -116,15 +115,16 @@ export default function HomeCarousel() {
   }
 
   return (
-    <>      {/* Desktop Carousel - Full viewport coverage */}
+    <>
+      {/* Desktop Carousel - Full viewport with consistent width */}
       <div className='fixed top-0 left-0 right-0 bottom-0 w-screen h-screen overflow-hidden -z-10'>
         <section
           className='w-full h-full relative'
           aria-roledescription='carousel'
           aria-label='Featured projects and services'
         >
-          {/* Video/Image Container - Full coverage to prevent black stripes */}
-          <div className='absolute inset-0 w-full h-full overflow-hidden'>
+          {/* Video/Image Container - Prevent layout shift with fixed dimensions */}
+          <div className='absolute inset-0 w-full h-full overflow-hidden bg-black'>
             {carouselItems.map((item, index) => (
               <div
                 key={item.key}
@@ -143,9 +143,8 @@ export default function HomeCarousel() {
             ))}
           </div>
             
-          {/* Navigation Arrows - Symmetrically positioned at left-6 and right-6 */}
+          {/* Navigation Arrows - Match header padding for consistency */}
           <div className='absolute inset-0 pointer-events-none z-30'>
-            {/* Left Arrow */}
             <button 
               onClick={goToPrevSlide}
               className='absolute left-6 top-1/2 -translate-y-1/2 pointer-events-auto p-3 md:p-4 rounded-full bg-black/30 hover:bg-black/50 text-white/80 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm border border-white/20'
@@ -156,7 +155,6 @@ export default function HomeCarousel() {
               </svg>
             </button>
             
-            {/* Right Arrow - Matching left positioning for symmetry */}
             <button 
               onClick={goToNextSlide}
               className='absolute right-6 top-1/2 -translate-y-1/2 pointer-events-auto p-3 md:p-4 rounded-full bg-black/30 hover:bg-black/50 text-white/80 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm border border-white/20'
@@ -168,10 +166,10 @@ export default function HomeCarousel() {
             </button>
           </div>
 
-          {/* Content Overlay */}
+          {/* Content Overlay - Match header padding */}
           {currentItem && (
             <div className='absolute inset-0 flex items-center justify-center z-20 pointer-events-none pt-20'>
-              <div className='container mx-auto px-4 flex justify-center'>
+              <div className='w-full px-6 flex justify-center'>
                 <div className='max-w-3xl text-white bg-black/40 p-8 rounded-lg backdrop-blur-sm shadow-xl pointer-events-auto border border-white/10'>
                   <h1 className='text-4xl md:text-5xl font-bold mb-4 text-center lowercase'>
                     {currentItem.title.toLowerCase()}
@@ -192,7 +190,7 @@ export default function HomeCarousel() {
             </div>
           )}
           
-          {/* Slide indicators - Enhanced positioning and styling */}
+          {/* Slide indicators */}
           <div className='absolute bottom-8 left-0 right-0 z-30 flex justify-center gap-3'>
             {carouselItems.map((_, index) => (
               <button

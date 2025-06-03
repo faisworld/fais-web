@@ -131,19 +131,19 @@ img.logo {
   height: auto;
 }
 
-/* Header logo - slightly larger */
-.header-logo {
-  height: 36px !important; /* Force height with !important */
-  width: auto !important; /* Force width auto with !important */
+/* Header logo - responsive sizing */
+.header-logo img {
+  height: 36px !important;
+  width: auto !important;
   display: inline-block;
   margin-left: 0;
 }
 
-/* Footer logo - slightly smaller */
+/* Footer logo - responsive sizing */
 .footer-logo {
-  height: 34px !important; /* Force height with !important */
-  width: auto !important; /* Force width auto with !important */
-  display: inline-block;
+  height: 34px;
+  width: auto;
+  display: inline-block;  
   margin-left: 0;
 }
 
@@ -155,7 +155,7 @@ img.logo {
 
 /* For extremely small screens, reduce logo size */
 @media (max-width: 350px) {
-  .header-logo,
+  .header-logo img,
   .footer-logo {
     height: 30px !important;
     width: auto !important;
@@ -164,11 +164,11 @@ img.logo {
 
 /* For larger screens, you can increase the logo size if desired */
 @media (min-width: 1200px) {
-  .header-logo {
+  .header-logo img {
     height: 44px !important;
   }
     .footer-logo {
-    height: 40px !important;
+    height: 40px;
   }
 }
 
@@ -226,6 +226,9 @@ section[aria-roledescription="carousel"] {
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #222;
   z-index: 50;
+  /* Ensure consistent height to prevent layout shift */
+  height: 80px;
+  min-height: 80px;
 }
 
 .site-footer {
@@ -903,4 +906,22 @@ a:hover {
       inset 0 0 0 1px rgba(255, 255, 255, 0.3),
       0 0 20px rgba(66, 153, 225, 0.3);
   }
+}
+
+/* Ensure carousel and header use consistent full-width approach */
+.carousel-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Prevent layout shift with fixed dimensions */
+.carousel-media-container {
+  width: 100%;
+  height: 100%;
+  background-color: #000; /* Fallback color to prevent flash */
 }

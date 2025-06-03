@@ -20,7 +20,7 @@ export default function VideoDebugger() {
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Video Debugger</h1>
       
-      {videos.map((video, index) => (
+      {videos.map((video) => (
         <div key={video.name} className="mb-8 p-4 border rounded-lg bg-white">
           <h2 className="text-lg font-semibold mb-4">{video.name}</h2>
           
@@ -28,16 +28,14 @@ export default function VideoDebugger() {
             <p className="text-sm text-gray-600 mb-2">URL: {video.url}</p>
           </div>
           
-          <div className="w-full max-w-md h-48 bg-black rounded-lg overflow-hidden">
-            <video
+          <div className="w-full max-w-md h-48 bg-black rounded-lg overflow-hidden">            <video
               src={video.url}
               className="w-full h-full object-cover"
               controls
               muted
-              preload="metadata"
-              onLoadStart={() => console.log(`${video.name}: Load started`)}
-              onLoadedData={() => console.log(`${video.name}: Data loaded`)}
-              onError={(e) => console.error(`${video.name}: Error`, e)}
+              preload="metadata"              onLoadStart={() => {/* console.log(`${video.name}: Load started`) */}}
+              onLoadedData={() => {/* console.log(`${video.name}: Data loaded`) */}}
+              onError={() => {/* console.error(`${video.name}: Error`, e) */}}
             />
           </div>
         </div>

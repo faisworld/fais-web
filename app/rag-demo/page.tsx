@@ -35,13 +35,13 @@ export default function RAGDemo() {
           Ask questions about Fantastic AI Studio and our services. This version uses RAG (Retrieval Augmented Generation) to provide more accurate answers.
         </p>
         
-        <div className="flex flex-col md:flex-row gap-4 mb-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-          <div className="flex items-center gap-2">
-            <label htmlFor="topk" className="text-sm font-medium whitespace-nowrap">
+        <div className="flex flex-col md:flex-row gap-4 mb-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">          <div className="flex items-center gap-2">
+            <label htmlFor="rag-topk-select" className="text-sm font-medium whitespace-nowrap">
               Results to retrieve:
             </label>
             <select 
-              id="topk" 
+              id="rag-topk-select"
+              name="ragTopK"
               value={topK} 
               onChange={(e) => setTopK(parseInt(e.target.value))}
               className="p-2 rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-700 text-sm"
@@ -51,12 +51,12 @@ export default function RAGDemo() {
               ))}
             </select>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <label htmlFor="blog-filter" className="text-sm font-medium">
+            <div className="flex items-center gap-2">
+            <label htmlFor="rag-blog-filter" className="text-sm font-medium">
               <input
                 type="checkbox"
-                id="blog-filter"
+                id="rag-blog-filter"
+                name="ragBlogFilter"
                 checked={filterBlogOnly}
                 onChange={(e) => setFilterBlogOnly(e.target.checked)}
                 className="mr-2"
@@ -128,11 +128,11 @@ export default function RAGDemo() {
             </div>
           </div>
         )}
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      </div>      <form onSubmit={handleSubmit} className="flex gap-2">
         <input
           type="text"
+          id="rag-chat-input"
+          name="ragChatMessage"
           value={input}
           onChange={handleInputChange}
           placeholder="Ask a question about FAIS..."

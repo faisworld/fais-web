@@ -30,8 +30,8 @@ export default function QuoteSection() {
             <div className="relative w-48 h-48 mx-auto mb-4">
               <div className="absolute inset-0 rounded-full border-4 border-gray-200 shadow-lg"></div>
               <Image
-                src="https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/fais-ceo-Eugene-Lukyanov-qyYzZG41iWLwtsiAgqM8MKitVwupgn.jpg"
-                alt="CEO and Founder of Fantastic AI Studio, Eugene Lukyanov"
+                src="https://mzcje1drftvqhdku.public.blob.vercel-storage.com/instant-id/generated-1748571756551-instantid-1748571756550.webp"
+                alt="CEO and Founder of Fantastic AI Studio, Yevhen Lukyanov"
                 fill
                 style={{ objectFit: "cover" }}
                 className="rounded-full"
@@ -39,9 +39,9 @@ export default function QuoteSection() {
                 priority
               />
             </div>
-            <p className="text-sm mt-2 font-semibold text-gray-800">eugene lukyanov</p>
-            <p className="text-xs italic text-gray-500">ceo and founder of fantastic ai studio</p>
-
+            <p className="text-sm mt-2 font-semibold text-gray-800">Yevhen Lukyanov</p>
+            <p className="text-sm italic text-gray-500">ceo and founder of fantastic ai studio</p>
+            <p className="text-xs italic text-gray-300">*original <a href="https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/fais-ceo-Eugene-Lukyanov-qyYzZG41iWLwtsiAgqM8MKitVwupgn.jpg" target="_blank" rel="noopener noreferrer" className="text-xs italic text-gray-300">image</a> reimagined using instant-id ai tool</p>
             <div className="mt-6 max-w-lg mx-auto">
               <p className="text-base text-gray-700">
                 fantastic AI studio is the premier choice for enterprises seeking to enhance their operations with the

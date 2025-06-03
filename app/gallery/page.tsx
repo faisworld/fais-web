@@ -217,14 +217,14 @@ export default function GalleryPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-full relative">
-                    <Image
+                  <div className="w-full h-full relative">                    <Image
                       src={item.url}
                       alt={item.title || "Gallery image"}
                       fill
                       className="object-cover hover:scale-105 transition-transform duration-300"
                       unoptimized={isGif(item.url)}
                       loading={isGif(item.url) ? "eager" : "lazy"}
+                      priority={filteredImages.indexOf(item) < 4}
                       onError={handleImageError}
                     />
                   </div>

@@ -19,7 +19,7 @@ export const ReadInternalBlogPostParameters = z.object({
 });
 
 async function readInternalBlogPostLogic(slug: string): Promise<BlogPost> {
-  console.log(`Reading internal blog post with slug: ${slug}`);
+  // console.log(`Reading internal blog post with slug: ${slug}`);
   const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'content');
   const potentialFilePaths = [
     path.join(postsDirectory, `${slug}.md`),

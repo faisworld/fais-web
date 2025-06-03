@@ -6,12 +6,8 @@ export default async function GalleryImageEditPage({ params }: { params: { id: s
   const id = params.id
 
   try {
-    // Use the absolute URL to avoid URL parsing issues
-    const protocol = process.env.NODE_ENV === "development" ? "http" : "https"
-    const host = process.env.NEXT_PUBLIC_APP_URL || (process.env.NODE_ENV === "development" ? "localhost:3000" : "")
-
-    // Construct a valid URL ensuring no double slashes
-    const apiUrl = `${protocol}://${host.replace(/^https?:\/\//, "")}/api/gallery/images?id=${encodeURIComponent(id)}`
+    // Use relative URL for same-origin requests to avoid port issues
+    const apiUrl = `/api/gallery/images?id=${encodeURIComponent(id)}`
 
     console.log(`Fetching image with ID ${id} from: ${apiUrl}`)
 

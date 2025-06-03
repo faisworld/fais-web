@@ -113,10 +113,11 @@ export default function ArticleGenerationPage() {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Generation Controls</h2>
           
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Topic/Title</label>
+          <div className="space-y-6">            <div>
+              <label htmlFor="topic-input" className="block text-sm font-medium text-gray-700 mb-1">Topic/Title</label>
               <input
+                id="topic-input"
+                name="topic"
                 type="text" 
                 className="w-full border border-gray-300 rounded-md py-2 px-3"
                 value={topic}
@@ -126,8 +127,10 @@ export default function ArticleGenerationPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Keywords (comma-separated)</label>
+              <label htmlFor="keywords-input" className="block text-sm font-medium text-gray-700 mb-1">Keywords (comma-separated)</label>
               <input
+                id="keywords-input"
+                name="keywords"
                 type="text" 
                 className="w-full border border-gray-300 rounded-md py-2 px-3"
                 value={keywords}
@@ -137,8 +140,10 @@ export default function ArticleGenerationPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tone</label>
+              <label htmlFor="tone-select" className="block text-sm font-medium text-gray-700 mb-1">Tone</label>
               <select 
+                id="tone-select"
+                name="tone"
                 className="w-full border border-gray-300 rounded-md py-2 px-3"
                 value={selectedTone}
                 onChange={(e) => setSelectedTone(e.target.value)}
@@ -147,14 +152,14 @@ export default function ArticleGenerationPage() {
                   <option key={tone} value={tone}>{tone.charAt(0).toUpperCase() + tone.slice(1)}</option>
                 ))}
               </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+            </div>            <div>
+              <label htmlFor="word-count-range" className="block text-sm font-medium text-gray-700 mb-1">
                 Word Count (approx.)
               </label>
               <div className="flex items-center">
                 <input 
+                  id="word-count-range"
+                  name="wordCount"
                   type="range" 
                   min="300" 
                   max="2000" 
@@ -169,13 +174,14 @@ export default function ArticleGenerationPage() {
 
             <div className="flex items-center">
               <input 
+                id="include-image-checkbox"
+                name="includeImage"
                 type="checkbox" 
-                id="includeImage"
                 checked={includeImage}
                 onChange={(e) => setIncludeImage(e.target.checked)}
                 className="h-4 w-4 text-gray-600 rounded"
               />
-              <label htmlFor="includeImage" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="include-image-checkbox" className="ml-2 text-sm text-gray-700">
                 Generate and include a featured image
               </label>
             </div>

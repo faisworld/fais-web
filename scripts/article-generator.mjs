@@ -7,11 +7,6 @@ import fetch from 'node-fetch';
 import { createHash } from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-// Get the directory name using ESM compatible approach
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Local fetch wrapper for accessing the article generation API
 async function generateArticle(topic, keywords = [], tone = 'informative', wordCount = 800) {
@@ -20,24 +15,40 @@ async function generateArticle(topic, keywords = [], tone = 'informative', wordC
   }
 
   console.log(`Generating article on: "${topic}" with keywords: ${keywords.join(', ')}`);
-
-  try {
-    // Internal API URL
-    const apiUrl = process.env.INTERNAL_API_BASE_URL || 'http://localhost:3000';
+  try {    
+    // Determine the API URL based on environment
+    let apiUrl;
+    if (process.env.INTERNAL_API_BASE_URL) {
+      apiUrl = process.env.INTERNAL_API_BASE_URL;
+    } else if (process.env.NODE_ENV === 'production') {
+      apiUrl = 'https://fais.world';
+    } else {
+      apiUrl = 'http://localhost:3000';
+    }
+    
     const articleApiEndpoint = `${apiUrl}/api/admin/ai-tools/generate-article`;
 
     // Generate a timestamp-based ID for this article
     const timestamp = Date.now();
     const uniqueId = createHash('md5').update(`${topic}-${timestamp}`).digest('hex').substring(0, 8);
     
+    // Prepare headers with authentication
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    
+    // Add internal API key if available (for production automated scripts)
+    const internalApiKey = process.env.INTERNAL_API_KEY;
+    if (internalApiKey) {
+      headers['Authorization'] = `Bearer ${internalApiKey}`;
+    }
+    
+    console.log(`Making request to: ${articleApiEndpoint}`);
+    
     // Call the internal API
     const response = await fetch(articleApiEndpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // Add authentication if required by your API
-        'Authorization': `Bearer ${process.env.INTERNAL_API_KEY || 'local-development-key'}`
-      },
+      headers,
       body: JSON.stringify({
         topic,
         keywords,

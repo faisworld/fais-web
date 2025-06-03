@@ -267,11 +267,12 @@ export default function VideoGenerationPage() {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-6">Generation Controls</h2>
           
-          <div className="space-y-6">
-            {/* AI Model Select */}
+          <div className="space-y-6">            {/* AI Model Select */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">AI Model</label>
+              <label htmlFor="video-model-select" className="block text-sm font-medium text-gray-700 mb-1">AI Model</label>
               <select 
+                id="video-model-select"
+                name="videoModel"
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
@@ -280,23 +281,23 @@ export default function VideoGenerationPage() {
                   <option key={model.id} value={model.id}>{model.name}</option>
                 ))}
               </select>
-            </div>
-
-            {/* Prompt Input */}
+            </div>            {/* Prompt Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Prompt</label>
+              <label htmlFor="video-prompt-textarea" className="block text-sm font-medium text-gray-700 mb-1">Prompt</label>
               <textarea 
+                id="video-prompt-textarea"
+                name="prompt"
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3 min-h-[120px]"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Describe the video you want to generate..."
               />
-            </div>
-
-            {/* Negative Prompt Input */}
+            </div>            {/* Negative Prompt Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Negative Prompt</label>
+              <label htmlFor="video-negative-prompt-textarea" className="block text-sm font-medium text-gray-700 mb-1">Negative Prompt</label>
               <textarea 
+                id="video-negative-prompt-textarea"
+                name="negativePrompt"
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3 min-h-[80px]"
                 value={negativePrompt}
                 onChange={(e) => setNegativePrompt(e.target.value)}
@@ -304,13 +305,15 @@ export default function VideoGenerationPage() {
               />
             </div>            {/* Duration Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="video-duration-input" className="block text-sm font-medium text-gray-700 mb-1">
                 Duration (seconds)
                 {selectedModel === MODEL_ID_GOOGLE_VEO_2 && (
                   <span className="text-xs text-gray-500 ml-1">(5-8 seconds for Veo 2)</span>
                 )}
               </label>
               <input 
+                id="video-duration-input"
+                name="duration"
                 type="number" 
                 className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                 value={durationSeconds}
@@ -357,8 +360,10 @@ export default function VideoGenerationPage() {
             </div>            {/* Camera Movements Input */}
             {selectedModel === MODEL_ID_MINIMAX_VIDEO_01_DIRECTOR && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Camera Movements</label>
+                <label htmlFor="camera-movements-input" className="block text-sm font-medium text-gray-700 mb-1">Camera Movements</label>
                 <input 
+                  id="camera-movements-input"
+                  name="cameraMovements"
                   type="text" 
                   className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                   value={cameraMovements}
@@ -367,13 +372,13 @@ export default function VideoGenerationPage() {
                 />
                 <p className="text-xs text-gray-500 mt-1">Comma-separated camera movements (up to 3)</p>
               </div>
-            )}
-
-            {/* Reference Image URL Input */}
+            )}            {/* Reference Image URL Input */}
             {selectedModel === MODEL_ID_MINIMAX_VIDEO_01 && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Reference Image URL</label>
+                <label htmlFor="reference-image-url-input" className="block text-sm font-medium text-gray-700 mb-1">Reference Image URL</label>
                 <input 
+                  id="reference-image-url-input"
+                  name="referenceImageUrl"
                   type="url" 
                   className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                   value={referenceImageUrl}
@@ -386,22 +391,24 @@ export default function VideoGenerationPage() {
 
             {/* Google Veo 2 specific controls */}
             {selectedModel === MODEL_ID_GOOGLE_VEO_2 && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Seed</label>
+              <>                <div>
+                  <label htmlFor="seed-input" className="block text-sm font-medium text-gray-700 mb-1">Seed</label>
                   <input 
+                    id="seed-input"
+                    name="seed"
                     type="number" 
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={seed}
                     onChange={(e) => setSeed(e.target.value)}
                     placeholder="Leave empty for random seed"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Optional: Set seed for reproducible results</p>
+                  />                  <p className="text-xs text-gray-500 mt-1">Optional: Set seed for reproducible results</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">First Frame Image URL</label>
+                  <label htmlFor="first-frame-image-veo-input" className="block text-sm font-medium text-gray-700 mb-1">First Frame Image URL</label>
                   <input 
+                    id="first-frame-image-veo-input"
+                    name="firstFrameImageVeo"
                     type="url" 
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={firstFrameImage}
@@ -415,10 +422,11 @@ export default function VideoGenerationPage() {
 
             {/* Minimax models specific controls */}
             {(selectedModel === MODEL_ID_MINIMAX_VIDEO_01_DIRECTOR || selectedModel === MODEL_ID_MINIMAX_VIDEO_01) && (
-              <>
-                <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+              <>                <div>
+                  <label htmlFor="prompt-optimizer-checkbox" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
                     <input
+                      id="prompt-optimizer-checkbox"
+                      name="promptOptimizer"
                       type="checkbox"
                       checked={promptOptimizer}
                       onChange={(e) => setPromptOptimizer(e.target.checked)}
@@ -430,8 +438,10 @@ export default function VideoGenerationPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">First Frame Image URL</label>
+                  <label htmlFor="first-frame-image-minimax-input" className="block text-sm font-medium text-gray-700 mb-1">First Frame Image URL</label>
                   <input 
+                    id="first-frame-image-minimax-input"
+                    name="firstFrameImageMinimax"
                     type="url" 
                     className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                     value={firstFrameImage}
@@ -439,12 +449,12 @@ export default function VideoGenerationPage() {
                     placeholder="https://example.com/first-frame.jpg"
                   />
                   <p className="text-xs text-gray-500 mt-1">Optional: URL of image to use as first frame</p>
-                </div>
-
-                {selectedModel === MODEL_ID_MINIMAX_VIDEO_01 && (
+                </div>                {selectedModel === MODEL_ID_MINIMAX_VIDEO_01 && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Subject Reference Image URL</label>
+                    <label htmlFor="subject-reference-image-input" className="block text-sm font-medium text-gray-700 mb-1">Subject Reference Image URL</label>
                     <input 
+                      id="subject-reference-image-input"
+                      name="subjectReferenceImage"
                       type="url" 
                       className="w-full border border-gray-300 rounded-lg py-2.5 px-3"
                       value={subjectReference}

@@ -76,7 +76,7 @@ export async function verifyRecaptchaToken(
       parent: projectPath,
     }
 
-    console.log("Creating reCAPTCHA assessment...")
+    // console.log("Creating reCAPTCHA assessment...")
 
     // Create the assessment with timeout
     const timeoutPromise = new Promise<never>((_, reject) => {
@@ -93,7 +93,7 @@ export async function verifyRecaptchaToken(
     const riskAnalysis = response?.riskAnalysis    // Check if the token is valid
     if (!tokenProperties?.valid) {
       const reason = String(tokenProperties?.invalidReason || "Unknown reason")
-      console.log(`reCAPTCHA token validation failed: ${reason}`)
+      // console.log(`reCAPTCHA token validation failed: ${reason}`)
       return {
         valid: false,
         score: 0,
@@ -107,7 +107,7 @@ export async function verifyRecaptchaToken(
     }    // Check if the expected action was executed
     if (expectedAction && tokenProperties.action !== expectedAction) {
       const actualAction = tokenProperties.action || "unknown"
-      console.log(`reCAPTCHA action mismatch: expected ${expectedAction}, got ${actualAction}`)
+      // console.log(`reCAPTCHA action mismatch: expected ${expectedAction}, got ${actualAction}`)
       return {
         valid: false,
         score: 0,
@@ -122,7 +122,7 @@ export async function verifyRecaptchaToken(
 
     // Check hostname if specified
     if (expectedHostname && tokenProperties.hostname !== expectedHostname) {
-      console.log(`reCAPTCHA hostname mismatch: expected ${expectedHostname}, got ${tokenProperties.hostname}`)
+      // console.log(`reCAPTCHA hostname mismatch: expected ${expectedHostname}, got ${tokenProperties.hostname}`)
       return {
         valid: false,
         score: 0,
@@ -137,18 +137,18 @@ export async function verifyRecaptchaToken(
 
     // Get the risk score
     const score = riskAnalysis?.score || 0
-    console.log(`reCAPTCHA assessment complete - Score: ${score}, Action: ${tokenProperties.action}`)
+    // console.log(`reCAPTCHA assessment complete - Score: ${score}, Action: ${tokenProperties.action}`)
 
     // Log any risk reasons
     const reasons = riskAnalysis?.reasons
     if (reasons && reasons.length > 0) {
-      console.log("Risk analysis reasons:", reasons)
+      // console.log("Risk analysis reasons:", reasons)
     }
 
     // Check if score meets minimum threshold
     const meetsThreshold = score >= minimumScore
     if (!meetsThreshold) {
-      console.warn(`reCAPTCHA score ${score} below threshold ${minimumScore}`)
+      // console.warn(`reCAPTCHA score ${score} below threshold ${minimumScore}`)
     }    return {
       valid: meetsThreshold,
       score,
@@ -161,7 +161,7 @@ export async function verifyRecaptchaToken(
     }
 
   } catch (error) {
-    console.error("Error verifying reCAPTCHA token:", error)
+    // console.error("Error verifying reCAPTCHA token:", error)
     
     // Determine if this is a network/timeout error or validation error
     const errorMessage = error instanceof Error ? error.message : "Unknown error"
@@ -204,14 +204,13 @@ export async function verifyRecaptchaTokenEnhanced(
   const userAgentValid = validateUserAgent(userAgent)
   
   const enhancedValid = baseResult.valid && ipValid && userAgentValid
-  
-  if (!enhancedValid && baseResult.valid) {
-    console.warn("reCAPTCHA token valid but failed enhanced checks", {
-      ipValid,
-      userAgentValid,
-      clientIp: clientIp.substring(0, 8) + "...", // Log partial IP for privacy
-      userAgent: userAgent.substring(0, 50) + "...", // Log partial UA for privacy
-    })
+    if (!enhancedValid && baseResult.valid) {
+    // console.warn("reCAPTCHA token valid but failed enhanced checks", {
+    //   ipValid,
+    //   userAgentValid,
+    //   clientIp: clientIp.substring(0, 8) + "...", // Log partial IP for privacy
+    //   userAgent: userAgent.substring(0, 50) + "...", // Log partial UA for privacy
+    // })
   }
   
   return {
@@ -293,7 +292,7 @@ export function validateServerRecaptchaConfig(): boolean {
   )
 
   if (missingVars.length > 0) {
-    console.error("Missing reCAPTCHA server environment variables:", missingVars)
+    // console.error("Missing reCAPTCHA server environment variables:", missingVars)
     return false
   }
 
