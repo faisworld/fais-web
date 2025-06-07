@@ -124,8 +124,7 @@ export default function HomeCarousel() {
           aria-label='Featured projects and services'
         >
           {/* Video/Image Container - Prevent layout shift with fixed dimensions */}
-          <div className='absolute inset-0 w-full h-full overflow-hidden bg-black'>
-            {carouselItems.map((item, index) => (
+          <div className='absolute inset-0 w-full h-full overflow-hidden bg-black'>            {carouselItems.map((item, index) => (
               <div
                 key={item.key}
                 className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
@@ -135,6 +134,10 @@ export default function HomeCarousel() {
                 role='group'
                 aria-roledescription='slide'
                 aria-label={`Slide ${index + 1} of ${carouselItems.length}: ${item.title}`}
+                style={{ 
+                  // When aria-hidden is true, also hide from tab navigation
+                  visibility: index === activeIndex ? 'visible' : 'hidden' 
+                }}
               >
                 <div className='absolute inset-0 w-full h-full'>
                   {renderSlideMedia(item, index)}

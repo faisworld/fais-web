@@ -151,20 +151,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     sameAs: [
       process.env.NEXT_PUBLIC_TWITTER_URL || 'https://x.com/faisworld',
       process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com/company/faistudio/'
-    ],
-    offers: {
+    ],    offers: {
       '@type': 'Offer',
       description: 'Enterprise AI and Blockchain Development Services',
       areaServed: ['US', 'UK', 'DE'],
       availabilityStarts: '2020-01-01'
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '150',
-      bestRating: '5',
-      worstRating: '1'
     }
+    // Removed aggregateRating - only add when you have actual review markup on pages
   };
 
   return (
