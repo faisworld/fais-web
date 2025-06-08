@@ -1,5 +1,5 @@
 ---
-title: "Latest Advancements in Large Language Models"
+title: "Latest Advancements in Large Language Models 2025"
 date: "2025-06-03"
 author: "Fantastic AI"
 category: "ai"

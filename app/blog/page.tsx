@@ -16,15 +16,20 @@ export default function BlogPage() {
   useEffect(() => {
     setIsClient(true)
   }, [])
-
-  // Filter posts based on category and search query
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesCategory = filter === "all" || post.category === filter
-    const matchesSearch = searchQuery === "" || 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
+  // Filter posts based on category and search query, then sort by date (newest first)
+  const filteredPosts = blogPosts
+    .filter(post => {
+      const matchesCategory = filter === "all" || post.category === filter
+      const matchesSearch = searchQuery === "" || 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesCategory && matchesSearch
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.date)
+      const dateB = new Date(b.date)
+      return dateB.getTime() - dateA.getTime() // Newest first
+    })
 
   // Get featured posts
   const featuredPosts = blogPosts.filter(post => post.featured)
