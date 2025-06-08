@@ -268,9 +268,8 @@ export const maintenanceDB = {
     recommendations: Array<Record<string, unknown>>,
     rawAnalysis: string,
     metadata: Record<string, unknown> = {}
-  ): Promise<number> {
-    const result = await db.query(
-      `INSERT INTO website_analysis 
+  ): Promise<number> {    const result = await db.query(
+      `INSERT INTO website_analysis_results 
        (job_execution_id, url, analysis_type, score, issues, recommendations, raw_analysis, metadata) 
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
       [
@@ -301,9 +300,8 @@ export const maintenanceDB = {
     technicalIssues: Array<Record<string, unknown>>,
     schemaRecommendations: Record<string, unknown>,
     score: number
-  ): Promise<number> {
-    const result = await db.query(
-      `INSERT INTO seo_analysis 
+  ): Promise<number> {    const result = await db.query(
+      `INSERT INTO seo_analysis_results 
        (job_execution_id, url, current_title, current_description, current_keywords, 
         recommended_title, recommended_description, recommended_keywords, 
         competitor_analysis, keyword_gaps, technical_issues, schema_recommendations, score) 
@@ -380,12 +378,11 @@ export const maintenanceDB = {
     const result = await db.query(query, params);
     return result.rows;
   },
-
   async getLatestAnalysisResults(limit: number = 10): Promise<Array<Record<string, unknown>>> {
     const result = await db.query(
-      `SELECT 'website' as type, url, score, created_at FROM website_analysis 
+      `SELECT 'website' as type, url, score, created_at FROM website_analysis_results 
        UNION ALL 
-       SELECT 'seo' as type, url, score, created_at FROM seo_analysis 
+       SELECT 'seo' as type, url, score, created_at FROM seo_analysis_results 
        ORDER BY created_at DESC LIMIT $1`,
       [limit]
     );

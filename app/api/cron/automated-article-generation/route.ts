@@ -5,15 +5,24 @@ import path from 'path';
 
 const execAsync = promisify(exec);
 
-export async function GET(request: NextRequest) {
+function isValidCronRequest(request: NextRequest): boolean {
+  const authHeader = request.headers.get('authorization')
+  const internalApiKey = process.env.INTERNAL_API_KEY
+  
+  if (!internalApiKey) {
+    console.error('INTERNAL_API_KEY environment variable is not set')
+    return false
+  }
+  
+  return authHeader === `Bearer ${internalApiKey}`
+}
+
+export async function POST(request: NextRequest) {
   try {
-    // Verify cron secret for security
-    const { searchParams } = new URL(request.url);
-    const cronSecret = searchParams.get('cron_secret');
-    const expectedSecret = process.env.CRON_SECRET || 'aQ7zL9kR3!xW1mP8*oN5bC2jH4fG0eD6uT9yI';
-    
-    if (cronSecret !== expectedSecret) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Validate cron request
+    if (!isValidCronRequest(request)) {
+      console.error('❌ Unauthorized article generation request')
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     console.log('Starting automated article generation via cron...');

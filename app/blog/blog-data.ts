@@ -20,7 +20,32 @@ export interface BlogPost {
  * This will create articles with proper AI-generated images that are relevant
  * to the content and automatically upload them to the blob storage.
  */
-export const blogPosts: BlogPost[] = [{
+export const blogPosts: BlogPost[] = [
+  {
+    id: "40e49042",
+    slug: "smart-contracts-in-real-estate",
+    title: "Smart contracts in real estate",
+    excerpt: "In recent years, the real estate industry has witnessed a technological revolution, with blockchain technology and smart contracts at the forefront of...",
+    date: "June 8, 2025",
+    readTime: "4 min read",
+    category: "ai",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    featured: false,
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
+  },{
+    id: "94ff4f62",
+    slug: "decentralized-finance-defi-latest-developments",
+    title: "Decentralized finance (DeFi) latest developments",
+    excerpt: "Decentralized finance, commonly known as DeFi, has been a transformative force in the financial sector, offering a decentralized alternative to tradit...",
+    date: "June 8, 2025",
+    readTime: "4 min read",
+    category: "blockchain",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    featured: false,
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
+  },{
     id: "swtx4g9l",
     slug: "decentralized-finance-defi-latest-developments-and-innovations",
     title: "Decentralized Finance (DeFi): Latest Developments and Innovations",
@@ -69,6 +94,18 @@ export const blogPosts: BlogPost[] = [{
     author: "Fantastic AI",
     authorImage: "author-fantastic"
   },{
+    id: "q5r7t2w9",
+    slug: "latest-advancements-in-large-language-models-2025",
+    title: "Latest Advancements in Large Language Models 2025",
+    excerpt: "In recent years, the field of artificial intelligence (AI) has witnessed remarkable advancements, particularly in the domain of large language models. Explore the latest developments shaping the future of AI.",
+    date: "June 3, 2025",
+    readTime: "5 min read",
+    category: "ai",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/e01e3be4-5e49-4d94-a14c-7cb385636ff7.png",
+    featured: false,
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
+  },{
     id: "j10k9ag6",
     slug: "the-future-of-quantum-computing-in-ai",
     title: "The Future of Quantum Computing in AI",
@@ -99,24 +136,11 @@ export const blogPosts: BlogPost[] = [{
     slug: "how-optimism-layer-2-can-transform-your-business",
     title: "How Optimism Layer 2 Can Transform Your Business",
     excerpt: "Discover how Optimism Layer 2 technology can reduce costs, improve scalability, and accelerate your business operations on the Ethereum blockchain.",
-    date: "June 8, 2025",
+    date: "June 1, 2025",
     readTime: "3 min read",
     category: "blockchain",
     coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1749362733689-temp-image2.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  },
-  {
-    id: "q5r7t2w9",
-    slug: "latest-advancements-in-large-language-models-2025",
-    title: "Latest Advancements in Large Language Models 2025",
-    excerpt: "In recent years, the field of artificial intelligence (AI) has witnessed remarkable advancements, particularly in the domain of large language models. Explore the latest developments shaping the future of AI.",
-    date: "June 3, 2025",
-    readTime: "5 min read",
-    category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/e01e3be4-5e49-4d94-a14c-7cb385636ff7.png",
-    featured: false,
-    author: "Fantastic AI",
-    authorImage: "author-fantastic"
-  },];
+  }];

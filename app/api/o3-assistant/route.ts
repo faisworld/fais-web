@@ -1,6 +1,7 @@
 import { streamText, tool } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai'; // Correct import for Vercel AI SDK v3
 import { z, ZodType } from 'zod'; // For schema validation
+import { getAssistantConfig, getProviderOptions } from '@/lib/ai-config';
 
 // Import refactored tools
 import { crawlWebsiteTool } from '../../../utils/o3-assistant-tools/crawlWebsiteTool';
@@ -49,11 +50,20 @@ async function createLinkedInArticle(title: string, articleContent: string, visi
 export async function POST(req: Request) {
   try {
     const { messages, toolChoice } = await req.json();
-
+    
+    // Get AI configuration for complex multi-tool scenarios
+    const aiConfig = getAssistantConfig();
+    const providerOptions = getProviderOptions(aiConfig);
+    
+    // Fallback to gpt-4o if o3-mini is not available
+    const model = aiConfig.model === 'o3-mini' ? 'gpt-4o' : aiConfig.model;
+    
     const result = await streamText({
-      model: vercelOpenai('gpt-4o'),
+      model: vercelOpenai(model),
       messages,
       toolChoice,
+      // Only include provider options for o3-mini models
+      ...(aiConfig.model === 'o3-mini' ? providerOptions : {}),
       tools: {
         crawlWebsite: crawlWebsiteTool,
         readInternalBlogPost: readInternalBlogPostTool,

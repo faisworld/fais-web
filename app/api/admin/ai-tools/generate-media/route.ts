@@ -15,9 +15,16 @@ const PLACEHOLDER_VIDEO_URL = "https://download.samplelib.com/mp4/sample-5s.mp4"
 // Model version mapping - Replicate uses format: model-name:version-hash
 // Using only the best quality and cost-effective models
 const MODEL_VERSIONS: Record<string, string> = {
-  'google/imagen-4': 'google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d', // Best quality
-  'stability-ai/sdxl': 'stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316', // Good quality, lower cost
-  // Video models
+  // Working image models
+  'stability-ai/sdxl': 'stability-ai/sdxl:7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc',
+  'black-forest-labs/flux-schnell': 'black-forest-labs/flux-schnell:bf2f5def8827b4b80ce27032c8ceea62b76b4436745c0a3ab7e8e6f3f0f20e0c',
+  // Add models that the frontend expects
+  'google/imagen-4': 'google/imagen-4',
+  // Add fallback models
+  'flux-dev': 'black-forest-labs/flux-dev',
+  'sdxl': 'stability-ai/sdxl',
+  
+  // Video models (keeping existing ones that might work)
   'google/veo-2': 'google/veo-2',
   'minimax/video-01-director': 'minimax/video-01-director',
   'minimax/video-01': 'minimax/video-01',
@@ -317,4 +324,47 @@ export async function POST(request: NextRequest) {
     }
     return NextResponse.json({ error: 'Internal Server Error', message: errorMessage }, { status: 500 });
   }
+}
+
+// Add HEAD handler for preflight requests
+export async function HEAD() {
+  console.log("📡 HEAD request received for generate-media");
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Allow': 'POST, HEAD, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
+// Add OPTIONS handler for CORS preflight
+export async function OPTIONS() {
+  console.log("📡 OPTIONS request received for generate-media");
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Allow': 'POST, HEAD, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
+// Add GET handler that returns method information
+export async function GET() {
+  console.log("📡 GET request received for generate-media");
+  return NextResponse.json({
+    message: 'Image generation API endpoint',
+    methods: ['POST'],
+    description: 'Use POST with image generation parameters to generate images'
+  }, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
 }

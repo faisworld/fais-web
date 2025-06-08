@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 export default function ElevenLabsWidget({ agentId = "GkOKedIUAelQwYORYU3j" }: { agentId?: string }) {
   useEffect(() => {
@@ -18,10 +18,9 @@ export default function ElevenLabsWidget({ agentId = "GkOKedIUAelQwYORYU3j" }: {
       }
     }
   }, [])
-
   return (
     <>
-      <elevenlabs-convai agent-id={agentId}></elevenlabs-convai>
+      {React.createElement('elevenlabs-convai', { 'agent-id': agentId })}
       <style jsx global>{`
         /* Hide ElevenLabs signature */
         elevenlabs-convai::part(signature),

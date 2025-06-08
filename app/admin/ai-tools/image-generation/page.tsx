@@ -8,7 +8,7 @@ import Image from "next/image";
 const IMAGE_MODELS = [
   { id: "stability-ai/sdxl", name: "Stability AI SDXL" },
   { id: "google/imagen-4", name: "Google Imagen 4" },
-  { id: "nvidia/ediffi", name: "Nvidia EDIFFI" },
+  // { id: "nvidia/ediffi", name: "Nvidia EDIFFI" }, // Commented out - model not available
 ];
 
 // Interface for the request body

@@ -8,7 +8,8 @@ import {
   FiFileText, 
   FiUser,
   FiFilter,
-  FiCpu
+  FiCpu,
+  FiSearch
 } from "react-icons/fi";
 
 export default function AIToolsPage() {
@@ -44,14 +45,21 @@ export default function AIToolsPage() {
       href: "/admin/ai-tools/article-generation",
       category: "text",
       color: "from-amber-500 to-orange-600"
-    },
-    {
+    },    {
       title: "AI Performance Monitor",
       description: "Monitor AI model performance and resource usage",
       icon: <FiCpu size={24} />,
       href: "/admin/ai-tools/performance-monitor",
       category: "monitor",
       color: "from-blue-500 to-indigo-600"
+    },
+    {
+      title: "SEO Management",
+      description: "Monitor automated SEO optimization tasks, view analysis results, and manage maintenance orchestration",
+      icon: <FiSearch size={24} />,
+      href: "/admin/ai-tools/seo-management",
+      category: "monitor",
+      color: "from-purple-500 to-violet-600"
     }
   ];
 

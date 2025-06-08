@@ -1,6 +1,7 @@
 import { streamText, type CoreMessage } from 'ai'; // Using CoreMessage type
 import { openai } from '@ai-sdk/openai'; // Correct import for openai
 import { queryVectorStore, VectorSearchOptions } from '@/utils/rag-pipeline/vector-store-search';
+import { getRAGConfig, getProviderOptions } from '@/lib/ai-config';
 
 export const runtime = 'edge'; // Optional: Use Vercel Edge Functions
 
@@ -76,11 +77,15 @@ Question: ${query}
 Answer:`;
 
     // streamText expects an array of messages conforming to CoreMessage
-    const messages: CoreMessage[] = [{ role: 'user', content: promptContent }];
-
+    const messages: CoreMessage[] = [{ role: 'user', content: promptContent }];    // Get AI model configuration for RAG queries
+    const aiConfig = getRAGConfig();
+    const providerOptions = getProviderOptions(aiConfig);
+    
     const result = await streamText({
-      model: openai.chat('gpt-3.5-turbo'), // Correctly get chat model
+      model: openai(aiConfig.model),
       messages: messages,
+      // Configure reasoning effort based on use case
+      ...(providerOptions && { providerOptions })
     });
 
     return result.toDataStreamResponse(); // Correct method to get a Response

@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
+import { Toaster } from 'react-hot-toast'
 
 import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -56,13 +57,13 @@ export const metadata: Metadata = {
       locale: 'en_US',
       type: 'website',
       images: [
-        {
-          url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
-          width: 1200,
-          height: 630,
-          alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',
-          type: 'image/png'
-        }
+      {
+        url: twitterImageUrl,
+        width: 1200,
+        height: 630,
+        alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',
+        type: 'image/png'
+      }
       ],
     },
     twitter: {
@@ -72,12 +73,12 @@ export const metadata: Metadata = {
       creator: '@fantasticaistudio',
       site: '@fantasticaistudio',
       images: [
-        {
-          url: twitterImageUrl,
-          width: 1200,
-          height: 630,
-          alt: 'Fantastic AI Studio - Innovative AI and Blockchain Solutions',
-        },
+      {
+        url: twitterImageUrl,
+        width: 1200,
+        height: 630,
+        alt: 'Fantastic AI Studio - Innovative AI and Blockchain Solutions',
+      },
       ],
     },
     robots: {
@@ -85,12 +86,12 @@ export const metadata: Metadata = {
       follow: true,
       nocache: false,
       googleBot: {
-        index: true,
-        follow: true,
-        noimageindex: false,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
       },
     },
     appleWebApp: { 
@@ -104,15 +105,15 @@ export const metadata: Metadata = {
     alternates: {
       canonical: 'https://fais.world',
       languages: {
-        'en-US': 'https://fais.world',
-        'en-GB': 'https://fais.world/gb',
-        'de-DE': 'https://fais.world/de',
+      'en-US': 'https://fais.world',
+      'en-GB': 'https://fais.world/',
+      'de-DE': 'https://fais.world/',
+      'uk-UA': 'https://fais.world/ua'
       },
     },
     other: {
       'google-site-verification': 'your-google-verification-code', // Replace with actual verification code
     'msvalidate.01': 'your-bing-verification-code', // Replace with actual verification code
-    'yandex-verification': 'your-yandex-verification-code', // Replace with actual verification code
     'facebook-domain-verification': 'your-facebook-verification-code', // Replace with actual verification code
   },
 }
@@ -126,9 +127,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: 'Fantastic AI Studio',
     alternateName: 'fAis',
     url: 'https://fais.world',
-    logo: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
+    logo: (process.env.NEXT_PUBLIC_LOGO_URL as string) || 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Logo_white_fais-e1734783482439-0gYn1yvp1J0Oud09HvWZK7ePuLfaC4.png',
     description: 'Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms.',
-    foundingDate: '2020',
+    foundingDate: '2023',
     founder: {
       '@type': 'Person',
       name: 'Yevhen Lukyanov'
@@ -151,15 +152,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     sameAs: [
       process.env.NEXT_PUBLIC_TWITTER_URL || 'https://x.com/faisworld',
       process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com/company/faistudio/'
-    ],    offers: {
-      '@type': 'Offer',
+    ],
+    services: {
+      '@type': 'Service',
       description: 'Enterprise AI and Blockchain Development Services',
       areaServed: ['US', 'UK', 'DE'],
       availabilityStarts: '2020-01-01'
     }
-    // Removed aggregateRating - only add when you have actual review markup on pages
   };
-
   return (
     <html lang='en' className={inter.className}>
       <head>
@@ -168,11 +168,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="antialiased">        <Providers>
+      <body className="antialiased"><Providers>
           <Header />
           <DynamicBreadcrumbs darkBg={false} />
           <main className="mt-20">{children}</main>
           <Footer />
+
+          {/* React Hot Toast */}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+            }}
+          />
 
           {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
           <ConditionalWidgetWrapper agentId='GkOKedIUAelQwYORYU3j' />

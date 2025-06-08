@@ -82,6 +82,20 @@ async function generateArticle(topic, keywords = [], tone = 'informative', wordC
  */
 async function saveArticleToBlogData(articleData, uniqueId) {
   try {
+    // Read the current blog-data.ts file first to check for duplicates
+    const blogDataPath = path.join(process.cwd(), 'app', 'blog', 'blog-data.ts');
+    let blogDataContent = fs.readFileSync(blogDataPath, 'utf8');
+    
+    // Check if an article with this slug or similar title already exists
+    const slug = articleData.slug;
+    const title = articleData.title.toLowerCase();
+    
+    if (blogDataContent.includes(`slug: "${slug}"`) || 
+        blogDataContent.includes(title.replace(/[^\w\s]/g, '').substring(0, 20))) {
+      console.log(`Article with similar content already exists. Skipping: "${articleData.title}"`);
+      return false;
+    }
+    
     // Calculate read time based on word count (avg reading speed of 200-250 words per minute)
     const wordCount = articleData.content.split(/\s+/).length;
     const readTimeMinutes = Math.ceil(wordCount / 200);
@@ -133,14 +147,10 @@ async function saveArticleToBlogData(articleData, uniqueId) {
       readTime,
       category,
       coverImage: articleData.imageUrl,
-      featured: Math.random() > 0.7, // Randomly feature some posts
+      featured: Math.random() > 0.8, // Reduce chance of featuring posts
       author: "Fantastic AI",
       authorImage: "author-fantastic"
     };
-    
-    // Read the current blog-data.ts file
-    const blogDataPath = path.join(process.cwd(), 'app', 'blog', 'blog-data.ts');
-    let blogDataContent = fs.readFileSync(blogDataPath, 'utf8');
     
     // Find the blogPosts array
     const blogPostsArrayMatch = blogDataContent.match(/export const blogPosts: BlogPost\[\] = \[([\s\S]*?)\];/);
@@ -162,9 +172,9 @@ async function saveArticleToBlogData(articleData, uniqueId) {
     authorImage: "${blogPost.authorImage}"
   },`;
       
-      // Replace the array content
+      // Replace the array content - add to beginning for newest first
       const currentArray = blogPostsArrayMatch[1].trim();
-      const newArray = currentArray ? currentArray + blogPostString : blogPostString.trim();
+      const newArray = currentArray ? blogPostString + currentArray : blogPostString.trim();
       const updatedBlogData = blogDataContent.replace(
         /export const blogPosts: BlogPost\[\] = \[([\s\S]*?)\];/, 
         `export const blogPosts: BlogPost[] = [${newArray}];`
@@ -172,7 +182,7 @@ async function saveArticleToBlogData(articleData, uniqueId) {
       
       // Write the updated content back to the file
       fs.writeFileSync(blogDataPath, updatedBlogData, 'utf8');
-      console.log(`Article "${blogPost.title}" saved to blog-data.ts`);
+      console.log(`✅ Article "${blogPost.title}" saved to blog-data.ts`);
       
       // Also save the full content to a markdown file for the blog
       const contentDir = path.join(process.cwd(), 'app', 'blog', 'content');
@@ -181,8 +191,18 @@ async function saveArticleToBlogData(articleData, uniqueId) {
       }
       
       const contentFilePath = path.join(contentDir, `${blogPost.slug}.md`);
-      fs.writeFileSync(contentFilePath, articleData.content, 'utf8');
-      console.log(`Full article content saved to ${contentFilePath}`);
+      const markdownContent = `---
+title: "${articleData.title}"
+excerpt: "${blogPost.excerpt}"
+date: "${blogPost.date}"
+category: "${blogPost.category}"
+author: "${blogPost.author}"
+---
+
+${articleData.content}`;
+      
+      fs.writeFileSync(contentFilePath, markdownContent, 'utf8');
+      console.log(`✅ Full article content saved to ${contentFilePath}`);
       
       return true;
     } else {

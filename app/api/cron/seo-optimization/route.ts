@@ -64,14 +64,14 @@ interface SEOOptimization {
 // Cron job authentication
 function isValidCronRequest(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization')
-  const cronSecret = process.env.CRON_SECRET
+  const internalApiKey = process.env.INTERNAL_API_KEY
   
-  if (!cronSecret) {
-    console.error('CRON_SECRET environment variable is not set')
+  if (!internalApiKey) {
+    console.error('INTERNAL_API_KEY environment variable is not set')
     return false
   }
   
-  return authHeader === `Bearer ${cronSecret}`
+  return authHeader === `Bearer ${internalApiKey}`
 }
 
 async function getLatestAnalysis(): Promise<WebsiteAnalysis | null> {
@@ -237,8 +237,45 @@ Provide specific, actionable recommendations with implementation details.
   }
 }
 
-async function saveSEOOptimizations(seoOptimizations: SEOOptimization): Promise<void> {  try {
-    // Save to local file as backup (database integration can be added later if needed)
+async function saveSEOOptimizations(seoOptimizations: SEOOptimization, orchestrationId: number | null, jobExecutionId: number): Promise<void> {
+  try {
+    // Save the main SEO analysis data to the database
+    const seoAnalysisId = await maintenanceDB.saveSEOAnalysis(
+      jobExecutionId,
+      seoOptimizations.websiteUrl,
+      // Extract meta tag optimizations for current/recommended titles and descriptions
+      seoOptimizations.optimizations?.metaTags?.[0]?.currentTitle || '',
+      seoOptimizations.optimizations?.metaTags?.[0]?.currentDescription || '',
+      seoOptimizations.optimizations?.metaTags?.[0]?.keywords || [],
+      seoOptimizations.optimizations?.metaTags?.[0]?.optimizedTitle || '',
+      seoOptimizations.optimizations?.metaTags?.[0]?.optimizedDescription || '',
+      seoOptimizations.optimizations?.metaTags?.map(tag => tag.keywords).flat() || [],
+      seoOptimizations.competitorAnalysis || {},
+      seoOptimizations.competitorAnalysis?.keywordGaps?.map(gap => ({ keyword: gap })) || [],
+      seoOptimizations.optimizations?.technicalSEO || [],
+      seoOptimizations.optimizations?.schemaMarkup?.[0]?.markup as Record<string, unknown> || {},
+      85 // Default score, could be calculated based on optimizations
+    );    
+    // Complete the job execution
+    await maintenanceDB.completeJobExecution(jobExecutionId, {
+      seo_analysis_id: seoAnalysisId,
+      optimizations_count: (seoOptimizations.optimizations?.metaTags?.length || 0) +
+                          (seoOptimizations.optimizations?.contentOptimizations?.length || 0) +
+                          (seoOptimizations.optimizations?.technicalSEO?.length || 0),
+      timestamp: seoOptimizations.timestamp
+    });
+    
+    // Update orchestration if this is part of one
+    if (orchestrationId) {
+      await maintenanceDB.updateOrchestration(orchestrationId, {
+        status: 'completed',
+        end_time: new Date(),
+        completed_jobs: 1,
+        failed_jobs: 0
+      });
+    }
+    
+    // Also save to local file as backup
     const seoDir = path.join(process.cwd(), 'seo-reports')
     await fs.mkdir(seoDir, { recursive: true })
     
@@ -247,10 +284,10 @@ async function saveSEOOptimizations(seoOptimizations: SEOOptimization): Promise<
     
     await fs.writeFile(filepath, JSON.stringify(seoOptimizations, null, 2))
     
-    console.log('SEO optimizations saved successfully to local file')
+    console.log(`✅ SEO optimizations saved to database (ID: ${seoAnalysisId}) and file: ${filename}`)
     
   } catch (error) {
-    console.error('Error saving SEO optimizations:', error)
+    console.error('❌ Error saving SEO optimizations:', error)
     throw error
   }
 }
@@ -338,10 +375,9 @@ export async function POST(request: NextRequest) {
     console.log('🎯 Generating SEO optimizations...')
     const seoOptimizations = await generateSEOOptimizations(latestAnalysis)
     console.log('✅ SEO optimizations generated')
-    
-    // Step 3: Save SEO optimizations
+      // Step 3: Save SEO optimizations
     console.log('💾 Saving SEO optimizations...')
-    await saveSEOOptimizations(seoOptimizations)
+    await saveSEOOptimizations(seoOptimizations, orchestrationId, jobExecutionId)
     console.log('✅ SEO optimizations saved')
     
     // Step 4: Generate implementation plan
@@ -357,12 +393,11 @@ export async function POST(request: NextRequest) {
       contentOptimizations: seoOptimizations.optimizations.contentOptimizations.length,
       technicalSEOIssues: seoOptimizations.optimizations.technicalSEO.length,
       schemaMarkupRecommendations: seoOptimizations.optimizations.schemaMarkup.length,
-      actionPlanTasks: seoOptimizations.actionPlan.length,
-      competitorsAnalyzed: seoOptimizations.competitorAnalysis.competitors.length
-    }
-      console.log(`🎉 ${jobName} completed successfully:`, summary)
-      // Mark job as completed
-    await maintenanceDB.completeJobExecution(jobExecutionId, summary)
+      actionPlanTasks: seoOptimizations.actionPlan.length,      competitorsAnalyzed: seoOptimizations.competitorAnalysis.competitors.length
+    };
+    
+    console.log(`🎉 ${jobName} completed successfully:`, summary)
+    // Job completion is handled in saveSEOOptimizations function
     
     return NextResponse.json({
       success: true,

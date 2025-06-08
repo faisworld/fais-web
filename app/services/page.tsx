@@ -26,11 +26,11 @@ export default function ServicesPage() {
               unlock the full potential of your business with innovative, secure, and scalable solutions powered by artificial intelligence and blockchain technology.            </p>            {/* Video Display Area */}
             <VideoPlayer 
               src={getBlobImage('services-hero-video')}
-              poster="/videos/services-poster.svg"
               className="w-full aspect-video rounded-lg shadow-xl mb-8"
               controls={true}
-              muted={false}
-              autoPlay={false}
+              muted={true}
+              autoPlay={true}
+              loop={true}
             />
             
             <Link

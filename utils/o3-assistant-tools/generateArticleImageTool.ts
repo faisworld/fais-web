@@ -82,17 +82,44 @@ async function generateArticleImageLogic(
     default:
       console.warn(`Model ${modelIdentifier} not explicitly handled for custom params, using generic prompt approach.`);
       break;
-  }  try {
-    const output = await replicate.run(
+  }  try {    const output = await replicate.run(
       modelIdentifier as `${string}/${string}` | `${string}/${string}:${string}`,
       { input: modelInput }
-    ) as (string[] | string);
+    );
 
     let replicateImageUrl: string;
     if (Array.isArray(output) && output.length > 0) {
       replicateImageUrl = output[0];
     } else if (typeof output === 'string') {
       replicateImageUrl = output;
+    } else if (output && typeof output === 'object' && 'getReader' in output) {
+      // Handle ReadableStream response - convert to text and extract URL
+      const reader = (output as ReadableStream).getReader();
+      const decoder = new TextDecoder();
+      let result = '';
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        result += decoder.decode(value, { stream: true });
+      }
+      
+      // Try to parse as JSON first, then as plain URL
+      try {
+        const parsed = JSON.parse(result);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          replicateImageUrl = parsed[0];
+        } else if (typeof parsed === 'string') {
+          replicateImageUrl = parsed;
+        } else if (parsed.url) {
+          replicateImageUrl = parsed.url;
+        } else {
+          throw new Error('No valid URL found in stream response');
+        }
+      } catch (parseError) {
+        // If not JSON, treat as plain URL
+        replicateImageUrl = result.trim();
+      }
     } else {
       console.error('Replicate model did not return a valid image URL.', output);
       throw new Error('Failed to generate image: Invalid response from Replicate.');

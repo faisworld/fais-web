@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { 
   FiImage, FiUpload, FiUser, FiFolder, FiVideo, 
-  FiFileText, FiCpu, FiDatabase, FiMonitor
+  FiFileText, FiCpu, FiMonitor, FiSettings, FiActivity
 } from "react-icons/fi"
 import { AdminHeader } from "./components/admin-header"
 
@@ -45,6 +45,7 @@ export default function AdminPage() {
       color: "from-rose-500 to-pink-600"
     },
   ]
+  
   const contentTools = [
     {
       title: "Gallery Management",
@@ -66,6 +67,23 @@ export default function AdminPage() {
       icon: <FiMonitor size={24} />,
       href: "/admin/video-quality",
       color: "from-purple-500 to-violet-600"
+    }
+  ]
+
+  const systemTools = [
+    {
+      title: "Maintenance Dashboard",
+      description: "Monitor automated maintenance jobs and system health",
+      icon: <FiActivity size={24} />,
+      href: "/admin/maintenance-dashboard",
+      color: "from-blue-500 to-indigo-600"
+    },
+    {
+      title: "AI Tools Dashboard",
+      description: "Monitor AI tools performance and SEO optimization",
+      icon: <FiSettings size={24} />,
+      href: "/admin/ai-tools",
+      color: "from-indigo-500 to-purple-600"
     }
   ]
 
@@ -117,10 +135,10 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-12">
           <div className="flex items-center space-x-4 mb-6">
             <div className="h-10 w-10 rounded-full bg-gradient-to-r from-sky-500 to-cyan-600 flex items-center justify-center text-white">
-              <FiDatabase size={20} />
+              <FiFolder size={20} />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Content Management</h2>
           </div>
@@ -134,19 +152,47 @@ export default function AdminPage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
                 <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className={`p-3 rounded-full mr-4 text-white bg-gradient-to-br ${tool.color}`}>
-                      {tool.icon}
-                    </div>
-                    <h3 className="text-xl font-bold">{tool.title}</h3>
+                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-r ${tool.color} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    {tool.icon}
                   </div>
-                  <p className="text-gray-600">{tool.description}</p>
-                  <div className="mt-4 text-sm font-medium text-gray-600 group-hover:text-gray-800 flex items-center transition-colors">
-                    Open Tool
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {tool.description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-12">
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white">
+              <FiActivity size={20} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900">System Management</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {systemTools.map((tool, index) => (
+              <Link
+                key={index}
+                href={tool.href}
+                className="relative group overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 bg-white"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
+                <div className="p-6">
+                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-r ${tool.color} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    {tool.icon}
                   </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {tool.description}
+                  </p>
                 </div>
               </Link>
             ))}

@@ -205,11 +205,10 @@ export async function hybridSearch(
     }
     
     // Convert embedding to the format expected by pgvector
-    const embeddingString = `[${queryEmbedding.join(',')}]`;
-      // Build a query that combines vector similarity with keyword matching
+    const embeddingString = `[${queryEmbedding.join(',')}]`;    // Build a query that combines vector similarity with keyword matching
     let queryText = `
       SELECT url, chunk_text as text, created_at,
-      embedding <-> $1::vector as vector_distance,
+      (embedding <-> $1::vector) as distance,
     `;
       // Add a text search score for each keyword
     for (let i = 0; i < keywords.length; i++) {
@@ -219,13 +218,11 @@ export async function hybridSearch(
     }
       // Complete the query
     queryText = queryText.slice(0, -3); // Remove the last " + "
-    queryText += ` as keyword_score,
-      (embedding <-> $1::vector) as distance
+    queryText += ` as keyword_score
       FROM knowledge_base_chunks
       WHERE 1=1
     `;
-    
-    const queryParams: any[] = [embeddingString];
+      const queryParams: (string | number)[] = [embeddingString];
     keywords.forEach(keyword => {
       queryParams.push(`%${keyword}%`);
     });
@@ -242,10 +239,9 @@ export async function hybridSearch(
       queryText += ` AND url LIKE $${paramIndex}`;
       queryParams.push('%/blog/%');
       paramIndex++;
-    }
-      // Order by combined score (vector similarity and keyword matches)
+    }      // Order by combined score (vector similarity and keyword matches)
     queryText += `
-      ORDER BY (vector_distance - keyword_score)
+      ORDER BY (distance - keyword_score)
       LIMIT $${paramIndex}
     `;
     queryParams.push(options.topK);

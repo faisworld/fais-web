@@ -4,14 +4,12 @@ import { streamText, CoreMessage } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateArticleImageTool } from '@/utils/o3-assistant-tools/generateArticleImageTool';
 import slugify from 'slugify';
+import { getArticleGenerationConfig, getProviderOptions } from '@/lib/ai-config';
 
 // Create OpenAI provider instance
 const openai = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-// Use GPT-4o for article generation
-const openaiChatModel = openai.chat('gpt-4o');
 
 export async function POST(request: Request) {
   // Check admin authentication
@@ -52,9 +50,15 @@ export async function POST(request: Request) {
 
     console.log("Admin: Generating article about:", topic);
     
+    // Get AI model configuration for article generation
+    const aiConfig = getArticleGenerationConfig();
+    const providerOptions = getProviderOptions(aiConfig);
+    
     const result = await streamText({
-      model: openaiChatModel,
+      model: openai(aiConfig.model),
       messages,
+      // Use high reasoning effort for better article quality
+      ...(providerOptions && { providerOptions })
     });
 
     let articleContent = '';
