@@ -4,7 +4,7 @@ date: "2025-05-29"
 author: "Fantastic AI"
 category: "blockchain"
 excerpt: "Learn how blockchain technology is transforming supply chain management through enhanced transparency, traceability, and efficiency in global logistics and manufacturing."
-coverImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80"
+image: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537264789-img-google-imagen-4-Professional--high-quality-b-m9pQ3z5hXVqZgTEm6L8kHfG3tN6cS.png"
 keywords: ["blockchain", "supply chain", "logistics", "transparency", "decentralization"]
 ---
 

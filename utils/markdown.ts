@@ -33,14 +33,13 @@ export async function getMarkdownPost(slug: string): Promise<MarkdownPost | null
       .use(remarkHtml, { sanitize: false })
       .process(content);
     const htmlContent = processedContent.toString();
-    
-    return {
+      return {
       title: data.title || '',
       date: data.date || '',
       author: data.author || 'Fantastic AI',
       category: data.category || 'ai',
       excerpt: data.excerpt || '',
-      coverImage: data.coverImage || '',
+      coverImage: data.image || data.coverImage || '',
       keywords: data.keywords || [],
       content,
       htmlContent

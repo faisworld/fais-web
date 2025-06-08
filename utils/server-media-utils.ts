@@ -41,9 +41,8 @@ export const blobImages: { [key: string]: string } = {
   'pioneering-digital-transformation': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-pioneering-digital-transformation.mp4',
   'innovating-future': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-innovating-the-future.mp4',
   'shaping-sota-technologies': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/carousel/carousel-video-shaping-sota-technologies.mp4',
-  
-  // Services hero video
-  'services-hero-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/8b42303a-6fd5-4e3e-99dc-ff5d2c207ead.mp4',
+    // Services hero video
+  'services-hero-video': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/videos/videos/807577ac-cf02-45ee-a8c0-6d2c87aa2c3e.mp4',
   
   // Solutions section images
   'ai-solutions': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1747076648350-20250512-2151-Futuristic-Office-Collaboration-simple-compose-01jv2xcqegeqzsm27xw0wayv3d.gif',
@@ -80,7 +79,7 @@ export const blobImages: { [key: string]: string } = {
   'about-value-innovation-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/cc47ef93-db7a-4e21-9663-7051131a4a79.png',
   'about-value-integrity-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/01a7d351-f4ef-4f95-9261-bb79a7affc2d.png',
   'about-value-collaboration-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/67d6bcc8-fdf2-4bde-addb-5a19b0f4e196.png',
-  'about-team-member-yevhen-lukyanov-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Eugene-Lukyanov-HLDs14ajHXg6FcQy0aYKb0MTkloeko.jpg',
+  'about-team-member-yevhen-lukyanov-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/instant-id/generated-1748571756551-instantid-1748571756550.webp',
   'about-team-member-arik-vigas-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-06_14-10-40-UXOlLLTn4PXpt3zuJZotwguhCZcXlz.jpg',
   'about-team-member-andrii-stehno-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1525272441578-qsun1wc6mdk3geegvjjt75pmibcc8iv3drkakgyblc-lc4eX0RKR35BecEHkh7GWgSy1yg0Rp.webp',  'about-team-member-vitalii-melnyk-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Vitaliy-Melnyk-wLuvov0LC7IyMYiE2kcCgkfTaWPpfc.webp',
     // Blog post images
@@ -91,7 +90,7 @@ export const blobImages: { [key: string]: string } = {
     // Author images
   'author-fantastic': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/360e407c-ca7b-4f0b-87b9-7f550d743cda.jpeg',
   'author-sarah': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1746354931230-instantid-1746354169011.webp',
-  'author-yevhen': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/Eugene-Lukyanov-HLDs14ajHXg6FcQy0aYKb0MTkloeko.jpg',
+  'author-yevhen': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/instant-id/generated-1748571756551-instantid-1748571756550.webp',
   'author-tech-team': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/photo_2024-09-06_14-10-40-UXOlLLTn4PXpt3zuJZotwguhCZcXlz.jpg',
 };
 

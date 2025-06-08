@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537152438-img-google-imagen-4-Professional--high-quality-b-j0nA8x5hYVqZgTEm6M7nHfG3tK9bS.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/c5864549-d1d1-4989-a01f-8a8ad575ebc1.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -40,7 +40,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537201562-img-google-imagen-4-Professional--high-quality-b-x7pN2y8hMVqZgTEm6M9fHfG3tK7bS.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/b6b1e607-2d78-48b9-a829-5b3f802a4b8e.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -52,7 +52,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537264789-img-google-imagen-4-Professional--high-quality-b-m9pQ3z5hXVqZgTEm6L8kHfG3tN6cS.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/b2ffcc0f-5a61-4418-858e-fee51b5a4c67.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -64,7 +64,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537318923-img-google-imagen-4-Professional--high-quality-b-k4rL7w8hQVqZgTEm6P5mHfG3tX2dS.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/1852f4b2-beae-41e7-83f0-9dde2557a42a.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -76,7 +76,7 @@ export const blogPosts: BlogPost[] = [{
     date: "May 29, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/article-images/google-imagen-4/1748537372156-img-google-imagen-4-Professional--high-quality-b-h8tM9v5hWVqZgTEm6R3nHfG3tY4eS.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/41de19f1-e94f-444b-900b-92f119a8ce16.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -93,5 +93,17 @@ export const blogPosts: BlogPost[] = [{
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  }
-];
+  },
+  {
+    id: "357f4917",
+    slug: "ai-image-generation-technology-breakthroughs",
+    title: "AI image generation technology breakthroughs",
+    excerpt: "Artificial Intelligence (AI) has been at the forefront of technological innovation, transforming various industries with its capabilities. One of the ...",
+    date: "June 8, 2025",
+    readTime: "4 min read",
+    category: "ai",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    featured: false,
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
+  },];

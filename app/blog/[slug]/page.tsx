@@ -2,9 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { blogPosts } from "../blog-data";
-import OptimismLayer2Content from "../content/how-optimism-layer-2-can-transform-your-business";
-import LargeLanguageModelsContent from "../content/large-language-models-2025";
-import BlockchainForSupplyChainContent from "../content/blockchain-for-supply-chain"; // Added import
 import { AuthorImage, BlogCoverImage, RelatedPostImage } from "../components/client-images";
 import { getMarkdownPost } from "@/utils/markdown";
 
@@ -100,16 +97,10 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
         />        <div className="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full text-sm">
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
-      </div>
-        {/* Blog content */}
+      </div>      {/* Blog content */}
       <div className="enhanced-blog-content pb-8">
-        {/* Render hardcoded content components for specific legacy posts */}
-        {slug === "how-optimism-layer-2-can-transform-your-business" && <OptimismLayer2Content />}
-        {slug === "large-language-models-2025" && <LargeLanguageModelsContent />}
-        {slug === "blockchain-for-supply-chain" && <BlockchainForSupplyChainContent />}
-        
-        {/* Render markdown content for dynamically generated posts */}
-        {markdownPost && !["how-optimism-layer-2-can-transform-your-business", "large-language-models-2025", "blockchain-for-supply-chain"].includes(slug) && (
+        {/* Render markdown content for all posts */}
+        {markdownPost && (
           <div 
             className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900"
             dangerouslySetInnerHTML={{ __html: markdownPost.htmlContent }}
@@ -117,7 +108,7 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
         )}
         
         {/* Fallback for posts without markdown files */}
-        {!markdownPost && !["how-optimism-layer-2-can-transform-your-business", "large-language-models-2025", "blockchain-for-supply-chain"].includes(slug) && (
+        {!markdownPost && (
           <div className="text-center py-8">
             <p className="text-gray-600">Content for this article is being prepared. Please check back soon.</p>
           </div>

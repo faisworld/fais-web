@@ -78,7 +78,7 @@ export async function POST(request: Request) {
         const imageResult = await generateArticleImageTool.execute({
           prompt: enhancedPrompt,
           aspectRatio: '16:9',
-          modelIdentifier: "google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d" // Use Google Imagen 4 for best quality
+          modelIdentifier: "google/imagen-4" // Use Google Imagen 4 for best quality
         }, {
           toolCallId: "admin-article-image-" + Date.now(),
           messages: []

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import './services-video.css';
 import VideoPlayer from '@/components/ui/VideoPlayer';
+import { getBlobImage } from '@/utils/media-utils';
 
 export default function ServicesPage() {
   return (    
@@ -22,12 +23,14 @@ export default function ServicesPage() {
               professional ai & blockchain services
             </h1>
             <p className="text-xl md:text-2xl mb-10 text-neutral-700 max-w-3xl mx-auto">
-              unlock the full potential of your business with innovative, secure, and scalable solutions powered by artificial intelligence and blockchain technology.            </p>
-              {/* Video Display Area */}
+              unlock the full potential of your business with innovative, secure, and scalable solutions powered by artificial intelligence and blockchain technology.            </p>            {/* Video Display Area */}
             <VideoPlayer 
-              src="/videos/services-video.mp4"
+              src={getBlobImage('services-hero-video')}
               poster="/videos/services-poster.svg"
               className="w-full aspect-video rounded-lg shadow-xl mb-8"
+              controls={true}
+              muted={false}
+              autoPlay={false}
             />
             
             <Link

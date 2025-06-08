@@ -5,27 +5,29 @@ import { useEffect, useRef } from "react"
 export default function ElevenLabsWidget({ agentId }: { agentId: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const initialized = useRef(false)
-  
-  useEffect(() => {
+    useEffect(() => {
     if (initialized.current || !containerRef.current) return
     initialized.current = true
+
+    // Capture the container reference at the beginning to avoid stale closure issues
+    const container = containerRef.current
 
     // Check if the script is already loaded
     const existingScript = document.querySelector('script[src="https://elevenlabs.io/convai-widget/index.js"]')
     
     // Function to create widget after script is loaded
     const createWidget = () => {
-      if (!containerRef.current) return
+      if (!container) return
       
       // Only add the widget if container is empty
-      if (containerRef.current.childElementCount === 0) {
+      if (container.childElementCount === 0) {
         try {
           // Create the widget element
           const widget = document.createElement('elevenlabs-convai')
           widget.setAttribute('agent-id', agentId)
           
           // Add it to the container
-          containerRef.current.appendChild(widget)
+          container.appendChild(widget)
         } catch (error) {
           console.error('Error creating ElevenLabs widget:', error)
         }
@@ -52,9 +54,9 @@ export default function ElevenLabsWidget({ agentId }: { agentId: string }) {
     return () => {
       initialized.current = false
       // Don't remove the script on cleanup as it might be used by other instances
-      // But clear the container
-      if (containerRef.current) {
-        containerRef.current.innerHTML = ''
+      // Use the captured container reference to avoid stale closure issues
+      if (container) {
+        container.innerHTML = ''
       }
     }
   }, [agentId])

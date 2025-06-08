@@ -17,19 +17,19 @@ export async function GET(request: Request) {
     timestamp: new Date().toISOString(),
     databaseConnection: {
       status: 'unknown',
-      error: null
+      error: null as string | null
     },
     tableInfo: {
       exists: false,
-      columns: [],
-      error: null
+      columns: [] as Array<Record<string, unknown>>,
+      error: null as string | null
     },
     requiredSlides: [
       'advanced-ai-&-blockchain-solutions',
       'shaping-state-of-the-art-technologies', 
       'driving-innovation-in-technology'
     ],
-    slidesFound: [],
+    slidesFound: [] as Array<Record<string, unknown>>,
     totalSlides: 0
   };
   

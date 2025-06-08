@@ -16,10 +16,10 @@ export default function VideoPlayer({
   src,
   poster,
   className = '',
-  autoPlay = true,
+  autoPlay = false,
   loop = true,
-  muted = true,
-  controls = false,
+  muted = false,
+  controls = true,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sources = Array.isArray(src) ? src : [src];

@@ -4,7 +4,7 @@ import Replicate from 'replicate';
 import { uploadToBlobServer } from '../blob-upload-server'; // Import server-side Vercel Blob upload function
 
 // Define the best image generation models based on quality and cost balance
-const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d";
+const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4";
 const MODEL_STABILITY_SDXL = "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316";
 
 const replicate = new Replicate({
@@ -13,7 +13,7 @@ const replicate = new Replicate({
 
 export const GenerateArticleImageParameters = z.object({
   prompt: z.string().min(5).describe('A detailed prompt for the image generation model.'),
-  aspectRatio: z.enum(['1:1', '16:9', '4:3', '3:2', '9:16']).default('16:9').optional()
+  aspectRatio: z.enum(['1:1', '9:16', '16:9', '3:4', '4:3']).default('16:9').optional()
     .describe('Desired aspect ratio for the generated image.'),
   modelIdentifier: z.enum([MODEL_GOOGLE_IMAGEN_4, MODEL_STABILITY_SDXL]).default(MODEL_GOOGLE_IMAGEN_4)
     .describe('The Replicate model identifier. Google Imagen 4 (best quality) or Stability SDXL (good quality, lower cost).'),
@@ -27,18 +27,18 @@ const roundTo64 = (n: number) => Math.round(n / 64) * 64;
 
 interface ModelInput {
   prompt: string;
-  aspect_ratio_str?: '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
-  aspect_ratio?: '1:1' | '16:9' | '4:3' | '3:2' | '9:16' | '9:16';
+  aspect_ratio?: '1:1' | '9:16' | '16:9' | '3:4' | '4:3';
+  safety_filter_level?: 'block_low_and_above' | 'block_medium_and_above' | 'block_only_high';
+  // For SDXL compatibility
   width?: number;
   height?: number;
   negative_prompt?: string;
-  safety_filter_level?: 'block_low_and_above' | 'block_medium_and_above' | 'block_only_high';
   // Add other potential model-specific parameters here if known
 }
 
 async function generateArticleImageLogic(
   prompt: string,
-  aspectRatio: '1:1' | '16:9' | '4:3' | '3:2' | '9:16' = '16:9',
+  aspectRatio: '1:1' | '9:16' | '16:9' | '3:4' | '4:3' = '16:9',
   modelIdentifier: string,
   negativePrompt?: string,
   safetyFilterLevel?: 'block_low_and_above' | 'block_medium_and_above' | 'block_only_high',
@@ -82,11 +82,9 @@ async function generateArticleImageLogic(
     default:
       console.warn(`Model ${modelIdentifier} not explicitly handled for custom params, using generic prompt approach.`);
       break;
-  }
-
-  try {
+  }  try {
     const output = await replicate.run(
-      modelIdentifier as `${string}/${string}:${string}`,
+      modelIdentifier as `${string}/${string}` | `${string}/${string}:${string}`,
       { input: modelInput }
     ) as (string[] | string);
 
