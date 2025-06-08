@@ -22,12 +22,11 @@ export default function KvitkaPoloninyPage() {
       return new Promise<void>((resolve, reject) => {
         // Check if script already exists
         let existingScript = document.getElementById(kvitkaWidgetScriptId) as HTMLScriptElement | null;
-        
-        if (!existingScript) {
+          if (!existingScript) {
           console.log('Creating new ElevenLabs script for Kvitka Poloniny');
           existingScript = document.createElement('script');
           existingScript.id = kvitkaWidgetScriptId;
-          existingScript.src = 'https://elevenlabs.io/convai-widget/index.js';
+          existingScript.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
           existingScript.async = true;
           existingScript.onload = () => {
             console.log('Kvitka widget script loaded successfully');

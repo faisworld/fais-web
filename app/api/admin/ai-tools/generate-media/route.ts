@@ -62,13 +62,7 @@ export async function POST(request: NextRequest) {
       modelIdentifier, 
       prompt, 
       negativePrompt,
-      width,
-      height,
       aspectRatio,
-      modelVariant,
-      numInferenceSteps,
-      guidanceScale,
-      pagGuidanceScale,
       seed,
       cameraMovements, 
       imageUrl,
@@ -120,10 +114,6 @@ export async function POST(request: NextRequest) {
         negative_prompt?: string;
         width?: number;
         height?: number;
-        model_variant?: string;
-        num_inference_steps?: number;
-        guidance_scale?: number;
-        pag_guidance_scale?: number;
         seed?: number;
         camera_movements?: string;
         image?: string;
@@ -144,15 +134,7 @@ export async function POST(request: NextRequest) {
         prompt,
       },
     };    // Add model-specific parameters based on the model type
-    if (modelIdentifier === 'nvidia/sana') {
-      // Nvidia Sana specific parameters
-      if (negativePrompt) requestBody.input.negative_prompt = negativePrompt;
-      if (width) requestBody.input.width = width;
-      if (height) requestBody.input.height = height;
-      if (modelVariant) requestBody.input.model_variant = modelVariant;
-      if (numInferenceSteps) requestBody.input.num_inference_steps = numInferenceSteps;      if (guidanceScale) requestBody.input.guidance_scale = guidanceScale;
-      if (pagGuidanceScale) requestBody.input.pag_guidance_scale = pagGuidanceScale;
-      if (seed) requestBody.input.seed = seed;    } else if (modelIdentifier === 'stability-ai/sdxl') {
+    if (modelIdentifier === 'stability-ai/sdxl') {
       // Stability AI SDXL specific parameters
       if (negativePrompt) requestBody.input.negative_prompt = negativePrompt;
       if (aspect_ratio) {

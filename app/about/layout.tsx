@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About Us | Leading Enterprise AI & Blockchain Development Company",
-  description: "Learn about Fantastic AI Studio, a pioneering technology company transforming businesses through AI and blockchain innovation. Founded by industry experts, serving Fortune 500 clients across USA, UK, Germany since 2020.",
+  description: "Learn about Fantastic AI Studio, a pioneering technology company transforming businesses through AI and blockchain innovation. Founded by industry experts, serving Fortune 500 clients across USA, UK, Germany since 2023.",
   keywords: [
     // Primary keywords
     "about Fantastic AI Studio", "AI blockchain company", "enterprise technology company", "AI development team",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "AI innovation company", "blockchain technology pioneers", "enterprise digital solutions", "technology transformation experts"
   ].join(", "),  openGraph: {
     title: "About Us | Leading Enterprise AI & Blockchain Development Company",
-    description: "Discover the story behind Fantastic AI Studio, a pioneering technology company transforming businesses through AI and blockchain innovation since 2020.",
+    description: "Discover the story behind Fantastic AI Studio, a pioneering technology company transforming businesses through AI and blockchain innovation since 2023.",
     url: "https://fais.world/about",
     type: "website",
     images: [

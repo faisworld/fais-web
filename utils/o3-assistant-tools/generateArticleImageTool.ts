@@ -22,7 +22,7 @@ export const GenerateArticleImageParameters = z.object({
     .describe('Safety filter level for Google Imagen 4. block_low_and_above is strictest, block_only_high is most permissive.'),
 });
 
-// Helper to round to nearest multiple of 64, required by some models like nvidia/sana
+// Helper to round to nearest multiple of 64, required by some models
 const roundTo64 = (n: number) => Math.round(n / 64) * 64;
 
 interface ModelInput {

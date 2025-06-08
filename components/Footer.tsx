@@ -1,5 +1,6 @@
 import Logo from './ui/Logo';
 import Link from 'next/link';
+import { Twitter, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -15,8 +16,7 @@ export default function Footer() {
             <li><Link href="/contact" aria-label="Get in touch with us">contacts</Link></li>
           </ul>
         </nav>
-      </div>
-      <div className="footer-column">
+      </div>      <div className="footer-column">
         <h3>other resources:</h3>
         <ul>
           <li><Link href="/blog/" aria-label="Read our AI and blockchain insights">ai and blockchain blog</Link></li>
@@ -24,6 +24,35 @@ export default function Footer() {
           <li><Link href="/ai-services/" aria-label="Explore our AI development services">ai services</Link></li>
           <li><Link href="/blockchain-services/" aria-label="Learn about our blockchain solutions">blockchain services</Link></li>
         </ul>
+        
+        {/* Social Media Icons */}
+        <div className="footer-social-media mt-4">
+          <h4 className="text-sm font-medium mb-3 text-gray-700">follow us:</h4>
+          <div className="flex space-x-3">
+            {process.env.NEXT_PUBLIC_TWITTER_URL && (
+              <Link 
+                href={process.env.NEXT_PUBLIC_TWITTER_URL} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow us on Twitter/X"
+                className="footer-social-icon"
+              >
+                <Twitter size={20} />
+              </Link>
+            )}
+            {process.env.NEXT_PUBLIC_LINKEDIN_URL && (
+              <Link 
+                href={process.env.NEXT_PUBLIC_LINKEDIN_URL} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Connect with us on LinkedIn"
+                className="footer-social-icon"
+              >
+                <Linkedin size={20} />
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
       <div className="footer-column">
         <h3>contacts:</h3>

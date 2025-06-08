@@ -22,6 +22,18 @@ export interface BlogPost {
  */
 export const blogPosts: BlogPost[] = [
   {
+    id: "1b7f607b",
+    slug: "nft-marketplaces-and-digital-ownership",
+    title: "NFT marketplaces and digital ownership",
+    excerpt: "Introduction...",
+    date: "June 8, 2025",
+    readTime: "6 min read",
+    category: "blockchain",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    featured: false,
+    author: "Fantastic AI",
+    authorImage: "author-fantastic"
+  },{
     id: "40e49042",
     slug: "smart-contracts-in-real-estate",
     title: "Smart contracts in real estate",

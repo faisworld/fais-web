@@ -30,28 +30,69 @@ const siteUrls = [
   { url: '/projects', changefreq: 'weekly', priority: 0.8 },
   { url: '/blog', changefreq: 'daily', priority: 0.9 },
   { url: '/contact', changefreq: 'monthly', priority: 0.8 },
-  
-  // Legal pages
+    // Legal pages
   { url: '/privacy-policy', changefreq: 'yearly', priority: 0.5 },
-  { url: '/terms-of-service', changefreq: 'yearly', priority: 0.5 },
+  { url: '/terms-of-use', changefreq: 'yearly', priority: 0.5 },
   
   // Other pages
-  { url: '/instant-id', changefreq: 'monthly', priority: 0.7 },
   { url: '/kvitka-poloniny', changefreq: 'monthly', priority: 0.7 },
   { url: '/sitemap-html', changefreq: 'monthly', priority: 0.5 },
 ];
 
-// Blog posts with their publish dates
-const blogPosts = [
-  { url: '/blog/large-language-models-2025', date: '2025-05-08', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/blockchain-for-supply-chain', date: '2025-05-05', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/multimodal-ai-applications', date: '2025-05-03', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/defi-trends-2025', date: '2025-04-29', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/ai-governance-frameworks', date: '2025-04-26', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/nft-business-applications', date: '2025-04-24', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/ai-assisted-development', date: '2025-04-21', changefreq: 'monthly', priority: 0.7 },
-  { url: '/blog/tokenization-real-world-assets', date: '2025-04-18', changefreq: 'monthly', priority: 0.7 },
-];
+// Import blog data to get actual blog posts
+
+// Function to get actual blog posts from blog-data.ts
+const getBlogPosts = () => {
+  try {
+    // Read the blog-data.ts file
+    const blogDataPath = path.join(process.cwd(), 'app', 'blog', 'blog-data.ts');
+    const blogDataContent = fs.readFileSync(blogDataPath, 'utf8');
+    
+    // Extract blog posts array from the TypeScript file
+    // This is a simple regex extraction - in production you might want to use a proper TypeScript parser
+    const blogPostsMatch = blogDataContent.match(/export const blogPosts: BlogPost\[\] = \[([\s\S]*?)\];/);
+    if (!blogPostsMatch) {
+      console.log('No blog posts found in blog-data.ts');
+      return [];
+    }
+    
+    // Extract slug and date from each blog post
+    const blogPostsText = blogPostsMatch[1];
+    const slugMatches = [...blogPostsText.matchAll(/slug: ["']([^"']+)["']/g)];
+    const dateMatches = [...blogPostsText.matchAll(/date: ["']([^"']+)["']/g)];
+    
+    const blogPosts = [];
+    for (let i = 0; i < slugMatches.length && i < dateMatches.length; i++) {
+      const slug = slugMatches[i][1];
+      const dateStr = dateMatches[i][1];
+      
+      // Convert date format from "June 8, 2025" to "2025-06-08"
+      let formattedDate = today; // fallback to today
+      try {
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+          formattedDate = date.toISOString().split('T')[0];
+        }      } catch {
+        console.warn(`Could not parse date: ${dateStr}`);
+      }
+      
+      blogPosts.push({
+        url: `/blog/${slug}`,
+        date: formattedDate,
+        changefreq: 'monthly',
+        priority: 0.7
+      });
+    }
+    
+    console.log(`Found ${blogPosts.length} actual blog posts`);
+    return blogPosts;
+  } catch (error) {
+    console.error('Error reading blog posts:', error);
+    return [];
+  }
+};
+
+const blogPosts = getBlogPosts();
 
 // Generate sitemap XML
 const generateSitemap = () => {

@@ -27,7 +27,7 @@ export default function KvitkaPoloninyPage() {
           console.log('Creating new ElevenLabs script for Kvitka Poloniny');
           existingScript = document.createElement('script');
           existingScript.id = kvitkaWidgetScriptId;
-          existingScript.src = 'https://elevenlabs.io/convai-widget/index.js';
+          existingScript.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
           existingScript.async = true;
           existingScript.onload = () => {
             console.log('Kvitka widget script loaded successfully');

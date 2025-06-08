@@ -157,7 +157,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       '@type': 'Service',
       description: 'Enterprise AI and Blockchain Development Services',
       areaServed: ['US', 'UK', 'DE'],
-      availabilityStarts: '2020-01-01'
+      availabilityStarts: '2023-01-01'
     }
   };
   return (
