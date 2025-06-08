@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { blogPosts } from "../blog-data";
 import { AuthorImage, BlogCoverImage, RelatedPostImage } from "../components/client-images";
 import { getMarkdownPost } from "@/utils/markdown";
+import { ArticleStructuredData, BreadcrumbStructuredData } from "@/components/structured-data";
 
 type Props = {
   params: {
@@ -53,10 +54,29 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
   }
   
   // Try to get markdown content for dynamically generated posts
-  const markdownPost = await getMarkdownPost(slug);
-  
-  return (
-    <div className="container mx-auto px-4 pt-20 pb-8 max-w-4xl"> {/* Changed py-8 to pt-20 pb-8 */}
+  const markdownPost = await getMarkdownPost(slug);    return (
+    <>
+      <ArticleStructuredData
+        article={{
+          title: post.title,
+          description: post.excerpt,
+          image: post.coverImage,
+          author: post.author || "Fantastic AI Studio",
+          publishedDate: new Date(post.date).toISOString(),
+          modifiedDate: new Date(post.date).toISOString(),
+          url: `https://fais.world/blog/${post.slug}`,
+          category: post.category,
+          keywords: [post.category, "AI", "technology", "blockchain", "business"].join(", ")
+        }}
+      />
+      <BreadcrumbStructuredData
+        breadcrumbs={[
+          { name: "Home", url: "https://fais.world" },
+          { name: "Blog", url: "https://fais.world/blog" },
+          { name: post.title, url: `https://fais.world/blog/${post.slug}` }
+        ]}
+      />
+      <div className="container mx-auto px-4 pt-20 pb-8 max-w-4xl"> {/* Changed py-8 to pt-20 pb-8 */}
       {/* Back link */}
       <Link 
         href="/blog" 
@@ -158,11 +178,11 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
                     View all blog posts
                   </Link>
                 </div>
-              );
-            }
+              );            }
           })()}
         </div>
       </div>
     </div>
+    </>
   );
 }

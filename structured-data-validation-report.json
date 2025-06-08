@@ -1,0 +1,263 @@
+{
+  "summary": {
+    "totalPages": 6,
+    "successfulPages": 6,
+    "pagesWithWarnings": 0,
+    "failedPages": 0,
+    "timestamp": "2025-06-08T18:32:55.790Z"
+  },
+  "results": [
+    {
+      "url": "/",
+      "name": "Homepage",
+      "expectedSchemas": [
+        "Organization",
+        "WebSite"
+      ],
+      "foundSchemas": [
+        "Organization",
+        "WebSite",
+        "Service",
+        "ItemList"
+      ],
+      "validationResults": [
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "WebSite",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "Service",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "ItemList",
+          "issues": [],
+          "valid": true
+        }
+      ],
+      "issues": [],
+      "status": "success"
+    },
+    {
+      "url": "/services",
+      "name": "Services Page",
+      "expectedSchemas": [
+        "ProfessionalService",
+        "BreadcrumbList"
+      ],
+      "foundSchemas": [
+        "Organization",
+        "WebSite",
+        "Service",
+        "BreadcrumbList",
+        "ProfessionalService",
+        "ProfessionalService"
+      ],
+      "validationResults": [
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "WebSite",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "Service",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "BreadcrumbList",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "ProfessionalService",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "ProfessionalService",
+          "issues": [],
+          "valid": true
+        }
+      ],
+      "issues": [],
+      "status": "success"
+    },
+    {
+      "url": "/ai-services",
+      "name": "AI Services Page",
+      "expectedSchemas": [
+        "ProfessionalService",
+        "BreadcrumbList"
+      ],
+      "foundSchemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList",
+        "ProfessionalService"
+      ],
+      "validationResults": [
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "WebSite",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "BreadcrumbList",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "ProfessionalService",
+          "issues": [],
+          "valid": true
+        }
+      ],
+      "issues": [],
+      "status": "success"
+    },
+    {
+      "url": "/blockchain-services",
+      "name": "Blockchain Services Page",
+      "expectedSchemas": [
+        "ProfessionalService",
+        "BreadcrumbList"
+      ],
+      "foundSchemas": [
+        "Organization",
+        "WebSite",
+        "ProfessionalService",
+        "BreadcrumbList"
+      ],
+      "validationResults": [
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "WebSite",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "ProfessionalService",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "BreadcrumbList",
+          "issues": [],
+          "valid": true
+        }
+      ],
+      "issues": [],
+      "status": "success"
+    },
+    {
+      "url": "/contact",
+      "name": "Contact Page",
+      "expectedSchemas": [
+        "FAQPage",
+        "BreadcrumbList"
+      ],
+      "foundSchemas": [
+        "Organization",
+        "Organization",
+        "WebSite",
+        "FAQPage",
+        "BreadcrumbList"
+      ],
+      "validationResults": [
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "WebSite",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "FAQPage",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "BreadcrumbList",
+          "issues": [],
+          "valid": true
+        }
+      ],
+      "issues": [],
+      "status": "success"
+    },
+    {
+      "url": "/blog/latest-advancements-in-large-language-models-2025",
+      "name": "Blog Post Example",
+      "expectedSchemas": [
+        "Article",
+        "BreadcrumbList"
+      ],
+      "foundSchemas": [
+        "Organization",
+        "WebSite",
+        "Blog",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "validationResults": [
+        {
+          "type": "Organization",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "WebSite",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "Blog",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "Article",
+          "issues": [],
+          "valid": true
+        },
+        {
+          "type": "BreadcrumbList",
+          "issues": [],
+          "valid": true
+        }
+      ],
+      "issues": [],
+      "status": "success"
+    }
+  ]
+}

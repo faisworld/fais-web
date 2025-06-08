@@ -111,11 +111,11 @@ export const metadata: Metadata = {
 }
 
 // Define the main Home component
-export default function Home() {
-  // Service-specific structured data for the home page
+export default function Home() {  // Service-specific structured data for the home page
   const servicesStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'Service',
+    name: 'Enterprise AI and Blockchain Development Services',
     serviceType: 'AI and Blockchain Development',
     provider: {
       '@type': 'Organization',

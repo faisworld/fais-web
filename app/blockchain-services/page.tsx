@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { ServiceStructuredData, BreadcrumbStructuredData } from "@/components/structured-data";
 
 export const metadata: Metadata = {
   title: "Enterprise Blockchain Development Services | Smart Contracts & DeFi Solutions",
@@ -59,7 +60,23 @@ export const metadata: Metadata = {
 
 export default function BlockchainServicesPage() {
   return (
-    <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
+    <>      <ServiceStructuredData
+        service={{
+          name: "Enterprise Blockchain Development Services",
+          description: "Leading blockchain development company specializing in smart contracts, DeFi platforms, NFT development, tokenization, and enterprise blockchain solutions.",
+          serviceType: "Blockchain Development",
+          url: "/blockchain-services",
+          areaServed: ["United States", "United Kingdom", "Germany", "Worldwide"]
+        }}
+      />
+      <BreadcrumbStructuredData
+        breadcrumbs={[
+          { name: "Home", url: "https://fais.world" },
+          { name: "Services", url: "https://fais.world/services" },
+          { name: "Blockchain Services", url: "https://fais.world/blockchain-services" }
+        ]}
+      />
+      <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
       {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />
@@ -257,9 +274,9 @@ export default function BlockchainServicesPage() {
             >
               explore all services
             </Link>
-          </div>
-        </section>
+          </div>        </section>
       </main>
     </div>
+    </>
   );
 }

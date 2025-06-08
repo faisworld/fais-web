@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
+import { ServiceStructuredData, BreadcrumbStructuredData } from '@/components/structured-data';
 
 export const metadata: Metadata = {
   title: "Enterprise AI Development Services | Custom AI Solutions & Machine Learning",
@@ -57,8 +58,26 @@ export const metadata: Metadata = {
 };
 
 export default function AIServicesPage() {
+  const aiServiceData = {
+    name: "Enterprise AI Development Services",
+    description: "Transform your business with enterprise AI development services. Custom machine learning models, predictive analytics, NLP, computer vision, AI chatbots. Serving Fortune 500 companies across USA, UK, Germany.",
+    serviceType: "Artificial Intelligence Development",
+    areaServed: ["United States", "United Kingdom", "Germany", "Europe", "North America"],
+    url: "/ai-services"
+  };
+
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Services", url: "/services" },
+    { name: "AI Services", url: "/ai-services" }
+  ];
+
   return (
-    <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
+    <>      {/* Structured Data */}
+      <BreadcrumbStructuredData breadcrumbs={breadcrumbs} />
+      <ServiceStructuredData service={aiServiceData} />
+      
+      <div className="relative overflow-x-clip"> {/* Removed pt-20 */}
       {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] rounded-full bg-neutral-200 opacity-40 blur-3xl" />
@@ -311,9 +330,9 @@ export default function AIServicesPage() {
             >
               explore all services
             </Link>
-          </div>
-        </section>
+          </div>        </section>
       </main>
     </div>
+    </>
   );
 }

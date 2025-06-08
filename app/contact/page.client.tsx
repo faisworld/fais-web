@@ -3,6 +3,7 @@ import MailerWidget from "@/components/ui/MailerWidget";
 import { useEffect } from "react";
 import Link from "next/link";
 import { OrganizationStructuredData } from "@/components/ui/StructuredData";
+import { FAQStructuredData, BreadcrumbStructuredData } from "@/components/structured-data";
 import { getBlobImage } from "@/utils/media-utils";
 import Button from "@/components/ui/Button";
 import { loadRecaptchaScript } from "@/utils/recaptcha";
@@ -41,13 +42,42 @@ export default function ContactClientPage() {
                     addressLocality: "Kyiv",
                     postalCode: "03150",
                     addressCountry: "Ukraine"
-                }}
-                contactPoint={{
+                }}                contactPoint={{
                     telephone: "+380 95 615 1756",
                     contactType: "customer service",
                     email: "info@fais.world",
                     availableLanguage: ["English", "Ukrainian"]
                 }}
+            />
+            
+            {/* FAQ Structured Data */}
+            <FAQStructuredData
+                faqs={[
+                    {
+                        question: "What services do you offer?",
+                        answer: "We specialize in artificial intelligence and blockchain solutions, including custom AI development, enterprise blockchain implementation, smart contracts, and end-to-end digital transformation services."
+                    },
+                    {
+                        question: "How quickly can you respond to inquiries?",
+                        answer: "We typically respond to all inquiries within 24 hours during business days. For urgent matters, please call our direct line."
+                    },
+                    {
+                        question: "Do you offer remote consultations?",
+                        answer: "Yes, we offer remote consultations via video conferencing and can work with clients globally. Our team can adapt to your preferred communication methods."
+                    },
+                    {
+                        question: "How do we start a project with you?",
+                        answer: "Starting a project is easy - just reach out through our contact form or direct email, and we'll schedule an initial consultation to discuss your requirements and develop a tailored proposal."
+                    }
+                ]}
+            />
+            
+            {/* Breadcrumb Structured Data */}
+            <BreadcrumbStructuredData
+                breadcrumbs={[
+                    { name: "Home", url: "https://fais.world" },
+                    { name: "Contact", url: "https://fais.world/contact" }
+                ]}
             />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-white text-gray-800" itemScope itemType="https://schema.org/ContactPage">

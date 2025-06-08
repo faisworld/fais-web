@@ -4,10 +4,39 @@ import Link from 'next/link';
 import './services-video.css';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { getBlobImage } from '@/utils/media-utils';
+import { ServiceStructuredData, BreadcrumbStructuredData } from '@/components/structured-data';
 
 export default function ServicesPage() {
+  const servicesData = [
+    {
+      name: "AI Solutions",
+      description: "Leverage advanced AI to transform your operations, drive innovation, and gain actionable insights. Our AI services include predictive analytics, NLP, computer vision, and custom machine learning models.",
+      serviceType: "Artificial Intelligence Development",
+      areaServed: ["United States", "United Kingdom", "Germany", "Europe"],
+      url: "/ai-services"
+    },
+    {
+      name: "Blockchain & Web3 Solutions", 
+      description: "Harness the power of decentralized technology to build secure, transparent, and future-ready applications. Our blockchain services include smart contracts, DApps, and enterprise integration.",
+      serviceType: "Blockchain Development",
+      areaServed: ["United States", "United Kingdom", "Germany", "Europe"],
+      url: "/blockchain-services"
+    }
+  ];
+
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Services", url: "/services" }
+  ];
+
   return (    
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative overflow-x-clip">
+      {/* Structured Data */}
+      <BreadcrumbStructuredData breadcrumbs={breadcrumbs} />
+      {servicesData.map((service, index) => (
+        <ServiceStructuredData key={index} service={service} />
+      ))}
+
       {/* Subtle background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         {/* Left background shape - positioned wider to align with logo */}

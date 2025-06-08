@@ -5,6 +5,7 @@ import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
 import { Toaster } from 'react-hot-toast'
+import { WebsiteStructuredData } from '@/components/structured-data'
 
 import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -159,16 +160,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       areaServed: ['US', 'UK', 'DE'],
       availabilityStarts: '2023-01-01'
     }
-  };
-  return (
+  };  return (
     <html lang='en' className={inter.className}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-      </head>
-      <body className="antialiased"><Providers>
+      </head>      <body className="antialiased">
+        <WebsiteStructuredData
+          website={{
+            name: "Fantastic AI Studio",
+            url: "https://fais.world",
+            description: "Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms.",
+            searchUrl: "https://fais.world/search?q={search_term_string}"
+          }}
+        />
+        <Providers>
           <Header />
           <DynamicBreadcrumbs darkBg={false} />
           <main className="mt-20">{children}</main>
@@ -184,10 +192,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: '#fff',
               },
             }}
-          />
-
-          {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
-          <ConditionalWidgetWrapper agentId='GkOKedIUAelQwYORYU3j' />
+          />          {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
+          <ConditionalWidgetWrapper agentId={process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || 'GkOKedIUAelQwYORYU3j'} />
           
           {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>          <SpeedInsights />
