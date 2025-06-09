@@ -114,39 +114,27 @@ const validateKnowledgeBaseIntegration = async () => {
     console.log(chalk.blue('\n🔧 Checking Widget Configuration...'))
     
     try {
-      const widgetPath = 'components/ui/ElevenLabsWidget.tsx'
       const layoutPath = 'app/layout.tsx'
-      const wrapperPath = 'components/ui/ConditionalWidgetWrapper.tsx'
-      const widgetWrapperPath = 'components/ui/ElevenLabsWidgetWrapper.tsx'
       
-      if (fs.existsSync(widgetPath) && fs.existsSync(layoutPath)) {
-        const widgetContent = fs.readFileSync(widgetPath, 'utf8')
+      if (fs.existsSync(layoutPath)) {
         const layoutContent = fs.readFileSync(layoutPath, 'utf8')
         
-        // Check for correct agent ID in widget
-        const hasCorrectAgentId = widgetContent.includes('GkOKedIUAelQwYORYU3j')
+        // Check for new ElevenLabs widget implementation
+        const hasWidgetElement = layoutContent.includes('elevenlabs-convai')
+        const hasCorrectAgentId = layoutContent.includes('agent-id="GkOKedIUAelQwYORYU3j"')
+        const hasWidgetScript = layoutContent.includes('unpkg.com/@elevenlabs/convai-widget-embed')
         
-        // Check for widget integration in layout (direct or through wrapper)
-        const hasDirectIntegration = layoutContent.includes('ElevenLabsWidget')
-        const hasWrapperIntegration = layoutContent.includes('ConditionalWidgetWrapper')
-        
-        // Check wrapper files if using wrapper pattern
-        let wrapperConfigured = false
-        if (hasWrapperIntegration && fs.existsSync(wrapperPath) && fs.existsSync(widgetWrapperPath)) {
-          const wrapperContent = fs.readFileSync(wrapperPath, 'utf8')
-          const widgetWrapperContent = fs.readFileSync(widgetWrapperPath, 'utf8')
-          wrapperConfigured = wrapperContent.includes('ElevenLabsWidgetWrapper') && 
-                            widgetWrapperContent.includes('ElevenLabsWidget')
-        }
-        
-        if (hasCorrectAgentId && (hasDirectIntegration || (hasWrapperIntegration && wrapperConfigured))) {
+        if (hasWidgetElement && hasCorrectAgentId && hasWidgetScript) {
           validationResults.widgetConfiguration = true
-          console.log(chalk.green('✅ Widget Configuration: PROPERLY CONFIGURED'))
+          console.log(chalk.green('✅ Widget Configuration: PROPERLY CONFIGURED (New Widget)'))
         } else {
           console.log(chalk.red('❌ Widget Configuration: INCORRECT SETUP'))
+          if (!hasWidgetElement) console.log(chalk.yellow('  - Missing widget element'))
+          if (!hasCorrectAgentId) console.log(chalk.yellow('  - Missing or incorrect agent ID'))
+          if (!hasWidgetScript) console.log(chalk.yellow('  - Missing widget script'))
         }
       } else {
-        console.log(chalk.yellow('⚠️ Widget Configuration: FILES NOT FOUND'))
+        console.log(chalk.yellow('⚠️ Widget Configuration: LAYOUT FILE NOT FOUND'))
       }} catch (err) {
       console.log(chalk.yellow('⚠️ Widget Configuration: UNABLE TO CHECK'))
       console.log(err.message)

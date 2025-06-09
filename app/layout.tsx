@@ -7,7 +7,6 @@ import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
 import { Toaster } from 'react-hot-toast'
 import { WebsiteStructuredData } from '@/components/structured-data'
 
-import ConditionalWidgetWrapper from '@/components/ui/ConditionalWidgetWrapper'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from './providers'
@@ -192,8 +191,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: '#fff',
               },
             }}
-          />          {/* ElevenLabs Convai Widget - Client-only component with conditional rendering */}
-          <ConditionalWidgetWrapper agentId={process.env.NEXT_PUBLIC_ELEVENLABS_AGENT_ID || 'GkOKedIUAelQwYORYU3j'} />
+          />          {/* ElevenLabs Convai Widget - Direct implementation */}
+          <div dangerouslySetInnerHTML={{
+            __html: `<elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>`
+          }} />
+          <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
           
           {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>          <SpeedInsights />
