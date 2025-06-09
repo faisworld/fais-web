@@ -347,12 +347,17 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
             </div>
           )}
         </div>
-      )}
-
-      {selectedItems.size > 0 && (
+      )}        {selectedItems.size > 0 && (
         <div className='flex justify-between items-center mb-4 p-3 bg-gray-50 rounded-md border border-gray-200'>
           <div className='flex items-center'>
-            <input type='checkbox' checked className='mr-2' readOnly />
+            <input 
+              type='checkbox' 
+              id='select-all-items'
+              name='selectAllItems'
+              checked 
+              className='mr-2' 
+              readOnly 
+            />
             <p className='text-sm font-medium'>
               {selectedItems.size} items selected
             </p>

@@ -1,17 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,  // Temporarily ignore build errors to allow deployment
-  // TODO: Fix all TypeScript and ESLint errors and revert this
+  reactStrictMode: true,
+  
+  // Temporarily ignore build errors to allow deployment
   typescript: {
-    // Temporarily ignore TypeScript errors during build
     ignoreBuildErrors: true,
   },
   eslint: {
-    // Temporarily ignore ESLint errors during build
     ignoreDuringBuilds: true,
   },
-  // Necessary for Vercel deployment
-  output: "standalone",
+  
+  // Optimize for faster builds and Vercel deployment
+  poweredByHeader: false,
+  
+  // Performance optimizations for faster builds
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
   images: {
     remotePatterns: [
       {
@@ -19,7 +25,8 @@ const nextConfig = {
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
-      },      {
+      },
+      {
         protocol: 'https',
         hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
         port: '',
@@ -33,19 +40,18 @@ const nextConfig = {
       },
     ],
     domains: [
-      // Vercel Blob domains
       'mzcje1drftvqhdku.public.blob.vercel-storage.com',
       'vercel-storage.com',
     ],
-    unoptimized: true, // For Vercel Blob Storage images
-    // Use unoptimized images to avoid issues with Vercel's image optimization
-    // This is necessary for Vercel Blob Storage images
-    // See: https://vercel.com/docs/storage/vercel-blob#images
+    formats: ['image/webp', 'image/avif'],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  serverExternalPackages: ['sharp', '@neondatabase/serverless'],
-  // Increase the timeout for builds
+    // Optimize build performance
   experimental: {
     cpus: 4,
+    optimizePackageImports: ['lucide-react'],
   },
 };
 

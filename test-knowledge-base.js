@@ -5,7 +5,7 @@ const testKnowledgeBase = async () => {
   try {
     console.log('🔍 Testing ElevenLabs Knowledge Base Endpoint...')
     
-    const response = await fetch('http://localhost:3003/api/knowledge-base/elevenlabs')
+    const response = await fetch('http://localhost:3000/api/knowledge-base/elevenlabs')
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)

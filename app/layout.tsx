@@ -1,6 +1,5 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
@@ -11,9 +10,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from './providers'
 
-
-
-const inter = Inter({ subsets: ['latin'] })
+// Use system fonts to avoid Google Fonts timeout issues during build
+const fontClassName = 'font-sans'
 
 // Define Twitter/OG image URL using Blob storage
 const twitterImageUrl =
@@ -160,7 +158,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       availabilityStarts: '2023-01-01'
     }
   };  return (
-    <html lang='en' className={inter.className}>
+    <html lang='en' className={fontClassName}>
       <head>
         <script
           type="application/ld+json"
@@ -191,11 +189,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: '#fff',
               },
             }}
-          />          {/* ElevenLabs Convai Widget - Direct implementation */}
+          />          {/* ElevenLabs Convai Widget - Standalone implementation */}
           <div dangerouslySetInnerHTML={{
             __html: `<elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>`
           }} />
-          <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+          <script 
+            src="https://unpkg.com/@elevenlabs/convai-widget-embed" 
+            async 
+            type="text/javascript"
+          ></script>
           
           {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>          <SpeedInsights />

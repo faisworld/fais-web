@@ -23,12 +23,11 @@ const validateKnowledgeBaseIntegration = async () => {
     technicalSpecs: false,
     overall: false
   }
-
   try {
     // Test 1: Knowledge Base Endpoint Accessibility
     console.log(chalk.blue('📡 Testing Knowledge Base Endpoint...'))
     
-    const response = await fetch('http://localhost:3003/api/knowledge-base/elevenlabs')
+    const response = await fetch('http://localhost:3000/api/knowledge-base/elevenlabs')
     
     if (response.ok) {
       validationResults.knowledgeBaseEndpoint = true
