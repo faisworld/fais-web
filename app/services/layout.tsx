@@ -208,15 +208,7 @@ export default function ServicesLayout({
                     "description": "Strategic AI and blockchain consulting for digital transformation"
                   }
                 }
-              ]
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.9",
-              "reviewCount": "127",
-              "bestRating": "5",
-              "worstRating": "1"
-            },
+              ]            },
             "inLanguage": "en-US",
             "breadcrumb": {
               "@type": "BreadcrumbList",
