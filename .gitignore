@@ -33,6 +33,10 @@ yarn-error.log*
 .env*
 .env.local
 
+# environment setup scripts with secrets
+setup-vercel-env*.sh
+setup-vercel-env*.ps1
+
 
 # typescript
 *.tsbuildinfo
