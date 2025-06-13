@@ -25,12 +25,12 @@ export default function VideoPlayer({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const sources = Array.isArray(src) ? src : [src];
-
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const handleLoadedData = () => {
+      console.log('Video loaded successfully');
       setIsLoaded(true);
       if (autoPlay && muted) {
         // Ensure autoplay works by explicitly calling play
@@ -38,19 +38,35 @@ export default function VideoPlayer({
           console.warn('Autoplay failed:', error);
         });
       }
-    };
-
-    const handleError = () => {
+    };    const handleError = (e: Event) => {
+      console.error('Video loading error:', e);
       setHasError(true);
       setIsLoaded(true);
     };
 
+    const handleCanPlay = () => {
+      console.log('Video can play');
+      setIsLoaded(true);
+    };
+
+    // Add multiple event listeners for better browser compatibility
     video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('error', handleError);
+
+    // Fallback timeout in case events don't fire (common in some browsers)
+    const fallbackTimeout = setTimeout(() => {
+      if (!video.paused || video.readyState >= 2) {
+        console.log('Video loaded (fallback timeout)');
+        setIsLoaded(true);
+      }
+    }, 3000);
 
     return () => {
       video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleError);
+      clearTimeout(fallbackTimeout);
     };
   }, [autoPlay, muted]);
 
@@ -64,8 +80,7 @@ export default function VideoPlayer({
           </div>
         </div>
       )}
-      
-      <video
+        <video
         ref={videoRef}
         poster={poster}
         autoPlay={autoPlay}
@@ -73,11 +88,12 @@ export default function VideoPlayer({
         muted={muted}
         controls={controls}
         playsInline
-        preload="auto"
+        preload="metadata"
         className={`w-full h-full object-cover transition-opacity duration-300 ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ display: isLoaded ? 'block' : 'none' }}
+        aria-label="Services overview video"
       >
         {sources.map((source, idx) => (
           <source key={idx} src={source} type="video/mp4" />

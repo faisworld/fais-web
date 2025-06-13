@@ -52,14 +52,14 @@ export default function ServicesPage() {
               professional ai & blockchain services
             </h1>
             <p className="text-xl md:text-2xl mb-10 text-neutral-700 max-w-3xl mx-auto">
-              unlock the full potential of your business with innovative, secure, and scalable solutions powered by artificial intelligence and blockchain technology.            </p>            {/* Video Display Area */}
-            <VideoPlayer 
+              unlock the full potential of your business with innovative, secure, and scalable solutions powered by artificial intelligence and blockchain technology.            </p>            {/* Video Display Area */}            <VideoPlayer 
               src={getBlobImage('services-hero-video')}
               className="w-full aspect-video rounded-lg shadow-xl mb-8"
               controls={true}
               muted={true}
-              autoPlay={true}
+              autoPlay={false}
               loop={true}
+              poster={getBlobImage('services-og-image')}
             />
             
             <Link
