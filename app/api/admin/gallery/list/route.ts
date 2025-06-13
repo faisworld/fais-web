@@ -99,9 +99,8 @@ export async function GET(req: NextRequest) {
           .map(item => item.folder)
       )
     ) as string[];
-    
-    // Add default folders if they don't exist in the list
-    const defaultFolders = ['images', 'carousel', 'videos'];
+      // Add default folders if they don't exist in the list
+    const defaultFolders = ['images', 'images/article-images', 'carousel', 'videos'];
     for (const folder of defaultFolders) {
       if (!uniqueFolders.includes(folder)) {
         uniqueFolders.push(folder);

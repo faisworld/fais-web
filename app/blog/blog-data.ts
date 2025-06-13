@@ -29,7 +29,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "6 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/selected-premium-nft-marketplaces-and-digital-ownership-google-imagen-4-1749819381730.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-nft-marketplaces-and-digital-ownership-google-imagen-4-1749819381730.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -41,7 +41,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/selected-premium-smart-contracts-in-real-estate-google-imagen-4-1749819384637.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-smart-contracts-in-real-estate-google-imagen-4-1749819384637.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -53,7 +53,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/selected-premium-decentralized-finance-defi-latest-developments-black-forest-labs-flux-1-1-pro-1749819387733.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-decentralized-finance-defi-latest-developments-black-forest-labs-flux-1-1-pro-1749819387733.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"

@@ -36,13 +36,19 @@ export default function AdminPage() {
       icon: <FiFileText size={24} />,
       href: "/admin/ai-tools/article-generation",
       color: "from-amber-500 to-orange-600"
-    },
-    {
+    },    {
       title: "Instant ID Tool",
       description: "Generate AI images of people in different styles",
       icon: <FiUser size={24} />,
       href: "/admin/instant-id",
       color: "from-rose-500 to-pink-600"
+    },
+    {
+      title: "O3 Website Assistant",
+      description: "AI-powered website analysis and issue detection with auto-fix capabilities",
+      icon: <FiCpu size={24} />,
+      href: "/admin/ai-tools/o3-website-assistant",
+      color: "from-violet-500 to-purple-600"
     },
   ]
   

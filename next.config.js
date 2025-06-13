@@ -1,22 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  
-  // Temporarily ignore build errors to allow deployment
+  // Temporarily disable ESLint to focus on TypeScript errors and runtime issues
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
-  
-  // Optimize for faster builds and Vercel deployment
-  poweredByHeader: false,
-  
-  // Performance optimizations for faster builds
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
+  // Necessary for Vercel deployment
+  output: "standalone",
   images: {
     remotePatterns: [
       {
@@ -24,29 +17,33 @@ const nextConfig = {
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
+      },      {
+        protocol: 'https',
+        hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
+        port: '',
+        pathname: '/images/**',
       },
       {
         protocol: 'https',
         hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
         port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'vercel-storage.com',
-        port: '',
-        pathname: '/**',
+        pathname: '/videos/**',
       },
     ],
-    formats: ['image/webp', 'image/avif'],
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: [
+      // Vercel Blob domains
+      'mzcje1drftvqhdku.public.blob.vercel-storage.com',
+      'vercel-storage.com',
+    ],
+    unoptimized: true, // For Vercel Blob Storage images
+    // Use unoptimized images to avoid issues with Vercel's image optimization
+    // This is necessary for Vercel Blob Storage images
+    // See: https://vercel.com/docs/storage/vercel-blob#images
   },
-    // Optimize build performance
+  serverExternalPackages: ['sharp', '@neondatabase/serverless'],
+  // Increase the timeout for builds
   experimental: {
     cpus: 4,
-    optimizePackageImports: ['lucide-react'],
   },
 };
 

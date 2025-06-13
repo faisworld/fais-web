@@ -58,12 +58,10 @@ const getPlaceholderUrl = (aspectRatio: string) => {
   return `https://picsum.photos/${width}/${height}?grayscale`;
 };
 
-export default function ImageGenerationPage() {
-  const [selectedModel, setSelectedModel] = useState<string>(IMAGE_MODELS[0].id);
+export default function ImageGenerationPage() {  const [selectedModel, setSelectedModel] = useState<string>(IMAGE_MODELS[0].id);
   const [prompt, setPrompt] = useState<string>("");
   const [aspectRatio, setAspectRatio] = useState<string>("1:1");
   const [negativePrompt, setNegativePrompt] = useState<string>("");
-  const [seed, setSeed] = useState<string>("");
   
   // Minimax Image 01 specific parameters
   const [numberOfImages, setNumberOfImages] = useState<number>(1);

@@ -15,58 +15,17 @@ const SITE_URL = 'https://fais.world';
 // Today's date
 const today = new Date().toISOString().split('T')[0];
 
-// Function to get actual blog posts from blog-data.ts
-const getBlogPosts = () => {
-  try {
-    // Read the blog-data.ts file
-    const blogDataPath = path.join(process.cwd(), 'app', 'blog', 'blog-data.ts');
-    const blogDataContent = fs.readFileSync(blogDataPath, 'utf8');
-    
-    // Extract blog posts array from the TypeScript file
-    const blogPostsMatch = blogDataContent.match(/export const blogPosts: BlogPost\[\] = \[([\s\S]*?)\];/);
-    if (!blogPostsMatch) {
-      console.log('No blog posts found in blog-data.ts');
-      return [];
-    }
-    
-    // Extract slug and date from each blog post
-    const blogPostsText = blogPostsMatch[1];
-    const slugMatches = [...blogPostsText.matchAll(/slug: ["']([^"']+)["']/g)];
-    const dateMatches = [...blogPostsText.matchAll(/date: ["']([^"']+)["']/g)];
-    
-    const blogPosts = [];
-    for (let i = 0; i < slugMatches.length && i < dateMatches.length; i++) {
-      const slug = slugMatches[i][1];
-      const dateStr = dateMatches[i][1];
-      
-      // Convert date format from "June 8, 2025" to "2025-06-08"
-      let formattedDate = today; // fallback to today
-      try {
-        const date = new Date(dateStr);
-        if (!isNaN(date.getTime())) {
-          formattedDate = date.toISOString().split('T')[0];
-        }
-      } catch {
-        console.warn(`Could not parse date: ${dateStr}`);
-      }
-      
-      blogPosts.push({
-        url: `/blog/${slug}`,
-        date: formattedDate,
-        changefreq: 'weekly',
-        priority: 0.8
-      });
-    }
-    
-    console.log(`Found ${blogPosts.length} blog posts from blog-data.ts`);
-    return blogPosts;
-  } catch (error) {
-    console.error('Error reading blog posts:', error);
-    return [];
-  }
-};
-
-const blogPosts = getBlogPosts();
+// Blog posts with their publish dates
+const blogPosts = [
+  { url: '/blog/large-language-models-2025', date: '2025-05-08', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/blockchain-for-supply-chain', date: '2025-05-05', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/multimodal-ai-applications', date: '2025-05-03', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/defi-trends-2025', date: '2025-04-29', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/ai-governance-frameworks', date: '2025-04-26', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/nft-business-applications', date: '2025-04-24', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/ai-assisted-development', date: '2025-04-21', changefreq: 'weekly', priority: 0.8 },
+  { url: '/blog/tokenization-real-world-assets', date: '2025-04-18', changefreq: 'weekly', priority: 0.8 },
+];
 
 // Generate blog sitemap XML
 const generateBlogSitemap = () => {

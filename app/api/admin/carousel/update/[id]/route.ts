@@ -5,14 +5,14 @@ import { Client } from '@neondatabase/serverless';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const { isAuthenticated } = await checkAdminAuth(request);
   if (!isAuthenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
-  const id = params.id;
   if (!id) {
     return NextResponse.json({ error: 'Media ID required' }, { status: 400 });
   }

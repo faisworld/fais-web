@@ -363,7 +363,8 @@ export default function CarouselUploadPage() {
       </div>
       
       {/* Guidance note */}
-      <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-md">        <h3 className="font-medium text-gray-800 mb-2">How carousel updates work:</h3>        <ol className="list-decimal list-inside text-gray-700 space-y-1 ml-2">
+      <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-md">        <h3 className="font-medium text-gray-800 mb-2">How carousel updates work:</h3>
+        <ol className="list-decimal list-inside text-gray-700 space-y-1 ml-2">
           <li>Upload your image or video for each slide</li>
           <li>Once uploads are complete, click &quot;Save and Update Carousel&quot;</li>
           <li>The homepage carousel will immediately reflect your changes</li>

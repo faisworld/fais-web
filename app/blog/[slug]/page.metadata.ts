@@ -2,10 +2,11 @@ import { Metadata } from 'next';
 import { BlogPost } from '../blog-data';
 
 // This is a dynamic metadata generation function for individual blog posts
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   // In a real implementation, you would fetch the post data based on the slug
   // For demonstration, we're showing the structure
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
   
   if (!post) {
     return {

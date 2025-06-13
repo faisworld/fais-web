@@ -5,9 +5,9 @@ import Replicate from 'replicate';
 import { uploadToBlobServer } from '../blob-upload-server';
 
 // Define specific model identifiers with versions
-const MODEL_GOOGLE_VEO_2 = "google/veo-2";
-const MODEL_MINIMAX_VIDEO_01_DIRECTOR = "minimax/video-01-director";
-const MODEL_MINIMAX_VIDEO_01 = "minimax/video-01";
+const MODEL_GOOGLE_VEO_2 = "google/veo-2:tjqhsk4eddrma0cn7w38c91tq8";
+const MODEL_MINIMAX_VIDEO_01_DIRECTOR = "minimax/video-01-director:654gq25cfxrmc0cmyjev7cz4rg";
+const MODEL_MINIMAX_VIDEO_01 = "minimax/video-01:15eyanar9xrg80ckd3ytdz0hhr";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -144,11 +144,9 @@ async function generateArticleVideoLogic(
     const modelNameForFile = modelName.replace('/', '-');
     const safePromptPart = finalPrompt.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '-');
     const fileExtension = contentType.split('/')[1] || 'mp4';
-    const filename = `vid-${modelNameForFile}-${safePromptPart}-${Date.now()}.${fileExtension}`;
-
-    // console.log(`Uploading video to Vercel Blob as ${filename}...`);
+    const filename = `vid-${modelNameForFile}-${safePromptPart}-${Date.now()}.${fileExtension}`;    // console.log(`Uploading video to Vercel Blob as ${filename}...`);
     const blobUploadResult = await uploadToBlobServer(videoBuffer, filename, contentType, {
-      folder: 'article-videos', 
+      folder: 'videos', 
       prefix: modelNameForFile + '/', 
     });
 

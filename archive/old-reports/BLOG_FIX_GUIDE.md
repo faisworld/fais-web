@@ -1,6 +1,7 @@
 # 🔧 Blog Automatic Posting System - Fix Guide
 
 ## ✅ ISSUES FIXED
+
 1. **Blog Page Hydration** - Fixed client-side rendering issue causing "No articles found"
 2. **Loading Experience** - Added skeleton loading during hydration
 
@@ -10,7 +11,7 @@
 
 You need to add these environment variables in your Vercel dashboard:
 
-#### **Go to:** https://vercel.com/fais-devs/fais-web/settings/environment-variables
+#### **Go to:** <https://vercel.com/fais-devs/fais-web/settings/environment-variables>
 
 Add these variables:
 
@@ -23,6 +24,7 @@ REPLICATE_API_TOKEN=your-replicate-token (optional)
 ```
 
 #### **Generate INTERNAL_API_KEY:**
+
 ```bash
 # Run this command to generate a secure key:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
@@ -31,23 +33,27 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ### 2. Verify Cron Job is Running
 
 #### **Check in Vercel Dashboard:**
-1. Go to your project: https://vercel.com/fais-devs/fais-web
+
+1. Go to your project: <https://vercel.com/fais-devs/fais-web>
 2. Click on "Functions" tab
 3. Look for `/api/cron/automated-article-generation`
 4. Check execution logs
 
 #### **Current Cron Schedule:**
+
 - **Frequency:** Twice daily (5 AM and 5 PM UTC)
 - **Endpoint:** `/api/cron/automated-article-generation`
 
 ### 3. Test Manual Article Generation
 
 #### **Via Admin Panel:**
-1. Go to: https://fais.world/admin/ai-tools/article-generation
+
+1. Go to: <https://fais.world/admin/ai-tools/article-generation>
 2. Generate a test article
 3. Check if it appears in the blog
 
 #### **Via API (for testing):**
+
 ```bash
 curl -X POST https://fais.world/api/cron/automated-article-generation \
   -H "Authorization: Bearer YOUR_INTERNAL_API_KEY"
@@ -56,10 +62,12 @@ curl -X POST https://fais.world/api/cron/automated-article-generation \
 ### 4. Check Blog Data Source
 
 #### **Current Setup:**
+
 - Static data in: `app/blog/blog-data.ts`
 - Articles should be added to this file by the automated system
 
 #### **Automated Flow:**
+
 1. Cron job triggers → `/api/cron/automated-article-generation`
 2. Calls → `/api/admin/ai-tools/generate-article`
 3. Generates article content + image
@@ -69,16 +77,19 @@ curl -X POST https://fais.world/api/cron/automated-article-generation \
 ## 🚀 IMMEDIATE ACTIONS NEEDED
 
 ### **Step 1: Set Environment Variables**
+
 1. Go to Vercel dashboard
 2. Add the required environment variables
 3. Redeploy the project
 
 ### **Step 2: Test Article Generation**
+
 1. Use admin panel to generate one article manually
 2. Check if it appears on the blog page
 3. Verify the automated system works
 
 ### **Step 3: Monitor Cron Jobs**
+
 1. Check Vercel Functions dashboard
 2. Monitor for any errors in execution logs
 3. Verify cron job runs at scheduled times
@@ -86,12 +97,14 @@ curl -X POST https://fais.world/api/cron/automated-article-generation \
 ## 📊 CURRENT STATUS
 
 ### ✅ **Working:**
+
 - Blog page rendering (fixed)
 - Static blog data display
 - Cron job configuration
 - Article generation API endpoints
 
 ### ❌ **Not Working:**
+
 - Environment variables not set
 - Automatic article generation
 - Blog content updates
@@ -101,11 +114,11 @@ curl -X POST https://fais.world/api/cron/automated-article-generation \
 ### **After Setting Environment Variables:**
 
 1. **Test Production Blog:**
-   - Visit: https://fais.world/blog
+   - Visit: <https://fais.world/blog>
    - Should show existing articles without "No articles found"
 
 2. **Test Admin Panel:**
-   - Visit: https://fais.world/admin/ai-tools/article-generation
+   - Visit: <https://fais.world/admin/ai-tools/article-generation>
    - Generate a test article
    - Check if it appears on blog
 
@@ -122,6 +135,7 @@ curl -X POST https://fais.world/api/cron/automated-article-generation \
 ## 📞 NEXT STEPS
 
 Once you've set the environment variables in Vercel:
+
 1. The blog page should display articles properly ✅
 2. The automated system should start working
 3. New articles will be generated twice daily

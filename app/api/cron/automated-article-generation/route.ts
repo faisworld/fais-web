@@ -32,7 +32,6 @@ export async function POST(request: NextRequest) {
     const scriptPath = path.join(projectRoot, 'scripts', 'automated-article-generation.mjs');    // Set up environment variables for the script
     const env = {
       ...process.env,
-      NODE_ENV: 'production' as const,
       INTERNAL_API_KEY: process.env.INTERNAL_API_KEY || 'fallback-key-for-development'
     };
 

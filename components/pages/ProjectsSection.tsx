@@ -74,7 +74,8 @@ export default function ProjectsSection() {
             <div
               key={project.id || project.title}
               className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col border border-gray-200 hover:shadow-xl transition-shadow duration-300"
-            >              {project.isExternal ? (
+            >
+              {project.isExternal ? (
                 <a href={project.link} target="_blank" rel="noopener noreferrer" className="block group">
                   <div className="relative w-full h-56 sm:h-64 overflow-hidden bg-gray-100">
                     <ClientImage
@@ -85,7 +86,6 @@ export default function ProjectsSection() {
                       sizes="(max-width: 768px) 100vw, 400px"
                       style={{ objectFit: "cover" }}
                       priority={false}
-                      unoptimized={project.imageKey === 'nft-marketplace' || project.imageKey === 'ai-services' || project.imageKey === 'mev-staking'}
                     />
                   </div>
                 </a>
@@ -100,7 +100,6 @@ export default function ProjectsSection() {
                       sizes="(max-width: 768px) 100vw, 400px"
                       style={{ objectFit: "cover" }}
                       priority={false}
-                      unoptimized={project.imageKey === 'nft-marketplace' || project.imageKey === 'ai-services' || project.imageKey === 'mev-staking'}
                     />
                   </div>
                 </Link>

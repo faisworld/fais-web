@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { blogPosts } from '@/app/blog/blog-data';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Get the most recent post
     const sortedPosts = [...blogPosts].sort((a, b) => 
@@ -16,9 +16,8 @@ export async function GET(request: NextRequest) {
 
     // Calculate next cron runs (5 AM and 5 PM UTC)
     const now = new Date();
-    const nextRuns = [];
-    
-    for (let hour of [5, 17]) {
+    const nextRuns = [];    
+    for (const hour of [5, 17]) {
       const nextRun = new Date();
       nextRun.setUTCHours(hour, 0, 0, 0);
       

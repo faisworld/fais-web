@@ -23,12 +23,6 @@ interface GalleryMedia {
   mediaType?: 'image' | 'video'; // New field to indicate media type
 }
 
-// Add thumbnail URLs for GIF and video files
-export const thumbnailImages: { [key: string]: string } = {
-  'about-mission-image': 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/thumbnails/about-mission-thumbnail.jpg',
-  // Add more thumbnail mappings as needed
-};
-
 export default function AdminGalleryPage() {
   const [images, setImages] = useState<GalleryMedia[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,8 +45,7 @@ export default function AdminGalleryPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [folders, setFolders] = useState<string[]>([]);
   const [currentFolder, setCurrentFolder] = useState<string>('');
-  const [showFolderModal, setShowFolderModal] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
+  const [showFolderModal, setShowFolderModal] = useState(false);  const [newFolderName, setNewFolderName] = useState('');
   const [movingMedia, setMovingMedia] = useState<GalleryMedia | null>(null);
   const [targetFolder, setTargetFolder] = useState('');
   const [showMoveModal, setShowMoveModal] = useState(false);
@@ -169,7 +162,6 @@ export default function AdminGalleryPage() {
       alert(`Failed to update image: Unknown error occurred`);
     }
   };
-
   const handleDeleteImage = async (imageId: number) => {
     if (!confirm("Are you sure you want to delete this media? This action cannot be undone.")) {
       return;
@@ -178,6 +170,7 @@ export default function AdminGalleryPage() {
     setIsDeletingImage(true);
     
     try {
+      console.log(`Attempting to delete image with ID: ${imageId}`);
       const response = await fetch("/api/admin/gallery/images", {
         method: "DELETE",
         headers: {
@@ -186,13 +179,52 @@ export default function AdminGalleryPage() {
         body: JSON.stringify({ id: imageId }),
       });
       
+      const responseData = await response.text();
+      console.log(`Delete response:`, responseData);
+      
       if (!response.ok) {
-        throw new Error(`Error deleting image: ${response.statusText}`);
+        let errorMessage = `Error deleting image: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = JSON.parse(responseData);
+          if (errorData.error) {
+            errorMessage = `${errorMessage} - ${errorData.error}`;
+          }
+          if (errorData.details) {
+            errorMessage = `${errorMessage} - ${errorData.details}`;
+          }
+        } catch {
+          // Response is not JSON, use the raw text
+          if (responseData) {
+            errorMessage = `${errorMessage} - ${responseData}`;
+          }
+        }
+        throw new Error(errorMessage);
       }
       
-      // Remove the image from the local state      setImages(images.filter(img => img.id !== imageId));    } catch {
-      // console.error("Failed to delete media:", err);
-      alert("Failed to delete media. Please try again.");
+      // Parse the success response
+      let result;
+      try {
+        result = JSON.parse(responseData);
+      } catch {
+        result = { message: 'Deleted successfully' };
+      }
+      
+      console.log(`Delete successful:`, result);
+      
+      // Remove the image from the local state
+      setImages(images.filter(img => img.id !== imageId));
+      
+      // Show success message
+      if (result.partial) {
+        alert(result.message || 'Image partially deleted - record removed but file may still exist in storage');
+      } else {
+        alert('Image deleted successfully');
+      }
+      
+    } catch (err) {
+      console.error("Failed to delete media:", err);
+      const errorMessage = err instanceof Error ? err.message : "Failed to delete media. Please try again.";
+      alert(errorMessage);
     } finally {
       setIsDeletingImage(false);
     }

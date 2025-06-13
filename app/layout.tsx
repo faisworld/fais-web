@@ -1,17 +1,17 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
 import DynamicBreadcrumbs from '@/components/ui/DynamicBreadcrumbs'
 import { Toaster } from 'react-hot-toast'
-import { WebsiteStructuredData } from '@/components/structured-data'
-
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from './providers'
 
-// Use system fonts to avoid Google Fonts timeout issues during build
-const fontClassName = 'font-sans'
+
+
+const inter = Inter({ subsets: ['latin'] })
 
 // Define Twitter/OG image URL using Blob storage
 const twitterImageUrl =
@@ -157,30 +157,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       areaServed: ['US', 'UK', 'DE'],
       availabilityStarts: '2023-01-01'
     }
-  };  return (
-    <html lang='en' className={fontClassName}>
+  };
+  return (
+    <html lang='en' className={inter.className}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="antialiased">
-        <WebsiteStructuredData
-          website={{
-            name: "Fantastic AI Studio",
-            url: "https://fais.world",
-            description: "Leading enterprise AI & blockchain development company serving Fortune 500 clients across USA, UK, Germany. Custom AI solutions, smart contracts, DeFi platforms.",
-            searchUrl: "https://fais.world/search?q={search_term_string}"
-          }}
-        />
-        <Providers>
+      <body className="antialiased"><Providers>
           <Header />
           <DynamicBreadcrumbs darkBg={false} />
           <main className="mt-20">{children}</main>
           <Footer />
 
-          {/* React Hot Toast */}          <Toaster
+          {/* React Hot Toast */}
+          <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
@@ -189,17 +182,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: '#fff',
               },
             }}
-          />
-          {/* ElevenLabs Convai Widget - Standalone implementation */}
+          />          {/* ElevenLabs Convai Widget v3 */}
           <div dangerouslySetInnerHTML={{
-            __html: `<elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>`
-          }} />          <script 
-            src="https://unpkg.com/@elevenlabs/convai-widget-embed" 
-            async 
-            type="text/javascript"
-          ></script>
-          {/* WidgetBot Crate Script */}
+            __html: '<elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>'
+          }} />
+          
+          {/* ElevenLabs Widget Script */}
+          <script src='https://unpkg.com/@elevenlabs/convai-widget-embed' async type="text/javascript"></script>
+            {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>
+
+          {/* Analytics - SpeedInsights for performance monitoring, Analytics for user tracking */}
           <SpeedInsights />
           {process.env.NODE_ENV === 'production' && <Analytics />}
         </Providers>

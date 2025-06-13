@@ -7,14 +7,14 @@ import { getMarkdownPost } from "@/utils/markdown";
 import { ArticleStructuredData, BreadcrumbStructuredData } from "@/components/structured-data";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({ params: routeParams }: Props): Promise<Metadata> {
-  const params = await routeParams; // Await params before use
-  const post = blogPosts.find((post) => post.slug === params.slug);
+  const { slug } = await routeParams;
+  const post = blogPosts.find((post) => post.slug === slug);
   
   if (!post) {
     return {
@@ -45,8 +45,7 @@ export async function generateMetadata({ params: routeParams }: Props): Promise<
 }
 
 export default async function BlogPost({ params: routeParams }: Props) { // Make component async and await params
-  const params = await routeParams; // Await params before use
-  const { slug } = params;
+  const { slug } = await routeParams; // Await params before use
   const post = blogPosts.find((post) => post.slug === slug);
   
   if (!post) {
@@ -86,12 +85,10 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
         Back to all articles
-      </Link>
-      
-      {/* Blog header */}
-      <header className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">{post.title}</h1>
-          <div className="flex items-center text-gray-600 mb-4">
+      </Link>        {/* Blog header */}
+      <header className="mb-16">
+        <h1 className="text-3xl md:text-4xl font-bold mb-8">{post.title}</h1>
+          <div className="flex items-center text-gray-600 mb-8">
           {post.author && post.authorImage && (
             <div className="flex items-center mr-4">
               <AuthorImage 
@@ -107,10 +104,8 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
             <span className="mx-2">•</span>
             <span>{post.readTime}</span>
           </div>
-        </div>
-      </header>
-        {/* Cover image */}
-      <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden">
+        </div>      </header>      {/* Cover image */}
+      <div className="relative aspect-video w-full mb-32 rounded-lg overflow-hidden">
         <BlogCoverImage
           src={post.coverImage}
           alt={post.title}
@@ -118,11 +113,9 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
       </div>      {/* Blog content */}
-      <div className="enhanced-blog-content pb-8">
-        {/* Render markdown content for all posts */}
-        {markdownPost && (
-          <div 
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900"
+      <div className="enhanced-blog-content pb-8 mt-24">{/* Render markdown content for all posts */}
+        {markdownPost && (          <div 
+            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900 prose-headings:mb-12 prose-p:mb-10 prose-headings:mt-16 prose-h1:mt-24 prose-h2:mt-20 prose-h3:mt-16"
             dangerouslySetInnerHTML={{ __html: markdownPost.htmlContent }}
           />
         )}

@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * Generate Missing Images for Blog Articles
- * This script identifies articles with placeholder images and generates unique cover images for them
+ * Simple Image Generation for Placeholder Articles
+ * This script generates unique images for articles using the placeholder image
  */
 
 import Replicate from 'replicate';
 import { put } from '@vercel/blob';
 import fs from 'fs/promises';
-import path from 'path';
 
 const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 const BLOB_READ_WRITE_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
@@ -24,37 +23,27 @@ const replicate = new Replicate({
   auth: REPLICATE_API_TOKEN,
 });
 
-// Read current blog data
-async function loadBlogPosts() {
-  const blogDataPath = path.join(process.cwd(), 'app', 'blog', 'blog-data.ts');
-  const content = await fs.readFile(blogDataPath, 'utf-8');
-  
-  // Simple approach: extract basic info using regex without JSON parsing
-  const posts = [];
-  
-  // Match blog post objects with required fields
-  const postPattern = /{\s*id:\s*"([^"]+)",\s*slug:\s*"([^"]+)",\s*title:\s*"([^"]+)",[\s\S]*?coverImage:\s*"([^"]+)"[\s\S]*?}/g;
-  
-  let match;
-  while ((match = postPattern.exec(content)) !== null) {
-    const [, id, slug, title, coverImage] = match;
-    
-    // Extract category if possible
-    const categoryMatch = match[0].match(/category:\s*"([^"]+)"/);
-    const category = categoryMatch ? categoryMatch[1] : 'technology';
-    
-    posts.push({
-      id,
-      slug,
-      title,
-      coverImage,
-      category
-    });
+// Articles that need new images (manually identified from blog-data.ts)
+const articlesNeedingImages = [
+  {
+    id: "1b7f607b",
+    title: "NFT marketplaces and digital ownership",
+    slug: "nft-marketplaces-and-digital-ownership",
+    category: "blockchain"
+  },
+  {
+    id: "40e49042",
+    title: "Smart contracts in real estate",
+    slug: "smart-contracts-in-real-estate",
+    category: "ai"
+  },
+  {
+    id: "94ff4f62",
+    title: "Decentralized finance (DeFi) latest developments",
+    slug: "decentralized-finance-defi-latest-developments",
+    category: "blockchain"
   }
-  
-  console.log(`📚 Successfully extracted ${posts.length} blog posts`);
-  return posts;
-}
+];
 
 // Generate image for a specific article
 async function generateImageForArticle(post) {
@@ -62,16 +51,14 @@ async function generateImageForArticle(post) {
   
   const imagePrompt = `Create a professional, modern illustration for a blog article about "${post.title}". 
   Style: Clean, minimalist, tech-focused, suitable for ${post.category} content. 
-  Colors: Modern, professional palette. No text or logos.`;
-  try {    const output = await replicate.run(
-      "google/imagen-3",
+  Colors: Modern, professional palette. No text or logos.`;  try {
+    const output = await replicate.run(
+      "stability-ai/stable-diffusion-3",
       {
         input: {
           prompt: imagePrompt,
           aspect_ratio: "16:9",
-          output_format: "jpg",
-          safety_filter_level: "block_only_high",
-          output_quality: 95
+          output_format: "jpg"
         }
       }
     );
@@ -105,45 +92,38 @@ async function generateImageForArticle(post) {
 }
 
 // Update blog data file with new image URLs
-async function updateBlogData(posts) {
-  const blogDataPath = path.join(process.cwd(), 'app', 'blog', 'blog-data.ts');
+async function updateBlogData(updatedPosts) {
+  const blogDataPath = 'app/blog/blog-data.ts';
   
   // Read current file
   let content = await fs.readFile(blogDataPath, 'utf-8');
   
   // Update each post with new image URL
-  for (const post of posts) {
+  for (const post of updatedPosts) {
     if (post.newImageUrl) {
-      const oldPattern = new RegExp(`"coverImage": "${post.coverImage.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'g');
-      content = content.replace(oldPattern, `"coverImage": "${post.newImageUrl}"`);
+      // Find and replace the placeholder image URL for this specific post
+      const placeholderUrl = 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png';
+      
+      // Create a regex to match the specific post's coverImage line
+      const postRegex = new RegExp(
+        `(id: "${post.id}"[\\s\\S]*?coverImage: ")${placeholderUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(")`,
+        'g'
+      );
+      
+      content = content.replace(postRegex, `$1${post.newImageUrl}$2`);
+      console.log(`📝 Updated image URL for "${post.title}"`);
     }
   }
   
   // Write updated content
   await fs.writeFile(blogDataPath, content, 'utf-8');
-  console.log('📝 Updated blog-data.ts with new image URLs');
+  console.log('💾 Saved updated blog-data.ts');
 }
 
 async function main() {
   try {
-    console.log('🚀 Starting missing image generation process...\n');
-    
-    // Load current blog posts
-    const blogPosts = await loadBlogPosts();
-    console.log(`📚 Found ${blogPosts.length} total articles`);
-    
-    // Find articles with placeholder images
-    const articlesNeedingImages = blogPosts.filter(post => 
-      post.coverImage.includes('blog-placeholder-ai-generated') || 
-      post.coverImage === '/placeholder.svg'
-    );
-    
+    console.log('🚀 Starting image generation for placeholder articles...\n');
     console.log(`🖼️  Found ${articlesNeedingImages.length} articles needing images\n`);
-    
-    if (articlesNeedingImages.length === 0) {
-      console.log('✅ All articles already have proper images!');
-      return;
-    }
     
     // Generate images for articles that need them
     const updatedPosts = [];
@@ -163,8 +143,8 @@ async function main() {
       
       // Add delay to respect API rate limits
       if (i < articlesNeedingImages.length - 1) {
-        console.log('⏳ Waiting 3 seconds before next generation...\n');
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log('⏳ Waiting 5 seconds before next generation...\n');
+        await new Promise(resolve => setTimeout(resolve, 5000));
       }
     }
     

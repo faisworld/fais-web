@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     console.log('Request body received:', { name: body.name, email: body.email, hasMessage: !!body.message }) // Debug log
     
-    const { name, email, message, recaptchaToken, recaptchaAction = "submit_contact_form", isDevelopment } = body
+    const { name, email, message, recaptchaToken, isDevelopment } = body
 
     // Validate required fields
     if (!name || !email || !message) {
