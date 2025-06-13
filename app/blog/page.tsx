@@ -180,21 +180,7 @@ export default function BlogPage() {
           </section>          {/* Blog Post Grid */}
           <section className="mb-16">
             <h2 className="text-2xl font-semibold mb-8">Recent Articles</h2>
-            {!isClient ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Loading skeleton */}
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm h-96 animate-pulse">
-                    <div className="h-56 bg-gray-200 rounded-t-xl"></div>
-                    <div className="p-6 space-y-3">
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                      <div className="h-3 bg-gray-200 rounded w-full"></div>
-                      <div className="h-3 bg-gray-200 rounded w-5/6"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : filteredPosts.length > 0 ? (
+            {filteredPosts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {filteredPosts.map(post => (
                   <Link 
