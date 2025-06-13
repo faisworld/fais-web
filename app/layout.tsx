@@ -164,7 +164,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-      </head>      <body className="antialiased">
+      </head>
+      <body className="antialiased">
         <WebsiteStructuredData
           website={{
             name: "Fantastic AI Studio",
@@ -179,8 +180,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="mt-20">{children}</main>
           <Footer />
 
-          {/* React Hot Toast */}
-          <Toaster
+          {/* React Hot Toast */}          <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
@@ -189,18 +189,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: '#fff',
               },
             }}
-          />          {/* ElevenLabs Convai Widget - Standalone implementation */}
+          />
+          {/* ElevenLabs Convai Widget - Standalone implementation */}
           <div dangerouslySetInnerHTML={{
             __html: `<elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>`
-          }} />
-          <script 
+          }} />          <script 
             src="https://unpkg.com/@elevenlabs/convai-widget-embed" 
             async 
             type="text/javascript"
           ></script>
-          
           {/* WidgetBot Crate Script */}
-          <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>          <SpeedInsights />
+          <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>
+          <SpeedInsights />
           {process.env.NODE_ENV === 'production' && <Analytics />}
         </Providers>
       </body>
