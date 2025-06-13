@@ -54,16 +54,15 @@ export async function POST(req: Request) {
     // Get AI configuration for complex multi-tool scenarios
     const aiConfig = getAssistantConfig();
     const providerOptions = getProviderOptions(aiConfig);
-    
-    // Fallback to gpt-4o if o3-mini is not available
-    const model = aiConfig.model === 'o3-mini' ? 'gpt-4o' : aiConfig.model;
+      // Fallback to gpt-4o if o3-mini is not available
+    const model = aiConfig.model.includes('o3-mini') ? 'gpt-4o' : aiConfig.model;
     
     const result = await streamText({
       model: vercelOpenai(model),
       messages,
       toolChoice,
       // Only include provider options for o3-mini models
-      ...(aiConfig.model === 'o3-mini' ? providerOptions : {}),
+      ...(aiConfig.model.includes('o3-mini') ? providerOptions : {}),
       tools: {
         crawlWebsite: crawlWebsiteTool,
         readInternalBlogPost: readInternalBlogPostTool,

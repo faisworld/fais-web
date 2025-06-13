@@ -3,14 +3,15 @@ import { z, ZodType } from 'zod';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { generateArticleImageLogic, MODEL_GOOGLE_IMAGEN_4 } from './generateArticleImageTool';
 
 export const SaveBlogPostParameters = z.object({
   title: z.string().min(5).describe('The title of the blog post.'),
   content: z.string().min(100).describe('The main content of the blog post in Markdown format.'),
   author: z.string().default('O3 Assistant').describe('The author of the blog post.'),
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).describe('A URL-friendly slug for the blog post (e.g., YYYY-MM-DD-my-awesome-post). It should include the date.'),
-  imageUrl: z.string().url().describe('The URL of the generated or selected hero image for the blog post.'),
-  imageAlt: z.string().min(5).describe('Descriptive alt text for the hero image.'),
+  imageUrl: z.string().url().optional().describe('The URL of the generated or selected hero image for the blog post.'),
+  imageAlt: z.string().min(5).optional().describe('Descriptive alt text for the hero image.'),
   category: z.enum(['Educational AI', 'Medical AI', 'Financial AI', 'General AI', 'Other'])
     .describe('The primary category for the blog post.'),
   tags: z.array(z.string()).min(1).describe('An array of relevant tags for the blog post.'),
@@ -21,7 +22,16 @@ export const SaveBlogPostParameters = z.object({
 async function saveBlogPostLogic(
   params: z.infer<typeof SaveBlogPostParameters>
 ): Promise<{ success: boolean; message: string; filePath?: string }> {
-  // console.log(`Saving blog post with slug: ${params.slug}`);
+  // If no image provided, generate one
+  if (!params.imageUrl) {
+    const { imageUrl, imageAlt } = await generateArticleImageLogic(
+      params.title,
+      '16:9',
+      MODEL_GOOGLE_IMAGEN_4
+    );
+    params.imageUrl = imageUrl;
+    params.imageAlt = imageAlt;
+  }
   const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'content');
   const filePath = path.join(postsDirectory, `${params.slug}.md`);
 
@@ -53,7 +63,6 @@ async function saveBlogPostLogic(
     };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'An unknown error occurred';
-    // console.error(`Failed to save blog post ${params.slug}:`, message);
     return {
       success: false,
       message: `Failed to save blog post ${params.slug}: ${message}`,

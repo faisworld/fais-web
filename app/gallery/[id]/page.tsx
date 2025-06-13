@@ -2,8 +2,8 @@ import Link from 'next/link';
 import ImageEditClient from "./ImageEditClient";
 
 // This is a Server Component that fetches data server-side
-export default async function GalleryImageEditPage({ params }: { params: { id: string } }) {
-  const id = params.id
+export default async function GalleryImageEditPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
 
   try {
     // Use relative URL for same-origin requests to avoid port issues

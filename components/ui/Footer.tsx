@@ -67,8 +67,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-            
-            {/* Social Media Icons - moved under blockchain services */}
+              {/* Social Media Icons - moved under blockchain services */}
             <div className="footer-social-media mt-4">
               <h4 className="text-sm font-medium mb-3 text-gray-700 lowercase">follow us:</h4>
               <div className="flex justify-center md:justify-start space-x-3">

@@ -168,3 +168,5 @@ export const generateArticleImageTool = tool({
   execute: async ({ prompt, aspectRatio, modelIdentifier, negativePrompt, safetyFilterLevel }: z.infer<typeof GenerateArticleImageParameters>) =>
     generateArticleImageLogic(prompt, aspectRatio, modelIdentifier, negativePrompt, safetyFilterLevel),
 });
+
+export { generateArticleImageLogic, MODEL_GOOGLE_IMAGEN_4, MODEL_STABILITY_SDXL };

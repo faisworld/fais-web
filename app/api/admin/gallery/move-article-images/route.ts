@@ -13,27 +13,37 @@ export async function POST(request: NextRequest) {
     
     for (const url of imageUrls) {
       try {
-        // Extract filename from URL
-        const urlParts = url.split('/');
-        const filename = urlParts[urlParts.length - 1];
-          // Determine the new path in article-images folder
-        const newPath = `images/article-images/${filename}`;
+        // Parse blob path and preserve folder structure
+        const blobUrlObj = new URL(url);
+        const blobPath = blobUrlObj.pathname.startsWith('/')
+          ? blobUrlObj.pathname.slice(1)
+          : blobUrlObj.pathname;
+        // Determine target path: if already under article-images, keep it; otherwise prefix article-images
+        let newPath: string;
+        if (blobPath.startsWith('images/article-images/')) {
+          newPath = blobPath;
+        } else if (blobPath.startsWith('images/')) {
+          const rest = blobPath.slice('images/'.length);
+          newPath = `images/article-images/${rest}`;
+        } else {
+          newPath = `images/article-images/${blobPath}`;
+        }
+         
+        // Copy the image to the new blob location
+        const copyResult = await copy(url, newPath, { access: 'public' });
         
-        // Copy the image to the new location
-        const copyResult = await copy(url, newPath, {
-          access: 'public',
-        });
-        
-        // Delete the original image
-        await del(url);
-        
+        // Delete the original image if path changed
+        if (newPath !== blobPath) {
+          await del(url);
+        }
+         
         results.push({
           originalUrl: url,
           newUrl: copyResult.url,
-          filename,
+          oldPath: blobPath,
           newPath,
-          status: 'success'
-        });
+           status: 'success'
+         });
         
       } catch (error) {
         console.error(`Error moving image ${url}:`, error);

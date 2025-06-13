@@ -212,14 +212,14 @@ img {
 .footer-navigation-links {
   padding-left: 0 !important; /* Centered on mobile */
   padding-right: 0 !important;
-  text-align: center; /* Center navigation on mobile */
+  text-align: center !important; /* Force center navigation on mobile */
 }
 
 @media (min-width: 640px) {
   .footer-navigation-links {
     padding-left: calc(1.5rem + 16px) !important; /* 24px + 16px offset */
     padding-right: 0 !important;
-    text-align: left; /* Left align on larger screens */
+    text-align: left !important; /* Force left align on larger screens */
   }
 }
 
@@ -227,7 +227,7 @@ img {
   .footer-navigation-links {
     padding-left: calc(2rem + 16px) !important; /* 32px + 16px offset */
     padding-right: 0 !important;
-    text-align: left; /* Left align on larger screens */
+    text-align: left !important; /* Force left align on larger screens */
   }
 }
 
@@ -302,17 +302,17 @@ section[aria-roledescription="carousel"] {
 
 .site-footer p {
   margin-bottom: 0.5rem;
-  text-align: center;
+  /* Remove forced center alignment - let Tailwind classes control alignment */
 }
 
 .site-footer h3 {
   margin-top: 0.5rem;
-  text-align: center;
+  /* Remove forced center alignment - let Tailwind classes control alignment */
 }
 
 .site-footer ul {
   width: 100%;
-  text-align: center;
+  /* Remove forced center alignment - let Tailwind classes control alignment */
 }
 
 /* Perfect logo container centering */
@@ -335,7 +335,7 @@ section[aria-roledescription="carousel"] {
 
 .site-footer ul li {
   width: 100%;
-  text-align: center;
+  /* Remove forced center alignment - let Tailwind classes control alignment */
 }
 
 .footer-content {
@@ -797,5 +797,39 @@ section[aria-roledescription="carousel"] {
     left: 1rem;
     max-width: none;
     width: calc(100vw - 2rem);
+  }
+}
+
+/* Footer alignment overrides - ensure responsive alignment works */
+.site-footer .text-center {
+  text-align: center !important;
+}
+
+.site-footer .justify-center {
+  justify-content: center !important;
+}
+
+@media (min-width: 768px) {
+  .site-footer .md\:text-left {
+    text-align: left !important;
+  }
+  
+  .site-footer .md\:justify-start {
+    justify-content: flex-start !important;
+  }
+  
+  .site-footer .md\:items-start {
+    align-items: flex-start !important;
+  }
+}
+
+/* Specific social media alignment fixes */
+.footer-social-media .flex.justify-center {
+  justify-content: center !important;
+}
+
+@media (min-width: 768px) {
+  .footer-social-media .flex.justify-center.md\:justify-start {
+    justify-content: flex-start !important;
   }
 }
