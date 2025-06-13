@@ -89,7 +89,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 5, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/b2ffcc0f-5a61-4418-858e-fee51b5a4c67.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/blockchain-supply-chain-revolution-high-quality.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -125,7 +125,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 2, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/41de19f1-e94f-444b-900b-92f119a8ce16.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/quantum-computing-ai-future-high-quality.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -151,7 +151,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 1, 2025",
     readTime: "3 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1749362733689-temp-image2.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/optimism-layer-2-business-transformation-high-quality.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"

@@ -22,8 +22,7 @@ export async function generateMetadata({ params: routeParams }: Props): Promise<
       description: "The requested blog post could not be found."
     };
   }
-  
-  return {
+    return {
     title: `${post.title} | Fantastic AI Studio Blog`,
     description: post.excerpt,
     openGraph: {
@@ -34,12 +33,20 @@ export async function generateMetadata({ params: routeParams }: Props): Promise<
       authors: [post.author || "Fantastic AI Studio"],
       images: [
         {
-          url: `/api/og?title=${encodeURIComponent(post.title)}`,
+          url: post.coverImage,
           width: 1200,
           height: 630,
           alt: post.title
         }
       ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [post.coverImage],
+      creator: "@FantasticAI",
+      site: "@FantasticAI"
     }
   };
 }
@@ -113,9 +120,8 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
       </div>      {/* Blog content */}
-      <div className="enhanced-blog-content pb-8 mt-24">{/* Render markdown content for all posts */}
-        {markdownPost && (          <div 
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900 prose-headings:mb-12 prose-p:mb-10 prose-headings:mt-16 prose-h1:mt-24 prose-h2:mt-20 prose-h3:mt-16"
+      <div className="enhanced-blog-content pb-8 mt-24">{/* Render markdown content for all posts */}        {markdownPost && (          <div 
+            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900 prose-headings:mb-8 prose-p:mb-6 prose-headings:mt-12 prose-h1:mt-16 prose-h2:mt-14 prose-h3:mt-12 prose-headings:leading-relaxed"
             dangerouslySetInnerHTML={{ __html: markdownPost.htmlContent }}
           />
         )}
