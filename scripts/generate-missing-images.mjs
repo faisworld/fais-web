@@ -63,14 +63,15 @@ async function generateImageForArticle(post) {
   const imagePrompt = `Create a professional, modern illustration for a blog article about "${post.title}". 
   Style: Clean, minimalist, tech-focused, suitable for ${post.category} content. 
   Colors: Modern, professional palette. No text or logos.`;
-
   try {    const output = await replicate.run(
-      "stability-ai/stable-diffusion-3",
+      "google/imagen-3",
       {
         input: {
           prompt: imagePrompt,
           aspect_ratio: "16:9",
-          output_format: "jpg"
+          output_format: "jpg",
+          safety_filter_level: "block_only_high",
+          output_quality: 95
         }
       }
     );

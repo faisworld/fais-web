@@ -3,9 +3,10 @@ import { z, ZodType } from 'zod';
 import Replicate from 'replicate';
 import { uploadToBlobServer } from '../blob-upload-server'; // Import server-side Vercel Blob upload function
 
-// Define the best image generation models based on quality and cost balance
-const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4";
-const MODEL_STABILITY_SD3 = "stability-ai/stable-diffusion-3";
+// Define the premium image generation models (Google-focused for best quality)
+const MODEL_IMAGEN_4 = "google/imagen-4";
+const MODEL_IMAGEN_3 = "google/imagen-3"; 
+const MODEL_RECRAFT_V3 = "recraft-ai/recraft-v3";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -14,25 +15,24 @@ const replicate = new Replicate({
 export const GenerateArticleImageParameters = z.object({
   prompt: z.string().min(5).describe('A detailed prompt for the image generation model.'),
   aspectRatio: z.enum(['1:1', '9:16', '16:9', '3:4', '4:3']).default('16:9').optional()
-    .describe('Desired aspect ratio for the generated image.'),
-  modelIdentifier: z.enum([MODEL_GOOGLE_IMAGEN_4, MODEL_STABILITY_SD3]).default(MODEL_GOOGLE_IMAGEN_4)
-    .describe('The Replicate model identifier. Google Imagen 4 (best quality) or Stability SDXL (good quality, lower cost).'),
-  negativePrompt: z.string().optional().describe('Optional negative prompt for the image generation.'),
-  safetyFilterLevel: z.enum(['block_low_and_above', 'block_medium_and_above', 'block_only_high']).default('block_only_high').optional()
-    .describe('Safety filter level for Google Imagen 4. block_low_and_above is strictest, block_only_high is most permissive.'),
+    .describe('Desired aspect ratio for the generated image.'),  modelIdentifier: z.enum([MODEL_IMAGEN_4, MODEL_IMAGEN_3, MODEL_RECRAFT_V3]).default(MODEL_IMAGEN_4)
+    .describe('The Replicate model identifier. Google Imagen 4 (latest), Imagen 3 (reliable), or Recraft V3 (artistic).'),
+  negativePrompt: z.string().optional().describe('Optional negative prompt for the image generation.'),  safetyFilterLevel: z.enum(['block_low_and_above', 'block_medium_and_above', 'block_only_high']).default('block_only_high').optional()
+    .describe('Safety filter level for Google Imagen models. block_low_and_above is strictest, block_only_high is most permissive.'),
 });
-
-// Helper to round to nearest multiple of 64, required by some models
-const roundTo64 = (n: number) => Math.round(n / 64) * 64;
 
 interface ModelInput {
   prompt: string;
   aspect_ratio?: '1:1' | '9:16' | '16:9' | '3:4' | '4:3';
+  output_format?: 'jpg' | 'png';
+  output_quality?: number;
+  size?: string;
+  style?: string;
+  negative_prompt?: string;
   safety_filter_level?: 'block_low_and_above' | 'block_medium_and_above' | 'block_only_high';
   // For SDXL compatibility
   width?: number;
   height?: number;
-  negative_prompt?: string;
   // Add other potential model-specific parameters here if known
 }
 
@@ -54,35 +54,45 @@ async function generateArticleImageLogic(
   }  // Adapt input parameters based on the selected model
   const modelName = modelIdentifier.split(':')[0];
 
+  if (safetyFilterLevel) {
+    modelInput.safety_filter_level = safetyFilterLevel;
+  }
+
   switch (modelName) {
-    case 'stability-ai/sdxl':
-      // SDXL uses width and height parameters
-      const [ratioW, ratioH] = aspectRatio.split(':').map(Number);
-      const baseSize = 1024;
-      let width: number, height: number;
-      
-      if (ratioW >= ratioH) { // Landscape or square
-        width = baseSize;
-        height = baseSize * (ratioH / ratioW);
-      } else { // Portrait
-        height = baseSize;
-        width = baseSize * (ratioW / ratioH);
-      }
-      
-      modelInput.width = roundTo64(width);
-      modelInput.height = roundTo64(height);
-      break;
-        case 'google/imagen-4':
+    case 'google/imagen-3':
+    case 'google/imagen-4':
+      // Google Imagen models use aspect_ratio and safety filters
       modelInput.aspect_ratio = aspectRatio;
-      if (safetyFilterLevel) {
-        modelInput.safety_filter_level = safetyFilterLevel;
+      modelInput.output_format = 'jpg';
+      modelInput.output_quality = 95;
+      if (!modelInput.safety_filter_level) {
+        modelInput.safety_filter_level = 'block_only_high';
       }
+      break;
+      
+    case 'stability-ai/stable-diffusion-3':
+      // Stability models use aspect_ratio
+      modelInput.aspect_ratio = aspectRatio;
+      modelInput.output_format = 'jpg';
+      break;
+      
+    case 'recraft-ai/recraft-v3':
+      // Recraft uses size parameter
+      const sizeMap = {
+        '1:1': '1024x1024',
+        '16:9': '1344x768',
+        '9:16': '768x1344',
+        '3:4': '768x1024',
+        '4:3': '1024x768'
+      };
+      modelInput.size = sizeMap[aspectRatio];
+      modelInput.style = 'realistic_image';
       break;
       
     default:
       console.warn(`Model ${modelIdentifier} not explicitly handled for custom params, using generic prompt approach.`);
       break;
-  }  try {    const output = await replicate.run(
+  }try {    const output = await replicate.run(
       modelIdentifier as `${string}/${string}` | `${string}/${string}:${string}`,
       { input: modelInput }
     );
