@@ -9,6 +9,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// ⚠️ CRITICAL: Admin routes are EXPLICITLY EXCLUDED for SEO reasons
+// The admin section contains sensitive management tools and should NEVER be indexed
+// All /admin/* routes are blocked in robots.txt and excluded from sitemaps
+
 // Base site URL
 const SITE_URL = 'https://fais.world';
 
@@ -92,25 +96,26 @@ const getBlogPosts = () => {
   }
 };
 
-const blogPosts = getBlogPosts();
-
-// Generate sitemap XML
-const generateSitemap = () => {
-  // XML header
+// Enhanced sitemap generation with comprehensive SEO optimization
+const generateEnhancedSitemap = () => {
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+  xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n';
+  xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n';
+  xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n';
   
-  // Add main site URLs
-  siteUrls.forEach(page => {
+  // Add main site URLs (ADMIN ROUTES EXPLICITLY EXCLUDED)
+  siteUrls.forEach(({ url, changefreq, priority }) => {
     xml += '  <url>\n';
-    xml += `    <loc>${SITE_URL}${page.url}</loc>\n`;
+    xml += `    <loc>${SITE_URL}${url}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
-    xml += `    <priority>${page.priority}</priority>\n`;
+    xml += `    <changefreq>${changefreq}</changefreq>\n`;
+    xml += `    <priority>${priority}</priority>\n`;
     xml += '  </url>\n';
   });
-  
-  // Add blog posts with their specific dates
+
+  // Add blog posts
+  const blogPosts = getBlogPosts();
   blogPosts.forEach(post => {
     xml += '  <url>\n';
     xml += `    <loc>${SITE_URL}${post.url}</loc>\n`;
@@ -120,7 +125,6 @@ const generateSitemap = () => {
     xml += '  </url>\n';
   });
   
-  // Close XML
   xml += '</urlset>';
   
   return xml;
@@ -128,7 +132,7 @@ const generateSitemap = () => {
 
 // Write sitemap to file
 const writeSitemap = () => {
-  const sitemap = generateSitemap();
+  const sitemap = generateEnhancedSitemap();
   const sitemapPath = path.join(__dirname, '..', 'public', 'sitemap.xml');
   
   fs.writeFileSync(sitemapPath, sitemap, 'utf8');

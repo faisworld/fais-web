@@ -10,9 +10,13 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === '/kvitka-poloniny') {
     return response
   }
-  
-  // Check for admin routes
+    // Check for admin routes
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+  
+  // Add noindex headers to ALL admin routes for extra SEO protection
+  if (isAdminRoute) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex')
+  }
   
   // For all other routes, ensure DOCTYPE is present
   if (request.nextUrl.pathname !== '/_next' && !request.nextUrl.pathname.startsWith('/_next/') && !request.nextUrl.pathname.startsWith('/api/')) {

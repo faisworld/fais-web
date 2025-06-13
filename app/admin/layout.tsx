@@ -3,11 +3,21 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Admin | Fantastic AI Studio',
-  description: 'Admin area for Fantastic AI Studio',
+  description: 'Admin area for Fantastic AI Studio - Development Only',
   robots: {
     index: false,
-    follow: false
-  }
+    follow: false,
+    nocache: true,
+    noarchive: true,
+    nosnippet: true,
+    noimageindex: true,
+    notranslate: true,
+  },  // Prevent any social media sharing
+  openGraph: {
+    title: 'Admin Area - FAIS',
+    description: 'Administrative interface - access restricted',
+    type: 'website',
+  },
 }
 
 // This layout is simplified for localhost usage only
