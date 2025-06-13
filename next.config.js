@@ -17,7 +17,6 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  
   images: {
     remotePatterns: [
       {
@@ -30,18 +29,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
         port: '',
-        pathname: '/images/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'mzcje1drftvqhdku.public.blob.vercel-storage.com',
+        hostname: 'vercel-storage.com',
         port: '',
-        pathname: '/videos/**',
+        pathname: '/**',
       },
-    ],
-    domains: [
-      'mzcje1drftvqhdku.public.blob.vercel-storage.com',
-      'vercel-storage.com',
     ],
     formats: ['image/webp', 'image/avif'],
     dangerouslyAllowSVG: true,

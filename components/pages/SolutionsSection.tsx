@@ -18,15 +18,14 @@ export default function SolutionsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">          {/* AI-Powered Solutions Column */}
           <div className="flex flex-col items-center" itemScope itemType="https://schema.org/Service">
             <h3 className="text-2xl font-bold mb-6 text-center" itemProp="name">Enterprise AI Development</h3>
-            <div className="relative w-full aspect-[3/2] mb-6">
-              <ClientImage
+            <div className="relative w-full aspect-[3/2] mb-6">              <ClientImage
                 src={getBlobImage("ai-solutions")}
                 alt="Enterprise AI Development - Custom AI solutions for Fortune 500 companies"
                 fill
                 className="mx-auto"
                 sizes="(max-width: 768px) 100vw, 600px"
                 style={{ objectFit: "contain" }}
-                fallbackSrc="/interconnected-ai.png"
+                unoptimized
                 itemProp="image"
               />
             </div>
@@ -37,15 +36,14 @@ export default function SolutionsSection() {
           </div>          {/* Blockchain Innovations Column */}
           <div className="flex flex-col items-center" itemScope itemType="https://schema.org/Service">
             <h3 className="text-2xl font-bold mb-6 text-center" itemProp="name">Enterprise Blockchain Development</h3>
-            <div className="relative w-full aspect-[3/2] mb-6">
-              <ClientImage
+            <div className="relative w-full aspect-[3/2] mb-6">              <ClientImage
                 src={getBlobImage("blockchain-solutions")}
                 alt="Enterprise Blockchain Development - Smart contracts and DeFi platform development"
                 fill
                 className="mx-auto"
                 sizes="(max-width: 768px) 100vw, 600px"
                 style={{ objectFit: "contain" }}
-                fallbackSrc="/interconnected-blockchain.png"
+                unoptimized
                 itemProp="image"
               />
             </div>
