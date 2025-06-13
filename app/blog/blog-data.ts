@@ -29,11 +29,11 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "6 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/blog-nft-marketplaces-and-digital-ownership-1749816214520.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  },{
+  },  {
     id: "40e49042",
     slug: "smart-contracts-in-real-estate",
     title: "Smart contracts in real estate",
@@ -41,11 +41,11 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/blog-smart-contracts-in-real-estate-1749816222989.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  },{
+  },  {
     id: "94ff4f62",
     slug: "decentralized-finance-defi-latest-developments",
     title: "Decentralized finance (DeFi) latest developments",
@@ -53,7 +53,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/blog-decentralized-finance-defi-latest-developments-1749816231707.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"

@@ -5,9 +5,9 @@ import Replicate from 'replicate';
 import { uploadToBlobServer } from '../blob-upload-server';
 
 // Define specific model identifiers with versions
-const MODEL_GOOGLE_VEO_2 = "google/veo-2:tjqhsk4eddrma0cn7w38c91tq8";
-const MODEL_MINIMAX_VIDEO_01_DIRECTOR = "minimax/video-01-director:654gq25cfxrmc0cmyjev7cz4rg";
-const MODEL_MINIMAX_VIDEO_01 = "minimax/video-01:15eyanar9xrg80ckd3ytdz0hhr";
+const MODEL_GOOGLE_VEO_2 = "google/veo-2";
+const MODEL_MINIMAX_VIDEO_01_DIRECTOR = "minimax/video-01-director";
+const MODEL_MINIMAX_VIDEO_01 = "minimax/video-01";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,

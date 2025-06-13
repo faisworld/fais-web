@@ -5,7 +5,7 @@ import { uploadToBlobServer } from '../blob-upload-server'; // Import server-sid
 
 // Define the best image generation models based on quality and cost balance
 const MODEL_GOOGLE_IMAGEN_4 = "google/imagen-4";
-const MODEL_STABILITY_SDXL = "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316";
+const MODEL_STABILITY_SD3 = "stability-ai/stable-diffusion-3";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -15,7 +15,7 @@ export const GenerateArticleImageParameters = z.object({
   prompt: z.string().min(5).describe('A detailed prompt for the image generation model.'),
   aspectRatio: z.enum(['1:1', '9:16', '16:9', '3:4', '4:3']).default('16:9').optional()
     .describe('Desired aspect ratio for the generated image.'),
-  modelIdentifier: z.enum([MODEL_GOOGLE_IMAGEN_4, MODEL_STABILITY_SDXL]).default(MODEL_GOOGLE_IMAGEN_4)
+  modelIdentifier: z.enum([MODEL_GOOGLE_IMAGEN_4, MODEL_STABILITY_SD3]).default(MODEL_GOOGLE_IMAGEN_4)
     .describe('The Replicate model identifier. Google Imagen 4 (best quality) or Stability SDXL (good quality, lower cost).'),
   negativePrompt: z.string().optional().describe('Optional negative prompt for the image generation.'),
   safetyFilterLevel: z.enum(['block_low_and_above', 'block_medium_and_above', 'block_only_high']).default('block_only_high').optional()
@@ -112,11 +112,10 @@ async function generateArticleImageLogic(
         } else if (typeof parsed === 'string') {
           replicateImageUrl = parsed;
         } else if (parsed.url) {
-          replicateImageUrl = parsed.url;
-        } else {
+          replicateImageUrl = parsed.url;        } else {
           throw new Error('No valid URL found in stream response');
         }
-      } catch (parseError) {
+      } catch {
         // If not JSON, treat as plain URL
         replicateImageUrl = result.trim();
       }

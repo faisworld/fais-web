@@ -4,7 +4,7 @@
 
 ### 1. **Vercel Dashboard Monitoring**
 
-1. **Go to Vercel Dashboard**: https://vercel.com/fais-devs/fais-web
+1. **Go to Vercel Dashboard**: <https://vercel.com/fais-devs/fais-web>
 2. **Navigate to Functions tab**: Check cron job execution logs
 3. **Look for**: `/api/cron/automated-article-generation` function calls
 4. **Schedule**: Currently runs twice daily at 5:00 AM and 5:00 PM UTC
@@ -24,6 +24,7 @@ curl -X POST "https://fais.world/api/cron/automated-article-generation" \
 ### 3. **Blog Data File Monitoring**
 
 Check the blog data file to see new articles:
+
 - **File**: `app/blog/blog-data.ts`
 - **New articles** appear as new objects in the `blogPosts` array
 - **Generated content** files are created in `content/blog/` directory
@@ -47,14 +48,15 @@ export async function GET() {
 
 ## 🖼️ Handling Articles Without Images
 
-### Current Image Issues Identified:
+### Current Image Issues Identified
 
 Looking at your blog data, I see articles are using a placeholder image:
 `"https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/blog-placeholder-ai-generated-LSpH7hJk2vXbDcYqRzWnPfG3tS8aFm.png"`
 
-### Solutions:
+### Solutions
 
 #### Option 1: **Enhanced Image Generation** (Recommended)
+
 Update the article generation system to create unique images per article:
 
 ```typescript
@@ -63,12 +65,13 @@ const imagePrompt = `Create a professional, modern illustration for a blog artic
 Style: Clean, minimalist, tech-focused, suitable for ${category} content.`;
 
 const imageResponse = await replicate.run(
-  "minimax/image-01:w4agaakfhnrme0cnbhgtyfmstc",
+  "stability-ai/sdxl",
   { input: { prompt: imagePrompt } }
 );
 ```
 
 #### Option 2: **Fallback Image System**
+
 Create category-specific fallback images:
 
 ```typescript
@@ -84,6 +87,7 @@ const getFallbackImage = (category: string) => {
 ```
 
 #### Option 3: **Dynamic Image Generation for Existing Articles**
+
 Create a script to generate images for articles that don't have them:
 
 ```bash
@@ -91,29 +95,30 @@ Create a script to generate images for articles that don't have them:
 node scripts/generate-missing-images.js
 ```
 
-### 🔧 Immediate Actions:
+### 🔧 Immediate Actions
 
 1. **Check Current Articles**: 5 articles exist but using placeholder images
 2. **Update Image Generation**: Enhance the automated system to create unique images
 3. **Set Up Monitoring**: Use Vercel dashboard + API testing
 4. **Create Fallbacks**: Set up category-specific fallback images
 
-### 📈 Success Metrics to Monitor:
+### 📈 Success Metrics to Monitor
 
 - **Article Generation Frequency**: Should see new articles twice daily
 - **Image Generation Success**: Each article should have a unique cover image  
 - **Content Quality**: Check generated markdown files in `content/blog/`
 - **Error Rates**: Monitor failed generations in Vercel logs
 
-### 🚨 Alert System:
+### 🚨 Alert System
 
 Set up notifications when:
+
 - Cron jobs fail
 - Image generation fails
 - API rate limits are hit
 - Content quality issues detected
 
-## Next Steps:
+## Next Steps
 
 1. **Would you like me to fix the image generation system** to create unique images?
 2. **Should I create the blog status monitoring endpoint**?

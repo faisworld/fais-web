@@ -10,19 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Loader2, AlertCircle } from 'lucide-react';
 
 const imageModels = [
-  { id: "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316", name: "Stability AI SDXL" },
-  { id: "google/imagen-4:9e3ce855e6437b594a6716d54a8c7d0eaa10c28a8ada83c52ee84bde3b98f88d", name: "Google Imagen 4" },
-  { id: "nvidia/ediffi:2f3520af3d61af76f0a91a8efef86dda1b1698ceac5bb9224fee8e32824aac9b", name: "Nvidia EDIFFI" },
+  { id: "stability-ai/sdxl", name: "Stability AI SDXL" },
+  { id: "google/imagen-4", name: "Google Imagen 4" },
 ];
 
 const videoModels = [
-  { id: "google/veo-2:tjqhsk4eddrma0cn7w38c91tq8", name: "Google Veo 2" },
-  { id: "minimax/video-01-director:654gq25cfxrmc0cmyjev7cz4rg", name: "Minimax Video 01 Director" },
-  { id: "minimax/video-01:15eyanar9xrg80ckd3ytdz0hhr", name: "Minimax Video 01" },
+  { id: "google/veo-2", name: "Google Veo 2" },
+  { id: "minimax/video-01-director", name: "Minimax Video 01 Director" },
+  { id: "minimax/video-01", name: "Minimax Video 01" },
 ];
 
-const MODEL_ID_MINIMAX_VIDEO_01_DIRECTOR = "minimax/video-01-director:654gq25cfxrmc0cmyjev7cz4rg";
-const MODEL_ID_MINIMAX_VIDEO_01 = "minimax/video-01:15eyanar9xrg80ckd3ytdz0hhr";
+const MODEL_ID_MINIMAX_VIDEO_01_DIRECTOR = "minimax/video-01-director";
+const MODEL_ID_MINIMAX_VIDEO_01 = "minimax/video-01";
 
 type MediaType = "image" | "video";
 
