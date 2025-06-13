@@ -15,8 +15,7 @@ export default function BlogPage() {
   // Prevent hydration mismatch layout shifts
   useEffect(() => {
     setIsClient(true)
-  }, [])
-  // Filter posts based on category and search query, then sort by date (newest first)
+  }, [])  // Filter posts based on category and search query, then sort by date (newest first)
   const filteredPosts = blogPosts
     .filter(post => {
       const matchesCategory = filter === "all" || post.category === filter
@@ -30,6 +29,14 @@ export default function BlogPage() {
       const dateB = new Date(b.date)
       return dateB.getTime() - dateA.getTime() // Newest first
     })
+
+  // Debug: log the data for troubleshooting
+  if (typeof window !== 'undefined' && isClient) {
+    console.log('Blog posts total:', blogPosts?.length || 0)
+    console.log('Filtered posts:', filteredPosts?.length || 0)
+    console.log('Filter:', filter)
+    console.log('Search query:', searchQuery)
+  }
 
   // Get featured posts
   const featuredPosts = blogPosts.filter(post => post.featured)
