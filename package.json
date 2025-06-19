@@ -2,8 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "scripts": {
+  "type": "module",  "scripts": {
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
@@ -13,7 +12,8 @@
     "generate-sitemap": "npx next-sitemap --config next-sitemap.config.mjs && node scripts/update-sitemap-dates.mjs",
     "update-sitemap-dates": "node scripts/update-sitemap-dates.mjs",
     "update-blog-sitemap": "node scripts/update-blog-sitemap.mjs",
-    "ping-search-engines": "node scripts/ping-search-engines.mjs"
+    "ping-search-engines": "node scripts/ping-search-engines.mjs",
+    "test-cron": "node test-cron-local.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",

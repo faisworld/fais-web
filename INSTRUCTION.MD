@@ -104,14 +104,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 **Important**: When working with multiple terminals, GitHub Copilot may not always display terminal outputs correctly. Here are best practices:
 
-#### Terminal Best Practices:
+#### Terminal Best Practices
+
 1. **Close Unused Terminals**: Keep only necessary terminals open to avoid confusion
 2. **Check Current Working Directory**: Always verify you're in the correct project directory
 3. **Monitor Background Processes**: Use `ps aux | grep node` to check running processes
 4. **Kill Processes When Needed**: `taskkill /F /IM node.exe` (Windows) or `pkill node` (Unix)
 
-#### Viewing API Responses:
+#### Viewing API Responses
+
 When testing streaming APIs (like RAG queries), responses appear in special format:
+
 ```bash
 # Example streaming response format:
 f:{"messageId":"msg-xyz123"}
@@ -122,13 +125,15 @@ f:{"messageId":"msg-xyz123"}
 0:" Studio"
 ```
 
-#### Debugging Tips:
+#### Debugging Tips
+
 - **Check Server Logs**: Monitor console output for errors
 - **Test APIs Directly**: Use curl commands to test endpoints
 - **Verify Database Connections**: Check PostgreSQL connectivity
 - **Monitor Port Usage**: Ensure services run on expected ports
 
-#### Common Commands:
+#### Common Commands
+
 ```bash
 # Start development server
 npm run dev
@@ -147,13 +152,15 @@ netstat -ano | findstr :3000
 ### 7️⃣ Code Quality & Standards
 
 #### ESLint and Code Formatting Rules ✅
+
 - **Follow ESLint Configuration**: Adhere to project's ESLint rules in `eslint.config.mjs`
 - **TypeScript Standards**: Use proper TypeScript types and interfaces
 - **Import Organization**: Keep imports clean and organized
 - **Variable Naming**: Use descriptive camelCase naming
 - **Error Handling**: Implement proper try-catch blocks and error boundaries
 
-#### Code Style Requirements:
+#### Code Style Requirements
+
 ```typescript
 // ✅ Good: Proper TypeScript interface
 interface UserData {
@@ -175,14 +182,16 @@ try {
 const userAuthenticationToken = generateToken();
 ```
 
-#### Markdown Documentation Standards:
+#### Markdown Documentation Standards
+
 - **Headers**: Use proper heading hierarchy (##, ###, ####)
 - **Lists**: Add blank lines around lists
 - **Code Blocks**: Surround with blank lines
 - **No Trailing Punctuation**: Avoid colons in headings
 - **Consistent Formatting**: Follow MD linting rules
 
-#### File Organization:
+#### File Organization
+
 - **Components**: Place in appropriate directories
 - **Utils**: Keep utility functions organized
 - **Types**: Define in dedicated type files
@@ -199,28 +208,32 @@ const userAuthenticationToken = generateToken();
 
 ## 🤖 GitHub Copilot Guidelines
 
-### Code Generation Standards:
+### Code Generation Standards
+
 - **Always validate generated code** for ESLint compliance
 - **Review TypeScript types** and ensure proper typing
 - **Check error handling** in all generated functions
 - **Verify imports** are correct and organized
 - **Test functionality** before committing
 
-### Documentation Requirements:
+### Documentation Requirements
+
 - **Follow Markdown linting rules** (MD022, MD026, MD031, MD032)
-- **Use proper heading hierarchy** 
+- **Use proper heading hierarchy**
 - **Add blank lines around lists and code blocks**
 - **Avoid trailing punctuation in headings**
 - **Ensure consistent formatting**
 
-### Terminal and Debugging:
+### Terminal and Debugging
+
 - **Close unused terminals** to avoid confusion
 - **Understand streaming response formats** (f:{"messageId"}, 0:"text")
 - **Check server logs** for error diagnosis
 - **Use proper curl commands** for API testing
 - **Monitor database connections** and query performance
 
-### Quality Assurance:
+### Quality Assurance
+
 - **Run ESLint before suggesting code changes**
 - **Validate all code examples** work correctly
 - **Ensure proper TypeScript interfaces**
@@ -246,7 +259,8 @@ const userAuthenticationToken = generateToken();
 
 ## 🔧 Development Workflow
 
-### Before Each Commit:
+### Before Each Commit
+
 ```bash
 # Check for linting errors
 npm run lint
@@ -261,7 +275,8 @@ npm run type-check
 npm test
 ```
 
-### Code Review Checklist:
+### Code Review Checklist
+
 - [ ] ESLint rules followed
 - [ ] TypeScript types properly defined
 - [ ] Error handling implemented

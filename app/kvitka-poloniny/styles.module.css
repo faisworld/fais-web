@@ -7,6 +7,21 @@
   padding-bottom: 3rem;
 }
 
+/* Hide any global FAIS widgets on this page */
+.pageContainer :global(elevenlabs-convai[agent-id="GkOKedIUAelQwYORYU3j"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Ensure Kvitka widgets are visible */
+.pageContainer :global(elevenlabs-convai[agent-id="iNXsli5ADa6T5QV7XQIM"]) {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .mainContent {
   max-width: 900px;
   margin: 2rem auto;

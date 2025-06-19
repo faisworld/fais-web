@@ -1,107 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
 
 export default function KvitkaPoloninyPage() {
-  const chatWidgetRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    // Prevent conflicts with global widget script by using unique ID
-    const kvitkaWidgetScriptId = "elevenlabs-kvitka-script";
-    
-    // Remove any previously created widget elements to start fresh
-    if (chatWidgetRef.current) {
-      while (chatWidgetRef.current.firstChild) {
-        chatWidgetRef.current.removeChild(chatWidgetRef.current.firstChild);
-      }
-    }
-    
-    const loadWidgetScript = () => {
-      return new Promise<void>((resolve, reject) => {
-        // Check if script already exists
-        let existingScript = document.getElementById(kvitkaWidgetScriptId) as HTMLScriptElement | null;
-          if (!existingScript) {          console.log('Creating new ElevenLabs script for Kvitka Poloniny');
-          existingScript = document.createElement('script');
-          existingScript.id = kvitkaWidgetScriptId;
-          existingScript.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-          existingScript.async = true;
-          existingScript.type = 'text/javascript';
-          existingScript.onload = () => {
-            console.log('Kvitka widget script loaded successfully');
-            resolve();
-          };
-          existingScript.onerror = (error) => {
-            console.error('Error loading Kvitka widget script', error);
-            reject(error);
-          };
-          document.head.appendChild(existingScript);
-        } else {
-          console.log('ElevenLabs script already exists, using it');
-          resolve();
-        }
-      });
-    };
-    
-    const createKvitkaWidget = () => {
-      if (!chatWidgetRef.current) return;
-      
-      // Wait for custom elements to be defined
-      if (!customElements.get('elevenlabs-convai')) {
-        console.log('Waiting for ElevenLabs custom elements to be defined...');
-        setTimeout(createKvitkaWidget, 500);
-        return;
-      }
-        console.log('Creating Kvitka Poloniny widget with NEW Agent ID: iNXsli5ADa6T5QV7XQIM');
-      
-      // Create Kvitka-specific widget with NEW agent ID (v3)
-      const kvitkaWidget = document.createElement('elevenlabs-convai');
-      kvitkaWidget.setAttribute('agent-id', 'iNXsli5ADa6T5QV7XQIM');
-      chatWidgetRef.current.appendChild(kvitkaWidget);
-      
-      // Adjust the positioning to be relative instead of fixed
-      setTimeout(() => {
-        const internalContainer = kvitkaWidget.shadowRoot?.querySelector('div[style*="position: fixed"]');
-        if (internalContainer instanceof HTMLElement) {
-          console.log('Adjusting widget position to relative');
-          internalContainer.style.position = 'relative';
-          internalContainer.style.bottom = 'auto';
-          internalContainer.style.right = 'auto';
-          internalContainer.style.zIndex = '1';
-        } else {
-          console.log('Could not find internal widget container to adjust position');
-        }
-      }, 1000);
-    };
-    
-    // First load script, then create widget
-    loadWidgetScript()
-      .then(() => {
-        console.log('Widget script loaded, creating widget');
-        createKvitkaWidget();
-      })
-      .catch((error) => {
-        console.error('Failed to load widget script', error);
-      });      // Store the current ref value for cleanup
-      const refForCleanup = chatWidgetRef.current;
-      
-      // Cleanup on unmount
-    return () => {
-      if (refForCleanup) {
-        console.log('Cleaning up Kvitka widget');
-        while (refForCleanup.firstChild) {
-          refForCleanup.removeChild(refForCleanup.firstChild);
-        }
-      }
-    };
-  }, []);
-    return (
+  return (
     <div className={`${styles.pageContainer} pt-20`}>
+      {/* Global CSS to hide global FAIS widgets on this page */}
+      <style jsx global>{`
+        /* Hide global FAIS widgets on Kvitka page */
+        elevenlabs-convai[agent-id="GkOKedIUAelQwYORYU3j"] {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          position: absolute !important;
+          left: -9999px !important;
+        }
+      `}</style>
+      
       <div className="container mx-auto px-4 max-w-screen-xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left column with image and text - takes 5 columns on large screens */}
-          <div className="lg:col-span-5">
+          {/* Full width content area */}
+          <div className="lg:col-span-12">
             <div className="mb-8 flex justify-center lg:justify-start">
               <div className={styles.imageContainer}>
                 <Image 
@@ -125,15 +46,12 @@ export default function KvitkaPoloninyPage() {
               </p>
             </div>
           </div>
-          
-          {/* Right column with chat widget - takes 7 columns on large screens */}
-          <div className="lg:col-span-7 flex items-center justify-center">
-            <div ref={chatWidgetRef} className="w-full max-w-lg" id="kvitka-widget-container">
-              {/* ElevenLabs widget will be inserted here by the script */}
-            </div>
-          </div>
         </div>
       </div>
+        {/* Simple ElevenLabs Widget - Let it handle its own positioning */}
+      <div dangerouslySetInnerHTML={{
+        __html: '<elevenlabs-convai agent-id="iNXsli5ADa6T5QV7XQIM"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>'
+      }} />
     </div>
   );
 }

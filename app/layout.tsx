@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from './providers'
+import ConditionalElevenLabsWidget from '@/components/ui/ConditionalElevenLabsWidget'
 
 
 
@@ -170,9 +171,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <DynamicBreadcrumbs darkBg={false} />
           <main className="mt-20">{children}</main>
-          <Footer />
-
-          {/* React Hot Toast */}
+          <Footer />          {/* React Hot Toast */}
           <Toaster
             position="top-right"
             toastOptions={{
@@ -182,14 +181,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 color: '#fff',
               },
             }}
-          />          {/* ElevenLabs Convai Widget v3 */}
-          <div dangerouslySetInnerHTML={{
-            __html: '<elevenlabs-convai agent-id="GkOKedIUAelQwYORYU3j"></elevenlabs-convai>'
-          }} />
-          
-          {/* ElevenLabs Widget Script */}
-          <script src='https://unpkg.com/@elevenlabs/convai-widget-embed' async type="text/javascript"></script>
-            {/* WidgetBot Crate Script */}
+          />
+
+          {/* Conditional ElevenLabs Widget - excludes Kvitka-poloniny page */}
+          <ConditionalElevenLabsWidget />
+            
+          {/* WidgetBot Crate Script */}
           <script src='https://cdn.jsdelivr.net/npm/@widgetbot/crate@3' async></script>
 
           {/* Analytics - SpeedInsights for performance monitoring, Analytics for user tracking */}
