@@ -1,6 +1,6 @@
 import { streamText, type CoreMessage } from 'ai'; // Using CoreMessage type
 import { openai } from '@ai-sdk/openai'; // Correct import for openai
-import { queryVectorStore, VectorSearchOptions } from '@/utils/rag-pipeline/vector-store-search';
+import { queryVectorStore, VectorSearchOptions, KNOWLEDGE_BASE_TABLES } from '@/utils/rag-pipeline/vector-store-search';
 import { getRAGConfig, getProviderOptions } from '@/lib/ai-config';
 
 export const runtime = 'edge'; // Optional: Use Vercel Edge Functions
@@ -43,21 +43,28 @@ export async function POST(req: Request) {
     if (!query) {
       return new Response('Query is required', { status: 400 });
     }
-    
-    // Configure search options
+      // Configure search options - use O3 internal database for comprehensive search
     const searchOptions: VectorSearchOptions = { 
       topK, 
       filterBlogOnly,
+      tableName: KNOWLEDGE_BASE_TABLES.O3_INTERNAL,
       minRelevanceScore
     };
-    
-    // 1. Search the vector store for relevant chunks based on the query with enhanced options
+      // 1. Search the vector store for relevant chunks based on the query with enhanced options
     let context;
     try {
+      console.log('[RAG-QUERY] Searching vector store with options:', searchOptions);
       const relevantChunks = await queryVectorStore(query, searchOptions);
+      console.log('[RAG-QUERY] Found chunks:', relevantChunks.length);
+      
+      if (relevantChunks.length > 0) {
+        console.log('[RAG-QUERY] Sample chunk:', relevantChunks[0].text.substring(0, 100));
+      }
+      
       context = formatChunksForContext(relevantChunks);
+      console.log('[RAG-QUERY] Context length:', context.length);
     } catch (error) {
-      console.error('Error retrieving context from vector store:', error);
+      console.error('[RAG-QUERY] Error retrieving context from vector store:', error);
       context = "Unable to retrieve relevant context. Answering with general knowledge.";
     }
 

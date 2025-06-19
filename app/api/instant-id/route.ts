@@ -38,11 +38,10 @@ export async function POST(req: NextRequest) {
     // Save to /tmp or /public (for dev, /tmp is safer)
     const filename = `instantid_${Date.now()}.webp`;
     const filePath = path.join(process.cwd(), "public", filename);
-    await writeFile(filePath, buffer);
-
-    // Return the local path (for serving via /public)
+    await writeFile(filePath, buffer);    // Return the local path (for serving via /public)
     return NextResponse.json({ output: `/` + filename, remote: imageUrl });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

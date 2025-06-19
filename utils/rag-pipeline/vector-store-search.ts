@@ -55,7 +55,15 @@ export interface VectorSearchOptions {
   urlFilter?: string;
   filterBlogOnly?: boolean;
   minRelevanceScore?: number;
+  tableName?: 'knowledge_base_chunks' | 'knowledge_base_o3' | 'knowledge_base_client';
 }
+
+// Default table names for different purposes
+export const KNOWLEDGE_BASE_TABLES = {
+  ORIGINAL: 'knowledge_base_chunks',
+  O3_INTERNAL: 'knowledge_base_o3', 
+  CLIENT_FACING: 'knowledge_base_client'
+} as const;
 
 /**
  * Extracts source type (blog, docs, etc.) and title from the URL
@@ -111,15 +119,17 @@ export async function searchVectorStore(
   try {
     if (!queryEmbedding || queryEmbedding.length !== EMBEDDING_DIMENSION) {
       throw new Error(`Invalid embedding: expected ${EMBEDDING_DIMENSION} dimensions`);
-    }
-
-    // Convert embedding to the format expected by pgvector: '[1,2,3,...]'
+    }    // Convert embedding to the format expected by pgvector: '[1,2,3,...]'
     const embeddingString = `[${queryEmbedding.join(',')}]`;
-      // Build the query with optional filters
+    
+    // Determine which table to use
+    const tableName = options.tableName || KNOWLEDGE_BASE_TABLES.O3_INTERNAL;
+    
+    // Build the query with optional filters
     let query = `
       SELECT url, chunk_text as text, created_at,
       embedding <-> $1::vector as distance
-      FROM knowledge_base_chunks
+      FROM ${tableName}
       WHERE 1=1
     `;
     
@@ -203,23 +213,30 @@ export async function hybridSearch(
       // Fall back to vector search if no good keywords
       return searchVectorStore(queryEmbedding, options);
     }
+      // Convert embedding to the format expected by pgvector
+    const embeddingString = `[${queryEmbedding.join(',')}]`;
     
-    // Convert embedding to the format expected by pgvector
-    const embeddingString = `[${queryEmbedding.join(',')}]`;    // Build a query that combines vector similarity with keyword matching
+    // Determine which table to use
+    const tableName = options.tableName || KNOWLEDGE_BASE_TABLES.O3_INTERNAL;    // Build a query that combines vector similarity with keyword matching
     let queryText = `
       SELECT url, chunk_text as text, created_at,
       (embedding <-> $1::vector) as distance,
     `;
-      // Add a text search score for each keyword
-    for (let i = 0; i < keywords.length; i++) {
-      queryText += `
-        (CASE WHEN chunk_text ILIKE $${i + 2} THEN 0.2 ELSE 0 END) + 
-      `;
+    
+    // Add a text search score for each keyword
+    if (keywords.length > 0) {
+      queryText += `(`;
+      for (let i = 0; i < keywords.length; i++) {
+        if (i > 0) queryText += ` + `;
+        queryText += `(CASE WHEN chunk_text ILIKE $${i + 2} THEN 0.2 ELSE 0 END)`;
+      }
+      queryText += `) as keyword_score`;
+    } else {
+      queryText += `0 as keyword_score`;
     }
-      // Complete the query
-    queryText = queryText.slice(0, -3); // Remove the last " + "
-    queryText += ` as keyword_score
-      FROM knowledge_base_chunks
+    
+    queryText += `
+      FROM ${tableName}
       WHERE 1=1
     `;
       const queryParams: (string | number)[] = [embeddingString];
@@ -239,9 +256,9 @@ export async function hybridSearch(
       queryText += ` AND url LIKE $${paramIndex}`;
       queryParams.push('%/blog/%');
       paramIndex++;
-    }      // Order by combined score (vector similarity and keyword matches)
+    }    // Order by combined score (vector similarity and keyword matches)
     queryText += `
-      ORDER BY (distance - keyword_score)
+      ORDER BY ((embedding <-> $1::vector) - keyword_score)
       LIMIT $${paramIndex}
     `;
     queryParams.push(options.topK);

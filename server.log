@@ -1,0 +1,96 @@
+
+> my-app@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, using available port 3001 instead.
+   ▲ Next.js 15.3.1
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.1.102:3001
+   - Environments: .env.local, .env.development, .env
+   - Experiments (use with caution):
+     · cpus: 4
+
+ ✓ Starting...
+ ✓ Ready in 4.1s
+ ○ Compiling /api/rag-query ...
+ ✓ Compiled /api/rag-query in 1738ms (672 modules)
+[RAG-QUERY] Searching vector store with options: {
+  topK: 2,
+  filterBlogOnly: false,
+  tableName: 'knowledge_base_o3',
+  minRelevanceScore: undefined
+}
+Error in hybrid search: error: column "distance" does not exist
+    at async hybridSearch (utils\rag-pipeline\vector-store-search.ts:268:21)
+    at async POST (app\api\rag-query\route.ts:57:29)
+  266 |     
+  267 |     // Execute the query
+> 268 |     const { rows } = await pool.query(queryText, queryParams);
+      |                     ^
+  269 |     
+  270 |     // Process results
+  271 |     return rows.map(row => { {
+  length: 109,
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '293',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3665',
+  routine: 'errorMissingColumn'
+}
+[RAG-QUERY] Found chunks: 2
+[RAG-QUERY] Sample chunk: bine technical excellence with business understanding to deliver solutions that make a real impact. 
+[RAG-QUERY] Context length: 1410
+ POST /api/rag-query 200 in 9823ms
+ ✓ Compiled in 65ms
+ ✓ Compiled /api/rag-query in 182ms (362 modules)
+[RAG-QUERY] Searching vector store with options: {
+  topK: 2,
+  filterBlogOnly: false,
+  tableName: 'knowledge_base_o3',
+  minRelevanceScore: undefined
+}
+Error in hybrid search: error: column "distance" does not exist
+    at async hybridSearch (utils\rag-pipeline\vector-store-search.ts:267:21)
+    at async POST (app\api\rag-query\route.ts:57:29)
+  265 |     
+  266 |     // Execute the query
+> 267 |     const { rows } = await pool.query(queryText, queryParams);
+      |                     ^
+  268 |     
+  269 |     // Process results
+  270 |     return rows.map(row => { {
+  length: 109,
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '455',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '3665',
+  routine: 'errorMissingColumn'
+}
+[RAG-QUERY] Found chunks: 2
+[RAG-QUERY] Sample chunk: d to any FAIS server, or interfere with any other party&#x27;s use and enjoyment of the website. 4. 
+[RAG-QUERY] Context length: 2179
+ POST /api/rag-query 200 in 5610ms
+ ✓ Compiled in 51ms
+^C

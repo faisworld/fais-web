@@ -22,12 +22,12 @@ export default function KvitkaPoloninyPage() {
       return new Promise<void>((resolve, reject) => {
         // Check if script already exists
         let existingScript = document.getElementById(kvitkaWidgetScriptId) as HTMLScriptElement | null;
-          if (!existingScript) {
-          console.log('Creating new ElevenLabs script for Kvitka Poloniny');
+          if (!existingScript) {          console.log('Creating new ElevenLabs script for Kvitka Poloniny');
           existingScript = document.createElement('script');
           existingScript.id = kvitkaWidgetScriptId;
           existingScript.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
           existingScript.async = true;
+          existingScript.type = 'text/javascript';
           existingScript.onload = () => {
             console.log('Kvitka widget script loaded successfully');
             resolve();
@@ -53,10 +53,9 @@ export default function KvitkaPoloninyPage() {
         setTimeout(createKvitkaWidget, 500);
         return;
       }
+        console.log('Creating Kvitka Poloniny widget with NEW Agent ID: iNXsli5ADa6T5QV7XQIM');
       
-      console.log('Creating Kvitka Poloniny widget with ID: iNXsli5ADa6T5QV7XQIM');
-      
-      // Create Kvitka-specific widget with correct agent ID
+      // Create Kvitka-specific widget with NEW agent ID (v3)
       const kvitkaWidget = document.createElement('elevenlabs-convai');
       kvitkaWidget.setAttribute('agent-id', 'iNXsli5ADa6T5QV7XQIM');
       chatWidgetRef.current.appendChild(kvitkaWidget);

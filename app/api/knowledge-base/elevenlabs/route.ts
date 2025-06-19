@@ -8,14 +8,14 @@ interface DatabaseContent {
     url: string
     content_summary: string
     chunks_processed: number
-    metadata: any
+    metadata: Record<string, unknown>
     created_at: string
   }>
   seoAnalysis: Array<{
     url: string
     recommended_title: string
     recommended_description: string
-    recommended_keywords: any
+    recommended_keywords: string[]
     score: number
     created_at: string
   }>
@@ -23,7 +23,7 @@ interface DatabaseContent {
     url: string
     analysis_type: string
     score: number
-    recommendations: any
+    recommendations: Record<string, unknown>
     created_at: string
   }>
 }

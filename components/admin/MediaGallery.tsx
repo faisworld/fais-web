@@ -41,28 +41,9 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
   const [filteredItems, setFilteredItems] = useState<MediaItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
   const [folders, setFolders] = useState<string[]>([]);
   const [activeFolder, setActiveFolder] = useState<string>('');
-    // State for reorganization
-  const [reorganizationStatus, setReorganizationStatus] = useState<{
-    isAnalyzing: boolean;
-    showPreview: boolean;
-    operations: Array<{
-      originalPath: string;
-      originalUrl: string;
-      newPath: string;
-      reason: string;
-      isArticleImage: boolean;
-    }>;
-    isExecuting: boolean;
-  }>({
-    isAnalyzing: false,
-    showPreview: false,
-    operations: [],
-    isExecuting: false
-  });
 
   // Determine if a file is a video based on URL or type
   const isVideoFile = (url: string): boolean => {
@@ -326,105 +307,7 @@ export default function MediaGallery({ filterType = 'all' }: MediaGalleryProps) 
           Image
         </div>
       </>
-    );
-  };
-
-  // Handle reorganization preview
-  const handleReorganizationPreview = async () => {
-    setReorganizationStatus(prev => ({ ...prev, isAnalyzing: true }));
-    
-    try {
-      const response = await fetch('/api/admin/gallery/reorganize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ dryRun: true })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setReorganizationStatus(prev => ({
-          ...prev,
-          operations: data.operations || [],
-          showPreview: true
-        }));
-      } else {
-        setError(`Failed to analyze: ${data.error || 'Unknown error'}`);
-      }
-    } catch (err) {
-      console.error('Error during reorganization preview:', err);
-      setError(`Error during analysis: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    } finally {
-      setReorganizationStatus(prev => ({ ...prev, isAnalyzing: false }));
-    }
-  };
-
-  // Execute reorganization
-  const handleReorganizationExecute = async () => {
-    setReorganizationStatus(prev => ({ ...prev, isExecuting: true }));
-    
-    try {
-      const response = await fetch('/api/admin/gallery/reorganize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ dryRun: false })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setError(`Reorganization completed: ${data.message}`);
-        setReorganizationStatus(prev => ({ ...prev, showPreview: false, operations: [] }));
-        
-        // Refresh the media list
-        window.location.reload();
-      } else {
-        setError(`Failed to reorganize: ${data.error || 'Unknown error'}`);
-      }
-    } catch (err) {
-      console.error('Error during reorganization:', err);
-      setError(`Error during reorganization: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    } finally {
-      setReorganizationStatus(prev => ({ ...prev, isExecuting: false }));
-    }
-  };
-
-  // Handle moving individual item
-  const handleMoveItem = async (item: MediaItem, targetFolder: string) => {
-    setIsLoading(true);
-    
-    try {
-      const response = await fetch('/api/admin/gallery/move', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          sourceUrl: item.url,
-          targetFolder: targetFolder
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setError(`File moved successfully to ${targetFolder}`);
-        // Refresh the media list
-        window.location.reload();
-      } else {
-        setError(`Failed to move file: ${data.error || 'Unknown error'}`);
-      }
-    } catch (err) {
-      console.error('Error moving file:', err);
-      setError(`Error moving file: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    );  };
 
   return (
     <div>

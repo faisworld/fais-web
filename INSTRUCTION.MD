@@ -98,22 +98,176 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 ---
 
-### 7️⃣ Security & Best Practices
+## 🖥️ Terminal Management & Debugging Guide
+
+### Working with Multiple Terminals
+
+**Important**: When working with multiple terminals, GitHub Copilot may not always display terminal outputs correctly. Here are best practices:
+
+#### Terminal Best Practices:
+1. **Close Unused Terminals**: Keep only necessary terminals open to avoid confusion
+2. **Check Current Working Directory**: Always verify you're in the correct project directory
+3. **Monitor Background Processes**: Use `ps aux | grep node` to check running processes
+4. **Kill Processes When Needed**: `taskkill /F /IM node.exe` (Windows) or `pkill node` (Unix)
+
+#### Viewing API Responses:
+When testing streaming APIs (like RAG queries), responses appear in special format:
+```bash
+# Example streaming response format:
+f:{"messageId":"msg-xyz123"}
+0:"According"
+0:" to"
+0:" Fantastic"
+0:" AI"
+0:" Studio"
+```
+
+#### Debugging Tips:
+- **Check Server Logs**: Monitor console output for errors
+- **Test APIs Directly**: Use curl commands to test endpoints
+- **Verify Database Connections**: Check PostgreSQL connectivity
+- **Monitor Port Usage**: Ensure services run on expected ports
+
+#### Common Commands:
+```bash
+# Start development server
+npm run dev
+
+# Test API endpoint
+curl -X POST http://localhost:3000/api/rag-query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "test query", "topK": 3}'
+
+# Check running processes
+netstat -ano | findstr :3000
+```
+
+---
+
+### 7️⃣ Code Quality & Standards
+
+#### ESLint and Code Formatting Rules ✅
+- **Follow ESLint Configuration**: Adhere to project's ESLint rules in `eslint.config.mjs`
+- **TypeScript Standards**: Use proper TypeScript types and interfaces
+- **Import Organization**: Keep imports clean and organized
+- **Variable Naming**: Use descriptive camelCase naming
+- **Error Handling**: Implement proper try-catch blocks and error boundaries
+
+#### Code Style Requirements:
+```typescript
+// ✅ Good: Proper TypeScript interface
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ✅ Good: Error handling
+try {
+  const result = await apiCall();
+  return result;
+} catch (error) {
+  console.error('API call failed:', error);
+  throw new Error('Failed to fetch data');
+}
+
+// ✅ Good: Descriptive variable names
+const userAuthenticationToken = generateToken();
+```
+
+#### Markdown Documentation Standards:
+- **Headers**: Use proper heading hierarchy (##, ###, ####)
+- **Lists**: Add blank lines around lists
+- **Code Blocks**: Surround with blank lines
+- **No Trailing Punctuation**: Avoid colons in headings
+- **Consistent Formatting**: Follow MD linting rules
+
+#### File Organization:
+- **Components**: Place in appropriate directories
+- **Utils**: Keep utility functions organized
+- **Types**: Define in dedicated type files
+- **Tests**: Co-locate with source files
+
+---
+
+### 8️⃣ Security & Best Practices
 
 - **Store all secrets** in Vercel’s environment variable storage.
 - **Never commit secrets** to your repo.
 
 ---
 
+## 🤖 GitHub Copilot Guidelines
+
+### Code Generation Standards:
+- **Always validate generated code** for ESLint compliance
+- **Review TypeScript types** and ensure proper typing
+- **Check error handling** in all generated functions
+- **Verify imports** are correct and organized
+- **Test functionality** before committing
+
+### Documentation Requirements:
+- **Follow Markdown linting rules** (MD022, MD026, MD031, MD032)
+- **Use proper heading hierarchy** 
+- **Add blank lines around lists and code blocks**
+- **Avoid trailing punctuation in headings**
+- **Ensure consistent formatting**
+
+### Terminal and Debugging:
+- **Close unused terminals** to avoid confusion
+- **Understand streaming response formats** (f:{"messageId"}, 0:"text")
+- **Check server logs** for error diagnosis
+- **Use proper curl commands** for API testing
+- **Monitor database connections** and query performance
+
+### Quality Assurance:
+- **Run ESLint before suggesting code changes**
+- **Validate all code examples** work correctly
+- **Ensure proper TypeScript interfaces**
+- **Check for security best practices**
+- **Verify environment variable usage**
+
+---
+
 ## ✅ Next Steps
 
-1. Implement `/api/assistant` for AI assistant commands.
-2. Build the animated AI widget in your frontend.
-3. Set up `/api/linkedin` for LinkedIn automation.
-4. Integrate OpenAI/SurferSEO for SEO/content.
-5. Add real-time search with Vercel AI SDK.
-6. Complete the gallery API for media management.
-7. Store all secrets in Vercel’s environment storage.
+1. **Follow Code Standards**: Ensure all code adheres to ESLint rules and TypeScript best practices
+2. Implement `/api/assistant` for AI assistant commands
+3. Build the animated AI widget in your frontend
+4. Set up `/api/linkedin` for LinkedIn automation
+5. Integrate OpenAI/SurferSEO for SEO/content
+6. Add real-time search with Vercel AI SDK
+7. Complete the gallery API for media management
+8. Store all secrets in Vercel's environment storage
+9. **Run ESLint checks** before committing code
+10. **Update documentation** following Markdown standards
+
+---
+
+## 🔧 Development Workflow
+
+### Before Each Commit:
+```bash
+# Check for linting errors
+npm run lint
+
+# Fix auto-fixable issues
+npm run lint:fix
+
+# Type checking
+npm run type-check
+
+# Run tests
+npm test
+```
+
+### Code Review Checklist:
+- [ ] ESLint rules followed
+- [ ] TypeScript types properly defined
+- [ ] Error handling implemented
+- [ ] Documentation updated
+- [ ] Tests passing
+- [ ] No hardcoded secrets
 
 ---
 

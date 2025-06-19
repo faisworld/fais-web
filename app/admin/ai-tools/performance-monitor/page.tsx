@@ -106,11 +106,11 @@ export default function PerformanceMonitorPage() {
         ...model,
         requestCount: model.requestCount + Math.floor(Math.random() * 5),
         avgResponseTime: model.avgResponseTime + (Math.random() - 0.5) * 200,
-        successRate: Math.max(95, Math.min(100, model.successRate + (Math.random() - 0.5) * 2))
-      })));
+        successRate: Math.max(95, Math.min(100, model.successRate + (Math.random() - 0.5) * 2))      })));
       
       toast.success('Performance metrics updated');
     } catch (error) {
+      console.error('Failed to refresh metrics:', error);
       toast.error('Failed to refresh metrics');
     } finally {
       setIsLoading(false);

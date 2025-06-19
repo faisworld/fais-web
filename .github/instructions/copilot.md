@@ -3,8 +3,51 @@ applyTo: '**'
 ---
 # Instructions for Copilot
 
+**Apply To**: This instruction file applies to all files in the project (`**` is a glob pattern meaning "all files and directories recursively"). The `applyTo` field in the front matter determines which files these instructions should influence during code generation.
+
+## Core Principles
+
+### The Comma Raiser Principle
+
+Always aim to elevate and improve code quality with each interaction. Just as a comma can change the meaning of a sentence, small improvements in code can have significant impacts on maintainability, performance, and clarity.
+
+### Simplest Solution First
+
+- **Always seek the simplest and most obvious solution first** before considering complex alternatives
+- Prefer straightforward implementations over clever or overly engineered solutions
+- Use established patterns and conventions rather than inventing new approaches
+- Choose readability over brevity when they conflict
+
+### Common Failure Analysis
+
+Before implementing any solution, consider these common reasons why code might not function correctly:
+
+- **Conflicting dependencies**: Multiple versions of the same library or conflicting packages
+- **Obsolete code interference**: Old, unused code that still affects the application
+- **Environment inconsistencies**: Missing environment variables or incorrect configuration
+- **Caching issues**: Stale builds, browser cache, or Node.js module cache
+- **Path resolution problems**: Incorrect relative/absolute paths or import statements
+- **Race conditions**: Timing issues in asynchronous operations
+- **State management conflicts**: Multiple state management systems or conflicting state updates
+
+## Critical Maintenance Guidelines
+
+### Code Cleanup Obligations
+
+- **Mandatory obsolete code removal**: Always identify and remove obsolete, unused, or conflicting code before adding new functionality
+- **Thorough testing requirement**: Test all changes comprehensively, including edge cases and integration points
+- **Consistency verification**: Check for and resolve any inconsistencies in naming, patterns, or architectural approaches
+- **Dependency audit**: Regularly review and clean up unused dependencies and conflicting packages
+
+### Pre-Implementation Checklist
+
+1. **Identify conflicts**: Search for existing similar functionality that might conflict
+2. **Remove obsolete code**: Delete any unused imports, functions, components, or files
+3. **Verify dependencies**: Ensure all required packages are properly installed and compatible
+4. **Test existing functionality**: Confirm that current features still work before making changes
+5. **Document changes**: Clearly document what was removed, added, or modified
+
 This document outlines the coding standards, domain knowledge, and preferences that AI should follow when assisting with code generation and suggestions.
-Coding standards, domain knowledge, and preferences that AI should follow.
 
 ## Coding Standards
 
@@ -38,7 +81,7 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 - **MarkdownLint violations**: Always refer to markdown lint rules when compiling .md or similar files.
 - **Error Handling**: Implement robust error handling and logging.
 - **Performance**: Optimize for performance, especially in image loading and rendering.
-- **Testing**: Prioritize writing tests for critical components and functions But remember to remove those testing scripts if no longer needed and the problem fixed.
+- **Testing & Cleanup**: Prioritize writing tests for critical components and functions. **Mandatory removal** of testing scripts and obsolete code once problems are fixed to prevent interference.
 - **Security**: Follow best practices for security, including input validation and sanitization.
 - **Accessibility**: Ensure components are accessible, following WCAG guidelines.
 - **Version Control**: Use meaningful commit messages that describe the changes made.
@@ -46,6 +89,7 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 - **Continuous Integration**: Use GitHub Actions for CI/CD pipelines to automate testing and deployment processes.
 - **Documentation**: Maintain clear and concise documentation for all components and functions, including usage examples.
 - **Community Standards**: Follow community standards and best practices for open-source contributions, including clear issue reporting and pull request guidelines.
+- **Conflict Resolution**: Before implementing new features, always check for and resolve conflicts with existing code, removing obsolete implementations that may interfere.
 
 ## Additional Notes
 
@@ -78,3 +122,25 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 - **Code Snippets**: Use code snippets for common patterns and practices to improve development speed and consistency.
 - **Code Comments**: Use comments to explain complex logic or decisions, but avoid over-commenting; the code should be self-explanatory where possible.
 - **Performance Optimization**: Regularly profile and optimize code for performance, especially in critical areas like rendering and data fetching.
+
+## Multi-AI Development Considerations
+
+**Critical Issue**: After multiple iterations utilizing different AI models, numerous conflicting scripts and codes have been created that interfere with one another.
+
+### Conflict Resolution Protocol
+
+- **Audit First**: Before implementing any new feature, conduct a thorough audit of existing similar functionality
+- **Remove Conflicts**: Identify and remove all conflicting implementations, outdated scripts, and redundant code
+- **Single Source of Truth**: Maintain only one implementation per feature to avoid confusion and conflicts
+- **Documentation**: Document what was removed and why to prevent future reintroduction of conflicting code
+- **Integration Testing**: After cleanup, perform comprehensive integration testing to ensure all systems work together harmoniously
+
+### Prevention Strategies
+
+- **Code Archaeology**: Regularly review the codebase for obsolete patterns and implementations
+- **Standardization**: Enforce consistent patterns and approaches across the entire codebase
+- **Refactoring Discipline**: Prioritize refactoring over adding new implementations when similar functionality exists
+- **Clear Ownership**: Establish clear ownership and responsibility for each code component
+- **Change Impact Analysis**: Always analyze the full impact of changes before implementation
+
+Remember: **Clean code is more valuable than clever code.** Always prioritize clarity, maintainability, and conflict-free implementations over complex or multiple solutions.
