@@ -1,19 +1,17 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Button from "@/components/ui/Button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { 
-  Search, 
-  Database, 
+  Search,   Database, 
   FileText, 
   ExternalLink,
   Download,
   RefreshCw,
   Filter,
-  Eye,
   Hash
 } from "lucide-react"
 
@@ -47,20 +45,7 @@ export default function KnowledgeBaseBrowser() {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
 
-  useEffect(() => {
-    loadKnowledgeBase()
-    loadStats()
-  }, [])
-
-  useEffect(() => {
-    if (searchQuery || selectedUrl) {
-      searchKnowledgeBase()
-    } else {
-      loadKnowledgeBase()
-    }
-  }, [searchQuery, selectedUrl, page])
-
-  const loadKnowledgeBase = async () => {
+  const loadKnowledgeBase = useCallback(async () => {
     try {
       setIsLoading(true)
       const params = new URLSearchParams({
@@ -79,13 +64,12 @@ export default function KnowledgeBaseBrowser() {
           setChunks(prev => [...prev, ...(data.chunks || [])])
         }
         setHasMore(data.hasMore || false)
-      }
-    } catch (error) {
+      }    } catch (error) {
       console.error('Error loading knowledge base:', error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [page])
 
   const loadStats = async () => {
     try {
@@ -98,8 +82,7 @@ export default function KnowledgeBaseBrowser() {
       console.error('Error loading stats:', error)
     }
   }
-
-  const searchKnowledgeBase = async () => {
+  const searchKnowledgeBase = useCallback(async () => {
     try {
       setIsLoading(true)
       const params = new URLSearchParams({
@@ -125,7 +108,7 @@ export default function KnowledgeBaseBrowser() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [searchQuery, selectedUrl, page])
 
   const exportKnowledgeBase = async (format: 'json' | 'xml') => {
     try {
@@ -144,6 +127,19 @@ export default function KnowledgeBaseBrowser() {
       console.error('Error exporting knowledge base:', error)
     }
   }
+
+  useEffect(() => {
+    loadKnowledgeBase()
+    loadStats()
+  }, [loadKnowledgeBase])
+
+  useEffect(() => {
+    if (searchQuery || selectedUrl) {
+      searchKnowledgeBase()
+    } else {
+      loadKnowledgeBase()
+    }
+  }, [searchQuery, selectedUrl, page, searchKnowledgeBase, loadKnowledgeBase])
 
   const clearFilters = () => {
     setSearchQuery('')

@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { verifyAdminRequest } from '@/utils/admin-auth';
+import { uploadToBlobServer } from '@/utils/blob-upload-server';
 
 // Comment out unused placeholders to avoid build errors
 // These are kept for reference but commented out to pass linting
@@ -13,16 +14,14 @@ const PLACEHOLDER_VIDEO_URL = "https://download.samplelib.com/mp4/sample-5s.mp4"
 */
 
 // Model version mapping - Replicate uses format: model-name:version-hash
-// Using only the best quality and cost-effective models
+// Using only the best quality models
 const MODEL_VERSIONS: Record<string, string> = {
-  // Working image models
-  'stability-ai/sdxl': 'stability-ai/sdxl:7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc',
-  'black-forest-labs/flux-schnell': 'black-forest-labs/flux-schnell:bf2f5def8827b4b80ce27032c8ceea62b76b4436745c0a3ab7e8e6f3f0f20e0c',
-  // Add models that the frontend expects
+  // Premium image models
   'google/imagen-4': 'google/imagen-4',
+  'black-forest-labs/flux-schnell': 'black-forest-labs/flux-schnell:bf2f5def8827b4b80ce27032c8ceea62b76b4436745c0a3ab7e8e6f3f0f20e0c',
+  'black-forest-labs/flux-1.1-pro': 'black-forest-labs/flux-1.1-pro',
   // Add fallback models
   'flux-dev': 'black-forest-labs/flux-dev',
-  'sdxl': 'stability-ai/sdxl',
   
   // Video models (keeping existing ones that might work)
   'google/veo-2': 'google/veo-2',
@@ -50,6 +49,17 @@ function getStandardDimensions(aspectRatio: string): { width: number; height: nu
 
 export async function POST(request: NextRequest) {
   console.log("🔄 Processing media generation request");
+  
+  // Check required environment variables
+  if (!process.env.REPLICATE_API_TOKEN) {
+    console.error("❌ Missing REPLICATE_API_TOKEN");
+    return NextResponse.json({ error: 'Server misconfigured: Missing REPLICATE_API_TOKEN' }, { status: 500 });
+  }
+  
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    console.error("❌ Missing BLOB_READ_WRITE_TOKEN");
+    return NextResponse.json({ error: 'Server misconfigured: Missing BLOB_READ_WRITE_TOKEN' }, { status: 500 });
+  }
   
   // Check admin authentication
   const authResult = await verifyAdminRequest(request);
@@ -134,25 +144,10 @@ export async function POST(request: NextRequest) {
         prompt,
       },
     };    // Add model-specific parameters based on the model type
-    if (modelIdentifier === 'stability-ai/sdxl') {
-      // Stability AI SDXL specific parameters
+    if (modelIdentifier === 'black-forest-labs/flux-1.1-pro' || modelIdentifier === 'black-forest-labs/flux-schnell') {
+      // Flux models specific parameters
+      if (aspect_ratio) requestBody.input.aspect_ratio = aspect_ratio;
       if (negativePrompt) requestBody.input.negative_prompt = negativePrompt;
-      if (aspect_ratio) {
-        const [ratioW, ratioH] = aspect_ratio.split(':').map(Number);
-        const baseSize = 1024;
-        let width, height;
-        
-        if (ratioW >= ratioH) {
-          width = baseSize;
-          height = Math.round(baseSize * (ratioH / ratioW));
-        } else {
-          height = baseSize;
-          width = Math.round(baseSize * (ratioW / ratioH));
-        }
-        
-        requestBody.input.width = Math.round(width / 64) * 64;
-        requestBody.input.height = Math.round(height / 64) * 64;
-      }
     } else if (modelIdentifier === 'google/imagen-4') {
       // Google Imagen 4 specific parameters
       if (aspectRatio || aspect_ratio) requestBody.input.aspect_ratio = aspectRatio || aspect_ratio;
@@ -269,22 +264,84 @@ export async function POST(request: NextRequest) {
       console.error('❌ Replicate prediction timed out');
       return NextResponse.json({ error: 'Generation timed out' }, { status: 504 });
     }
-    
-    // Return the appropriate output based on media type
+      // Return the appropriate output based on media type
     if (mediaType === 'image') {
       // Handle multiple images for models like Minimax Image 01
       if (Array.isArray(result.output)) {
         // Limit output to requested number of images (up to 9)
         const requestedCount = number_of_images ? Math.min(number_of_images, 9) : result.output.length;
         const limitedOutput = result.output.slice(0, requestedCount);
-        console.log(`✅ Returning ${limitedOutput.length} images (requested: ${requestedCount}): ${limitedOutput}`);
+        
+        // Upload to Vercel Blob storage
+        const uploadedImages = [];
+        for (let i = 0; i < limitedOutput.length; i++) {
+          try {
+            const imageResponse = await fetch(limitedOutput[i]);
+            if (imageResponse.ok) {
+              const imageBuffer = await imageResponse.arrayBuffer();
+              const contentType = imageResponse.headers.get('content-type') || 'image/png';
+              const extension = contentType.split('/')[1] || 'png';
+              const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');
+              const filename = `${modelNameForFile}-${Date.now()}-${i}.${extension}`;
+              
+              const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
+                folder: 'images/article-images'
+              });
+              
+              if (uploadResult.success) {
+                uploadedImages.push(uploadResult.url);
+              } else {
+                console.warn(`Failed to upload image ${i}:`, uploadResult.error);
+                uploadedImages.push(limitedOutput[i]); // Fallback to original URL
+              }
+            } else {
+              uploadedImages.push(limitedOutput[i]); // Fallback to original URL
+            }
+          } catch (uploadError) {
+            console.warn(`Error uploading image ${i}:`, uploadError);
+            uploadedImages.push(limitedOutput[i]); // Fallback to original URL
+          }
+        }
+        
+        console.log(`✅ Returning ${uploadedImages.length} images: ${uploadedImages}`);
         return NextResponse.json({ 
-          imageUrl: limitedOutput[0], // Primary image for backward compatibility
-          imageUrls: limitedOutput,   // All images
-          count: limitedOutput.length 
+          imageUrl: uploadedImages[0], // Primary image for backward compatibility
+          imageUrls: uploadedImages,   // All images
+          count: uploadedImages.length 
         });
       } else {
-        console.log(`✅ Returning single image: ${result.output}`);        return NextResponse.json({ 
+        // Single image
+        try {
+          const imageResponse = await fetch(result.output);
+          if (imageResponse.ok) {
+            const imageBuffer = await imageResponse.arrayBuffer();
+            const contentType = imageResponse.headers.get('content-type') || 'image/png';
+            const extension = contentType.split('/')[1] || 'png';
+            const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');
+            const filename = `${modelNameForFile}-${Date.now()}.${extension}`;
+            
+            const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
+              folder: 'images/article-images'
+            });
+            
+            if (uploadResult.success) {
+              console.log(`✅ Returning single image: ${uploadResult.url}`);
+              return NextResponse.json({ 
+                imageUrl: uploadResult.url,
+                imageUrls: [uploadResult.url],
+                count: 1
+              });
+            } else {
+              console.warn('Failed to upload image, using original URL:', uploadResult.error);
+            }
+          }
+        } catch (uploadError) {
+          console.warn('Error uploading image:', uploadError);
+        }
+        
+        // Fallback to original URL if upload fails
+        console.log(`✅ Returning single image (fallback): ${result.output}`);        
+        return NextResponse.json({ 
           imageUrl: result.output,
           imageUrls: [result.output],
           count: 1

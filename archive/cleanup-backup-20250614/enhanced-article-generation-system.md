@@ -16,6 +16,7 @@ This document describes the enhanced automated article generation system that ad
 ### Core Components
 
 #### 1. News Crawler (`scripts/news-crawler.mjs`)
+
 - **Purpose**: Crawls latest AI and blockchain news from multiple sources
 - **Sources**: TechCrunch, VentureBeat, Cointelegraph, Decrypt, CoinDesk, etc.
 - **Features**:
@@ -25,6 +26,7 @@ This document describes the enhanced automated article generation system that ad
   - Topic generation based on trending news
 
 #### 2. Duplicate Detection (`scripts/duplicate-detection.mjs`)
+
 - **Purpose**: Prevents generation of similar or duplicate articles
 - **Features**:
   - Jaccard similarity calculation for content comparison
@@ -33,6 +35,7 @@ This document describes the enhanced automated article generation system that ad
   - Configurable similarity thresholds (default: 65%)
 
 #### 3. Enhanced Article Generator (`scripts/article-generator.mjs`)
+
 - **Purpose**: Generates high-quality articles with images
 - **Features**:
   - Advanced content analysis for category detection
@@ -42,6 +45,7 @@ This document describes the enhanced automated article generation system that ad
   - Enhanced duplicate checking before saving
 
 #### 4. Automated Generation Script (`scripts/automated-article-generation.mjs`)
+
 - **Purpose**: Orchestrates the entire automated generation process
 - **Features**:
   - News crawling integration
@@ -53,6 +57,7 @@ This document describes the enhanced automated article generation system that ad
 ### API Endpoints
 
 #### 1. Production Cron Job (`/api/cron/automated-article-generation`)
+
 - **Purpose**: Automated article generation for production
 - **Authentication**: Internal API key required
 - **Features**:
@@ -62,6 +67,7 @@ This document describes the enhanced automated article generation system that ad
   - Error handling and reporting
 
 #### 2. Manual Generation (`/api/admin/manual-article-generation`)
+
 - **Purpose**: Manual article generation for localhost testing
 - **Authentication**: Admin panel authentication
 - **Features**:
@@ -95,6 +101,7 @@ This document describes the enhanced automated article generation system that ad
 ## Key Features
 
 ### 1. Duplicate Prevention
+
 - **Content Similarity**: Uses Jaccard similarity algorithm
 - **Title Matching**: Checks for similar titles using key words
 - **Hash Storage**: Stores content hashes for quick future checks
@@ -102,6 +109,7 @@ This document describes the enhanced automated article generation system that ad
 - **Configurable Thresholds**: Adjustable similarity limits
 
 ### 2. News Integration
+
 - **Multiple Sources**: Covers major AI and blockchain news sites
 - **Content Filtering**: Only processes relevant articles
 - **Topic Generation**: Creates article ideas from trending news
@@ -109,6 +117,7 @@ This document describes the enhanced automated article generation system that ad
 - **Rate Limiting**: Respects site policies and avoids blocking
 
 ### 3. Image Generation
+
 - **Simultaneous Creation**: Images generated during article creation
 - **High Quality**: Uses Google Imagen 4 for best results
 - **Professional Prompts**: Enhanced prompts for corporate-style images
@@ -116,12 +125,14 @@ This document describes the enhanced automated article generation system that ad
 - **Fallback Handling**: Graceful degradation if image generation fails
 
 ### 4. Knowledge Base Integration
+
 - **O3 LLM Updates**: Automatic knowledge base refresh
 - **Blog Content Indexing**: New articles added to RAG system
 - **General Website Crawling**: Comprehensive site content update
 - **Vector Embeddings**: OpenAI embeddings for semantic search
 
 ### 5. Environment Separation
+
 - **Production Mode**: Automated generation with internal API key
 - **Development Mode**: Manual generation with admin authentication
 - **URL Detection**: Automatic API endpoint selection
@@ -130,11 +141,13 @@ This document describes the enhanced automated article generation system that ad
 ## Installation and Setup
 
 ### Dependencies
+
 ```bash
 npm install jsdom node-fetch
 ```
 
 ### Environment Variables
+
 ```env
 OPENAI_API_KEY=your_openai_api_key
 INTERNAL_API_KEY=your_internal_api_key_for_cron
@@ -143,6 +156,7 @@ NEXT_PUBLIC_SITE_URL=https://fais.world
 ```
 
 ### File Structure
+
 ```
 scripts/
 ├── news-crawler.mjs              # News crawling functionality
@@ -160,18 +174,21 @@ app/api/
 ## Usage
 
 ### Production Deployment
+
 1. Set up cron job or use Vercel Cron
 2. Configure internal API key authentication
 3. Monitor execution logs
 4. Check generated articles in admin panel
 
 ### Development Testing
+
 1. Start localhost server (`npm run dev`)
 2. Access admin panel
 3. Use manual generation endpoint
 4. Test automated mode with news crawling
 
 ### Testing
+
 ```bash
 # Run comprehensive system test
 node scripts/test-article-system.mjs
@@ -186,7 +203,9 @@ node scripts/automated-article-generation.mjs
 ## Configuration
 
 ### News Sources
+
 Modify `NEWS_SOURCES` in `news-crawler.mjs` to add/remove news sites:
+
 ```javascript
 const NEWS_SOURCES = [
   {
@@ -197,7 +216,9 @@ const NEWS_SOURCES = [
 ```
 
 ### Similarity Thresholds
+
 Adjust duplicate detection sensitivity in automated generation:
+
 ```javascript
 const duplicateCheck = await checkForDuplicates(
   title, 
@@ -207,7 +228,9 @@ const duplicateCheck = await checkForDuplicates(
 ```
 
 ### Fallback Topics
+
 Update fallback topics for when news crawling fails:
+
 ```javascript
 const FALLBACK_TOPICS = [
   "Latest advancements in large language models and AI reasoning",
@@ -218,6 +241,7 @@ const FALLBACK_TOPICS = [
 ## Monitoring and Maintenance
 
 ### Success Metrics
+
 - Articles generated per run
 - Duplicate articles prevented
 - News sources successfully crawled
@@ -225,12 +249,14 @@ const FALLBACK_TOPICS = [
 - Knowledge base update completion
 
 ### Error Handling
+
 - Network timeout handling for news crawling
 - Graceful degradation when APIs fail
 - Comprehensive logging for debugging
 - Automatic cleanup of temporary files
 
 ### Performance Optimization
+
 - Rate limiting for external API calls
 - Efficient duplicate detection algorithms
 - Optimized content processing
@@ -261,6 +287,7 @@ const FALLBACK_TOPICS = [
    - Review OpenAI embedding API status
 
 ### Logs and Debugging
+
 - Enable detailed logging in development
 - Monitor cron job execution logs
 - Check admin panel for generation history

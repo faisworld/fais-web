@@ -85,9 +85,9 @@ Always provide practical, implementable solutions.`;
         content: msg.content
       })),
       { role: 'user', content: message }
-    ];    // Call O3 model for analysis
+    ];    // Call OpenAI GPT-4 model for analysis (fallback from O3)
     const completion = await openai.chat.completions.create({
-      model: 'o3-mini', // Using O3 model
+      model: 'gpt-4-turbo-preview', // Using GPT-4 as fallback
       messages: messages as OpenAI.Chat.ChatCompletionMessageParam[],
       temperature: 0.3,
       max_tokens: 2000,

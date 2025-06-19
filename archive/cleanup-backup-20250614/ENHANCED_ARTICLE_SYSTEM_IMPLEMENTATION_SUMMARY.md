@@ -7,6 +7,7 @@ The enhanced automated article generation system has been successfully implement
 ### 🚀 Key Features Implemented
 
 #### 1. **News Crawling & Topic Generation**
+
 - **File**: `scripts/news-crawler.mjs`
 - **Sources**: TechCrunch, VentureBeat, Cointelegraph, Decrypt, CoinDesk, etc.
 - **Filtering**: AI and blockchain relevant content only
@@ -14,6 +15,7 @@ The enhanced automated article generation system has been successfully implement
 - **Topic Generation**: Creates article ideas from trending news
 
 #### 2. **Advanced Duplicate Detection**
+
 - **File**: `scripts/duplicate-detection.mjs`
 - **Jaccard Similarity**: 65% threshold for content comparison
 - **Key Phrase Matching**: Intelligent title and content analysis
@@ -21,6 +23,7 @@ The enhanced automated article generation system has been successfully implement
 - **Configurable Thresholds**: Adjustable similarity limits
 
 #### 3. **Enhanced Article Generator**
+
 - **File**: `scripts/article-generator.mjs`
 - **Simultaneous Image Generation**: Google Imagen 4 integration
 - **Smart Content Analysis**: Automatic category detection
@@ -28,6 +31,7 @@ The enhanced automated article generation system has been successfully implement
 - **Vercel Blob Storage**: Direct image upload integration
 
 #### 4. **Automated Orchestration**
+
 - **File**: `scripts/automated-article-generation.mjs`
 - **News Integration**: Uses crawled news for topics
 - **Fallback System**: Predefined topics if news unavailable
@@ -35,6 +39,7 @@ The enhanced automated article generation system has been successfully implement
 - **Environment Detection**: Production vs development modes
 
 #### 5. **API Endpoints**
+
 - **Production**: `/api/cron/automated-article-generation`
   - Internal API key authentication
   - 10-minute timeout for news crawling
@@ -78,7 +83,8 @@ app/api/
 
 ### 🔧 Configuration
 
-#### Environment Variables Required:
+#### Environment Variables Required
+
 ```env
 OPENAI_API_KEY=your_openai_api_key
 INTERNAL_API_KEY=your_internal_api_key_for_cron
@@ -86,7 +92,8 @@ DATABASE_URL=your_neon_postgres_url
 NEXT_PUBLIC_SITE_URL=https://fais.world
 ```
 
-#### Dependencies Added:
+#### Dependencies Added
+
 ```json
 {
   "jsdom": "^24.0.0",
@@ -105,7 +112,8 @@ NEXT_PUBLIC_SITE_URL=https://fais.world
 
 ### 🔄 Workflow
 
-#### Production (Automated):
+#### Production (Automated)
+
 1. **Trigger**: Cron job (every 12 hours) → `/api/cron/automated-article-generation`
 2. **News Crawling**: Latest AI/blockchain articles from multiple sources
 3. **Topic Generation**: Create 3-4 unique article topics from news
@@ -114,7 +122,8 @@ NEXT_PUBLIC_SITE_URL=https://fais.world
 6. **Storage**: Save to blog data + Vercel Blob Storage
 7. **Knowledge Update**: Refresh RAG system for O3 assistant
 
-#### Development (Manual):
+#### Development (Manual)
+
 1. **Access**: Admin panel → `/api/admin/manual-article-generation`
 2. **Custom Topics**: User-specified or automated test mode
 3. **Parameter Control**: Tone, word count, keywords, etc.
@@ -148,13 +157,15 @@ NEXT_PUBLIC_SITE_URL=https://fais.world
 
 ### 📞 Usage Instructions
 
-#### For Production Deployment:
+#### For Production Deployment
+
 1. Set up cron job or use Vercel Cron
 2. Configure internal API key authentication
 3. Monitor execution logs in admin panel
 4. Check generated articles and images
 
-#### For Development Testing:
+#### For Development Testing
+
 1. Start localhost server (`npm run dev`)
 2. Access admin panel
 3. Use manual generation endpoint

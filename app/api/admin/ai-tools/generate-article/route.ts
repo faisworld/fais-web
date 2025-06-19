@@ -5,6 +5,9 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { generateArticleImageTool } from '@/utils/o3-assistant-tools/generateArticleImageTool';
 import slugify from 'slugify';
 import { getArticleGenerationConfig, getProviderOptions } from '@/lib/ai-config';
+import pg from 'pg';
+
+const { Client } = pg;
 
 // Create OpenAI provider instance
 const openai = createOpenAI({
@@ -93,6 +96,62 @@ export async function POST(request: Request) {
         console.error("Error generating article image:", imageError);
         // Continue without an image if generation fails
       }
+    }
+
+    // Save to database
+    try {
+      const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+      });
+      
+      await client.connect();
+      
+      const articleId = Date.now().toString();
+      const currentDate = new Date().toISOString().split('T')[0];
+      
+      // Insert article into database
+      await client.query(`
+        INSERT INTO blog_articles (
+          id, slug, title, content, date, read_time, category, 
+          cover_image_url, featured, author, author_image,
+          created_at, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
+      `, [
+        articleId,
+        slug,
+        title,
+        articleContent,
+        currentDate,
+        `${Math.ceil(articleContent.split(' ').length / 200)} min read`,
+        'ai', // default category
+        imageUrl || null,
+        false,
+        'AI Assistant',
+        'author-ai'
+      ]);
+      
+      // Log image generation if successful
+      if (imageUrl) {
+        await client.query(`
+          INSERT INTO image_generation_log (
+            article_id, model_used, prompt, image_url, success, created_at
+          ) VALUES ($1, $2, $3, $4, $5, NOW())
+        `, [
+          articleId,
+          'google/imagen-4',
+          `Professional article image for: ${title}`,
+          imageUrl,
+          true
+        ]);
+      }
+      
+      await client.end();
+      console.log('✅ Article saved to database');
+      
+    } catch (dbError) {
+      console.error('❌ Database save error:', dbError);
+      // Continue without failing the entire request
     }
 
     return NextResponse.json({

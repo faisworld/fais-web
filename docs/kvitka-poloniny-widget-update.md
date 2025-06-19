@@ -9,11 +9,11 @@
 ### Changes Made ✅
 
 1. **Updated Widget Implementation**: Updated to ElevenLabs v3 format
-2. **Agent ID Confirmed**: Using `iNXsli5ADa6T5QV7XQIM` 
+2. **Agent ID Confirmed**: Using `iNXsli5ADa6T5QV7XQIM`
 3. **Script Source**: Using latest `@elevenlabs/convai-widget-embed`
 4. **Added Type Attribute**: `type="text/javascript"` for better compatibility
 
-### New Implementation:
+### New Implementation
 
 ```tsx
 // app/kvitka-poloniny/page.tsx
@@ -28,12 +28,14 @@ kvitkaWidget.setAttribute('agent-id', 'iNXsli5ADa6T5QV7XQIM');
 
 ## 📋 Verification Steps
 
-### Pre-Update Status:
+### Pre-Update Status
+
 - ✅ Page had working ElevenLabs widget
 - ✅ Custom positioning for inline display
 - ✅ Separate agent ID for Kvitka Poloniny
 
-### Post-Update Features:
+### Post-Update Features
+
 - ✅ **Latest Widget Version**: ElevenLabs v3 with enhanced features
 - ✅ **Improved Performance**: Better loading and response times
 - ✅ **Enhanced UI**: New widget design and functionality
@@ -42,14 +44,16 @@ kvitkaWidget.setAttribute('agent-id', 'iNXsli5ADa6T5QV7XQIM');
 
 ## 🎯 Benefits of v3 Update
 
-### Technical Improvements:
+### Technical Improvements
+
 1. **Better Performance**: Faster initialization and response times
-2. **Enhanced Features**: New multi-modal capabilities 
+2. **Enhanced Features**: New multi-modal capabilities
 3. **Improved Stability**: More reliable widget loading
 4. **Modern UI**: Updated design and user experience
 5. **Better Mobile Support**: Enhanced responsive behavior
 
-### User Experience:
+### User Experience
+
 1. **Faster Responses**: Quicker AI response generation
 2. **Better Audio Quality**: Improved voice synthesis
 3. **Enhanced Recognition**: Better speech-to-text accuracy
@@ -57,13 +61,15 @@ kvitkaWidget.setAttribute('agent-id', 'iNXsli5ADa6T5QV7XQIM');
 
 ## 🔧 Technical Details
 
-### Widget Configuration:
+### Widget Configuration
+
 - **Element**: `<elevenlabs-convai agent-id="iNXsli5ADa6T5QV7XQIM"></elevenlabs-convai>`
 - **Script**: `https://unpkg.com/@elevenlabs/convai-widget-embed`
 - **Type**: `text/javascript`
 - **Loading**: Async with proper error handling
 
-### Positioning:
+### Positioning
+
 - **Container**: Custom `#kvitka-widget-container`
 - **Layout**: Inline positioning (not fixed)
 - **Responsive**: Adapts to different screen sizes
@@ -71,13 +77,15 @@ kvitkaWidget.setAttribute('agent-id', 'iNXsli5ADa6T5QV7XQIM');
 
 ## 🚨 Separation from Main Widget
 
-### Why Separate Implementation:
+### Why Separate Implementation
+
 1. **Different Agent**: Kvitka Poloniny has specialized knowledge
 2. **Custom Positioning**: Inline display vs fixed floating
 3. **Avoid Conflicts**: Prevents interference with main FAIS widget
 4. **Targeted Experience**: Optimized for sanatorium-specific queries
 
-### Implementation Benefits:
+### Implementation Benefits
+
 - ✅ **No Conflicts**: Independent from main website widget
 - ✅ **Specialized Content**: Focused on sanatorium services
 - ✅ **Custom Styling**: Tailored for page layout

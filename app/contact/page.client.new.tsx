@@ -8,7 +8,12 @@ import { getBlobImage } from "@/utils/media-utils";
 // Define grecaptcha type locally if not globally available
 declare global {
     interface Window {
-        grecaptcha: any; // Reverted to any to match existing global declaration
+        grecaptcha?: {
+            enterprise: {
+                ready: (callback: () => void) => void;
+                execute: (siteKey: string, options: { action: string }) => Promise<string>;
+            };
+        };
     }
 }
 
@@ -22,12 +27,13 @@ export default function ContactClientPage() {
         script.src = "https://www.google.com/recaptcha/enterprise.js?render=6LcWFf4qAAAAABZqkkjzL7kpBVbdj9Wq4GFZ_Y9Z";
         script.async = true;
         script.defer = true;
-        document.head.appendChild(script);
-        return () => {
+        document.head.appendChild(script);        return () => {
             // cleanup on unmount: remove script and grecaptcha from window
             const existing = document.getElementById(scriptId);
             if (existing) existing.remove();
-            if (window.grecaptcha) delete window.grecaptcha;
+            if (window.grecaptcha) {
+                delete window.grecaptcha;
+            }
         };
     }, []);
 
