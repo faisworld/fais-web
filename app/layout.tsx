@@ -14,9 +14,9 @@ import ConditionalElevenLabsWidget from '@/components/ui/ConditionalElevenLabsWi
 
 const inter = Inter({ subsets: ['latin'] })
 
-// Define Twitter/OG image URL using Blob storage
+// Define Twitter/OG image URL using new professional images from blob storage
 const twitterImageUrl =
-  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/6e972845-d283-487c-be43-db051920940c.png'
+  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380755928-google-imagen-4-1750380755928.jpeg'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fais.world'),  title: {
@@ -54,10 +54,9 @@ export const metadata: Metadata = {
       url: 'https://fais.world',
       siteName: 'Fantastic AI Studio',
       locale: 'en_US',
-      type: 'website',
-      images: [
+      type: 'website',      images: [
       {
-        url: twitterImageUrl,
+        url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380740140-google-imagen-4-1750380740139.jpeg',
         width: 1200,
         height: 630,
         alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',

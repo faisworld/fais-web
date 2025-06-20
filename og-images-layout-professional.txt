@@ -1,0 +1,29 @@
+// UPDATED OG IMAGE URLS FOR app/layout.tsx
+// Replace the twitterImageUrl variable with:
+
+const twitterImageUrl = 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380755928-google-imagen-4-1750380755928.jpeg';
+
+// Update openGraph.images:
+images: [
+  {
+    url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380740140-google-imagen-4-1750380740139.jpeg',
+    width: 1200,
+    height: 630,
+    alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',
+    type: 'image/png'
+  }
+],
+
+// Update twitter.images:
+images: [
+  {
+    url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380755928-google-imagen-4-1750380755928.jpeg',
+    width: 1200,
+    height: 630,
+    alt: 'Fantastic AI Studio - Innovative AI and Blockchain Solutions',
+  }
+],
+
+// BLOB STORAGE STATUS:
+// Main OG Image: ✅ Saved to blob storage
+// Twitter Image: ✅ Saved to blob storage

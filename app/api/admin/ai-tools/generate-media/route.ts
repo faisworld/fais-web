@@ -66,8 +66,7 @@ export async function POST(request: NextRequest) {
   if (!authResult.success) {
     console.log("⛔ Authentication failed");
     return NextResponse.json({ error: authResult.message }, { status: 403 });
-  }
-  try {    const body = await request.json();    const { 
+  }  try {    const body = await request.json();    const { 
       mediaType, 
       modelIdentifier, 
       prompt, 
@@ -76,6 +75,8 @@ export async function POST(request: NextRequest) {
       seed,
       cameraMovements, 
       imageUrl,
+      // Storage folder - defaults to article-images for backward compatibility
+      folder,
       // Video generation specific parameters
       durationSeconds,
       first_frame_image,
@@ -281,11 +282,10 @@ export async function POST(request: NextRequest) {
               const imageBuffer = await imageResponse.arrayBuffer();
               const contentType = imageResponse.headers.get('content-type') || 'image/png';
               const extension = contentType.split('/')[1] || 'png';
-              const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');
-              const filename = `${modelNameForFile}-${Date.now()}-${i}.${extension}`;
+              const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');              const filename = `${modelNameForFile}-${Date.now()}-${i}.${extension}`;
               
               const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
-                folder: 'images/article-images'
+                folder: 'images'
               });
               
               if (uploadResult.success) {
@@ -302,9 +302,10 @@ export async function POST(request: NextRequest) {
             uploadedImages.push(limitedOutput[i]); // Fallback to original URL
           }
         }
-        
-        console.log(`✅ Returning ${uploadedImages.length} images: ${uploadedImages}`);
+          console.log(`✅ Returning ${uploadedImages.length} images: ${uploadedImages}`);
         return NextResponse.json({ 
+          success: true,
+          url: uploadedImages[0], // Primary image for backward compatibility
           imageUrl: uploadedImages[0], // Primary image for backward compatibility
           imageUrls: uploadedImages,   // All images
           count: uploadedImages.length 
@@ -318,15 +319,14 @@ export async function POST(request: NextRequest) {
             const contentType = imageResponse.headers.get('content-type') || 'image/png';
             const extension = contentType.split('/')[1] || 'png';
             const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');
-            const filename = `${modelNameForFile}-${Date.now()}.${extension}`;
-            
-            const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
-              folder: 'images/article-images'
-            });
-            
-            if (uploadResult.success) {
+            const filename = `${modelNameForFile}-${Date.now()}.${extension}`;              const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
+                folder: folder || 'images/article-images' // Default to article-images for backward compatibility
+              });
+              if (uploadResult.success) {
               console.log(`✅ Returning single image: ${uploadResult.url}`);
               return NextResponse.json({ 
+                success: true,
+                url: uploadResult.url,
                 imageUrl: uploadResult.url,
                 imageUrls: [uploadResult.url],
                 count: 1
@@ -338,10 +338,11 @@ export async function POST(request: NextRequest) {
         } catch (uploadError) {
           console.warn('Error uploading image:', uploadError);
         }
-        
-        // Fallback to original URL if upload fails
+          // Fallback to original URL if upload fails
         console.log(`✅ Returning single image (fallback): ${result.output}`);        
         return NextResponse.json({ 
+          success: true,
+          url: result.output,
           imageUrl: result.output,
           imageUrls: [result.output],
           count: 1

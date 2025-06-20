@@ -6,8 +6,9 @@ import Image from "next/image";
 
 // Define the available image generation models
 const IMAGE_MODELS = [
-  { id: "stability-ai/sdxl", name: "Stability AI SDXL" },
+  { id: "black-forest-labs/flux-1.1-pro", name: "Black Forest Labs Flux 1.1 Pro" },
   { id: "google/imagen-4", name: "Google Imagen 4" },
+  { id: "google/imagen-3", name: "Google Imagen 3" },
 ];
 
 // Interface for the request body
@@ -108,19 +109,21 @@ export default function ImageGenerationPage() {  const [selectedModel, setSelect
         mediaType: "image",
         modelIdentifier: selectedModel,
         prompt,
-      };
-
-      // Add model-specific parameters
-      if (selectedModel === 'stability-ai/sdxl') {
-        // Stability AI SDXL specific parameters
+      };      // Add model-specific parameters
+      if (selectedModel === 'black-forest-labs/flux-1.1-pro') {
+        // Flux 1.1 Pro specific parameters
         requestBody.aspectRatio = aspectRatio;
         if (negativePrompt) requestBody.negativePrompt = negativePrompt;
       } else if (selectedModel === 'google/imagen-4') {
         // Google Imagen 4 specific parameters
         requestBody.aspect_ratio = aspectRatio;
         requestBody.safety_filter_level = safetyFilterLevel;
+      } else if (selectedModel === 'google/imagen-3') {
+        // Google Imagen 3 specific parameters
+        requestBody.aspect_ratio = aspectRatio;
+        requestBody.safety_filter_level = safetyFilterLevel;
       } else {
-        // For other models, use aspect ratio
+        // Default parameters for other models
         requestBody.aspectRatio = aspectRatio;
         if (negativePrompt) requestBody.negativePrompt = negativePrompt;
       }
@@ -316,12 +319,10 @@ export default function ImageGenerationPage() {  const [selectedModel, setSelect
                 onChange={(e) => setNegativePrompt(e.target.value)}
                 placeholder="What should NOT appear in the image..."
               />
-            </div>
-
-            {/* Model-specific controls */}
-            {selectedModel === 'stability-ai/sdxl' ? (
+            </div>            {/* Model-specific controls */}
+            {selectedModel === 'black-forest-labs/flux-1.1-pro' ? (
               <>
-                {/* Stability AI SDXL specific controls */}
+                {/* Flux 1.1 Pro specific controls */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
                   <div className="grid grid-cols-4 gap-2">
@@ -393,10 +394,9 @@ export default function ImageGenerationPage() {  const [selectedModel, setSelect
                   />
                   <p className="text-xs text-gray-500 mt-1">Optional character reference image for consistent subject generation</p>
                 </div>
-              </>
-            ) : selectedModel === 'google/imagen-4' ? (
+              </>            ) : selectedModel === 'google/imagen-4' || selectedModel === 'google/imagen-3' ? (
               <>
-                {/* Google Imagen 4 specific controls */}
+                {/* Google Imagen 4 & 3 specific controls */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Aspect Ratio</label>
                   <div className="grid grid-cols-5 gap-2">

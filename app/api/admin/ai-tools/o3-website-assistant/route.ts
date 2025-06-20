@@ -7,6 +7,12 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Import O3 Manager dynamically to avoid build issues
+async function getO3Manager() {
+  const { o3Manager } = await import('@/utils/enhanced-o3-manager');
+  return o3Manager;
+}
+
 interface WebsiteIssue {
   type: 'spacing' | 'seo' | 'performance' | 'accessibility' | 'content';
   severity: 'low' | 'medium' | 'high' | 'critical';
@@ -25,8 +31,7 @@ export async function POST(request: NextRequest) {
   try {    // Validate admin authentication
     const authCheck = await checkAdminAuth(request);
     if (!authCheck.isAuthenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });    }
 
     const { message, conversation } = await request.json();
 
@@ -34,19 +39,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
 
-    // Create system prompt for O3 website assistant
-    const systemPrompt = `You are an expert website analyst and developer assistant powered by O3. You specialize in:
+    // Get comprehensive website context
+    const manager = await getO3Manager();
+    const websiteContext = await manager.getSEOAnalysisContext();
+    const contextSummary = manager.getContextSummary();
 
-1. **Website Analysis**: Crawling and analyzing web pages for issues
-2. **Problem Detection**: Identifying spacing, SEO, performance, accessibility, and content issues  
-3. **Auto-fixing**: Providing specific code fixes and solutions
-4. **Recommendations**: Suggesting improvements and optimizations
+    // Create system prompt for O3 website assistant with real context
+    const systemPrompt = `You are an expert website analyst and developer assistant powered by O3. You have access to the complete website codebase and current implementation status.
 
-**Current Website Context**:
+**IMPORTANT**: Before making ANY recommendations, you MUST review the current website context below. Do NOT suggest features that are already implemented.
+
+${websiteContext}
+
+**Context Summary**: ${contextSummary}
+
+You specialize in:
+1. **Accurate Analysis**: Review actual implementation before suggesting improvements
+2. **Problem Detection**: Identify real issues based on current code state
+3. **Smart Recommendations**: Suggest only improvements that aren't already implemented
+4. **Code Solutions**: Provide specific fixes when needed
+
+**Website Technology Stack**:
 - Domain: https://fais.world
-- Technology: Next.js 14, TypeScript, Tailwind CSS
-- Key Areas: Blog system, SEO optimization, spacing/layout issues
-- Recent Fix: Blog article spacing has been improved (mb-8 → mb-12 for cover image, added mt-8 to content)
+- Framework: Next.js 15, TypeScript, Tailwind CSS
+- SEO: Comprehensive structured data, meta tags, breadcrumbs already implemented
+- Features: Blog system, admin tools, image generation, cron automation
+
+**Analysis Approach**:
+1. First check what's already implemented from the context above
+2. Only suggest improvements for missing or problematic features
+3. Provide specific file references when suggesting changes
+4. Consider memory efficiency and exclude irrelevant files from analysis
 
 **Recent System Updates**:
 - ✅ Fixed blog article spacing between title/header and content sections

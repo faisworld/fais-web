@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2025-06-20T00:52:52.254Z",
+  "totalImages": 3,
+  "blobStorageImages": 3,
+  "fallbackImages": 0,
+  "images": [
+    {
+      "name": "main-og-image",
+      "platform": "OpenGraph/Facebook",
+      "aspectRatio": "16:9",
+      "url": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380740140-google-imagen-4-1750380740139.jpeg",
+      "blobUrl": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380740140-google-imagen-4-1750380740139.jpeg",
+      "description": "Main OG image for website and Facebook",
+      "generatedAt": "2025-06-20T00:52:21.351Z",
+      "savedToBlobStorage": true
+    },
+    {
+      "name": "twitter-card-image",
+      "platform": "Twitter",
+      "aspectRatio": "16:9",
+      "url": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380755928-google-imagen-4-1750380755928.jpeg",
+      "blobUrl": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380755928-google-imagen-4-1750380755928.jpeg",
+      "description": "Optimized for Twitter cards",
+      "generatedAt": "2025-06-20T00:52:36.649Z",
+      "savedToBlobStorage": true
+    },
+    {
+      "name": "linkedin-professional",
+      "platform": "LinkedIn",
+      "aspectRatio": "16:9",
+      "url": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380771102-google-imagen-4-1750380771102.jpeg",
+      "blobUrl": "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380771102-google-imagen-4-1750380771102.jpeg",
+      "description": "Professional LinkedIn sharing image",
+      "generatedAt": "2025-06-20T00:52:52.254Z",
+      "savedToBlobStorage": true
+    }
+  ],
+  "usage": {
+    "description": "Professional OG images for social media - text-free designs",
+    "recommendation": "Add company text overlay in frontend/CSS for better control"
+  }
+}
