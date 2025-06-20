@@ -31,13 +31,11 @@ export default function AdminDashboard() {
             <a href="/admin/ai-tools" className="btn bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
               Open AI Tools
             </a>
-          </div>
-
-          {/* Carousel Management */}
+          </div>          {/* Carousel Management */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
             <h3 className="text-xl font-semibold mb-3">Carousel</h3>
             <p className="text-gray-600 mb-4">Upload and manage carousel images and content.</p>
-            <a href="/admin/carousel-upload" className="btn bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+            <a href="/admin/carousel" className="btn bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
               Manage Carousel
             </a>
           </div>
@@ -51,12 +49,12 @@ export default function AdminDashboard() {
             </a>
           </div>
 
-          {/* Media Generation */}
+          {/* Media Consistency Dashboard */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-xl font-semibold mb-3">Media Generation</h3>
-            <p className="text-gray-600 mb-4">Advanced media generation and processing tools.</p>
-            <a href="/admin/media-generation" className="btn bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-              Open Media Tools
+            <h3 className="text-xl font-semibold mb-3">Media Consistency</h3>
+            <p className="text-gray-600 mb-4">Monitor and fix media consistency between blob storage and database.</p>
+            <a href="/admin/media-consistency" className="btn bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+              Open Consistency Dashboard
             </a>
           </div>
         </div>

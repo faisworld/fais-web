@@ -35,9 +35,9 @@ Disallow: /admin/dashboard
 Disallow: /admin/gallery
 Disallow: /admin/ai-tools
 Disallow: /admin/carousel
-Disallow: /admin/tools
+Disallow: /admin/instant-id
 Disallow: /admin/maintenance-dashboard
-Disallow: /admin/media-generation
+Disallow: /admin/media-consistency
 
 # Crawl delay for respectful crawling (optional)
 Crawl-delay: 1

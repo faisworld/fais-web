@@ -78,16 +78,16 @@ export default function MediaUploader({
 
     try {
       const uploadedUrls: string[] = [];
-      
-      for (let i = 0; i < selectedFiles.length; i++) {
+        for (let i = 0; i < selectedFiles.length; i++) {
         const formData = new FormData();
-        formData.append('media', selectedFiles[i]);
-        
+        formData.append('file', selectedFiles[i]);
+        formData.append('title', selectedFiles[i].name.split('.')[0]);
+        formData.append('folder', 'general');
         // Track individual file progress
         const progress = Math.round((i / selectedFiles.length) * 100);
         setUploadProgress(progress);
         
-        const response = await fetch('/api/admin/media/upload', {
+        const response = await fetch('/api/admin/gallery/upload', {
           method: 'POST',
           body: formData,
         });

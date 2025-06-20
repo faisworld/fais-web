@@ -51,8 +51,7 @@ export default function AdminPage() {
       color: "from-violet-500 to-purple-600"
     },
   ]
-  
-  const contentTools = [
+    const contentTools = [
     {
       title: "Gallery Management",
       description: "Manage images in the gallery database",
@@ -68,10 +67,10 @@ export default function AdminPage() {
       color: "from-emerald-500 to-green-600"
     },
     {
-      title: "Video Quality Monitor",
-      description: "Analyze and monitor carousel video quality",
+      title: "Media Consistency",
+      description: "Monitor and fix media consistency between blob storage and database",
       icon: <FiMonitor size={24} />,
-      href: "/admin/video-quality",
+      href: "/admin/media-consistency",
       color: "from-purple-500 to-violet-600"
     }
   ]

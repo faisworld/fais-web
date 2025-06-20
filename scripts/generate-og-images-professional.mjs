@@ -161,7 +161,7 @@ async function uploadToBlob(imageBuffer, filename) {
   formData.append('folder', 'images'); // Save to images folder, not article-images
   
   try {
-    const response = await fetch('http://localhost:3000/api/admin/upload-image', {
+    const response = await fetch('http://localhost:3000/api/admin/gallery/upload', {
       method: 'POST',
       headers: {
         'x-admin-token': process.env.ADMIN_TOKEN || 'your-admin-token'
