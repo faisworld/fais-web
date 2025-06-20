@@ -14,9 +14,10 @@ import ConditionalElevenLabsWidget from '@/components/ui/ConditionalElevenLabsWi
 
 const inter = Inter({ subsets: ['latin'] })
 
-// Define Twitter/OG image URL using new professional images from blob storage
-const twitterImageUrl =
-  'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380755928-google-imagen-4-1750380755928.jpeg'
+// Define Twitter/OG image URLs using professional images from Blob storage
+const mainOgImageUrl = 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/7ca9fcbc-6143-4fe0-b80f-9baf673d3f2b.png'
+const twitterImageUrl = 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/47cf08ce-4505-4b6f-8f0b-5c9399269a8a.png'
+const linkedinImageUrl = 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/images/5eed24c6-545c-46ec-bd6a-d6ab9a329a87.png'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://fais.world'),  title: {
@@ -56,10 +57,17 @@ export const metadata: Metadata = {
       locale: 'en_US',
       type: 'website',      images: [
       {
-        url: 'https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1750380740140-google-imagen-4-1750380740139.jpeg',
+        url: mainOgImageUrl,
         width: 1200,
         height: 630,
         alt: 'Fantastic AI Studio - Enterprise AI & Blockchain Development Company',
+        type: 'image/png'
+      },
+      {
+        url: linkedinImageUrl,
+        width: 1200,
+        height: 630,
+        alt: 'Fantastic AI Studio - Professional LinkedIn Share Image',
         type: 'image/png'
       }
       ],

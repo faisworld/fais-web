@@ -48,10 +48,8 @@ export async function GET() {
 
     // Check for either alt_tag or alt-tag
     const hasAltTag = existingColumns.includes("alt-tag")
-    const hasAltTagUnderscore = existingColumns.includes("alt_tag")
-
-    // Other optional columns
-    const optionalColumns = ["size", "width", "height", "folder", "format", "description"]
+    const hasAltTagUnderscore = existingColumns.includes("alt_tag")    // Other optional columns
+    const optionalColumns = ["size", "width", "height", "folder", "format", "description", "seo_name"]
     const existingOptionalColumns = optionalColumns.filter((col) => existingColumns.includes(col))
 
     // Construct the SELECT part of the query

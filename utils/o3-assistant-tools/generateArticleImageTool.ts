@@ -129,6 +129,52 @@ async function generateArticleImageLogic(
 
     console.log('Image uploaded to Vercel Blob:', blobUploadResult.url);
 
+    // Also save the image to the database for gallery system
+    try {
+      const { Client } = await import('pg');
+      const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+      });
+      
+      await client.connect();
+      
+      const imageTitle = `${filename} - AI Generated Image`;
+      const seoName = `fais-ai-generated-${Date.now()}-${safePromptPart}`;
+      const altTag = `AI-generated image for: ${prompt.substring(0, 100)}`;
+      
+      // Get image dimensions based on aspect ratio
+      let width = 1920, height = 1080; // Default 16:9
+      switch (aspectRatio) {
+        case '1:1': width = 1080; height = 1080; break;
+        case '9:16': width = 1080; height = 1920; break;
+        case '3:4': width = 810; height = 1080; break;
+        case '4:3': width = 1440; height = 1080; break;
+        default: width = 1920; height = 1080; break;
+      }
+      
+      await client.query(`
+        INSERT INTO images (
+          url, title, "alt-tag", seo_name, width, height, format, folder, uploaded_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+      `, [
+        blobUploadResult.url,
+        imageTitle,
+        altTag,
+        seoName,
+        width,
+        height,
+        fileExtension,
+        'article-images'
+      ]);
+      
+      await client.end();
+      console.log('✅ Image also saved to images table for gallery');
+    } catch (dbError) {
+      console.error('❌ Failed to save image to database:', dbError);
+      // Continue without failing - image is still uploaded to blob storage
+    }
+
     return {
       imageUrl: blobUploadResult.url,
       imageAlt: `AI-generated image for: ${prompt.substring(0, 100)} (Model: ${modelName})`,

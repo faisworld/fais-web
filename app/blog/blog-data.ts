@@ -13,10 +13,12 @@ export interface BlogPost {
 }
 
 /**
- * Blog posts array - standardized with Google Imagen 4 images
- * All images are stored in: images/article-images/
+ * Blog posts array - currently empty
  * To generate new articles, use the admin article generation tool at:
  * /admin/ai-tools/article-generation
+ * 
+ * This will create articles with proper AI-generated images that are relevant
+ * to the content and automatically upload them to the blob storage.
  */
 export const blogPosts: BlogPost[] = [
   {
@@ -27,7 +29,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "6 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-nft-marketplaces-and-digital-ownership-google-imagen-4-1749819381730.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-nft-marketplaces-and-digital-ownership-black-forest-labs-flux-dev-1749818064139.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -39,7 +41,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-smart-contracts-in-real-estate-google-imagen-4-1749819384637.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-smart-contracts-in-real-estate-black-forest-labs-flux-dev-1749818072350.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -51,7 +53,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-decentralized-finance-defi-latest-developments-black-forest-labs-flux-1-1-pro-1749819387733.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-decentralized-finance-defi-latest-developments-black-forest-labs-flux-dev-1749818081164.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -63,7 +65,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 7, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-smart-contracts-in-real-estate-google-imagen-4-1749819384637.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/c5864549-d1d1-4989-a01f-8a8ad575ebc1.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -75,7 +77,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 6, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/b6b1e607-2d78-48b9-a829-5b3f802a4b8e.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/b6b1e607-2d78-48b9-a829-5b3f802a4b8e.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -87,7 +89,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 5, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/c5864549-d1d1-4989-a01f-8a8ad575ebc1.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/blockchain-supply-chain-revolution-high-quality.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -99,7 +101,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 4, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1749362718322-temp-image1.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/1852f4b2-beae-41e7-83f0-9dde2557a42a.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -111,7 +113,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 3, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-nft-marketplaces-and-digital-ownership-google-imagen-4-1749819381730.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/stability-ai-sdxl/e01e3be4-5e49-4d94-a14c-7cb385636ff7.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -123,7 +125,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 2, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/e01e3be4-5e49-4d94-a14c-7cb385636ff7.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/quantum-computing-ai-future-high-quality.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -136,7 +138,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 8, 2025",
     readTime: "4 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1749362718322-temp-image1.png",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/1749362718322-temp-image1.png",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -149,7 +151,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 1, 2025",
     readTime: "3 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/selected-premium-decentralized-finance-defi-latest-developments-black-forest-labs-flux-1-1-pro-1749819387733.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/optimism-layer-2-business-transformation-high-quality.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"

@@ -1,15 +1,20 @@
 ---
 applyTo: '**'
 ---
+
 # Instructions for Copilot
 
 **Apply To**: This instruction file applies to all files in the project (`**` is a glob pattern meaning "all files and directories recursively"). The `applyTo` field in the front matter determines which files these instructions should influence during code generation.
 
 ## Core Principles
 
-### The Comma Raiser Principle
+### The Simplicity and Comma Raiser Principle
 
-Always aim to elevate and improve code quality with each interaction. Just as a comma can change the meaning of a sentence, small improvements in code can have significant impacts on maintainability, performance, and clarity.
+Remember and always apply: геніальність - у простоті (simplicity is a mother of invention). Always aim to elevate and improve code quality with each interaction. Just as a comma can change the meaning of a sentence, small improvements in code can have significant impacts on maintainability, performance, and clarity.
+
+Always take into consideration SEO while generating app's pages, code or snippets.
+Look at the code as a whole to fix the parts of it further. Remember about interconnectivity and interdependability of the code.
+Use mardownlint rules when working with the code and especially .md files.
 
 ### Simplest Solution First
 
@@ -61,7 +66,6 @@ This document outlines the coding standards, domain knowledge, and preferences t
 - **Linting**: Follow ESLint rules for code quality.
 - **Formatting**: Use Prettier for code formatting.
 - **Testing**: Write unit tests using Jest and React Testing Library.
-- **Command for bash formatting**: UsShould use this excample: cd /c/Users/solar/Projects/fais-web
 - **Command for bash formatting**: Use this example: `cd /c/Users/solar/Projects/fais-web`
 - **Git**: Use Git for version control, with clear commit messages.
 - **Documentation**: Use JSDoc for documenting functions and components.
@@ -72,7 +76,7 @@ This document outlines the coding standards, domain knowledge, and preferences t
 - **AI and Machine Learning**: Understanding of AI concepts, particularly in image generation and natural language processing.
 - **Cloud Services**: Knowledge of deploying applications on platforms like Vercel and AWS.
 - **APIs**: Experience with RESTful and GraphQL APIs.
-- **Databases**: Familiarity with both SQL (PostgreSQL) - I am using Neon database aqt the moment which you may connecgt directly with credentials from .env.local and Prisma Postgres.
+- **Databases**: Familiarity with both SQL (PostgreSQL) - I am using Neon database at the moment which you may connect directly with credentials from .env.local and Prisma Postgres.
 - **Authentication**: Understanding of authentication mechanisms, including OAuth and JWT. Specifically here I am using admin panel access using localhost only and for automated blog plus image posting using internal API key with cron.
 
 ## Preferences

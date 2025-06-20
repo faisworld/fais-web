@@ -19,6 +19,7 @@ interface GalleryImage {
   uploaded_at?: string;
   description?: string;
   format?: string;
+  seo_name?: string;
 }
 
 export default function GalleryPage() {
@@ -57,13 +58,13 @@ export default function GalleryPage() {
 
     fetchImages();
   }, [currentFolder]);
-
   // Filter images based on search term
   const filteredImages = images.filter(
     (image) =>
       image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      image.folder?.toLowerCase().includes(searchTerm.toLowerCase())
+      image.folder?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      image.seo_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Handle folder navigation
@@ -230,12 +231,16 @@ export default function GalleryPage() {
                   </div>
                 )}
               </div>
-              
-              <div className="p-4">
+                <div className="p-4">
                 <h3 className="font-medium text-gray-900 truncate">{item.title}</h3>
                 <p className="text-sm text-gray-500 truncate">
-                  {isVideo(item.url) ? 'Video' : `Alt: ${item.altTag || item["alt-tag"] || "None"}`}
+                  {isVideo(item.url) ? 'Video' : item.seo_name ? `SEO: ${item.seo_name}` : `Alt: ${item.altTag || item["alt-tag"] || "None"}`}
                 </p>
+                {item.width && item.height && (
+                  <p className="text-xs text-gray-400">
+                    {item.width}×{item.height}
+                  </p>
+                )}
                 {item.folder && (
                   <p className="text-sm text-gray-500 flex items-center">
                     <FolderOpen size={12} className="mr-1" />

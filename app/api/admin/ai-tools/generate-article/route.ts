@@ -144,6 +144,33 @@ export async function POST(request: Request) {
           imageUrl,
           true
         ]);
+
+        // Also insert the image into the images table for gallery system
+        try {
+          const imageTitle = `${title} - AI Generated Article Image`;
+          const seoName = `fais-article-${articleId}-${slug}`;
+          const altTag = `AI-generated article image for: ${title}`;
+          
+          await client.query(`
+            INSERT INTO images (
+              url, title, "alt-tag", seo_name, width, height, format, folder, uploaded_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+          `, [
+            imageUrl,
+            imageTitle,
+            altTag,
+            seoName,
+            1920, // Default width for article images (16:9 aspect ratio)
+            1080, // Default height for article images (16:9 aspect ratio)
+            'jpg', // Default format for Imagen-4 generated images
+            'article-images'
+          ]);
+          
+          console.log('✅ Article image also saved to images table for gallery');
+        } catch (imageDbError) {
+          console.error('❌ Failed to save image to images table:', imageDbError);
+          // Continue without failing the entire request
+        }
       }
       
       await client.end();

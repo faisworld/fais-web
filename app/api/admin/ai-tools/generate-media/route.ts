@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { verifyAdminRequest } from '@/utils/admin-auth';
-import { uploadToBlobServer } from '@/utils/blob-upload-server';
+import { uploadMediaWithMetadata } from '@/utils/media-database-sync';
 
 // Comment out unused placeholders to avoid build errors
 // These are kept for reference but commented out to pass linting
@@ -276,27 +276,30 @@ export async function POST(request: NextRequest) {
         // Upload to Vercel Blob storage
         const uploadedImages = [];
         for (let i = 0; i < limitedOutput.length; i++) {
-          try {
-            const imageResponse = await fetch(limitedOutput[i]);
-            if (imageResponse.ok) {
-              const imageBuffer = await imageResponse.arrayBuffer();
-              const contentType = imageResponse.headers.get('content-type') || 'image/png';
-              const extension = contentType.split('/')[1] || 'png';
-              const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');              const filename = `${modelNameForFile}-${Date.now()}-${i}.${extension}`;
-              
-              const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
-                folder: 'images'
-              });
-              
-              if (uploadResult.success) {
+          try {              const imageResponse = await fetch(limitedOutput[i]);
+              if (imageResponse.ok) {
+                const imageBuffer = await imageResponse.arrayBuffer();
+                const contentType = imageResponse.headers.get('content-type') || 'image/png';
+                const extension = contentType.split('/')[1] || 'png';
+                const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');              
+                const filename = `${modelNameForFile}-${Date.now()}-${i}.${extension}`;
+                
+                // Convert ArrayBuffer to Blob
+                const blob = new Blob([imageBuffer], { type: contentType });
+                const file = new File([blob], filename, { type: contentType });
+                
+                const uploadResult = await uploadMediaWithMetadata(file, {
+                  filename: filename,
+                  folder: 'article-images',
+                  category: 'ai-generated-image',
+                  altText: `AI generated image: ${prompt.substring(0, 50)}... | Generated with ${modelIdentifier}`,
+                  title: `${modelNameForFile}-${Date.now()}-${i}`,
+                });
+                
                 uploadedImages.push(uploadResult.url);
               } else {
-                console.warn(`Failed to upload image ${i}:`, uploadResult.error);
                 uploadedImages.push(limitedOutput[i]); // Fallback to original URL
               }
-            } else {
-              uploadedImages.push(limitedOutput[i]); // Fallback to original URL
-            }
           } catch (uploadError) {
             console.warn(`Error uploading image ${i}:`, uploadError);
             uploadedImages.push(limitedOutput[i]); // Fallback to original URL
@@ -309,8 +312,7 @@ export async function POST(request: NextRequest) {
           imageUrl: uploadedImages[0], // Primary image for backward compatibility
           imageUrls: uploadedImages,   // All images
           count: uploadedImages.length 
-        });
-      } else {
+        });      } else {
         // Single image
         try {
           const imageResponse = await fetch(result.output);
@@ -319,26 +321,34 @@ export async function POST(request: NextRequest) {
             const contentType = imageResponse.headers.get('content-type') || 'image/png';
             const extension = contentType.split('/')[1] || 'png';
             const modelNameForFile = modelIdentifier.replace(/[\/\:]/g, '-');
-            const filename = `${modelNameForFile}-${Date.now()}.${extension}`;              const uploadResult = await uploadToBlobServer(imageBuffer, filename, contentType, {
-                folder: folder || 'images/article-images' // Default to article-images for backward compatibility
-              });
-              if (uploadResult.success) {
-              console.log(`✅ Returning single image: ${uploadResult.url}`);
-              return NextResponse.json({ 
-                success: true,
-                url: uploadResult.url,
-                imageUrl: uploadResult.url,
-                imageUrls: [uploadResult.url],
-                count: 1
-              });
-            } else {
-              console.warn('Failed to upload image, using original URL:', uploadResult.error);
-            }
+            const filename = `${modelNameForFile}-${Date.now()}.${extension}`;              
+            
+            // Convert ArrayBuffer to Blob then File
+            const blob = new Blob([imageBuffer], { type: contentType });
+            const file = new File([blob], filename, { type: contentType });
+            
+            const uploadResult = await uploadMediaWithMetadata(file, {
+              filename: filename,
+              folder: folder || 'article-images', // Default to article-images for backward compatibility
+              category: 'ai-generated-image',
+              altText: `AI generated image: ${prompt.substring(0, 50)}... | Generated with ${modelIdentifier}`,
+              title: `${modelNameForFile}-${Date.now()}`,
+            });
+            
+            console.log(`✅ Returning single image: ${uploadResult.url}`);
+            return NextResponse.json({ 
+              success: true,
+              url: uploadResult.url,
+              imageUrl: uploadResult.url,
+              imageUrls: [uploadResult.url],
+              count: 1
+            });
           }
         } catch (uploadError) {
           console.warn('Error uploading image:', uploadError);
         }
-          // Fallback to original URL if upload fails
+        
+        // Fallback to original URL if upload fails
         console.log(`✅ Returning single image (fallback): ${result.output}`);        
         return NextResponse.json({ 
           success: true,

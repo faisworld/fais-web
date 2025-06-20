@@ -4,7 +4,7 @@
 
 ### Problem: 455KB main chunk is too large
 
-**Solution A: Code Splitting**
+#### Solution A: Code Splitting
 
 ```tsx
 // Instead of importing everything at once
@@ -16,7 +16,7 @@ const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 })
 ```
 
-**Solution B: Analyze Bundle**
+#### Solution B: Analyze Bundle
 
 ```bash
 npm install --save-dev @next/bundle-analyzer
