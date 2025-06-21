@@ -77,30 +77,22 @@ export async function GET(request: NextRequest) {
   try {
     // Validate cron request
     if (!isValidCronRequest(request)) {
-      console.error('❌ Cron validation failed - invalid secret');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     console.log('🕐 Starting scheduled article generation...');
-    console.log('📅 Timestamp:', new Date().toISOString());
-    const startTime = Date.now();
-
-    // Generate article using the simplified API call
-    console.log('🚀 Calling article generation API...');
+    const startTime = Date.now();    // Generate article using the simplified API call
     const result = await generateArticleViAPI();
-    console.log('📝 Article generation completed:', result);
 
     const duration = Date.now() - startTime;
     
     console.log('✅ Scheduled article generation complete!');
-    console.log(`⏱️ Total duration: ${duration}ms`);
     
     return NextResponse.json({
       success: true,
       message: 'Article generated successfully',
       title: result.title,
       slug: result.slug,
-      imageUrl: result.imageUrl,
       duration: `${duration}ms`,
       timestamp: new Date().toISOString()
     });

@@ -80,6 +80,7 @@ export async function POST(request: Request) {
     if (includeImage) {
       try {
         console.log("🖼️ Starting image generation for article:", title);
+        console.log("📝 Article topic:", topic);
         
         // Create a detailed, professional prompt for better image quality
         const enhancedPrompt = `Professional, high-quality blog featured image about ${topic}. Modern, clean, visually appealing design. Corporate style, professional photography aesthetic. Relevant icons, graphics, or abstract representation. Bright, vibrant colors. No text overlays. Suitable for a technology blog header.`;
@@ -95,12 +96,14 @@ export async function POST(request: Request) {
           messages: []
         });
         
+        console.log("📊 Image generation result:", imageResult);
         imageUrl = imageResult.imageUrl;
         
         if (imageUrl) {
           console.log("✅ Image generated successfully:", imageUrl);
         } else {
           console.log("⚠️ Image generation completed but no URL returned");
+          console.log("🔍 Full imageResult object:", JSON.stringify(imageResult, null, 2));
         }
         
       } catch (imageError) {
