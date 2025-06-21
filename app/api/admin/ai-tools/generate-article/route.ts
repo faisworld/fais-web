@@ -79,8 +79,12 @@ export async function POST(request: Request) {
     let imageUrl = undefined;
     if (includeImage) {
       try {
+        console.log("🖼️ Starting image generation for article:", title);
+        
         // Create a detailed, professional prompt for better image quality
         const enhancedPrompt = `Professional, high-quality blog featured image about ${topic}. Modern, clean, visually appealing design. Corporate style, professional photography aesthetic. Relevant icons, graphics, or abstract representation. Bright, vibrant colors. No text overlays. Suitable for a technology blog header.`;
+        
+        console.log("🎨 Image prompt:", enhancedPrompt);
         
         const imageResult = await generateArticleImageTool.execute({
           prompt: enhancedPrompt,
@@ -92,20 +96,33 @@ export async function POST(request: Request) {
         });
         
         imageUrl = imageResult.imageUrl;
+        
+        if (imageUrl) {
+          console.log("✅ Image generated successfully:", imageUrl);
+        } else {
+          console.log("⚠️ Image generation completed but no URL returned");
+        }
+        
       } catch (imageError) {
-        console.error("Error generating article image:", imageError);
+        console.error("❌ Error generating article image:", imageError);
         // Continue without an image if generation fails
       }
+    } else {
+      console.log("🚫 Image generation skipped (includeImage = false)");
     }
 
     // Save to database
     try {
+      console.log("💾 Starting database save for article:", title);
+      console.log("🔗 Image URL to save:", imageUrl || "None");
+      
       const client = new Client({
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false }
       });
       
       await client.connect();
+      console.log("🔌 Database connection established");
       
       const articleId = Date.now().toString();
       const currentDate = new Date().toISOString().split('T')[0];
@@ -131,8 +148,12 @@ export async function POST(request: Request) {
         'author-ai'
       ]);
       
+      console.log("✅ Article saved to database with ID:", articleId);
+      
       // Log image generation if successful
       if (imageUrl) {
+        console.log("📊 Logging image generation to database");
+        
         await client.query(`
           INSERT INTO image_generation_log (
             article_id, model_used, prompt, image_url, success, created_at
@@ -147,6 +168,8 @@ export async function POST(request: Request) {
 
         // Also insert the image into the images table for gallery system
         try {
+          console.log("🖼️ Adding image to gallery database");
+          
           const imageTitle = `${title} - AI Generated Article Image`;
           const seoName = `fais-article-${articleId}-${slug}`;
           const altTag = `AI-generated article image for: ${title}`;
@@ -171,10 +194,12 @@ export async function POST(request: Request) {
           console.error('❌ Failed to save image to images table:', imageDbError);
           // Continue without failing the entire request
         }
+      } else {
+        console.log("⚠️ No image URL to save to database");
       }
       
       await client.end();
-      console.log('✅ Article saved to database');
+      console.log('✅ Database operations completed successfully');
       
     } catch (dbError) {
       console.error('❌ Database save error:', dbError);

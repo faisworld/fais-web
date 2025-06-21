@@ -22,11 +22,9 @@ function isValidCronRequest(request: NextRequest): boolean {
 }
 
 async function generateArticleViAPI() {
-  // Use the existing API endpoint instead of importing the script
-  const apiUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://fais.world' 
-    : 'http://localhost:3000';
-  
+  // Always use production API endpoint for cron jobs
+  const apiUrl = 'https://fais.world';
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json'
   };
@@ -37,11 +35,16 @@ async function generateArticleViAPI() {
   }
   
   const topics = [
-    "Latest trends in artificial intelligence",
-    "Blockchain technology applications", 
-    "Web development best practices",
-    "Machine learning for businesses",
-    "Digital transformation strategies"
+    "Latest trends in artificial intelligence and machine learning",
+    "Blockchain technology applications in business", 
+    "Web development best practices and frameworks",
+    "Machine learning algorithms for enterprise solutions",
+    "Digital transformation strategies for modern businesses",
+    "Cryptocurrency and DeFi market developments",
+    "AI automation tools for productivity",
+    "Smart contract implementation strategies",
+    "Edge computing and IoT applications",
+    "Cybersecurity trends and threat prevention"
   ];
   
   const topic = topics[Math.floor(Math.random() * topics.length)];
@@ -51,7 +54,7 @@ async function generateArticleViAPI() {
     headers,
     body: JSON.stringify({
       topic,
-      keywords: ['technology', 'innovation', 'digital'],
+      keywords: ['technology', 'innovation', 'digital', 'AI', 'blockchain'],
       tone: 'informative', 
       wordCount: 800,
       includeImage: true
@@ -59,28 +62,14 @@ async function generateArticleViAPI() {
   });
   
   if (!response.ok) {
-    throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+    const errorText = await response.text();
+    throw new Error(`API call failed: ${response.status} ${response.statusText} - ${errorText}`);
   }
   
   const result = await response.json();
   
-  if (!result.success) {
-    throw new Error(result.error || 'Article generation failed');
-  }
-  
-  // Save the article
-  if (result.title && result.content) {
-    const saveResponse = await fetch(`${apiUrl}/api/admin/ai-tools/save-article`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(result)
-    });
-    
-    if (!saveResponse.ok) {
-      console.warn('Failed to save article, but generation was successful');
-    }
-  }
-  
+  // The article generation API already saves to database, so we don't need a separate save call
+  // Just return the result
   return result;
 }
 
@@ -88,22 +77,30 @@ export async function GET(request: NextRequest) {
   try {
     // Validate cron request
     if (!isValidCronRequest(request)) {
+      console.error('❌ Cron validation failed - invalid secret');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     console.log('🕐 Starting scheduled article generation...');
-    const startTime = Date.now();    // Generate article using the simplified API call
+    console.log('📅 Timestamp:', new Date().toISOString());
+    const startTime = Date.now();
+
+    // Generate article using the simplified API call
+    console.log('🚀 Calling article generation API...');
     const result = await generateArticleViAPI();
+    console.log('📝 Article generation completed:', result);
 
     const duration = Date.now() - startTime;
     
     console.log('✅ Scheduled article generation complete!');
+    console.log(`⏱️ Total duration: ${duration}ms`);
     
     return NextResponse.json({
       success: true,
       message: 'Article generated successfully',
       title: result.title,
       slug: result.slug,
+      imageUrl: result.imageUrl,
       duration: `${duration}ms`,
       timestamp: new Date().toISOString()
     });

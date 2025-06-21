@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon, Film, Download, Check, Layers, RefreshCw, Upload, ArrowLeft, ArrowRight, Folder, Image as ImageIcon } from "lucide-react";
+import { Loader2, Edit, Trash2, FolderPlus, X, Copy, CheckCircle, ExternalLink, Info, Link as LinkIcon, Film, Download, Check, Layers, RefreshCw, Upload, ArrowRight, Folder, Image as ImageIcon } from "lucide-react";
 import { isGif, handleImageError } from "@/utils/media-utils";
 
 // Extended interface to support both images and videos
@@ -432,19 +432,8 @@ export default function AdminGalleryPage() {
     setTargetFolder('');
     setShowMoveModal(true);
   };
-
   const navigateToFolder = (folder: string) => {
     setCurrentFolder(folder);
-  };
-  const navigateUp = () => {
-    if (!currentFolder) return;
-    
-    const parts = currentFolder.split('/');
-    if (parts.length <= 1) {
-      setCurrentFolder('');
-    } else {
-      setCurrentFolder(parts.slice(0, -1).join('/'));
-    }
   };
 
   if (!isClient) {
@@ -597,32 +586,7 @@ export default function AdminGalleryPage() {
                 {index < array.length - 1 && <div className="text-gray-400 mx-1">/</div>}
               </div>
             ))}
-          </div>
-        )}
-        
-        {currentFolder && (
-          <button
-            onClick={navigateUp}
-            className="px-2 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded-md mr-2 flex items-center"
-          >
-            <ArrowLeft size={12} className="mr-1" />
-            Up
-          </button>
-        )}
-        
-        {currentFolder.split('/').map((part, index, array) => {
-          const path = array.slice(0, index + 1).join('/');
-          return (
-            <button
-              key={path}
-              onClick={() => navigateToFolder(path)}              className={`px-2 py-1 text-sm rounded-md mr-2 ${
-                index === array.length - 1 ? 'bg-gray-100 text-gray-700' : 'hover:bg-gray-200'
-              }`}
-            >
-              {part}
-            </button>
-          );
-        })}
+          </div>        )}
       </div>
 
       {selectionMode && (

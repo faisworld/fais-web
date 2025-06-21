@@ -4,19 +4,47 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { getBlobImage } from "@/utils/media-utils"
-import { blogPosts } from "./blog-data"
+import { blogPosts, BlogPost } from "./blog-data"
 
 export default function BlogPage() {
   const [filter, setFilter] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [isClient, setIsClient] = useState(false)
+  const [databaseArticles, setDatabaseArticles] = useState<BlogPost[]>([])
+  const [allPosts, setAllPosts] = useState<BlogPost[]>(blogPosts)
   
   // Prevent hydration mismatch layout shifts
   useEffect(() => {
     setIsClient(true)
+    
+    // Fetch additional articles from database
+    const fetchDatabaseArticles = async () => {
+      try {
+        const response = await fetch('/api/blog/list');
+        if (response.ok) {
+          const data = await response.json();
+          const dbArticles = data.articles || [];
+          setDatabaseArticles(dbArticles);
+          
+          // Combine static and database articles, removing duplicates by slug
+          const existingSlugs = new Set(blogPosts.map(post => post.slug));
+          const newArticles = dbArticles.filter((article: BlogPost) => !existingSlugs.has(article.slug));
+          setAllPosts([...blogPosts, ...newArticles]);
+          
+          console.log('✅ Loaded database articles:', dbArticles.length);
+          console.log('✅ New articles added:', newArticles.length);
+        }
+      } catch (error) {
+        console.error('❌ Failed to fetch database articles:', error);
+        // Use static articles as fallback
+        setAllPosts(blogPosts);
+      }
+    };
+    
+    fetchDatabaseArticles();
   }, [])  // Filter posts based on category and search query, then sort by date (newest first)
-  const filteredPosts = blogPosts
+  const filteredPosts = allPosts
     .filter(post => {
       const matchesCategory = filter === "all" || post.category === filter
       const matchesSearch = searchQuery === "" || 
@@ -32,14 +60,16 @@ export default function BlogPage() {
 
   // Debug: log the data for troubleshooting
   if (typeof window !== 'undefined' && isClient) {
-    console.log('Blog posts total:', blogPosts?.length || 0)
+    console.log('Blog posts total:', allPosts?.length || 0)
+    console.log('Static posts:', blogPosts?.length || 0)
+    console.log('Database posts:', databaseArticles?.length || 0)
     console.log('Filtered posts:', filteredPosts?.length || 0)
     console.log('Filter:', filter)
     console.log('Search query:', searchQuery)
   }
 
   // Get featured posts
-  const featuredPosts = blogPosts.filter(post => post.featured)
+  const featuredPosts = allPosts.filter(post => post.featured)
 
   // Prepare JSON-LD structured data for the blog
   const blogStructuredData = {

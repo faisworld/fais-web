@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { blogPosts } from "../blog-data";
+import { blogPosts, type BlogPost } from "../blog-data";
 import { AuthorImage, BlogCoverImage, RelatedPostImage } from "../components/client-images";
 import { getMarkdownPost } from "@/utils/markdown";
 import { ArticleStructuredData, BreadcrumbStructuredData } from "@/components/structured-data";
@@ -12,9 +12,40 @@ type Props = {
   }>;
 };
 
+// Extended interface for database articles
+interface DatabaseBlogPost extends BlogPost {
+  content?: string;
+}
+
+// Helper function to get post from static data or database
+async function getPost(slug: string): Promise<DatabaseBlogPost | null> {
+  // First check static posts
+  const post = blogPosts.find((post) => post.slug === slug);
+  
+  if (post) {
+    return post;
+  }
+  
+  // If not found in static posts, try database
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog/${slug}`, {
+      cache: 'no-store' // Ensure fresh data from database
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      return data.article;
+    }
+  } catch (error) {
+    console.error('Error fetching database article:', error);
+  }
+  
+  return null;
+}
+
 export async function generateMetadata({ params: routeParams }: Props): Promise<Metadata> {
   const { slug } = await routeParams;
-  const post = blogPosts.find((post) => post.slug === slug);
+  const post = await getPost(slug);
   
   if (!post) {
     return {
@@ -53,14 +84,14 @@ export async function generateMetadata({ params: routeParams }: Props): Promise<
 
 export default async function BlogPost({ params: routeParams }: Props) { // Make component async and await params
   const { slug } = await routeParams; // Await params before use
-  const post = blogPosts.find((post) => post.slug === slug);
+  const post = await getPost(slug);
   
   if (!post) {
     notFound();
   }
   
   // Try to get markdown content for dynamically generated posts
-  const markdownPost = await getMarkdownPost(slug);    return (
+  const markdownPost = await getMarkdownPost(slug);return (
     <>
       <ArticleStructuredData
         article={{
@@ -120,14 +151,24 @@ export default async function BlogPost({ params: routeParams }: Props) { // Make
           {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
         </div>
       </div>      {/* Blog content */}
-      <div className="enhanced-blog-content pb-8 mt-24">{/* Render markdown content for all posts */}        {markdownPost && (          <div 
+      <div className="enhanced-blog-content pb-8 mt-24">
+        {/* Render markdown content for static posts */}
+        {markdownPost && (
+          <div 
             className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900 prose-headings:mb-8 prose-p:mb-6 prose-headings:mt-12 prose-h1:mt-16 prose-h2:mt-14 prose-h3:mt-12 prose-headings:leading-relaxed"
             dangerouslySetInnerHTML={{ __html: markdownPost.htmlContent }}
           />
         )}
+          {/* Render content for database posts */}
+        {!markdownPost && post.content && (
+          <div 
+            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-gray-800 prose-strong:text-gray-900 prose-headings:mb-8 prose-p:mb-6 prose-headings:mt-12 prose-h1:mt-16 prose-h2:mt-14 prose-h3:mt-12 prose-headings:leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        )}
         
-        {/* Fallback for posts without markdown files */}
-        {!markdownPost && (
+        {/* Fallback for posts without content */}
+        {!markdownPost && !post.content && (
           <div className="text-center py-8">
             <p className="text-gray-600">Content for this article is being prepared. Please check back soon.</p>
           </div>

@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
     id: "1b7f607b",
     slug: "nft-marketplaces-and-digital-ownership",
     title: "NFT marketplaces and digital ownership",
-    excerpt: "Introduction...",
+    excerpt: "Explore the revolutionary world of NFT marketplaces and digital ownership, understanding how blockchain technology is transforming the way we create, buy, sell, and verify digital assets in the modern economy.",
     date: "June 8, 2025",
     readTime: "6 min read",
     category: "blockchain",
@@ -44,20 +44,7 @@ export const blogPosts: BlogPost[] = [
     coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-smart-contracts-in-real-estate-black-forest-labs-flux-dev-1749818072350.jpg",
     featured: false,
     author: "Fantastic AI",
-    authorImage: "author-fantastic"
-  },  {
-    id: "94ff4f62",
-    slug: "decentralized-finance-defi-latest-developments",
-    title: "Decentralized finance (DeFi) latest developments",
-    excerpt: "Decentralized finance, commonly known as DeFi, has been a transformative force in the financial sector, offering a decentralized alternative to tradit...",
-    date: "June 8, 2025",
-    readTime: "4 min read",
-    category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-decentralized-finance-defi-latest-developments-black-forest-labs-flux-dev-1749818081164.jpg",
-    featured: false,
-    author: "Fantastic AI",
-    authorImage: "author-fantastic"
-  },  {
+    authorImage: "author-fantastic"  },  {
     id: "swtx4g9l",
     slug: "decentralized-finance-defi-latest-developments-and-innovations",
     title: "Decentralized Finance (DeFi): Latest Developments and Innovations",
@@ -77,7 +64,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 6, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750378720781-black-forest-labs-flux-1.1-pro-1750378720781.webp",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750338413120-ai-machine-learning-professional.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -89,11 +76,11 @@ export const blogPosts: BlogPost[] = [
     date: "June 5, 2025",
     readTime: "4 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-smart-contracts-in-real-estate-black-forest-labs-flux-dev-1749818072350.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750338412485-supply-chain-blockchain-professional.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
-  },{
+  },  {
     id: "4ttgyyd3",
     slug: "recent-advancements-in-ai-and-machine-learning",
     title: "Recent Advancements in AI and Machine Learning",
@@ -101,7 +88,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 4, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750378710920-black-forest-labs-flux-1.1-pro-1750378710919.webp",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750338413120-ai-machine-learning-professional.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -125,7 +112,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 2, 2025",
     readTime: "5 min read",
     category: "ai",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750378710920-black-forest-labs-flux-1.1-pro-1750378710919.webp",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750338411537-quantum-computing-ai-professional.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"
@@ -149,7 +136,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 1, 2025",
     readTime: "3 min read",
     category: "blockchain",
-    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/premium-nft-marketplaces-and-digital-ownership-black-forest-labs-flux-dev-1749818064139.jpg",
+    coverImage: "https://mzcje1drftvqhdku.public.blob.vercel-storage.com/images/article-images/1750338413744-layer2-optimism-blockchain-professional.jpg",
     featured: false,
     author: "Fantastic AI",
     authorImage: "author-fantastic"

@@ -18,7 +18,7 @@
   "crons": [
     {
       "path": "/api/cron/simple-article-generation?cron_secret=aQ7zL9kR3!xW1mP8*oN5bC2jH4fG0eD6uT9yI",
-      "schedule": "0 2,8 * * *"
+      "schedule": "5 11 * * *"
     }
   ]
 }
